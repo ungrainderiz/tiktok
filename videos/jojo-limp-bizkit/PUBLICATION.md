@@ -5,6 +5,7 @@ Style : manga encré / motion design vectoriel (plus de pixel art). Durée : 61,
 **Fichiers**
 - `renders/JOJO_LIMP_BIZKIT.mp4` : version complète (voix ElevenLabs « Kev » + musique nu metal originale + bruitages)
 - `renders/JOJO_LIMP_BIZKIT_voix_bruitages.mp4` : voix + bruitages, **sans musique** → tu ajoutes un OST de JoJo dans TikTok et tu gardes les bruitages
+- `renders/JOJO_LIMP_BIZKIT_ost_caretaker.mp4` : voix + bruitages + « It's just a burning memory » (The Caretaker) en fond, étouffé pendant les zombies invisibles, coupé net sur le TO BE CONTINUED. ⚠️ musique protégée : risque de son coupé (sinon, prends la version voix_bruitages et ajoute le son depuis TikTok)
 - `renders/JOJO_LIMP_BIZKIT_voix_seule.mp4` : voix seule → pour ajouter tes propres sons dans TikTok
 
 ## Bruitages
@@ -28,6 +29,7 @@ Le Stand le plus glauque de Stone Ocean 🧟 Limp Bizkit, le pouvoir de Sports M
 ```bash
 python3 tools/build.py .   # index.html + timing.json depuis audio/words.json
 python3 tools/mix.py .     # audio/mix.wav, vo-sfx.wav, vo-only.wav
+python3 tools/mix_ost.py . ../../library/ost/ost_caretaker_its_just_a_burning_memory.mp3  # audio/mix-ost.wav
 npx hyperframes render . -o renders/raw.mp4
 ```
 Pour mettre tes propres images : remplace le contenu des blocs `.maxx`, `.ermes`, `.stand` (SVG dans `tools/_generic.js`) par une balise `<img>`.

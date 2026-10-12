@@ -21,6 +21,7 @@ Formats acceptés : mp3, wav, ogg, m4a, flac, et aussi mp4/webm (j'extrais l'aud
 
 ## Sources
 - `*_0..3.mp3` des catégories menace/impact/stand/horreur/ambiance/jingle : générés avec ElevenLabs (text-to-sound), libres d'utilisation avec l'abonnement.
+- `ost/ost_caretaker_its_just_a_burning_memory.mp3` : The Caretaker, « It's just a burning memory » (Everywhere at the End of Time, Stage 1), 3:32. Envoyé par toi, protégé par le droit d'auteur (aussi dispo dans la bibliothèque de sons TikTok).
 - Tout ce que tu ajoutes : note l'origine ici si possible (anime, site, création perso).
 
 ⚠️ Les sons et OST officiels de l'anime sont protégés : TikTok peut couper le son ou bloquer la vidéo. Pour chaque vidéo qui les utilise, je fais toujours aussi une version « sûre » sans eux.
