@@ -24,6 +24,19 @@ STARTS = {
     "s07": 27.0, "s08": 34.5, "s09": 42.0, "s10": 46.2, "s11": 52.6, "s12": 57.2,
     "s13": 62.35, "s14": 68.15, "s15": 75.0, "s16": 78.2,
 }
+# cris officiels (PokéAPI) : (fichier, début global, durée, volume)
+CRIES = [
+    ("rayquaza-legacy", 0.0, 1.37, 0.4),
+    ("chenipan-legacy", 4.45, 0.39, 0.35),
+    ("groudon-legacy", 42.1, 1.74, 0.4),
+    ("kyogre-legacy", 42.9, 1.68, 0.4),
+    ("rayquaza-legacy", 56.7, 1.37, 0.4),
+    ("deoxys-legacy", 64.0, 0.98, 0.45),
+    ("deoxys-legacy", 70.1, 0.98, 0.4),
+    ("rayquaza-legacy", 71.3, 1.37, 0.45),
+    ("deoxys-legacy", 80.15, 0.98, 0.45),
+    ("chenipan-legacy", 85.75, 0.39, 0.9),
+]
 NAMES = {
     "s01": "accusation", "s02": "promesse", "s03": "pub", "s04": "bilan", "s05": "arme-ultime",
     "s06": "absent", "s07": "personne", "s08": "fiche-de-poste", "s09": "primo", "s10": "rituel",
@@ -162,6 +175,10 @@ def main():
             bg, markup, js = scenes[sid]
             js = js.replace("__WORDS__", json.dumps(merged, ensure_ascii=False))
             open(os.path.join(ROOT, f"compositions/{sid}.html"), "w", encoding="utf-8").write(wrap(sid, bg, markup, js, 0))
+    cries = "\n".join(
+        f'    <audio id="cri-{i:02d}-{f}" src="assets/audio/cris/{f}.ogg" data-start="{t}" data-duration="{d}" data-track-index="{12 if f.startswith('kyogre') else 11}" data-volume="{v}"></audio>'
+        for i, (f, t, d, v) in enumerate(CRIES)
+    )
     index = f"""<!doctype html>
 <html lang="fr">
   <head>
@@ -179,6 +196,7 @@ def main():
 {chr(10).join(slots)}
     <div id="slot-overlay" data-composition-id="overlay" data-composition-src="compositions/overlay.html" data-start="0" data-duration="{TOTAL}" data-track-index="3" data-width="1080" data-height="1920"></div>
     <div id="slot-captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="4" data-width="1080" data-height="1920"></div>
+{cries}
     <audio id="voix" src="assets/audio/voix/prise-1.mp3" data-start="{VO_OFFSET}" data-duration="82.76" data-track-index="10" data-volume="1"></audio>
     </div>
     <script>
