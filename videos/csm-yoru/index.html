@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Yoru — 3e guerre mondiale</title>
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Anton"; src: url("fonts/Anton-Regular.ttf"); }
+      @font-face { font-family: "PS2P"; src: url("fonts/PressStart2P-Regular.ttf"); }
+      @font-face { font-family: "Mont"; src: url("fonts/Montserrat.ttf"); font-weight: 100 900; }
+      :root { --red: #e8233b; --red2: #8a0f22; --ink: #0a0608; --wh: #f4efe9; --gold: #ffd23c; --blue: #3d6bff; --crt: #3cff7a; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #070405; font-family: "Mont", sans-serif; color: var(--wh); }
+      .abs { position: absolute; display: block; }
+      .layer { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      video.vid { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      img.px { image-rendering: pixelated; display: block; }
+      .spr { position: absolute; overflow: hidden; }
+      .spr img { position: absolute; left: 0; top: 0; image-rendering: pixelated; }
+      .hid { opacity: 0; }
+
+      .bgred { background: radial-gradient(ellipse at 50% 45%, #5a0a16 0%, #1a0306 55%, #050102 100%); }
+      .scan { position: absolute; inset: 0; background: repeating-linear-gradient(rgba(0,0,0,0.18) 0 3px, transparent 3px 6px); pointer-events: none; }
+      .burst { position: absolute; left: -460px; top: -40px; width: 2000px; height: 2000px; background: repeating-conic-gradient(rgba(232,35,59,0.18) 0 4deg, transparent 4deg 12deg); }
+      .head { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "Anton"; line-height: 0.95; color: var(--wh); text-shadow: 8px 8px 0 var(--red2), 0 0 40px rgba(232,35,59,0.6); white-space: nowrap; }
+      .head .r { color: var(--red); text-shadow: 8px 8px 0 #000, 0 0 40px rgba(232,35,59,0.8); }
+      .tag { position: absolute; font-family: "PS2P"; font-size: 30px; line-height: 1.3; color: #fff; background: var(--red); border: 6px solid #000; padding: 10px 16px; white-space: nowrap; box-shadow: 8px 8px 0 rgba(0,0,0,0.6); opacity: 0; }
+      .tag.w { background: var(--wh); color: #000; } .tag.b { background: var(--blue); } .tag.k { background: #000; border-color: var(--red); color: var(--red); }
+      .chap { position: absolute; left: 70px; top: 300px; font-family: "PS2P"; font-size: 40px; color: #fff; background: #000; border: 8px solid var(--red); padding: 18px 26px; box-shadow: 12px 12px 0 var(--red2); opacity: 0; white-space: nowrap; }
+      .chap small { display: block; font-size: 22px; color: var(--red); margin-top: 10px; }
+      .card { position: absolute; background: #fff; border: 10px solid #000; box-shadow: 0 0 0 6px var(--red), 20px 20px 0 6px rgba(0,0,0,0.7); overflow: hidden; }
+      .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .stamp { position: absolute; font-family: "Anton"; font-size: 100px; color: var(--red); border: 12px solid var(--red); padding: 0 26px; background: rgba(0,0,0,0.75); white-space: nowrap; opacity: 0; }
+      .bub { position: absolute; font-family: "PS2P"; font-size: 30px; line-height: 1.4; color: #000; background: #fff; border: 6px solid #000; padding: 14px 18px; box-shadow: 8px 8px 0 rgba(0,0,0,0.6); opacity: 0; white-space: nowrap; }
+      .gauge { position: absolute; width: 860px; height: 70px; border: 8px solid #fff; background: #200408; box-shadow: 0 0 0 6px #000; }
+      .gauge i { position: absolute; left: 4px; top: 4px; bottom: 4px; width: 836px; background: repeating-linear-gradient(90deg, var(--red) 0 36px, #ff5a6a 36px 44px); transform-origin: 0 50%; }
+      .glab { position: absolute; font-family: "PS2P"; font-size: 26px; color: #fff; text-shadow: 4px 4px 0 #000; }
+
+      /* radar CRT */
+      #radar { left: 140px; top: 330px; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, #0b2a14 0%, #041208 70%); border: 14px solid #1a1a1a; box-shadow: 0 0 0 10px #333, 0 0 80px rgba(60,255,122,0.25); overflow: hidden; }
+      #radar .rg { position: absolute; border: 3px solid rgba(60,255,122,0.35); border-radius: 50%; }
+      #sweep { position: absolute; left: 0; top: 0; width: 772px; height: 772px; border-radius: 50%; background: conic-gradient(rgba(60,255,122,0.55), rgba(60,255,122,0) 60deg, transparent 360deg); }
+      #blip { position: absolute; width: 34px; height: 34px; background: var(--red); box-shadow: 0 0 30px var(--red); opacity: 0; }
+      #alert { left: 60px; top: 1170px; width: 960px; text-align: center; font-family: "PS2P"; font-size: 40px; line-height: 1.5; color: #fff; background: var(--red); border: 8px solid #fff; padding: 20px; opacity: 0; }
+
+      /* captions */
+      #cap { left: 40px; top: 1330px; width: 1000px; height: 260px; }
+      #cap .ln { position: absolute; left: 0; top: 0; width: 1000px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; opacity: 0; }
+      #cap .w { font-family: "Mont"; font-weight: 900; font-size: 74px; line-height: 1.2; color: #fff; text-transform: uppercase; -webkit-text-stroke: 10px #000; paint-order: stroke fill; text-shadow: 6px 6px 0 #000; padding: 0 8px; }
+      #cap .w.on { color: var(--gold); }
+
+      #flash { background: #fff; opacity: 0; }
+      #redf { background: var(--red); mix-blend-mode: multiply; opacity: 0; }
+      #grain { background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1.4px); background-size: 5px 6px; }
+      .vign { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0,0,0,0.75) 100%); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="76.56" data-width="1080" data-height="1920">
+      <div id="base" class="layer clip bgred" data-start="0" data-duration="76.56" data-track-index="0"><div class="burst" id="burst0"></div></div>
+
+      <video class="vid clip" id="v0" src="clips/yoru_face.mp4" data-start="5.36" data-duration="3.26" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v1" src="clips/yoru_street.mp4" data-start="8.62" data-duration="4.26" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v2" src="clips/gun_txt.mp4" data-start="17.12" data-duration="1.32" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v3" src="clips/gulf.mp4" data-start="18.44" data-duration="2.4" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v4" src="clips/tank_txt.mp4" data-start="20.84" data-duration="1.06" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v5" src="clips/elbrus.mp4" data-start="21.9" data-duration="1.54" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v6" src="clips/vault.mp4" data-start="27.08" data-duration="1.04" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v7" src="clips/statue_face.mp4" data-start="33.69" data-duration="2.12" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v8" src="clips/statue_gun.mp4" data-start="35.81" data-duration="1.04" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v9" src="clips/hands2.mp4" data-start="36.85" data-duration="3.95" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v10" src="clips/statue_aim.mp4" data-start="40.8" data-duration="1.01" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v11" src="clips/bang.mp4" data-start="41.81" data-duration="0.69" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v12" src="clips/explode.mp4" data-start="60.12" data-duration="4.3" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v13" src="clips/ak.mp4" data-start="64.42" data-duration="1.02" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v14" src="clips/yoru_eye.mp4" data-start="65.44" data-duration="1.7" data-track-index="2" muted playsinline></video>
+<video class="vid clip" id="v15" src="clips/yoru_street.mp4" data-start="69.52" data-duration="7.04" data-track-index="2" muted playsinline></video>
+
+      <section id="s1" class="scene clip" data-start="0" data-duration="5.36" data-track-index="1">
+        <div class="abs" id="map1" style="left:90px;top:300px;width:900px;height:900px"><img class="px" src="sprites/map.png" alt="" style="width:900px;height:900px" /></div>
+        <div id="m1"></div>
+        <div class="head" id="t1" style="top:250px;font-size:150px;opacity:0">3ÈME GUERRE<br /><span class="r">MONDIALE</span></div>
+        <div id="y1"></div>
+        <div class="glab" id="pl1" style="left:110px;top:1080px;opacity:0">POWER</div>
+        <div class="gauge" id="g1" style="left:110px;top:1130px;opacity:0"><i id="g1f"></i></div>
+        <div class="tag w" id="lv1" style="left:640px;top:980px">LV UP !</div>
+      </section>
+
+      <section id="s2" class="scene clip" data-start="5.36" data-duration="7.52" data-track-index="3">
+        <div class="head" id="yo2" style="top:250px;font-size:200px;opacity:0">YORU</div>
+        <div class="tag" id="dg2" style="left:180px;top:470px">DÉMON DE LA GUERRE</div>
+        <div class="layer" id="rule2" style="background:rgba(5,1,2,0.82);opacity:0">
+          <div class="head" style="top:260px;font-size:96px">LA RÈGLE</div>
+          <div class="glab" style="left:110px;top:520px">PEUR DE LA GUERRE</div>
+          <div class="gauge" style="left:110px;top:570px"><i id="g2a" style="background:repeating-linear-gradient(90deg,#9a9a9a 0 36px,#d0d0d0 36px 44px)"></i></div>
+          <div class="glab" style="left:110px;top:720px">PUISSANCE DE YORU</div>
+          <div class="gauge" style="left:110px;top:770px"><i id="g2b"></i></div>
+          <div id="y2"></div>
+        </div>
+      </section>
+
+      <section id="s3" class="scene clip" data-start="12.88" data-duration="10.56" data-track-index="3">
+        <div class="card" id="kids3" style="left:90px;top:460px;width:900px;height:875px;opacity:0"><img src="assets/m_kids.png" alt="" /></div>
+        <div class="chap" id="ch176">CHAPITRE 176<small>LE RETOUR DES ENFANTS</small></div>
+        <div class="head" id="gun3" style="top:300px;font-size:120px;opacity:0">DÉMON DU <span class="r">PISTOLET</span></div>
+        <div class="tag b" id="gulf3" style="left:120px;top:1170px">GOLFE DU MEXIQUE · USA</div>
+        <img class="px abs" id="fus3" src="sprites/flag_usa.png" alt="" style="left:800px;top:1150px;width:180px;height:108px;opacity:0" />
+        <div class="head" id="tank3" style="top:300px;font-size:120px;opacity:0">DÉMON DU <span class="r">TANK</span></div>
+        <div class="tag" id="urss3" style="left:120px;top:1170px">MONT ELBROUZ · URSS</div>
+        <img class="px abs" id="fsu3" src="sprites/flag_ussr.png" alt="" style="left:800px;top:1150px;width:180px;height:108px;opacity:0" />
+      </section>
+
+      <section id="s4" class="scene clip" data-start="23.44" data-duration="7.2" data-track-index="3">
+        <div class="card" id="gants4" style="left:240px;top:250px;width:600px;height:1066px;opacity:0"><img src="assets/m_gants.png" alt="" /></div>
+        <div class="stamp" id="arm4" style="left:90px;top:620px;font-size:84px">ARMES STRATÉGIQUES</div>
+        <div class="layer" id="split4" style="opacity:0">
+          <div class="abs" style="left:0;top:0;width:540px;height:1920px;background:linear-gradient(#0d1a4a,#050a20)"></div>
+          <div class="abs" style="left:540px;top:0;width:540px;height:1920px;background:linear-gradient(#4a0a12,#200306)"></div>
+          <div class="abs" style="left:530px;top:0;width:20px;height:1920px;background:#000"></div>
+          <img class="px abs" src="sprites/flag_usa.png" alt="" style="left:90px;top:560px;width:360px;height:216px" />
+          <img class="px abs" src="sprites/flag_ussr.png" alt="" style="left:630px;top:560px;width:360px;height:216px" />
+          <div class="glab" style="left:200px;top:820px;font-size:40px">USA</div><div class="glab" style="left:740px;top:820px;font-size:40px">URSS</div>
+        </div>
+        <div class="bub" id="bu4" style="left:80px;top:400px">C'EST L'URSS !</div>
+        <div class="bub" id="bs4" style="left:560px;top:950px">C'EST LES USA !</div>
+        <div class="head" id="q4" style="top:1000px;font-size:200px;opacity:0;color:var(--red)">?!</div>
+      </section>
+
+      <section id="s5" class="scene clip" data-start="30.64" data-duration="15.76" data-track-index="3">
+        <div class="card" id="c178" style="left:90px;top:440px;width:900px;height:875px;opacity:0"><img src="assets/m_ch178.png" alt="" /></div>
+        <div class="chap" id="ch178">CHAPITRE 178<small>TOUT DÉGÉNÈRE</small></div>
+        <div class="tag w" id="lib5" style="left:110px;top:300px">STATUE DE LA LIBERTÉ</div>
+        <div class="head" id="arm5" style="top:330px;font-size:130px;opacity:0">ARME <span class="r">GÉANTE</span></div>
+        <div class="layer" id="cnt5" style="opacity:0;background:rgba(5,1,2,0.7)">
+          <div class="head" id="n5" style="top:300px;font-size:220px;color:var(--gold)">0</div>
+          <div class="tag w" style="left:150px;top:540px;opacity:1">INDEX PERDUS</div>
+          <div id="fing5"></div>
+        </div>
+        <div class="layer" id="map5" style="opacity:0;background:radial-gradient(circle at 50% 40%,#140910,#050203)">
+          <div class="abs" style="left:90px;top:300px;width:900px;height:900px"><img class="px" src="sprites/map.png" alt="" style="width:900px;height:900px" /></div>
+          <svg class="abs" style="left:90px;top:300px;width:900px;height:900px" viewBox="0 0 900 900"><polyline id="path5" fill="none" stroke="#ffd23c" stroke-width="10" stroke-linecap="square" stroke-dasharray="18 10" points="172.9,479.2 184.4,470.9 196.0,462.7 207.7,454.8 219.4,446.9 231.3,439.2 243.3,431.6 255.2,424.2 267.4,416.9 279.5,409.8 291.8,402.8 304.1,395.8 316.4,389.1 328.9,382.5 341.4,375.9 354.0,369.6 366.6,363.3 379.3,357.2 392.0,351.3 404.8,345.4 417.7,339.7 430.6,334.0 443.5,328.6 456.6,323.2 469.6,318.0 482.8,312.9 496.0,308.0 509.2,303.1 522.5,298.4 535.9,293.9 549.3,289.5 562.8,285.2 576.3,281.1 589.9,277.1 603.4,273.3 617.1,269.6 630.9,266.1 644.7,262.8 658.5,259.6 672.4,256.7 686.3,253.9" /></svg>
+          <div class="abs" id="bul5" style="width:44px;height:44px;background:#fff;border:8px solid var(--gold);box-shadow:0 0 30px var(--gold);left:-22px;top:-22px"></div>
+          <div class="tag b" id="ny5" style="left:60px;top:1210px">NEW YORK</div>
+          <div class="tag w" id="jp5" style="left:700px;top:240px">JAPON</div>
+          <div class="tag" id="ur5" style="left:620px;top:1210px">URSS SURVOLÉE</div>
+        </div>
+      </section>
+
+      <section id="s6" class="scene clip" data-start="46.4" data-duration="13.72" data-track-index="3">
+        <div class="abs" id="radar"><div class="rg" style="left:100px;top:100px;width:572px;height:572px"></div><div class="rg" style="left:220px;top:220px;width:332px;height:332px"></div><div class="rg" style="left:330px;top:330px;width:112px;height:112px"></div><div id="sweep"></div><div id="blip" style="left:560px;top:180px"></div></div>
+        <div class="abs" id="alert">⚠ MISSILE BALISTIQUE<br />AMÉRICAIN ⚠</div>
+        <div class="layer" id="map6" style="opacity:0;background:radial-gradient(circle at 50% 40%,#140910,#050203)">
+          <div class="abs" style="left:90px;top:300px;width:900px;height:900px"><img class="px" src="sprites/map.png" alt="" style="width:900px;height:900px" /></div>
+          <div id="ms6"></div>
+        </div>
+        <div class="tag" id="rip6" style="left:330px;top:250px">ILS RIPOSTENT</div>
+        <div class="layer" id="def6" style="opacity:0;background:rgba(10,2,4,0.85)">
+          <div class="head" style="top:330px;font-size:110px">ESCALADE</div>
+          <div class="abs" style="left:240px;top:520px;width:600px;height:420px;border:10px solid var(--red);background:#000;font-family:PS2P;text-align:center"><div style="font-size:40px;color:var(--red);margin-top:40px">DEFCON</div><div style="position:relative;height:240px;margin-top:20px"><div id="dc5" style="position:absolute;left:0;width:100%;font-size:200px;color:#fff;opacity:1">5</div><div id="dc4" style="position:absolute;left:0;width:100%;font-size:200px;color:#fff;opacity:0">4</div><div id="dc3" style="position:absolute;left:0;width:100%;font-size:200px;color:#fff;opacity:0">3</div><div id="dc2" style="position:absolute;left:0;width:100%;font-size:200px;color:#fff;opacity:0">2</div><div id="dc1" style="position:absolute;left:0;width:100%;font-size:200px;color:#e8233b;opacity:0">1</div></div></div>
+        </div>
+        <div class="card" id="atom6" style="left:90px;top:300px;width:900px;height:875px;opacity:0"><img src="assets/m_atom.png" alt="" /></div>
+        <div class="head" id="bn6" style="top:420px;font-size:118px;opacity:0">BOMBE <span class="r">NUCLÉAIRE</span></div>
+        <img class="px abs" id="rad6" src="sprites/radiation.png" alt="" style="left:420px;top:180px;width:240px;height:240px;opacity:0" />
+        <div id="nk6"></div>
+      </section>
+
+      <section id="s7" class="scene clip" data-start="60.12" data-duration="5.32" data-track-index="3">
+        <div class="chap" id="ch209">CHAPITRE 209<small>LA GUERRE ÉCLATE</small></div>
+        <img class="px abs" id="fu7" src="sprites/flag_usa.png" alt="" style="left:60px;top:1050px;width:360px;height:216px;opacity:0" />
+        <img class="px abs" id="fs7" src="sprites/flag_ussr.png" alt="" style="left:660px;top:1050px;width:360px;height:216px;opacity:0" />
+        <div class="head" id="vs7" style="top:1080px;font-size:150px;opacity:0">VS</div>
+        <div class="head" id="gw7" style="top:300px;font-size:130px;opacity:0">LA GUERRE<br /><span class="r">ÉCLATE</span></div>
+      </section>
+
+      <section id="s8" class="scene clip" data-start="65.44" data-duration="4.08" data-track-index="3">
+        <div class="layer" id="pw8" style="opacity:0;background:radial-gradient(circle at 50% 50%,#7a0a1c,#100204 70%)"><div class="burst" id="burst8"></div><div id="y8"></div></div>
+        <div class="head" id="pu8" style="top:260px;font-size:210px;opacity:0">POWER <span class="r">UP</span></div>
+        <div class="glab" id="pl8" style="left:110px;top:1080px;opacity:0">POUVOIR DE YORU</div>
+        <div class="gauge" id="g8" style="left:110px;top:1130px;opacity:0"><i id="g8f"></i></div>
+        <div class="tag w" id="max8" style="left:700px;top:1040px">MAX ×∞</div>
+      </section>
+
+      <section id="s9" class="scene clip" data-start="69.52" data-duration="7.04" data-track-index="3">
+        <div class="layer" style="background:rgba(5,1,2,0.6)"></div>
+        <div class="abs" id="sub9" style="left:240px;top:280px;width:600px;height:140px;background:var(--red);border:8px solid #fff;box-shadow:12px 12px 0 #000;font-family:Anton;font-size:84px;text-align:center;line-height:124px;opacity:0">ABONNE-TOI</div>
+        <div class="head" id="yq9" style="top:520px;font-size:120px;opacity:0">YORU :</div>
+        <div class="abs" id="ge9" style="left:70px;top:720px;width:440px;height:200px;background:#fff;color:#000;border:8px solid #000;box-shadow:0 0 0 6px var(--gold);font-family:Anton;font-size:92px;text-align:center;line-height:184px;opacity:0">GÉNIE</div>
+        <div class="abs" id="ca9" style="left:570px;top:720px;width:440px;height:200px;background:var(--red);color:#fff;border:8px solid #000;box-shadow:0 0 0 6px #fff;font-family:Anton;font-size:72px;text-align:center;line-height:184px;opacity:0">CATASTROPHE</div>
+        <div class="head" id="ou9" style="top:760px;font-size:70px;opacity:0">OU</div>
+      </section>
+
+      <div id="fx" class="layer clip" data-start="0" data-duration="76.56" data-track-index="6">
+        <div class="layer" id="redf"></div>
+        <div class="abs" id="cap"></div>
+        <div class="layer" id="flash"></div>
+        <div class="scan"></div>
+        <div class="layer" id="grain"></div>
+        <div class="vign"></div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="76.56" data-track-index="9" data-volume="1"></audio>
+    </div>
+
+    <script>
+      const LEAD = 0.3;
+      const WORDS = [{"text":"Comment","type":"word","start":0.0,"end":0.32},{"text":"Yoru","type":"word","start":0.36,"end":0.72},{"text":"a","type":"word","start":0.76,"end":0.8},{"text":"déclenché","type":"word","start":0.88,"end":1.28},{"text":"la","type":"word","start":1.36,"end":1.44},{"text":"troisième","type":"word","start":1.52,"end":1.84},{"text":"guerre","type":"word","start":1.92,"end":2.0},{"text":"mondiale...","type":"word","start":2.08,"end":3.12},{"text":"juste","type":"word","start":3.28,"end":3.48},{"text":"pour","type":"word","start":3.52,"end":3.68},{"text":"devenir","type":"word","start":3.72,"end":4.0},{"text":"plus","type":"word","start":4.08,"end":4.16},{"text":"forte","type":"word","start":4.28,"end":4.48},{"text":"?","type":"word","start":4.52,"end":4.56},{"text":"Dans","type":"word","start":5.12,"end":5.28},{"text":"Chainsaw","type":"word","start":5.32,"end":5.68},{"text":"Man,","type":"word","start":5.8,"end":6.16},{"text":"Yoru,","type":"word","start":6.24,"end":6.8},{"text":"c'est","type":"word","start":6.827,"end":6.88},{"text":"le","type":"word","start":6.96,"end":7.04},{"text":"démon","type":"word","start":7.12,"end":7.36},{"text":"de","type":"word","start":7.4,"end":7.44},{"text":"la","type":"word","start":7.48,"end":7.52},{"text":"guerre.","type":"word","start":7.6,"end":8.24},{"text":"Et","type":"word","start":8.28,"end":8.32},{"text":"sa","type":"word","start":8.4,"end":8.48},{"text":"règle","type":"word","start":8.52,"end":8.72},{"text":"est","type":"word","start":8.76,"end":8.8},{"text":"simple","type":"word","start":8.96,"end":9.12},{"text":":","type":"word","start":9.52,"end":9.573},{"text":"plus","type":"word","start":9.627,"end":9.68},{"text":"le","type":"word","start":9.76,"end":9.84},{"text":"monde","type":"word","start":9.92,"end":10.08},{"text":"a","type":"word","start":10.12,"end":10.16},{"text":"peur","type":"word","start":10.24,"end":10.32},{"text":"de","type":"word","start":10.4,"end":10.48},{"text":"la","type":"word","start":10.52,"end":10.56},{"text":"guerre,","type":"word","start":10.64,"end":11.2},{"text":"plus","type":"word","start":11.28,"end":11.36},{"text":"elle","type":"word","start":11.4,"end":11.44},{"text":"est","type":"word","start":11.48,"end":11.52},{"text":"puissante.","type":"word","start":11.6,"end":12.08},{"text":"Chapitre","type":"word","start":12.64,"end":13.04},{"text":"cent","type":"word","start":13.12,"end":13.2},{"text":"soixante-seize.","type":"word","start":13.28,"end":14.48},{"text":"Yoru","type":"word","start":14.52,"end":14.8},{"text":"part","type":"word","start":14.88,"end":15.04},{"text":"récupérer","type":"word","start":15.093,"end":15.52},{"text":"ses","type":"word","start":15.6,"end":15.68},{"text":"deux","type":"word","start":15.76,"end":15.84},{"text":"enfants","type":"word","start":15.92,"end":16.16},{"text":":","type":"word","start":16.56,"end":16.587},{"text":"le","type":"word","start":16.613,"end":16.64},{"text":"démon","type":"word","start":16.72,"end":16.96},{"text":"du","type":"word","start":17.0,"end":17.04},{"text":"pistolet,","type":"word","start":17.12,"end":17.76},{"text":"enfermé","type":"word","start":17.84,"end":18.16},{"text":"par","type":"word","start":18.2,"end":18.24},{"text":"les","type":"word","start":18.32,"end":18.4},{"text":"Américains","type":"word","start":18.48,"end":18.88},{"text":"dans","type":"word","start":18.92,"end":19.0},{"text":"le","type":"word","start":19.04,"end":19.08},{"text":"golfe","type":"word","start":19.12,"end":19.36},{"text":"du","type":"word","start":19.44,"end":19.52},{"text":"Mexique...","type":"word","start":19.64,"end":20.4},{"text":"et","type":"word","start":20.44,"end":20.48},{"text":"le","type":"word","start":20.56,"end":20.6},{"text":"démon","type":"word","start":20.64,"end":20.88},{"text":"du","type":"word","start":20.96,"end":21.0},{"text":"tank,","type":"word","start":21.04,"end":21.52},{"text":"gardé","type":"word","start":21.6,"end":21.84},{"text":"par","type":"word","start":21.88,"end":21.92},{"text":"les","type":"word","start":22.0,"end":22.08},{"text":"Soviétiques.","type":"word","start":22.133,"end":22.92},{"text":"Problème","type":"word","start":23.2,"end":23.6},{"text":":","type":"word","start":24.0,"end":24.053},{"text":"ces","type":"word","start":24.107,"end":24.16},{"text":"deux","type":"word","start":24.2,"end":24.28},{"text":"démons,","type":"word","start":24.32,"end":24.8},{"text":"c'étaient","type":"word","start":24.853,"end":25.04},{"text":"des","type":"word","start":25.12,"end":25.2},{"text":"armes","type":"word","start":25.28,"end":25.44},{"text":"stratégiques.","type":"word","start":25.52,"end":26.16},{"text":"En","type":"word","start":26.56,"end":26.64},{"text":"les","type":"word","start":26.72,"end":26.8},{"text":"volant,","type":"word","start":26.88,"end":27.36},{"text":"Yoru","type":"word","start":27.44,"end":27.68},{"text":"fait","type":"word","start":27.76,"end":27.84},{"text":"croire","type":"word","start":27.92,"end":28.08},{"text":"à","type":"word","start":28.16,"end":28.24},{"text":"chaque","type":"word","start":28.28,"end":28.48},{"text":"camp","type":"word","start":28.56,"end":28.72},{"text":"que","type":"word","start":28.8,"end":28.88},{"text":"l'autre","type":"word","start":28.96,"end":29.2},{"text":"l'a","type":"word","start":29.28,"end":29.36},{"text":"attaqué.","type":"word","start":29.44,"end":29.84},{"text":"Chapitre","type":"word","start":30.4,"end":30.8},{"text":"cent","type":"word","start":30.88,"end":31.04},{"text":"soixante-dix-huit","type":"word","start":31.08,"end":31.68},{"text":":","type":"word","start":32.24,"end":32.293},{"text":"tout","type":"word","start":32.347,"end":32.4},{"text":"dégénère.","type":"word","start":32.44,"end":33.04},{"text":"Yoru","type":"word","start":33.44,"end":33.76},{"text":"transforme","type":"word","start":33.84,"end":34.28},{"text":"la","type":"word","start":34.32,"end":34.4},{"text":"Statue","type":"word","start":34.52,"end":34.72},{"text":"de","type":"word","start":34.747,"end":34.773},{"text":"la","type":"word","start":34.8,"end":34.84},{"text":"Liberté","type":"word","start":34.88,"end":35.28},{"text":"en","type":"word","start":35.36,"end":35.44},{"text":"arme","type":"word","start":35.56,"end":35.68},{"text":"géante.","type":"word","start":35.76,"end":36.56},{"text":"Quarante","type":"word","start":36.6,"end":36.88},{"text":"mille","type":"word","start":36.96,"end":37.12},{"text":"membres","type":"word","start":37.16,"end":37.44},{"text":"d'une","type":"word","start":37.493,"end":37.6},{"text":"association","type":"word","start":37.88,"end":38.16},{"text":"de","type":"word","start":38.2,"end":38.24},{"text":"tir","type":"word","start":38.32,"end":38.48},{"text":"américaine","type":"word","start":38.52,"end":39.04},{"text":"perdent","type":"word","start":39.2,"end":39.44},{"text":"leur","type":"word","start":39.52,"end":39.6},{"text":"index...","type":"word","start":39.84,"end":40.48},{"text":"et","type":"word","start":40.52,"end":40.56},{"text":"elle","type":"word","start":40.64,"end":40.72},{"text":"tire","type":"word","start":40.8,"end":41.12},{"text":"une","type":"word","start":41.2,"end":41.28},{"text":"seule","type":"word","start":41.36,"end":41.52},{"text":"balle.","type":"word","start":41.56,"end":41.84},{"text":"De","type":"word","start":42.24,"end":42.32},{"text":"New","type":"word","start":42.4,"end":42.48},{"text":"York","type":"word","start":42.56,"end":42.88},{"text":"jusqu'au","type":"word","start":43.12,"end":43.4},{"text":"Japon.","type":"word","start":43.44,"end":43.84},{"text":"En","type":"word","start":44.16,"end":44.32},{"text":"survolant","type":"word","start":44.4,"end":44.8},{"text":"l'URSS.","type":"word","start":44.88,"end":45.88},{"text":"Pour","type":"word","start":46.16,"end":46.24},{"text":"les","type":"word","start":46.28,"end":46.32},{"text":"Soviétiques,","type":"word","start":46.4,"end":47.12},{"text":"aucun","type":"word","start":47.2,"end":47.36},{"text":"doute","type":"word","start":47.44,"end":47.68},{"text":":","type":"word","start":47.92,"end":47.96},{"text":"c'est","type":"word","start":48.0,"end":48.08},{"text":"un","type":"word","start":48.12,"end":48.16},{"text":"missile","type":"word","start":48.24,"end":48.48},{"text":"balistique","type":"word","start":48.56,"end":48.96},{"text":"américain.","type":"word","start":49.0,"end":49.52},{"text":"Ils","type":"word","start":49.84,"end":49.92},{"text":"ripostent.","type":"word","start":50.0,"end":50.8},{"text":"Les","type":"word","start":50.88,"end":50.96},{"text":"deux","type":"word","start":51.04,"end":51.12},{"text":"puissances","type":"word","start":51.2,"end":51.6},{"text":"se","type":"word","start":51.64,"end":51.68},{"text":"rendent","type":"word","start":51.76,"end":51.92},{"text":"coup","type":"word","start":51.96,"end":52.08},{"text":"pour","type":"word","start":52.16,"end":52.24},{"text":"coup.","type":"word","start":52.32,"end":52.8},{"text":"L'escalade","type":"word","start":52.84,"end":53.36},{"text":"devient","type":"word","start":53.44,"end":53.76},{"text":"incontrôlable.","type":"word","start":53.84,"end":54.88},{"text":"Et","type":"word","start":54.92,"end":54.96},{"text":"face","type":"word","start":55.08,"end":55.2},{"text":"à","type":"word","start":55.227,"end":55.253},{"text":"la","type":"word","start":55.28,"end":55.36},{"text":"menace,","type":"word","start":55.44,"end":56.08},{"text":"les","type":"word","start":56.12,"end":56.16},{"text":"États-Unis","type":"word","start":56.24,"end":56.68},{"text":"n'ont","type":"word","start":56.72,"end":56.88},{"text":"plus","type":"word","start":56.92,"end":56.96},{"text":"qu'une","type":"word","start":57.04,"end":57.2},{"text":"option","type":"word","start":57.28,"end":57.52},{"text":":","type":"word","start":58.0,"end":58.08},{"text":"recréer","type":"word","start":58.2,"end":58.48},{"text":"la","type":"word","start":58.56,"end":58.64},{"text":"bombe","type":"word","start":58.68,"end":58.84},{"text":"nucléaire.","type":"word","start":58.88,"end":59.84},{"text":"Chapitre","type":"word","start":59.88,"end":60.24},{"text":"deux","type":"word","start":60.4,"end":60.507},{"text":"cent","type":"word","start":60.56,"end":60.64},{"text":"neuf","type":"word","start":60.72,"end":60.88},{"text":":","type":"word","start":61.36,"end":61.4},{"text":"la","type":"word","start":61.44,"end":61.52},{"text":"guerre","type":"word","start":61.6,"end":61.76},{"text":"éclate","type":"word","start":61.8,"end":62.16},{"text":"officiellement","type":"word","start":62.24,"end":62.8},{"text":"entre","type":"word","start":62.92,"end":63.04},{"text":"les","type":"word","start":63.12,"end":63.2},{"text":"États-Unis","type":"word","start":63.28,"end":63.84},{"text":"et","type":"word","start":63.88,"end":63.92},{"text":"l'URSS.","type":"word","start":63.96,"end":65.12},{"text":"Et","type":"word","start":65.2,"end":65.28},{"text":"pour","type":"word","start":65.32,"end":65.36},{"text":"le","type":"word","start":65.44,"end":65.48},{"text":"démon","type":"word","start":65.52,"end":65.76},{"text":"de","type":"word","start":65.8,"end":65.84},{"text":"la","type":"word","start":65.88,"end":65.92},{"text":"guerre...","type":"word","start":66.0,"end":66.88},{"text":"il","type":"word","start":66.92,"end":66.96},{"text":"n'existe","type":"word","start":67.04,"end":67.6},{"text":"pas","type":"word","start":67.64,"end":67.68},{"text":"de","type":"word","start":67.72,"end":67.76},{"text":"meilleur","type":"word","start":67.84,"end":68.04},{"text":"power","type":"word","start":68.08,"end":68.4},{"text":"up.","type":"word","start":68.52,"end":69.2},{"text":"Abonne-toi","type":"word","start":69.28,"end":69.68},{"text":"pour","type":"word","start":69.72,"end":69.76},{"text":"la","type":"word","start":69.84,"end":69.92},{"text":"suite","type":"word","start":70.0,"end":70.08},{"text":"de","type":"word","start":70.12,"end":70.16},{"text":"Chainsaw","type":"word","start":70.24,"end":70.56},{"text":"Man,","type":"word","start":70.64,"end":71.04},{"text":"et","type":"word","start":71.12,"end":71.2},{"text":"dis-moi","type":"word","start":71.24,"end":71.44},{"text":"en","type":"word","start":71.48,"end":71.52},{"text":"commentaire","type":"word","start":71.68,"end":72.0},{"text":":","type":"word","start":72.4,"end":72.427},{"text":"Yoru,","type":"word","start":72.453,"end":73.04},{"text":"génie","type":"word","start":73.12,"end":73.6},{"text":"ou","type":"word","start":73.64,"end":73.68},{"text":"catastrophe","type":"word","start":73.76,"end":74.32},{"text":"?","type":"word","start":74.48,"end":74.56}].filter((w) => w.type === "word").map((w) => ({ t: w.text, s: w.start + LEAD, e: w.end + LEAD }));
+      const SC = [{"start": 0, "dur": 5.36}, {"start": 5.36, "dur": 7.52}, {"start": 12.88, "dur": 10.56}, {"start": 23.44, "dur": 7.2}, {"start": 30.64, "dur": 15.76}, {"start": 46.4, "dur": 13.72}, {"start": 60.12, "dur": 5.32}, {"start": 65.44, "dur": 4.08}, {"start": 69.52, "dur": 7.04}];
+      const MAP = {"path": [[0.1921, 0.5324], [0.2049, 0.5232], [0.2178, 0.5141], [0.2308, 0.5053], [0.2438, 0.4965], [0.257, 0.488], [0.2703, 0.4796], [0.2836, 0.4713], [0.2971, 0.4632], [0.3106, 0.4553], [0.3242, 0.4475], [0.3379, 0.4398], [0.3516, 0.4323], [0.3654, 0.425], [0.3793, 0.4177], [0.3933, 0.4107], [0.4073, 0.4037], [0.4214, 0.3969], [0.4356, 0.3903], [0.4498, 0.3838], [0.4641, 0.3774], [0.4784, 0.3711], [0.4928, 0.3651], [0.5073, 0.3591], [0.5218, 0.3533], [0.5364, 0.3477], [0.5511, 0.3422], [0.5658, 0.3368], [0.5806, 0.3316], [0.5954, 0.3265], [0.6103, 0.3217], [0.6253, 0.3169], [0.6403, 0.3123], [0.6554, 0.3079], [0.6705, 0.3037], [0.6857, 0.2996], [0.701, 0.2957], [0.7163, 0.292], [0.7317, 0.2885], [0.7471, 0.2852], [0.7626, 0.2821]], "pts": {"ny": [0.1921, 0.5324], "tokyo": [0.7626, 0.2821], "moscow": [0.5997, 0.6907], "washington": [0.1794, 0.5168], "gulf": [0.0979, 0.4291], "elbrus": [0.657, 0.7474]}};
+      const TOTAL = 76.56;
+      const W = (sub, after = 0) => { for (const w of WORDS) if (w.s >= after && w.t.toLowerCase().includes(sub)) return w.s; throw new Error("word " + sub); };
+      function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const tl = gsap.timeline({ paused: true });
+      const S = (i) => SC[i - 1].start, E = (i) => SC[i - 1].start + SC[i - 1].dur;
+      const $ = (id) => document.getElementById(id);
+      const SH = { yoru: [8, 40, 60], missile: [4, 14, 44], nuke: [8, 80, 80], boom: [8, 40, 40] };
+      const spr = (parent, id, sheet, sc, x, y, extra = "") => { const [n, w, h] = SH[sheet]; $(parent).insertAdjacentHTML("beforeend", `<div class="spr" id="${id}" style="left:${x}px;top:${y}px;width:${w * sc}px;height:${h * sc}px;${extra}"><img src="sprites/${sheet}.png" alt="" style="width:${(n + 1) * w * sc}px;height:${h * sc}px" /></div>`); };
+      const anim = (id, sheet, fps, t0, t1, loop = true) => { const [n] = SH[sheet]; const w = parseFloat($(id).style.width); const cyc = n / fps; const reps = loop ? Math.max(1, Math.ceil((t1 - t0) / cyc)) : 1; tl.fromTo(`#${id} img`, { x: 0 }, { x: -n * w, duration: cyc, ease: `steps(${n})`, repeat: reps - 1 }, t0); };
+      const once = (id, sheet, fps, t0) => { const [n] = SH[sheet]; const w = parseFloat($(id).style.width); tl.fromTo(`#${id} img`, { x: 0 }, { x: -(n - 1) * w, duration: (n - 1) / fps, ease: `steps(${n - 1})`, immediateRender: false }, t0); };
+
+      const slam = (sel, t, from = 3) => tl.fromTo(sel, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.16, ease: "power4.in" }, t);
+      const pop = (sel, t, r = 0) => tl.fromTo(sel, { scale: 0, opacity: 0, rotation: r - 10 }, { scale: 1, opacity: 1, rotation: r, duration: 0.28, ease: "back.out(2.4)" }, t);
+      const rise = (sel, t) => tl.fromTo(sel, { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, t);
+      const out = (sel, t, d = 0.15) => tl.to(sel, { opacity: 0, duration: d }, t);
+      const shake = (sel, t, a = 18, n = 7) => { const r = rng(Math.floor(t * 113)); for (let k = 0; k < n; k++) tl.to(sel, { x: (r() - 0.5) * 2 * a, y: (r() - 0.5) * 2 * a, duration: 0.04, ease: "none" }, t + k * 0.04); tl.to(sel, { x: 0, y: 0, duration: 0.05 }, t + n * 0.04); };
+      const flash = (t, o = 0.85) => { tl.set("#flash", { opacity: o }, t); tl.to("#flash", { opacity: 0, duration: 0.3 }, t + 0.01); };
+      const redf = (t, o = 0.6, d = 0.4) => { tl.set("#redf", { opacity: o }, t); tl.to("#redf", { opacity: 0, duration: d }, t + 0.02); };
+      const impact = (t, k = 1) => { flash(t, 0.5 * k); shake("#root", t, 16 * k, 6); };
+      const glitch = (sel, t, n = 6) => { for (let i = 0; i < n; i++) tl.set(sel, { x: i % 2 ? 24 : -24, skewX: (i % 3 - 1) * 18 }, t + i * 0.045); tl.set(sel, { x: 0, skewX: 0 }, t + n * 0.045); };
+      const card = (sel, t0, t1, r = -3) => { tl.fromTo(sel, { opacity: 0, scale: 1.4, rotation: r * 3 }, { opacity: 1, scale: 1, rotation: r, duration: 0.25, ease: "power3.out" }, t0); tl.fromTo(sel, { scale: 1 }, { scale: 1.06, duration: t1 - t0 - 0.25, ease: "none", immediateRender: false }, t0 + 0.25); tl.to(sel, { opacity: 0, duration: 0.12 }, t1 - 0.12); };
+      const chap = (sel, t, t1) => { tl.fromTo(sel, { x: -900, opacity: 1 }, { x: 0, duration: 0.25, ease: "power3.out" }, t); glitch(sel, t + 0.3, 5); tl.to(sel, { opacity: 0, duration: 0.15 }, t1); };
+      const gauge = (sel, t, d, from = 0, to = 1) => tl.fromTo(sel, { scaleX: from }, { scaleX: to, duration: d, ease: "steps(" + Math.max(4, Math.round(d * 12)) + ")" }, t);
+      const mxy = (k) => [90 + MAP.pts[k][0] * 900, 300 + MAP.pts[k][1] * 900];
+      tl.fromTo("#burst0", { rotation: 0 }, { rotation: 60, duration: TOTAL, ease: "none" }, 0);
+
+      // ---- sous-titres (mot actif en jaune)
+      const cap = $("cap"); const lines = []; let cur = [];
+      WORDS.forEach((w, i) => { if (/^[:?!…]+$/.test(w.t)) { if (cur.length) cur[cur.length - 1].t += " " + w.t; return; } cur.push({ ...w }); const txt = cur.map((x) => x.t).join(" "); if (/[.?!…,]$/.test(w.t) && txt.length > 10 || txt.length > 18 || i === WORDS.length - 1) { lines.push(cur); cur = []; } });
+      if (cur.length) lines.push(cur);
+      lines.forEach((ln, i) => {
+        const d = document.createElement("div"); d.className = "ln"; d.id = "ln" + i;
+        ln.forEach((w, j) => { const s = document.createElement("span"); s.className = "w"; s.id = `w${i}_${j}`; s.textContent = w.t; d.appendChild(s); });
+        cap.appendChild(d);
+        const t0 = ln[0].s - 0.04, t1 = lines[i + 1] ? lines[i + 1][0].s - 0.04 : ln[ln.length - 1].e + 0.8;
+        tl.set("#ln" + i, { opacity: 1 }, t0); tl.fromTo("#ln" + i, { scale: 0.8 }, { scale: 1, duration: 0.12, ease: "back.out(3)", immediateRender: false }, t0); tl.set("#ln" + i, { opacity: 0 }, t1);
+        ln.forEach((w, j) => { tl.set(`#w${i}_${j}`, { color: "#ffd23c" }, w.s); tl.set(`#w${i}_${j}`, { color: "#ffffff" }, Math.min(w.e + 0.1, t1)); });
+      });
+
+      // ===== S1 accroche
+      { tl.fromTo("#map1", { scale: 0.2, rotation: -120, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 0.05); tl.to("#map1", { rotation: 12, duration: 4.5, ease: "none" }, 0.75);
+        const r = rng(3); for (let i = 0; i < 6; i++) { const id = "mi" + i; spr("m1", id, "missile", 4, 0, 0, "opacity:0"); anim(id, "missile", 12, 0, E(1)); const x0 = 120 + r() * 840, y0 = 1250, x1 = 120 + r() * 840, y1 = 330 + r() * 500; const ang = Math.atan2(x1 - x0, -(y1 - y0)) * 180 / Math.PI; tl.fromTo("#" + id, { x: x0, y: y0, rotation: ang, opacity: 1 }, { x: x1, y: y1, duration: 0.8, ease: "power1.in", immediateRender: false }, 0.6 + i * 0.25); tl.set("#" + id, { opacity: 0 }, 1.4 + i * 0.25); const b = "bm" + i; spr("m1", b, "boom", 6, x1 - 90, y1 - 90, "opacity:0"); tl.set("#" + b, { opacity: 1 }, 1.4 + i * 0.25); once(b, "boom", 16, 1.4 + i * 0.25); tl.set("#" + b, { opacity: 0 }, 1.85 + i * 0.25); }
+        const tt = W("troisième"); slam("#t1", tt - 0.05, 3); impact(tt + 0.1, 1.3); redf(tt + 0.1); glitch("#t1", W("mondiale") + 0.5, 6);
+        const tj = W("juste"); tl.to("#t1", { y: -60, scale: 0.8, duration: 0.25 }, tj - 0.1); tl.to("#map1", { opacity: 0.25, duration: 0.25 }, tj - 0.1);
+        spr("y1", "yo1", "yoru", 9, 360, 560, "opacity:0"); anim("yo1", "yoru", 6, 0, E(1)); tl.fromTo("#yo1", { y: 300, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, tj);
+        tl.to(["#pl1", "#g1"], { opacity: 1, duration: 0.1 }, tj); gauge("#g1f", tj + 0.1, W("forte") - tj, 0.1, 1);
+        pop("#lv1", W("forte"), 6); flash(W("forte"), 0.6); tl.to("#yo1", { filter: "drop-shadow(0 0 40px #e8233b)", duration: 0.2 }, W("forte")); shake("#yo1", W("forte"), 14, 8); }
+
+      // ===== S2 Yoru, la règle
+      { slam("#yo2", W("yoru", 5) - 0.05, 2.5); glitch("#yo2", W("yoru", 5) + 0.3, 5); rise("#dg2", W("démon") - 0.05); impact(W("démon"), 0.6);
+        const tr = W("règle") - 0.2; out(["#yo2", "#dg2"], tr - 0.1); tl.to("#rule2", { opacity: 1, duration: 0.2 }, tr);
+        spr("y2", "yo2s", "yoru", 6, 420, 940); anim("yo2s", "yoru", 6, S(2), E(2));
+        gauge("#g2a", W("peur") - 0.1, 1.0, 0.05, 1); gauge("#g2b", W("peur") + 0.3, W("puissante") - W("peur"), 0.05, 1);
+        tl.fromTo("#yo2s", { scale: 1 }, { scale: 1.6, duration: W("puissante") - W("peur") + 0.2, ease: "steps(6)", transformOrigin: "50% 100%" }, W("peur"));
+        tl.to("#yo2s", { filter: "drop-shadow(0 0 30px #e8233b)", duration: 0.2 }, W("puissante")); impact(W("puissante") + 0.2, 0.8); }
+
+      // ===== S3 chapitre 176
+      { chap("#ch176", S(3) + 0.05, W("yoru", 14) - 0.2); impact(S(3) + 0.25, 0.7);
+        card("#kids3", W("yoru", 14) - 0.1, W("démon", 16.5) - 0.2, -2);
+        const tg = W("pistolet"); slam("#gun3", tg - 0.25, 2.5); impact(tg, 1); out("#gun3", W("enfermé") + 0.3);
+        rise("#gulf3", W("golfe") - 0.1); pop("#fus3", W("golfe"), -6); out(["#gulf3", "#fus3"], W("démon", 20) - 0.1);
+        const tk = W("tank"); slam("#tank3", tk - 0.3, 2.5); impact(tk, 1); out("#tank3", W("gardé") + 0.2);
+        rise("#urss3", W("soviétiques", 21) - 0.1); pop("#fsu3", W("soviétiques", 21), 6); }
+
+      // ===== S4 armes stratégiques -> faux coupable
+      { card("#gants4", S(4) + 0.05, W("volant") - 0.1, 2); tl.fromTo("#arm4", { scale: 3, opacity: 0, rotation: -14 }, { scale: 1, opacity: 1, rotation: -8, duration: 0.14, ease: "power4.in" }, W("stratégiques") - 0.05); impact(W("stratégiques") + 0.1, 0.9); out("#arm4", W("volant") - 0.1);
+        const tc = W("croire") - 0.1; tl.fromTo("#split4", { opacity: 0 }, { opacity: 1, duration: 0.15 }, tc); tl.fromTo("#split4", { x: 0 }, { x: 0, duration: 0.01 }, tc);
+        pop("#bu4", W("chaque", 28), -4); pop("#bs4", W("l'autre") - 0.05, 4); slam("#q4", W("attaqué") - 0.05, 3); impact(W("attaqué"), 1); }
+
+      // ===== S5 chapitre 178
+      { chap("#ch178", S(5) + 0.05, W("yoru", 33) - 0.1); card("#c178", S(5) + 0.1, W("yoru", 33) - 0.05, 2); glitch("#c178", W("dégénère"), 7); redf(W("dégénère"), 0.5);
+        rise("#lib5", W("statue") - 0.05); out("#lib5", W("arme", 35) - 0.15); slam("#arm5", W("arme", 35) - 0.05, 2.5); impact(W("géante"), 1.2); out("#arm5", W("quarante") - 0.1);
+        const tq = W("quarante"); tl.to("#cnt5", { opacity: 1, duration: 0.15 }, tq - 0.05);
+        { const n = { v: 0 }; tl.fromTo(n, { v: 0 }, { v: 40000, duration: W("index") - tq + 0.2, ease: "power2.in", onUpdate: () => ($("n5").textContent = Math.round(n.v).toLocaleString("fr-FR").replace(/ /g, " ")) }, tq); }
+        const F = $("fing5"); for (let i = 0; i < 18; i++) { F.insertAdjacentHTML("beforeend", `<img class="px abs" id="fg${i}" src="sprites/finger.png" alt="" style="left:${130 + (i % 6) * 140}px;top:${720 + Math.floor(i / 6) * 180}px;width:96px;height:144px;opacity:0" />`); pop("#fg" + i, tq + 0.15 + i * 0.1); tl.set("#fg" + i, { attr: { src: "sprites/finger_cut.png" } }, W("index") + (i % 6) * 0.03); }
+        shake("#cnt5", W("index"), 14, 8); redf(W("index"), 0.5); out("#cnt5", W("tire") - 0.3, 0.1);
+        const tb = W("balle"); impact(tb, 1.6); redf(tb, 0.7, 0.6);
+        const tn = W("new") - 0.2; tl.to("#map5", { opacity: 1, duration: 0.15 }, tn);
+        const P = MAP.path.map(([x, y]) => [90 + x * 900, 300 + y * 900]); tl.set("#path5", { strokeDashoffset: 0 }, 0);
+        const plen = P.reduce((a, p, i) => i ? a + Math.hypot(p[0] - P[i - 1][0], p[1] - P[i - 1][1]) : 0, 0);
+        tl.set("#path5", { attr: { "stroke-dasharray": `${plen} ${plen}` }, strokeDashoffset: plen }, tn); tl.to("#path5", { strokeDashoffset: 0, duration: W("l'urss", 44) - tn + 0.6, ease: "none" }, tn + 0.1);
+        tl.fromTo("#bul5", { x: P[0][0], y: P[0][1] }, { keyframes: P.slice(1).map((p) => ({ x: p[0], y: p[1], duration: (W("l'urss", 44) - tn + 0.6) / (P.length - 1), ease: "none" })), immediateRender: false }, tn + 0.1);
+        pop("#ny5", W("york") - 0.1); pop("#jp5", W("japon") - 0.05); pop("#ur5", W("survolant") - 0.05); redf(W("l'urss", 44), 0.35); }
+
+      // ===== S6 riposte, escalade, nucléaire
+      { tl.fromTo("#radar", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, S(6)); tl.fromTo("#sweep", { rotation: 0 }, { rotation: 360 * 3, duration: 3.6, ease: "none" }, S(6));
+        tl.fromTo("#blip", { opacity: 0 }, { opacity: 1, duration: 0.1, repeat: 9, yoyo: true }, W("aucun") - 0.1);
+        tl.fromTo("#alert", { opacity: 0 }, { opacity: 1, duration: 0.08, repeat: 7, yoyo: true }, W("missile") - 0.1); tl.set("#alert", { opacity: 1 }, W("missile") + 0.6); redf(W("missile"), 0.4);
+        const tr = W("ripostent") - 0.2; out(["#radar", "#alert"], tr - 0.05, 0.1); tl.to("#map6", { opacity: 1, duration: 0.12 }, tr); pop("#rip6", tr + 0.15);
+        const [mx, my] = mxy("moscow"), [nx, ny] = mxy("washington");
+        const shots = [[mx, my, nx, ny, tr + 0.2], [nx, ny, mx, my, W("coup") - 0.1], [mx, my, nx + 60, ny + 60, W("coup", 52) - 0.1], [nx, ny, mx + 40, my - 60, W("l'escalade") - 0.4]];
+        shots.forEach(([x0, y0, x1, y1, t], i) => { const id = "ms" + i; spr("ms6", id, "missile", 3, 0, 0, "opacity:0"); anim(id, "missile", 12, t, t + 1); const ang = Math.atan2(x1 - x0, -(y1 - y0)) * 180 / Math.PI;
+          tl.fromTo("#" + id, { x: x0 - 21, y: y0 - 66, rotation: ang, opacity: 1 }, { x: x1 - 21, y: y1 - 66, duration: 0.6, ease: "power1.in", immediateRender: false }, t); tl.set("#" + id, { opacity: 0 }, t + 0.6);
+          const b = "bb" + i; spr("ms6", b, "boom", 6, x1 - 120, y1 - 120, "opacity:0"); tl.set("#" + b, { opacity: 1 }, t + 0.6); once(b, "boom", 16, t + 0.6); tl.set("#" + b, { opacity: 0 }, t + 1.05); shake("#root", t + 0.6, 10, 5); });
+        out("#rip6", W("coup") - 0.2);
+        const te = W("l'escalade"); tl.to("#def6", { opacity: 1, duration: 0.15 }, te - 0.05); [4, 3, 2, 1].forEach((v, i) => { tl.set("#dc" + (v + 1), { opacity: 0 }, te + 0.35 + i * 0.35); tl.set("#dc" + v, { opacity: 1 }, te + 0.35 + i * 0.35); shake("#def6", te + 0.35 + i * 0.35, 8 + i * 4, 5); }); redf(te + 1.4, 0.6);
+        const tf = W("face", 54.5); out(["#def6", "#map6"], tf - 0.1, 0.12); card("#atom6", tf, W("nucléaire") - 0.05, -2);
+        pop("#rad6", W("recréer") - 0.05); tl.to("#rad6", { rotation: 360, duration: 2, ease: "none" }, W("recréer"));
+        const tnk = W("nucléaire"); slam("#bn6", W("bombe") - 0.05, 2.5); spr("nk6", "nuke6", "nuke", 9, 180, 620, "opacity:0"); tl.set("#nuke6", { opacity: 1 }, tnk); once("nuke6", "nuke", 10, tnk); flash(tnk, 1); shake("#root", tnk, 24, 10); tl.to("#rad6", { opacity: 0, duration: 0.1 }, tnk - 0.4); }
+
+      // ===== S7 chapitre 209
+      { chap("#ch209", S(7) + 0.05, W("guerre", 61) - 0.1); impact(S(7) + 0.3, 0.8);
+        slam("#gw7", W("éclate") - 0.05, 2.6); impact(W("éclate") + 0.1, 1.4); redf(W("éclate") + 0.1, 0.5);
+        tl.fromTo("#fu7", { x: -500, opacity: 1 }, { x: 0, duration: 0.25, ease: "power4.in" }, W("états-unis", 62) - 0.1); tl.fromTo("#fs7", { x: 500, opacity: 1 }, { x: 0, duration: 0.25, ease: "power4.in" }, W("l'urss", 63) - 0.15); slam("#vs7", W("l'urss", 63) + 0.1, 3); impact(W("l'urss", 63) + 0.12, 1.2); }
+
+      // ===== S8 power up
+      { const tp = W("guerre", 65.5) - 0.1; tl.to("#pw8", { opacity: 1, duration: 0.2 }, W("n'existe") - 0.2); tl.fromTo("#burst8", { rotation: 0, scale: 1 }, { rotation: 90, scale: 1.2, duration: 2.5, ease: "none" }, W("n'existe") - 0.2);
+        spr("y8", "yo8", "yoru", 14, 260, 640, "filter:drop-shadow(0 0 30px #e8233b)"); anim("yo8", "yoru", 8, S(8), E(8)); tl.fromTo("#yo8", { scale: 0.6, y: 200 }, { scale: 1, y: 0, duration: 0.4, ease: "back.out(1.6)" }, W("n'existe") - 0.2);
+        tl.to(["#pl8", "#g8"], { opacity: 1, duration: 0.1 }, W("n'existe")); gauge("#g8f", W("n'existe"), W("power") - W("n'existe"), 0.2, 1);
+        slam("#pu8", W("power") - 0.05, 3.5); impact(W("power") + 0.1, 1.6); redf(W("power") + 0.1, 0.6); shake("#yo8", W("up", 68), 20, 10); pop("#max8", W("up", 68), 8); glitch("#pu8", W("up", 68) + 0.3, 6); }
+
+      // ===== S9 CTA
+      { slam("#sub9", W("abonne") - 0.05, 2.4); impact(W("abonne") + 0.1, 0.7); tl.to("#sub9", { scale: 1.08, duration: 0.25, repeat: 5, yoyo: true, ease: "sine.inOut" }, W("abonne") + 0.3);
+        slam("#yq9", W("yoru", 72) - 0.05, 2.4); tl.fromTo("#ge9", { x: -700, opacity: 1 }, { x: 0, duration: 0.25, ease: "power3.out" }, W("génie") - 0.1); tl.fromTo("#ca9", { x: 700, opacity: 1 }, { x: 0, duration: 0.25, ease: "power3.out" }, W("catastrophe") - 0.15); pop("#ou9", W("ou", 73.5));
+        impact(W("catastrophe") + 0.2, 1); }
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
