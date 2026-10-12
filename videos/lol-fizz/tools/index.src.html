@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Fizz — Le Filou des mers</title>
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "PS2P"; src: url("fonts/PressStart2P-Regular.ttf"); }
+      @font-face { font-family: "Mont"; src: url("fonts/Montserrat.ttf"); font-weight: 100 900; }
+      :root { --ink: #070b16; --navy: #0b1730; --grid: #142a4d; --gold: #ffc23d; --teal: #3fe0d0; --sea: #0b3a5c; --wood: #5a3a22; --wood2: #3c2614; --paper: #efe8d6; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--navy); font-family: "Mont", sans-serif; color: #fff; }
+      .abs { position: absolute; display: block; }
+      .layer { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      img { image-rendering: pixelated; display: block; }
+      .spr { position: absolute; overflow: hidden; }
+      .spr img { position: absolute; left: 0; top: 0; }
+
+      /* décor permanent */
+      #grid { background-color: var(--navy); background-image: linear-gradient(var(--grid) 3px, transparent 3px), linear-gradient(90deg, var(--grid) 3px, transparent 3px); background-size: 36px 36px; }
+      #rail { left: 0; top: 548px; width: 1080px; height: 40px; background: repeating-linear-gradient(90deg, var(--wood) 0 30px, var(--wood2) 30px 36px); border-top: 6px solid #2a1a0d; border-bottom: 6px solid #2a1a0d; }
+      #rope { left: 0; top: 600px; width: 1080px; height: 10px; background: repeating-linear-gradient(90deg, #c9a46a 0 12px, #8e6b3a 12px 18px); }
+      .lantern { position: absolute; top: 588px; width: 28px; height: 40px; background: #ffb347; border: 5px solid #2a1a0d; }
+      .glow { position: absolute; top: 470px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(255,170,70,0.35), rgba(255,170,70,0) 70%); }
+      #dock { left: 0; top: 1380px; width: 1080px; height: 44px; background: repeating-linear-gradient(90deg, #7a5230 0 90px, #5a3a22 90px 96px); border-top: 6px solid #c9a46a; border-bottom: 6px solid #2a1a0d; }
+      #sea { left: 0; top: 1424px; width: 1080px; height: 500px; background: linear-gradient(#0e4a72, #06203a 70%, #040f1e); }
+      #waves { left: -72px; top: 1418px; width: 1224px; height: 24px; background: repeating-linear-gradient(90deg, #3fa7c9 0 24px, transparent 24px 36px, #2a7fb0 36px 60px, transparent 60px 72px); opacity: 0.8; }
+      #idtag { left: 40px; top: 640px; font-family: "PS2P"; font-size: 18px; color: var(--teal); border: 4px solid var(--teal); padding: 8px 12px; opacity: 0.8; }
+      .vign { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.6) 100%); }
+
+      /* captions (haut) */
+      #cap { left: 60px; top: 236px; width: 960px; height: 290px; }
+      #cap .ln { position: absolute; left: 0; top: 0; width: 960px; text-align: center; font-family: "Mont"; font-weight: 800; font-size: 56px; line-height: 1.22; opacity: 0; text-shadow: 4px 4px 0 rgba(0,0,0,0.6); }
+      #cap .w { opacity: 0.22; }
+      #cap .k { color: var(--gold); }
+      #cap .fz { color: var(--teal); font-style: italic; }
+
+      /* UI pixel */
+      .tag { position: absolute; font-family: "PS2P"; font-size: 30px; line-height: 1.3; color: var(--ink); background: var(--gold); border: 6px solid var(--ink); padding: 10px 16px; white-space: nowrap; box-shadow: 8px 8px 0 rgba(0,0,0,0.5); opacity: 0; }
+      .tag.t { background: var(--teal); } .tag.w { background: #fff; } .tag.r { background: #ff5a6a; }
+      .bub { position: absolute; font-family: "PS2P"; font-size: 26px; line-height: 1.5; color: var(--ink); background: #fff; border: 6px solid var(--ink); padding: 14px 18px; max-width: 640px; box-shadow: 8px 8px 0 rgba(0,0,0,0.5); opacity: 0; }
+      .bub::after { content: ""; position: absolute; left: 40px; bottom: -30px; border-left: 24px solid transparent; border-right: 0 solid transparent; border-top: 30px solid var(--ink); }
+      .stampx { position: absolute; font-family: "PS2P"; font-size: 34px; line-height: 1.4; color: var(--teal); border: 8px solid var(--teal); padding: 12px 18px; text-align: center; opacity: 0; background: rgba(7,11,22,0.75); }
+      .card { position: absolute; left: 140px; top: 760px; width: 800px; height: 520px; background: var(--paper); border: 8px solid var(--ink); box-shadow: 16px 16px 0 rgba(0,0,0,0.55); font-family: "PS2P"; color: var(--ink); padding: 40px; opacity: 0; }
+      .card .h { font-size: 30px; color: #6a5a3a; }
+      .card .n { font-size: 54px; margin-top: 40px; line-height: 1.4; }
+      .card .l { height: 8px; background: rgba(0,0,0,0.12); margin-top: 28px; }
+      .ttl { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "Mont"; font-weight: 900; color: var(--gold); text-shadow: 6px 6px 0 #000; line-height: 1.05; }
+      .pix { position: absolute; left: 0; width: 1080px; text-align: center; font-family: "PS2P"; color: var(--gold); text-shadow: 8px 8px 0 #7a4a10, 14px 14px 0 rgba(0,0,0,0.6); }
+      .hid { opacity: 0; }
+
+      /* fx */
+      #flash { background: #fff; opacity: 0; }
+      #deep { background: linear-gradient(rgba(6,40,70,0.0), rgba(4,30,60,0.85) 30%, rgba(2,14,32,0.95)); opacity: 0; }
+      .ray { position: absolute; top: 0; width: 120px; height: 1920px; background: linear-gradient(rgba(120,220,255,0.18), rgba(120,220,255,0)); transform-origin: 50% 0; }
+      .bubl { position: absolute; width: 18px; height: 18px; border: 4px solid rgba(160,230,255,0.8); }
+      .ring { position: absolute; border: 8px solid #ff6ad5; border-radius: 50%; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1080" data-height="1920">
+      <div id="stage" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="0">
+        <div class="layer" id="grid"></div>
+        <div class="glow" style="left:60px"></div><div class="glow" style="left:410px"></div><div class="glow" style="left:760px"></div>
+        <div class="abs" id="rail"></div><div class="abs" id="rope"></div>
+        <div class="lantern" style="left:176px"></div><div class="lantern" style="left:526px"></div><div class="lantern" style="left:876px"></div>
+        <div class="abs" id="sea"></div><div class="abs" id="waves"></div><div class="abs" id="dock"></div>
+        <div class="abs" id="idtag">FIZZ · LE FILOU DES MERS</div>
+      </div>
+
+      <section id="s1" class="scene clip" data-start="{{S1}}" data-duration="{{D1}}" data-track-index="1">
+        <div class="ttl" id="t1" style="top:760px;font-size:104px;opacity:0">LES DOSSIERS<br />DE LA FAILLE</div>
+        <div id="s1p"></div>
+        <div class="bub" id="q1" style="left:560px;top:1000px;font-size:60px">?</div>
+      </section>
+
+      <section id="s2" class="scene clip" data-start="{{S2}}" data-duration="{{D2}}" data-track-index="1">
+        <div class="layer" style="background:#05070d"></div>
+        <div class="pix" id="fz2" style="top:640px;font-size:190px">FIZZ</div>
+        <div id="s2p"></div>
+        <div class="tag t" id="cl2" style="left:330px;top:1380px">ASSASSIN</div>
+        <div class="tag" id="nm2" style="left:200px;top:1490px">LE FILOU DES MERS</div>
+        <div class="bub" id="b2" style="left:560px;top:880px">VOUS NE M'ATTRAPEREZ PAS !</div>
+      </section>
+
+      <section id="s3" class="scene clip" data-start="{{S3}}" data-duration="{{D3}}" data-track-index="1">
+        <div id="s3p"></div>
+        <div class="abs" id="sign" style="left:620px;top:600px;width:380px;height:110px;background:var(--wood);border:6px solid #2a1a0d;font-family:PS2P;font-size:28px;color:#ffe2a8;text-align:center;line-height:98px">BILGEWATER</div>
+        <div class="tag t" id="yd" style="left:60px;top:740px">YORDLE</div>
+        <div class="tag" id="am" style="left:60px;top:840px">AMPHIBIE</div>
+        <div class="tag w" id="pir" style="left:560px;top:760px">CITÉ DES PIRATES</div>
+        <div id="coral"></div>
+      </section>
+
+      <section id="s4" class="scene clip" data-start="{{S4}}" data-duration="{{D4}}" data-track-index="1">
+        <div id="s4p"></div>
+        <div class="tag w" id="cap4" style="left:40px;top:740px">CAPITAINE<br />SUPERSTITIEUX</div>
+        <div class="tag t" id="rec4" style="left:600px;top:1500px">RÉCUPÈRE</div>
+        <div class="tag" id="rap4" style="left:600px;top:760px">RAPPORTE</div>
+        <div class="bub" id="ex4" style="left:60px;top:860px;font-size:50px">!</div>
+        <div class="stampx" id="st4" style="left:150px;top:700px">NE JAMAIS<br />LE CONTRARIER</div>
+      </section>
+
+      <section id="s5" class="scene clip" data-start="{{S5}}" data-duration="{{D5}}" data-track-index="1">
+        <div class="layer" id="deep5"><div class="ray" style="left:200px;transform:rotate(-12deg)"></div><div class="ray" style="left:600px;transform:rotate(8deg)"></div><div class="ray" style="left:860px;transform:rotate(-4deg)"></div></div>
+        <div id="s5p"></div>
+        <div class="tag t" id="esp" style="left:180px;top:660px">ESPRIT DE L'OCÉAN ?</div>
+        <div class="tag" id="aby" style="left:120px;top:1500px">CRÉATURES DES ABYSSES</div>
+      </section>
+
+      <section id="s6" class="scene clip" data-start="{{S6}}" data-duration="{{D6}}" data-track-index="1">
+        <div id="s6p"></div>
+        <div class="abs hid" id="ruler" style="left:60px;top:1450px;width:960px;height:40px;background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 48px);border-bottom:6px solid var(--gold)"></div>
+        <div class="tag w" id="gup" style="left:240px;top:1500px">GUPPY</div>
+        <div class="tag t" id="cho" style="left:500px;top:1600px">CHOMPER</div>
+        <div class="tag r" id="gig" style="left:640px;top:700px">GIGALODON</div>
+        <div class="bub" id="b6" style="left:60px;top:700px">ET PLOUF DANS LES DENTS !</div>
+        <div class="card" id="c6"><div class="h">DOSSIER FIZZ</div><div class="n">ANECDOTE N°1<br />SON REQUIN</div><div class="l"></div><div class="l"></div></div>
+      </section>
+
+      <section id="s7" class="scene clip" data-start="{{S7}}" data-duration="{{D7}}" data-track-index="1">
+        <div id="s7p"></div>
+        <div class="abs hid" id="beam" style="left:0;top:1230px;width:820px;height:110px;background:repeating-linear-gradient(90deg,#ff6ad5 0 24px,#ffd0f4 24px 36px);border-top:8px solid #fff;border-bottom:8px solid #fff;transform-origin:100% 50%"></div>
+        <div class="tag t" id="int7" style="left:60px;top:700px">INTOUCHABLE</div>
+        <div class="tag r" id="miss1" style="left:120px;top:1250px">MISS</div>
+        <div class="tag r" id="miss2" style="left:330px;top:1160px">MISS</div>
+        <div class="tag" id="esq7" style="left:380px;top:1080px">ESQUIVÉ !</div>
+        <div class="bub" id="b7" style="left:330px;top:640px;max-width:700px">SANS CRAINTE, J'AI TOUJOURS UN BOND D'AVANCE.</div>
+        <div class="tag w" id="hate" style="left:120px;top:700px">TOUT LE MONDE LE DÉTESTE</div>
+        <div class="card" id="c7"><div class="h">DOSSIER FIZZ</div><div class="n">ANECDOTE N°2<br />SON TRIDENT</div><div class="l"></div><div class="l"></div></div>
+      </section>
+
+      <section id="s8" class="scene clip" data-start="{{S8}}" data-duration="{{D8}}" data-track-index="1">
+        <div id="s8p"></div>
+        <div class="tag t" id="al8" style="left:40px;top:860px">ALLIÉS</div>
+        <div class="tag r" id="en8" style="left:760px;top:860px">ENNEMIS</div>
+        <div class="bub" id="ex8" style="left:60px;top:960px;font-size:44px">?!</div>
+        <div class="bub" id="b8" style="left:320px;top:700px">VOUS VOULEZ VOIR UN TOUR ?</div>
+        <div class="card" id="bio8" style="top:700px;height:600px"><div class="h">BIOGRAPHIE OFFICIELLE</div><div class="n" style="font-size:34px;margin-top:50px">« ... IL ADORE PIÉGER SES ALLIÉS AUTANT QUE SES ENNEMIS. »</div><div class="l"></div><div class="l"></div><div class="l"></div></div>
+        <div class="card" id="c8"><div class="h">DOSSIER FIZZ</div><div class="n">ANECDOTE N°3<br />SES FARCES</div><div class="l"></div><div class="l"></div></div>
+      </section>
+
+      <section id="s9" class="scene clip" data-start="{{S9}}" data-duration="{{D9}}" data-track-index="1">
+        <div id="s9p"></div>
+        <div class="tag" id="sk9" style="left:120px;top:720px">SKIN</div>
+        <div class="tag w" id="po9" style="left:560px;top:720px">PLUS UN POISSON ?</div>
+        <div class="tag t" id="dg9" style="left:200px;top:820px">FIZZ... EN CHIEN</div>
+        <div class="bub" id="b9" style="left:520px;top:900px">ÇA SENT LE POISSON.</div>
+        <div id="poof"></div>
+        <div class="card" id="c9"><div class="h">DOSSIER FIZZ</div><div class="n">DERNIÈRE<br />ANECDOTE</div><div class="l"></div><div class="l"></div></div>
+      </section>
+
+      <section id="s10" class="scene clip" data-start="{{S10}}" data-duration="{{D10}}" data-track-index="1">
+        <div id="s10p"></div>
+        <div class="tag t" id="es10" style="left:40px;top:720px">ESPRIT DES MERS ?</div>
+        <div class="tag" id="fi10" style="left:600px;top:720px">SIMPLE FILOU ?</div>
+        <div class="pix" id="vs10" style="top:1020px;font-size:70px;opacity:0">VS</div>
+        <div class="tag w" id="com10" style="left:180px;top:860px">DIS-MOI EN COMMENTAIRE</div>
+        <div class="bub" id="b10" style="left:120px;top:660px;max-width:820px">REQUIN, C'EST L'HEURE DE MANGER. À TABLE !</div>
+        <div class="layer" id="end10" style="background:#05070d;opacity:0">
+          <div class="pix" style="top:700px;font-size:110px">FIZZ</div>
+          <div class="abs" style="left:290px;top:930px;width:500px;height:110px;background:#ff3b4e;border:8px solid #fff;font-family:PS2P;font-size:36px;color:#fff;text-align:center;line-height:94px">ABONNE-TOI</div>
+          <div class="abs" style="left:0;top:1100px;width:1080px;text-align:center;font-family:PS2P;font-size:26px;color:var(--teal)">PROCHAIN CHAMPION ?</div>
+        </div>
+      </section>
+
+      <div id="fx" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="5">
+        <div class="layer" id="deep"></div>
+        <div class="abs" id="cap"></div>
+        <div class="layer" id="flash"></div>
+        <div class="vign"></div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="{{TOTAL}}" data-track-index="9" data-volume="1"></audio>
+    </div>
+
+    <script>
+      const WORDS = {{WORDS}};
+      const FIZZ = {{FIZZ}};
+      const SC = {{SCENES}};
+      const TOTAL = {{TOTAL}};
+      const W = (sub, after = 0) => { for (const w of WORDS) if (w.start >= after && w.text.toLowerCase().includes(sub)) return w.start; throw new Error("word " + sub); };
+      function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const tl = gsap.timeline({ paused: true });
+      const S = (i) => SC[i - 1].start, E = (i) => SC[i - 1].start + SC[i - 1].dur;
+      const $ = (id) => document.getElementById(id);
+
+      // ---- sprites : planche N frames + copie de la frame 0
+      const SHEETS = { fizz_idle: [8, 40, 44], fizz_laugh: [8, 40, 46], fizz_sly: [8, 40, 44], fizz_hop: [8, 36, 64], fizz_swim: [8, 44, 30], shark: [8, 48, 46], fish: [4, 16, 10], captain: [8, 30, 46], mage: [8, 30, 44], ally: [8, 26, 36], dog: [8, 40, 32], jelly: [4, 18, 22] };
+      const spr = (parent, id, sheet, sc, x, yBottom, extra = "") => { const [n, w, h] = SHEETS[sheet]; $(parent).insertAdjacentHTML("beforeend", `<div class="spr" id="${id}" style="left:${x}px;top:${yBottom - h * sc}px;width:${w * sc}px;height:${h * sc}px;${extra}"><img src="sprites/${sheet}.png" alt="" style="width:${(n + 1) * w * sc}px;height:${h * sc}px" /></div>`); return id; };
+      const img = (parent, id, file, w, h, sc, x, y, extra = "") => { $(parent).insertAdjacentHTML("beforeend", `<img id="${id}" src="sprites/${file}.png" alt="" style="position:absolute;left:${x}px;top:${y}px;width:${w * sc}px;height:${h * sc}px;${extra}" />`); return id; };
+      const anim = (id, fps, t0, t1) => { const el = $(id); const sheet = el.querySelector("img").getAttribute("src").split("/")[1].replace(".png", ""); const [n] = SHEETS[sheet]; const w = parseFloat(el.style.width); const cyc = n / fps; const reps = Math.max(1, Math.ceil((t1 - t0) / cyc)); tl.fromTo(`#${id} img`, { x: 0 }, { x: -n * w, duration: cyc, ease: `steps(${n})`, repeat: reps - 1 }, t0); };
+      const frame = (id, f, t) => { const w = parseFloat($(id).style.width); tl.set(`#${id} img`, { x: -f * w }, t); };
+
+      // ---- helpers
+      const show = (sel, t, d = 0.25) => tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: d, ease: "back.out(2.4)" }, t);
+      const hide = (sel, t, d = 0.15) => tl.to(sel, { opacity: 0, duration: d }, t);
+      const stamp = (sel, t, r = -8) => tl.fromTo(sel, { opacity: 0, scale: 2.4, rotation: r * 2 }, { opacity: 1, scale: 1, rotation: r, duration: 0.14, ease: "power4.in" }, t);
+      const shake = (sel, t, a = 14, n = 6) => { const r = rng(Math.floor(t * 97)); for (let k = 0; k < n; k++) tl.to(sel, { x: Math.round((r() - 0.5) * 2 * a / 6) * 6, y: Math.round((r() - 0.5) * 2 * a / 6) * 6, duration: 0.045, ease: "none" }, t + k * 0.045); tl.to(sel, { x: 0, y: 0, duration: 0.05 }, t + n * 0.045); };
+      const flash = (t, o = 0.8) => { tl.set("#flash", { opacity: o }, t); tl.to("#flash", { opacity: 0, duration: 0.3 }, t + 0.01); };
+      const card = (sel, t0, t1) => { tl.fromTo(sel, { opacity: 0, y: 200, rotation: 6 }, { opacity: 1, y: 0, rotation: -2, duration: 0.3, ease: "back.out(1.6)" }, t0); tl.to(sel, { y: -1400, rotation: -10, duration: 0.3, ease: "power3.in" }, t1 - 0.3); };
+      const arc = (sel, t, x0, y0, x1, y1, h = 260, d = 0.6) => { tl.fromTo(sel, { x: x0, y: y0, opacity: 1 }, { x: x1, duration: d, ease: "none", immediateRender: false }, t); tl.fromTo(sel, { y: y0 }, { keyframes: [{ y: Math.min(y0, y1) - h, duration: d / 2, ease: "power2.out" }, { y: y1, duration: d / 2, ease: "power2.in" }] , immediateRender: false }, t); };
+      let dropK = 0;
+      const splash = (x, y, t, n = 6, sc = 6) => { for (let i = 0; i < n; i++) { const id = "dr" + dropK++; $("fxdrops").insertAdjacentHTML("beforeend", `<img id="${id}" src="sprites/drop.png" alt="" style="position:absolute;left:${x}px;top:${y}px;width:${6 * sc}px;height:${8 * sc}px;opacity:0" />`); const a = -Math.PI / 2 + (i - (n - 1) / 2) * 0.35; tl.fromTo("#" + id, { opacity: 1, x: 0, y: 0 }, { x: Math.cos(a) * 160, y: Math.sin(a) * 220, duration: 0.25, ease: "power2.out", immediateRender: false }, t); tl.to("#" + id, { y: 60, opacity: 0, duration: 0.3, ease: "power2.in" }, t + 0.25); } };
+      const rain = (x, y, t, n = 8) => { for (let i = 0; i < n; i++) { const id = "dr" + dropK++; $("fxdrops").insertAdjacentHTML("beforeend", `<img id="${id}" src="sprites/drop.png" alt="" style="position:absolute;left:${x + (i % 4) * 50}px;top:${y}px;width:30px;height:40px;opacity:0" />`); tl.fromTo("#" + id, { opacity: 1, y: -200 - (i % 3) * 60 }, { y: 120, duration: 0.45, ease: "power1.in", immediateRender: false }, t + i * 0.06); tl.set("#" + id, { opacity: 0 }, t + i * 0.06 + 0.45); } };
+      $("fx").insertAdjacentHTML("afterbegin", '<div class="layer" id="fxdrops"></div>');
+      const bubble = (sel, t0, t1) => { show(sel, t0, 0.2); hide(sel, t1); };
+
+      // ---- sous-titres (haut, mots révélés au fil de la voix)
+      const KEY = /(énervant|mystérieux|fizz|filou|yordle|amphibie|bilgewater|pirates|offrandes|récupère|rapporte|contrarier|esprit|abysses|requin|ultime|poisson|énorme|guppy|chomper|gigalodon|trident|intouchable|esquive|ultimes|déteste|biographie|piéger|alliés|ennemis|skin|chien|commentaire)/i;
+      const cap = $("cap"); const chunks = []; let cur = [];
+      WORDS.forEach((w, i) => { if (/^[:?!…]+$/.test(w.text)) { if (cur.length) { cur[cur.length - 1].text += " " + w.text; if (/[?!…]/.test(w.text)) { chunks.push(cur); cur = []; } } return; } cur.push({ ...w }); const len = cur.map((x) => x.text).join(" ").length; if (/[.?!…]$/.test(w.text) || len > 64 || i === WORDS.length - 1) { chunks.push(cur); cur = []; } });
+      if (cur.length) chunks.push(cur);
+      const evts = chunks.map((c) => ({ t: c[0].start, words: c })).concat(FIZZ.map((f) => ({ t: f.start, fizz: f }))).sort((a, b) => a.t - b.t);
+      evts.forEach((ev, i) => {
+        const d = document.createElement("div"); d.className = "ln"; d.id = "ln" + i; cap.appendChild(d);
+        const t0 = ev.t - 0.05, t1 = evts[i + 1] ? evts[i + 1].t - 0.05 : (ev.fizz ? ev.fizz.end : ev.words[ev.words.length - 1].end) + 0.6;
+        tl.set("#ln" + i, { opacity: 1 }, t0); tl.set("#ln" + i, { opacity: 0 }, t1);
+        if (ev.fizz) { d.innerHTML = `<span class="fz">FIZZ : « ${ev.fizz.text} »</span>`; return; }
+        ev.words.forEach((w, j) => { const s = document.createElement("span"); s.className = "w" + (KEY.test(w.text) ? " k" : ""); s.id = `w${i}_${j}`; s.textContent = w.text + " "; d.appendChild(s); tl.to(`#w${i}_${j}`, { opacity: 1, duration: 0.08 }, w.start); });
+      });
+
+      // ---- décor vivant
+      tl.fromTo("#waves", { x: 0 }, { x: 72, duration: 1.2, ease: "steps(6)", repeat: Math.ceil(TOTAL / 1.2) }, 0);
+      tl.fromTo(".glow", { opacity: 0.7 }, { opacity: 1, duration: 0.5, repeat: Math.ceil(TOTAL / 0.5), yoyo: true, ease: "steps(2)" }, 0);
+      const FLOOR = 1386;
+
+      // ===== S1 accroche
+      { spr("s1p", "sil", "fizz_sly", 8, 380, FLOOR, "filter:brightness(0) drop-shadow(0 0 18px rgba(63,224,208,0.6))"); anim("sil", 6, S(1), E(1));
+        tl.to("#t1", { opacity: 1, duration: 0.3 }, 0.2); tl.fromTo("#t1", { y: 30 }, { y: 0, duration: 0.4, ease: "power2.out" }, 0.2);
+        const ta = W("énervant"); for (let i = 0; i < 3; i++) { img("s1p", "an" + i, "anger", 11, 11, 7, 330 + i * 150, 960 - (i % 2) * 60, "opacity:0"); show("#an" + i, ta + i * 0.1); } shake("#sil", ta, 12);
+        tl.to(["#an0", "#an1", "#an2"], { opacity: 0, duration: 0.2 }, W("était"));
+        show("#q1", W("mystérieux")); tl.to("#t1", { opacity: 0, y: -40, duration: 0.25 }, E(1) - 0.3); }
+
+      // ===== S2 carte titre FIZZ
+      { tl.fromTo("#fz2", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.18, ease: "power4.in" }, S(2) + 0.05); flash(S(2) + 0.2, 0.6);
+        spr("s2p", "fl2", "fizz_laugh", 10, 340, 1360); anim("fl2", 8, S(2), E(2)); tl.fromTo("#fl2", { y: 700 }, { y: 0, duration: 0.35, ease: "back.out(1.4)" }, S(2) + 0.15);
+        show("#cl2", W("filou") - 0.1); show("#nm2", W("mers") - 0.05); bubble("#b2", FIZZ[0].start, FIZZ[0].end + 0.3); shake("#fl2", FIZZ[0].start, 10, 8); }
+
+      // ===== S3 lore
+      { spr("s3p", "f3", "fizz_idle", 8, 380, FLOOR); anim("f3", 6, S(3), E(3));
+        tl.fromTo("#f3", { y: 560 }, { keyframes: [{ y: -160, duration: 0.3, ease: "power2.out" }, { y: 0, duration: 0.2, ease: "power2.in" }] }, S(3) + 0.05); splash(500, 1380, S(3) + 0.05, 7);
+        show("#yd", W("yordle")); show("#am", W("amphibie"));
+        tl.to("#f3", { keyframes: [{ y: -120, duration: 0.18, ease: "power2.out" }, { y: 560, duration: 0.25, ease: "power2.in" }, { y: 560, duration: 0.3 }, { y: -160, duration: 0.25, ease: "power2.out" }, { y: 0, duration: 0.18, ease: "power2.in" }] }, W("amphibie") + 0.3);
+        splash(500, 1380, W("amphibie") + 0.75, 6); splash(500, 1380, W("amphibie") + 1.05, 6);
+        const C = $("coral"); const cols = ["#ff7a8a", "#ffb347", "#c77dff", "#3fe0d0"]; for (let i = 0; i < 9; i++) C.insertAdjacentHTML("beforeend", `<div class="abs" id="co${i}" style="left:${30 + i * 120}px;top:${1700 + (i % 3) * 40}px;width:${48 + (i % 2) * 24}px;height:${120 + (i % 3) * 50}px;background:${cols[i % 4]};border:6px solid #070b16;box-shadow:inset -12px 0 0 rgba(0,0,0,0.25)"></div>`);
+        tl.fromTo("#coral .abs", { y: 300 }, { y: 0, duration: 0.3, stagger: 0.05, ease: "steps(5)" }, W("récifs") - 0.1);
+        img("s3p", "ship3", "ship", 80, 64, 7, 520, 1000, ""); tl.fromTo("#ship3", { x: 700 }, { x: 0, duration: 0.6, ease: "power2.out" }, W("bilgewater") - 0.2); tl.fromTo("#ship3", { rotation: -2 }, { rotation: 2, duration: 0.8, repeat: 3, yoyo: true, ease: "sine.inOut" }, W("bilgewater") + 0.4);
+        tl.fromTo("#sign", { y: -300, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(2)" }, W("bilgewater") - 0.05); show("#pir", W("pirates") - 0.05); }
+
+      // ===== S4 offrandes
+      { spr("s4p", "cpt", "captain", 8, 60, FLOOR); anim("cpt", 6, S(4), E(4)); img("s4p", "cptT", "captain_throw", 30, 46, 8, 60, FLOOR - 368, "opacity:0");
+        tl.fromTo("#cpt", { x: -500 }, { x: 0, duration: 0.6, ease: "steps(8)" }, S(4) + 0.05); show("#cap4", W("capitaines") - 0.05);
+        const tj = W("jettent"); hide("#cap4", tj - 0.1); tl.set("#cpt", { opacity: 0 }, tj); tl.set("#cptT", { opacity: 1 }, tj); tl.set("#cpt", { opacity: 1 }, tj + 0.6); tl.set("#cptT", { opacity: 0 }, tj + 0.6);
+        ["c1", "c2", "c3"].forEach((c, i) => { img("s4p", c, "coin", 8, 8, 6, 0, 0, "opacity:0"); arc("#" + c, tj + 0.05 + i * 0.12, 260, 1060, 560 + i * 90, 1430, 240, 0.6); });
+        img("s4p", "bt4", "bottle", 10, 16, 6, 0, 0, "opacity:0"); arc("#bt4", tj + 0.4, 260, 1040, 820, 1430, 300, 0.65);
+        tl.to(["#c1", "#c2", "#c3", "#bt4"], { y: "+=180", duration: 0.5, ease: "power1.in" }, tj + 0.8); splash(620, 1390, tj + 0.75, 6); splash(840, 1390, tj + 1.05, 5);
+        spr("s4p", "sw4", "fizz_swim", 8, 1080, 1700); anim("sw4", 10, S(4), E(4));
+        const tf = W("fizz", 19.5); tl.fromTo("#sw4", { x: 0 }, { x: -480, duration: 0.8, ease: "power2.out" }, tf - 0.1);
+        tl.to(["#c1", "#c2", "#c3", "#bt4"], { x: 680, y: 1610, duration: 0.3, ease: "power2.in" }, W("récupère") - 0.1); show("#rec4", W("récupère"));
+        const tr = W("rapporte"); hide("#rec4", tr - 0.2); tl.to(["#c1", "#c2", "#c3", "#bt4"], { opacity: 0, duration: 0.1 }, tr - 0.1);
+        tl.to("#sw4", { x: -580, y: -330, opacity: 0, duration: 0.3, ease: "power2.out" }, tr - 0.2); splash(560, 1380, tr - 0.05, 6);
+        spr("s4p", "f4", "fizz_sly", 8, 470, FLOOR, "opacity:0"); anim("f4", 6, S(4), E(4)); tl.set("#f4", { opacity: 1 }, tr);
+        img("s4p", "ch4", "chest", 22, 18, 7, 330, FLOOR - 126, "opacity:0"); show("#ch4", tr + 0.1); show("#rap4", tr + 0.05); hide("#rap4", W("mais", 23) - 0.1);
+        bubble("#ex4", W("vieux") - 0.05, W("contrarier") - 0.1); shake("#cpt", W("loup"), 8, 8);
+        stamp("#st4", W("jamais", 25) - 0.05, -6); shake("#st4", W("contrarier"), 10, 4); }
+
+      // ===== S5 esprit de l'océan
+      { tl.fromTo("#deep5", { opacity: 0 }, { opacity: 1, duration: 0.4 }, S(5)); tl.set("#deep5", { background: "linear-gradient(rgba(4,30,60,0.75), rgba(2,14,32,0.95))" }, 0);
+        tl.fromTo("#deep5 .ray", { opacity: 0.4 }, { opacity: 1, duration: 0.9, repeat: 6, yoyo: true, ease: "sine.inOut" }, S(5));
+        spr("s5p", "f5", "fizz_sly", 9, 360, 1320, "filter:drop-shadow(0 0 22px rgba(63,224,208,0.9))"); anim("f5", 6, S(5), E(5));
+        tl.fromTo("#f5", { y: 0 }, { y: -40, duration: 0.8, repeat: 7, yoyo: true, ease: "sine.inOut" }, S(5));
+        for (let i = 0; i < 10; i++) { $("s5p").insertAdjacentHTML("beforeend", `<div class="bubl" id="bb${i}" style="left:${80 + i * 100}px;top:1800px"></div>`); tl.fromTo("#bb" + i, { y: 0, opacity: 1 }, { y: -1300 - (i % 3) * 120, opacity: 0.2, duration: 3 + (i % 4) * 0.5, ease: "none" }, S(5) + (i % 5) * 0.4); }
+        show("#esp", W("esprit") - 0.05);
+        const tc = W("commander"); hide("#esp", tc - 0.1);
+        [[80, 980], [820, 900], [200, 1150]].forEach(([x, y], i) => { spr("s5p", "je" + i, "jelly", 8, x, y, "opacity:0"); anim("je" + i, 5, tc, E(5)); show("#je" + i, tc + i * 0.15); tl.to("#je" + i, { y: -60, duration: 1, repeat: 2, yoyo: true, ease: "sine.inOut" }, tc + 0.3); });
+        for (let i = 0; i < 6; i++) { spr("s5p", "fs" + i, "fish", 7, -200, 1200 + (i % 3) * 90); anim("fs" + i, 8, tc, E(5)); tl.fromTo("#fs" + i, { x: -i * 70 }, { x: 1400 - i * 70, duration: 2.4, ease: "none" }, tc + 0.2 + (i % 2) * 0.2); }
+        for (let i = 0; i < 2; i++) { img("s5p", "fin" + i, "fin", 16, 12, 7, -150, 1330, ""); tl.fromTo("#fin" + i, { x: 0 }, { x: 1300, duration: 2.6, ease: "none" }, tc + 0.4 + i * 1.1); }
+        show("#aby", W("abysses") - 0.3); }
+
+      // ===== S6 requin
+      { card("#c6", S(6) + 0.05, W("quand") - 0.05);
+        spr("s6p", "f6", "fizz_idle", 7, 40, FLOOR); anim("f6", 6, S(6), E(6));
+        const tj = W("jette"); img("s6p", "fi1", "fish", 16, 10, 6, 0, 0, "opacity:0"); arc("#fi1", tj, 260, 1100, 520, 1330, 200, 0.6);
+        tl.set("#ruler", { opacity: 1 }, W("plus", 38)); tl.fromTo("#ruler", { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: 1.2, ease: "steps(10)" }, W("plus", 38));
+        img("s6p", "fi2", "fish", 16, 10, 6, 0, 0, "opacity:0"); arc("#fi2", W("loin") - 0.3, 260, 1100, 930, 1330, 320, 0.8); hide(["#fi1", "#fi2"], W("guppy") - 0.2);
+        const sk = [["sh1", 3, 330, "guppy", "#gup"], ["sh2", 5, 470, "chomper", "#cho"], ["sh3", 8, 560, "gigalodon", "#gig"]];
+        sk.forEach(([id, sc, x, w, tag]) => { spr("s6p", id, "shark", sc, x, FLOOR + 40, "opacity:0"); const t = W(w); tl.set("#" + id, { opacity: 1 }, t - 0.05); tl.fromTo("#" + id, { y: 46 * sc }, { y: 0, duration: 0.25, ease: "back.out(1.6)" }, t - 0.05); frame(id, 0, t - 0.05); frame(id, 4, t + 0.4); splash(x + 24 * sc - 20, FLOOR - 10, t, 5); show(tag, t); });
+        tl.to(["#sh1", "#sh2"], { opacity: 0, duration: 0.15 }, W("gigalodon") - 0.1); hide(["#gup", "#cho"], W("gigalodon") - 0.1); shake("#s6", W("gigalodon") + 0.2, 18, 8);
+        const tp = FIZZ[1].start; hide(["#sh3", "#gig", "#ruler"], tp - 0.2);
+        spr("s6p", "shG", "shark", 15, 180, 1960, "opacity:0"); tl.set("#shG", { opacity: 1 }, tp); tl.fromTo("#shG", { y: 700 }, { y: 0, duration: 0.35, ease: "power3.out" }, tp); frame("shG", 0, tp); frame("shG", 4, FIZZ[1].end - 0.4); flash(FIZZ[1].end - 0.4, 0.8); shake("#s6", FIZZ[1].end - 0.4, 22, 8); splash(500, 1380, tp + 0.05, 9, 8);
+        bubble("#b6", tp, FIZZ[1].end + 0.2); }
+
+      // ===== S7 trident
+      { card("#c7", S(7) + 0.05, W("fizz", 51) - 0.05);
+        spr("s7p", "f7", "fizz_idle", 8, 80, FLOOR); anim("f7", 6, S(7), E(7));
+        spr("s7p", "mg7", "mage", 8, 780, FLOOR); anim("mg7", 6, S(7), E(7)); tl.fromTo("#mg7", { x: 500 }, { x: 0, duration: 0.5, ease: "steps(6)" }, W("fizz", 51) - 0.2);
+        spr("s7p", "hop7", "fizz_hop", 8, 90, FLOOR, "opacity:0"); anim("hop7", 6, S(7), E(7));
+        const th = W("sauter"); tl.set("#f7", { opacity: 0 }, th); tl.set("#hop7", { opacity: 1 }, th); tl.fromTo("#hop7", { y: 300 }, { y: 0, duration: 0.3, ease: "back.out(2)" }, th);
+        show("#int7", W("intouchable") - 0.05); tl.to("#hop7", { opacity: 0.45, duration: 0.12, repeat: 7, yoyo: true }, W("intouchable")); hide("#int7", W("esquive") - 0.2);
+        const te = W("esquive"); [0, 1].forEach((k) => { const id = "orb" + k; $("s7p").insertAdjacentHTML("beforeend", `<div class="abs" id="${id}" style="left:740px;top:${1250 - k * 90}px;width:70px;height:70px;background:#ff6ad5;border:8px solid #fff;opacity:0"></div>`); tl.fromTo("#" + id, { x: 0, opacity: 1 }, { x: -900, duration: 0.5, ease: "none", immediateRender: false }, te + k * 0.4); tl.set("#" + id, { opacity: 0 }, te + k * 0.4 + 0.5); show("#miss" + (k + 1), te + 0.25 + k * 0.4, 0.15); hide("#miss" + (k + 1), te + 0.9 + k * 0.4); });
+        const tu = W("ultimes"); tl.set("#beam", { opacity: 1 }, tu - 0.15); tl.fromTo("#beam", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power4.out" }, tu - 0.15); tl.to("#beam", { opacity: 0, duration: 0.25 }, tu + 0.9); flash(tu, 0.6); shake("#s7", tu, 16, 8); show("#esq7", tu + 0.2); hide("#esq7", FIZZ[2].start - 0.1);
+        tl.to("#hop7", { opacity: 1, duration: 0.05 }, tu + 1.0);
+        bubble("#b7", FIZZ[2].start, FIZZ[2].end + 0.1);
+        const tl7 = FIZZ[2].end; tl.set("#hop7", { opacity: 0 }, tl7); tl.set("#f7", { opacity: 1 }, tl7);
+        const td = W("déteste"); const r = rng(7); for (let i = 0; i < 7; i++) { img("s7p", "ag" + i, "anger", 11, 11, 7, 80 + r() * 860, 700 + r() * 560, "opacity:0"); show("#ag" + i, td - 0.3 + i * 0.07); } show("#hate", td - 0.05); shake("#mg7", td, 10, 8); }
+
+      // ===== S8 farces
+      { card("#c8", S(8) + 0.05, W("biographie") - 0.05); card("#bio8", W("biographie") - 0.05, W("fizz", 65.5) + 0.25);
+        spr("s8p", "al8s", "ally", 8, 60, FLOOR); anim("al8s", 6, S(8), E(8));
+        spr("s8p", "f8", "fizz_sly", 8, 380, FLOOR); anim("f8", 6, S(8), E(8)); spr("s8p", "fl8", "fizz_laugh", 8, 380, FLOOR, "opacity:0"); anim("fl8", 8, S(8), E(8));
+        spr("s8p", "mg8", "mage", 8, 800, FLOOR); anim("mg8", 6, S(8), E(8));
+        const tp = W("piéger"); rain(70, 1050, tp, 8); show("#al8", W("alliés") - 0.05); bubble("#ex8", tp + 0.4, W("ennemis") - 0.1); shake("#al8s", tp + 0.4, 8, 6);
+        const te = W("ennemis"); rain(800, 1050, te - 0.1, 8); show("#en8", te); shake("#mg8", te + 0.3, 8, 6);
+        tl.set("#f8", { opacity: 0 }, FIZZ[3].start); tl.set("#fl8", { opacity: 1 }, FIZZ[3].start); bubble("#b8", FIZZ[3].start, FIZZ[3].end + 0.15); hide(["#al8", "#en8"], FIZZ[3].start - 0.1); }
+
+      // ===== S9 skin chien
+      { card("#c9", S(9) + 0.05, W("skin") - 0.1);
+        spr("s9p", "f9", "fizz_idle", 9, 360, FLOOR); anim("f9", 6, S(9), E(9));
+        spr("s9p", "dg9s", "dog", 9, 360, FLOOR, "opacity:0"); anim("dg9s", 8, S(9), E(9));
+        show("#sk9", W("skin")); show("#po9", W("poisson", 74) - 0.05);
+        const tc = W("chien"); hide(["#sk9", "#po9"], tc - 0.15);
+        const P = $("poof"); for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2; P.insertAdjacentHTML("beforeend", `<div class="abs" id="pf${i}" style="left:${500 + Math.cos(a) * 60}px;top:${1200 + Math.sin(a) * 60}px;width:${70 + (i % 3) * 20}px;height:${70 + (i % 3) * 20}px;background:#fff;border:6px solid #c8d6e8;opacity:0"></div>`); tl.fromTo("#pf" + i, { opacity: 1, scale: 0.3, x: 0, y: 0 }, { scale: 1.4, x: Math.cos(a) * 160, y: Math.sin(a) * 140, duration: 0.4, ease: "power2.out", immediateRender: false }, tc - 0.15); tl.to("#pf" + i, { opacity: 0, duration: 0.25 }, tc + 0.35); }
+        tl.set("#f9", { opacity: 0 }, tc); tl.set("#dg9s", { opacity: 1 }, tc); flash(tc - 0.1, 0.5); show("#dg9", tc + 0.2); hide("#dg9", FIZZ[4].start - 0.1);
+        bubble("#b9", FIZZ[4].start, FIZZ[4].end + 0.2); }
+
+      // ===== S10 conclusion + fin
+      { spr("s10p", "je10", "jelly", 10, 120, 1300, "filter:drop-shadow(0 0 20px rgba(63,224,208,0.9))"); anim("je10", 5, S(10), E(10));
+        spr("s10p", "fl10", "fizz_laugh", 8, 640, FLOOR); anim("fl10", 8, S(10), E(10));
+        show("#es10", W("esprit", 79)); show("#fi10", W("filou", 80)); tl.to("#vs10", { opacity: 1, duration: 0.2 }, W("ou", 80));
+        show("#com10", W("commentaire") - 0.05); hide(["#es10", "#fi10", "#vs10"], W("dis-moi") - 0.1);
+        const tq = FIZZ[5].start; hide("#com10", tq - 0.1); bubble("#b10", tq, FIZZ[5].end - 0.6);
+        const tb = tq + 3.4; // « À table »
+        spr("s10p", "shE", "shark", 22, 12, 2400, "opacity:0"); tl.set("#shE", { opacity: 1 }, tq + 1.6); tl.fromTo("#shE", { y: 900 }, { y: -300, duration: 1.6, ease: "power2.out" }, tq + 1.6); frame("shE", 0, tq + 1.6); frame("shE", 4, tb); shake("#root", tq + 1.6, 8, 16);
+        flash(tb, 1); tl.set("#end10", { opacity: 1 }, tb + 0.05); tl.set("#cap", { opacity: 0 }, tb + 0.05); tl.fromTo("#end10 .pix", { scale: 2.5 }, { scale: 1, duration: 0.2, ease: "power4.in" }, tb + 0.1); }
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
