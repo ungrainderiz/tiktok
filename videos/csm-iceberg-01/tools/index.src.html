@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Iceberg Chainsaw Man — Démon Ange</title>
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "PS2P"; src: url("fonts/PressStart2P-Regular.ttf"); }
+      @font-face { font-family: "Silk"; src: url("fonts/Silkscreen-Bold.ttf"); }
+      @font-face { font-family: "VT"; src: url("fonts/VT323-Regular.ttf"); }
+      :root { --ink: #140e1a; --navy: #141a3a; --white: #f4f2ee; --gold: #ffd228; --red: #e0283a; --blue: #6eaae6; --teal: #2a6e96; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #0a0c26; font-family: "PS2P", monospace; color: var(--white); }
+      img { image-rendering: pixelated; display: block; }
+      .abs { position: absolute; display: block; }
+      .layer { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+      #world { position: absolute; left: 0; top: 0; width: 1080px; height: 3840px; transform-origin: 540px 900px; }
+      #world img { width: 1080px; height: 3840px; }
+      .pbox { background: var(--navy); border: 8px solid var(--white); box-shadow: 0 0 0 8px var(--ink), 12px 12px 0 8px rgba(0,0,0,0.5); }
+      .lbl { font-family: "PS2P"; font-size: 30px; color: var(--ink); background: var(--gold); padding: 12px 16px; box-shadow: 6px 6px 0 var(--ink); white-space: nowrap; }
+      .shadow { text-shadow: 6px 6px 0 var(--ink); }
+      .scan { position: absolute; inset: 0; background: repeating-linear-gradient(rgba(0,0,0,0.16) 0 3px, transparent 3px 6px); pointer-events: none; }
+      .vign { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,0.55) 100%); }
+
+      /* S1 */
+      #t1 { left: 0; top: 330px; width: 1080px; text-align: center; font-size: 46px; line-height: 1.4; }
+      #t2 { left: 0; top: 420px; width: 1080px; text-align: center; font-family: "Silk"; font-size: 96px; color: var(--red); line-height: 1; white-space: nowrap; text-shadow: 8px 8px 0 var(--ink); }
+      #t3 { left: 0; top: 560px; width: 1080px; display: flex; justify-content: center; }
+      #depth { left: 36px; top: 620px; width: 64px; height: 560px; }
+      #depth .bar { position: absolute; left: 22px; top: 0; width: 20px; height: 560px; background: linear-gradient(#bfe6ff, #2a6e96 40%, #02040c); border: 4px solid var(--white); }
+      #depth .mk { position: absolute; left: 0; top: 0; width: 64px; height: 16px; background: var(--gold); border: 4px solid var(--ink); }
+      #beam { left: 330px; top: -100px; width: 420px; height: 1100px; background: linear-gradient(rgba(255,240,170,0.85), rgba(255,240,170,0.0)); clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%); }
+      #angel { left: 240px; top: 320px; width: 600px; height: 560px; }
+      #angel img { width: 600px; height: 560px; }
+      #halo-glow { left: 380px; top: 290px; width: 320px; height: 120px; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,220,80,0.75), rgba(255,220,80,0) 70%); }
+      .feather { position: absolute; width: 24px; height: 12px; background: var(--white); box-shadow: 4px 4px 0 rgba(0,0,0,0.3); }
+
+      /* S2 labels / menu */
+      .tag { position: absolute; display: flex; align-items: center; gap: 0; }
+      .tag .ln { display: block; height: 8px; background: var(--gold); }
+      #menu { left: 190px; top: 960px; width: 700px; height: 250px; padding: 36px 40px; }
+      #menu .q { font-size: 34px; color: var(--gold); margin-bottom: 30px; }
+      #menu .opts { display: flex; gap: 120px; font-size: 40px; padding-left: 60px; position: relative; }
+      #cursor { left: 236px; top: 1072px; font-size: 40px; color: var(--gold); }
+      #ok { left: 610px; top: 870px; font-size: 40px; color: var(--ink); background: #6ee68c; padding: 14px 20px; box-shadow: 6px 6px 0 var(--ink); }
+
+      /* S3 */
+      #badge { left: 80px; top: 130px; width: 920px; height: 170px; padding: 26px 30px; }
+      #badge .h { font-size: 30px; color: var(--gold); }
+      #badge .s { font-size: 24px; margin-top: 20px; line-height: 1.6; }
+      #aki { left: 600px; top: 470px; width: 396px; height: 468px; }
+      #aki img { width: 396px; height: 468px; }
+      #aki-tag { left: 700px; top: 950px; }
+      #stats { left: 60px; top: 960px; width: 600px; height: 270px; padding: 24px 28px; font-size: 26px; line-height: 1.9; }
+      #stats .row { display: flex; justify-content: space-between; }
+      #stats .v { color: var(--gold); }
+      .zz { position: absolute; font-family: "PS2P"; font-size: 44px; color: var(--blue); }
+      #nope { left: 160px; top: 450px; font-size: 54px; color: var(--red); background: var(--white); padding: 16px 22px; border: 6px solid var(--ink); }
+
+      /* S4 */
+      #redtint { background: rgba(200, 10, 30, 0.28); mix-blend-mode: multiply; }
+      #warn { left: 0; top: 200px; width: 1080px; height: 120px; background: var(--gold); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 40px; border-top: 10px solid var(--ink); border-bottom: 10px solid var(--ink); }
+      #hand { left: -600px; top: 640px; width: 480px; height: 224px; }
+      #hand img { width: 480px; height: 224px; }
+      #hp { left: 90px; top: 960px; width: 900px; height: 240px; padding: 26px 30px; }
+      #hp .h { font-size: 28px; display: flex; justify-content: space-between; }
+      #hp .track { margin-top: 26px; width: 830px; height: 60px; border: 6px solid var(--white); background: #2a0a12; }
+      #hp .fill { width: 816px; height: 48px; background: #4ee07a; transform-origin: 0 50%; }
+      #hp .years { color: var(--gold); }
+      #minus { left: 640px; top: 560px; font-size: 64px; color: var(--red); text-shadow: 6px 6px 0 var(--ink); }
+      #noctrl { left: 230px; top: 820px; font-size: 34px; background: var(--red); color: var(--white); padding: 14px 20px; box-shadow: 6px 6px 0 var(--ink); }
+
+      /* S5 */
+      #bighalo { left: 290px; top: 230px; width: 500px; height: 150px; border-radius: 50%; border: 28px solid var(--gold); box-shadow: 0 0 60px 20px rgba(255,210,40,0.6); }
+      .wpn { position: absolute; }
+      #sword { left: 420px; top: 300px; width: 100px; height: 300px; }
+      #lance { left: 560px; top: 280px; width: 110px; height: 440px; }
+      #sword img, #lance img { width: 100%; height: 100%; }
+      #conv { left: 90px; top: 960px; width: 900px; height: 240px; padding: 26px 30px; font-size: 28px; }
+      #conv .r { display: flex; align-items: center; gap: 24px; margin-top: 18px; }
+      #conv .bar { width: 520px; height: 40px; border: 6px solid var(--white); }
+      #conv .bar i { display: block; width: 508px; height: 28px; background: var(--gold); transform-origin: 0 50%; }
+
+      /* S6 */
+      #past { background: linear-gradient(#f2b878, #e08a5a 45%, #3a6a8a 46%, #2a4a6a); }
+      #sun { left: 640px; top: 300px; width: 220px; height: 220px; border-radius: 50%; background: #ffe6a0; }
+      #ground { left: 0; top: 880px; width: 1080px; height: 1040px; background: #c9a26a; }
+      .house { position: absolute; width: 224px; height: 192px; }
+      .house img { width: 224px; height: 192px; }
+      .vil { position: absolute; width: 60px; height: 120px; }
+      .vil img, .grave img { width: 100%; height: 100%; }
+      .grave { position: absolute; width: 72px; height: 96px; }
+      #gray { background: rgba(20, 20, 40, 0.0); }
+      #past-txt { left: 0; top: 190px; width: 1080px; text-align: center; font-size: 36px; color: var(--ink); }
+      #dead { left: 0; top: 330px; width: 1080px; text-align: center; font-family: "Silk"; font-size: 110px; color: var(--red); text-shadow: 8px 8px 0 var(--ink); }
+      #erase { left: 140px; top: 560px; width: 800px; text-align: center; font-size: 46px; color: var(--white); background: var(--ink); padding: 22px; border: 6px solid var(--red); }
+      .rain { position: absolute; width: 6px; height: 40px; background: rgba(170, 200, 255, 0.6); }
+
+      /* S7 */
+      #deepdark { background: radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0.2), rgba(0,0,0,0.92) 70%); }
+      .meye { position: absolute; width: 120px; height: 72px; border-radius: 50%; background: radial-gradient(circle, #1a0a00 0 10px, #ffcf2e 11px 20px, #b07a10 21px 28px, #ffd84a 29px 36px, transparent 37px); }
+      #q { left: 0; top: 900px; width: 1080px; text-align: center; font-size: 140px; color: var(--gold); text-shadow: 8px 8px 0 var(--ink); }
+      #lvl { left: 0; top: 230px; width: 1080px; text-align: center; font-size: 40px; color: var(--blue); }
+
+      /* S8 */
+      #sub { left: 210px; top: 260px; width: 660px; height: 150px; background: var(--red); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 44px; border: 8px solid var(--white); box-shadow: 0 0 0 8px var(--ink), 14px 14px 0 8px rgba(0,0,0,0.5); }
+      #ptr { left: 760px; top: 360px; width: 80px; height: 80px; }
+      #next { left: 90px; top: 520px; width: 900px; height: 640px; padding: 30px; }
+      #next .h { font-size: 32px; color: var(--gold); text-align: center; }
+      #grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+      #grid .c { height: 230px; background: #222a52; border: 6px solid var(--white); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 18px; }
+      #grid .c img { width: 150px; height: auto; max-height: 160px; object-fit: contain; }
+
+      /* captions */
+      #cap { left: 60px; top: 1290px; width: 960px; height: 210px; padding: 26px 34px; }
+      #cap .ln { position: absolute; left: 34px; top: 30px; width: 892px; display: flex; flex-wrap: wrap; gap: 8px 22px; opacity: 0; }
+      #cap .w { font-family: "PS2P"; font-size: 44px; line-height: 1.5; color: var(--white); }
+      #cap .tri { position: absolute; right: 30px; bottom: 18px; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 18px solid var(--gold); }
+      #flash { background: #fff; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1080" data-height="1920">
+      <!-- world (iceberg) -->
+      <div id="worldwrap" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="0">
+        <div id="world"><img src="sprites/iceberg.png" alt="" /></div>
+        <div id="feathers"></div>
+      </div>
+
+      <!-- S1 hook -->
+      <section id="s1" class="scene clip" data-start="{{S1}}" data-duration="{{D1}}" data-track-index="1">
+        <div class="abs shadow" id="t1">L'ICEBERG DES DEMONS</div>
+        <div class="abs" id="t2">CHAINSAW MAN</div>
+        <div class="abs" id="t3"><span class="lbl">NIVEAU 1 · SURFACE</span></div>
+      </section>
+
+      <!-- persistent angel (S1-S5) -->
+      <div id="angel-layer" class="layer clip" data-start="{{S1}}" data-duration="{{ANGEL_DUR}}" data-track-index="2">
+        <div class="abs" id="beam"></div>
+        <div class="abs" id="halo-glow"></div>
+        <div class="abs" id="angel"><img src="sprites/angel.png" alt="" /></div>
+      </div>
+
+      <!-- S2 look -->
+      <section id="s2" class="scene clip" data-start="{{S2}}" data-duration="{{D2}}" data-track-index="3">
+        <div class="tag" id="tg1" style="left:720px;top:260px"><i class="ln" style="width:80px"></i><span class="lbl">AUREOLE</span></div>
+        <div class="tag" id="tg2" style="left:120px;top:520px"><span class="lbl">AILES</span><i class="ln" style="width:110px"></i></div>
+        <div class="tag" id="tg3" style="left:120px;top:640px"><span class="lbl">VISAGE D'ANGE</span><i class="ln" style="width:60px"></i></div>
+        <div class="abs pbox" id="menu"><div class="q">GARCON OU FILLE ?</div><div class="opts"><span>GARCON</span><span>FILLE</span></div></div>
+        <div class="abs" id="cursor">&gt;</div>
+        <div class="abs" id="ok">OK : GARCON</div>
+      </section>
+
+      <!-- S3 public safety -->
+      <section id="s3" class="scene clip" data-start="{{S3}}" data-duration="{{D3}}" data-track-index="3">
+        <div class="abs pbox" id="badge"><div class="h">SECURITE PUBLIQUE</div><div class="s">DIVISION 4 · CHASSEUR DE DEMONS</div></div>
+        <div class="abs" id="aki"><img src="sprites/aki.png" alt="" /></div>
+        <div class="abs lbl" id="aki-tag">AKI</div>
+        <div class="abs" id="nope">BOSSER ?</div>
+        <div class="abs pbox" id="stats">
+          <div class="row" id="st1"><span>MOTIVATION</span><span class="v">3%</span></div>
+          <div class="row" id="st2"><span>GRINCHEUX</span><span class="v">100%</span></div>
+          <div class="row" id="st3"><span>AMOUR HUMAINS</span><span class="v">0</span></div>
+        </div>
+        <div class="zz" id="z1" style="left:560px;top:560px">Z</div><div class="zz" id="z2" style="left:610px;top:500px">Z</div><div class="zz" id="z3" style="left:670px;top:440px">Z</div>
+      </section>
+
+      <!-- S4 touch -->
+      <section id="s4" class="scene clip" data-start="{{S4}}" data-duration="{{D4}}" data-track-index="3">
+        <div class="layer" id="redtint"></div>
+        <div class="abs" id="warn">!! NE PAS TOUCHER !!</div>
+        <div class="abs" id="hand"><img src="sprites/hand.png" alt="" /></div>
+        <div class="abs" id="minus">-60 ANS</div>
+        <div class="abs" id="noctrl">CONTROLE : AUCUN</div>
+        <div class="abs pbox" id="hp"><div class="h"><span>DUREE DE VIE</span><span class="years" id="yrs">80 ANS</span></div><div class="track"><div class="fill" id="hpfill"></div></div></div>
+      </section>
+
+      <!-- S5 weapons -->
+      <section id="s5" class="scene clip" data-start="{{S5}}" data-duration="{{D5}}" data-track-index="3">
+        <div class="abs" id="bighalo"></div>
+        <div class="wpn" id="sword"><img src="sprites/sword.png" alt="" /></div>
+        <div class="wpn" id="lance"><img src="sprites/lance.png" alt="" /></div>
+        <div id="rainw"></div>
+        <div class="abs pbox" id="conv">
+          <div>ANNEES VOLEES ▸ ARMES</div>
+          <div class="r"><span style="width:200px">VIE</span><div class="bar"><i id="cb1"></i></div></div>
+          <div class="r"><span style="width:200px">PUISSANCE</span><div class="bar"><i id="cb2"></i></div></div>
+        </div>
+      </section>
+
+      <!-- S6 past -->
+      <section id="s6" class="scene clip" data-start="{{S6}}" data-duration="{{D6}}" data-track-index="1">
+        <div class="layer" id="past"></div>
+        <div class="abs" id="sun"></div>
+        <div class="abs" id="ground"></div>
+        <div class="house" style="left:60px;top:700px"><img src="sprites/house.png" alt="" /></div>
+        <div class="house" style="left:420px;top:660px"><img src="sprites/house.png" alt="" /></div>
+        <div class="house" style="left:790px;top:720px"><img src="sprites/house.png" alt="" /></div>
+        <div id="vils"></div>
+        <div id="graves"></div>
+        <div class="abs" id="mini-angel" style="left:470px;top:880px;width:180px;height:168px"><img src="sprites/angel.png" alt="" style="width:180px;height:168px" /></div>
+        <div class="layer" id="gray"></div>
+        <div id="rain"></div>
+        <div class="abs" id="past-txt">IL Y A LONGTEMPS...</div>
+        <div class="abs" id="dead">TOUS MORTS.</div>
+        <div class="abs" id="erase">MEMOIRE EFFACEE</div>
+      </section>
+
+      <!-- S7 teaser -->
+      <section id="s7" class="scene clip" data-start="{{S7}}" data-duration="{{D7}}" data-track-index="1">
+        <div class="layer" id="deepdark"></div>
+        <div class="abs" id="lvl">NIVEAU ??? · ABYSSES</div>
+        <div class="meye" id="me1" style="left:380px;top:640px"></div>
+        <div class="meye" id="me2" style="left:580px;top:640px"></div>
+        <div class="abs" id="q">?</div>
+      </section>
+
+      <!-- S8 CTA -->
+      <section id="s8" class="scene clip" data-start="{{S8}}" data-duration="{{D8}}" data-track-index="1">
+        <div class="layer" style="background:rgba(6,8,24,0.75)"></div>
+        <div class="abs" id="sub"><span id="sub1">ABONNE-TOI</span><span id="sub2" style="position:absolute;opacity:0">ABONNE !</span></div>
+        <div class="abs" id="ptr"><svg viewBox="0 0 10 10" width="80" height="80" shape-rendering="crispEdges"><path d="M1 0h1v1h1v1h1v1h1v1h1v1h1v1h-3v1h1v2h-1v-1h-1v-2h-1v1h-1z" fill="#f4f2ee" stroke="#140e1a" stroke-width="0.6" /></svg></div>
+        <div class="abs pbox" id="next">
+          <div class="h">EPISODE 2 : QUEL DEMON ?</div>
+          <div id="grid">
+            <div class="c"><img src="sprites/pochita.png" alt="" /><span>POCHITA</span></div>
+            <div class="c"><img src="sprites/power.png" alt="" /><span>POWER</span></div>
+            <div class="c"><img src="sprites/fox.png" alt="" /><span>RENARD</span></div>
+            <div class="c"><img src="sprites/future.png" alt="" /><span>FUTUR</span></div>
+            <div class="c"><img src="sprites/zombie.png" alt="" /><span>ZOMBIE</span></div>
+            <div class="c"><img src="sprites/gun.png" alt="" /><span>FUSIL</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- captions + fx -->
+      <div id="fx" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="5">
+        <div class="layer" id="flash"></div>
+        <div class="abs pbox" id="cap"><div class="tri" id="tri"></div></div>
+        <div class="abs" id="depth"><div class="bar"></div><div class="mk" id="dmk"></div></div>
+        <div class="scan"></div>
+        <div class="vign"></div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="{{TOTAL}}" data-track-index="9" data-volume="1"></audio>
+    </div>
+
+    <script>
+      const OFF = {{OFF}};
+      const WORDS = {{WORDS}}.filter((w) => w.type === "word").map((w) => ({ t: w.text, s: w.start + OFF, e: w.end + OFF }));
+      const SC = {{SCENES}};
+      const W = (sub, after = 0) => { for (const w of WORDS) if (w.s >= after && w.t.toLowerCase().includes(sub)) return w.s; throw new Error("word " + sub); };
+      function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const tl = gsap.timeline({ paused: true });
+      const S = (i) => SC[i - 1].start, E = (i) => SC[i - 1].start + SC[i - 1].dur;
+      const pop = (sel, t, from = 0) => tl.fromTo(sel, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "back.out(2.5)" }, t);
+      const rise = (sel, t, y = 60) => tl.fromTo(sel, { y, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "steps(5)" }, t);
+      const shake = (sel, t, a = 16, n = 6) => { const r = rng(Math.floor(t * 97)); for (let k = 0; k < n; k++) tl.to(sel, { x: Math.round((r() - 0.5) * 2 * a / 8) * 8, y: Math.round((r() - 0.5) * 2 * a / 8) * 8, duration: 0.05, ease: "none" }, t + k * 0.05); tl.to(sel, { x: 0, y: 0, duration: 0.05 }, t + n * 0.05); };
+      const flash = (t, o = 0.9) => { tl.set("#flash", { opacity: o }, t); tl.to("#flash", { opacity: 0, duration: 0.35, ease: "power2.out" }, t + 0.01); };
+
+      // ---- generated decor
+      { const r = rng(3), f = document.getElementById("feathers"); for (let i = 0; i < 18; i++) { const d = document.createElement("div"); d.className = "feather"; d.id = "fe" + i; d.style.left = Math.round(r() * 1000) + "px"; d.style.top = "-40px"; f.appendChild(d); } }
+      { const v = document.getElementById("vils"), g = document.getElementById("graves"); [[180, 930], [330, 960], [700, 950], [860, 940], [600, 1000]].forEach(([x, y], i) => { v.insertAdjacentHTML("beforeend", `<div class="vil" id="v${i}" style="left:${x}px;top:${y}px"><img src="sprites/villager.png" alt=""></div>`); g.insertAdjacentHTML("beforeend", `<div class="grave" id="g${i}" style="left:${x - 6}px;top:${y + 20}px"><img src="sprites/grave.png" alt=""></div>`); }); }
+      { const r = rng(8), rn = document.getElementById("rain"); for (let i = 0; i < 40; i++) rn.insertAdjacentHTML("beforeend", `<div class="rain" id="rn${i}" style="left:${Math.round(r() * 1060)}px;top:-60px"></div>`); }
+      { const r = rng(12), rw = document.getElementById("rainw"); for (let i = 0; i < 10; i++) rw.insertAdjacentHTML("beforeend", `<div class="wpn rw" id="rw${i}" style="left:${80 + Math.round(r() * 900)}px;top:-320px;width:60px;height:${i % 2 ? 264 : 180}px"><img src="sprites/${i % 2 ? "lance" : "sword"}.png" alt="" style="width:100%;height:100%"></div>`); }
+
+      // ---- captions (RPG box, karaoke)
+      const cap = document.getElementById("cap");
+      const lines = []; let cur = [];
+      WORDS.forEach((w, i) => { if (/^[:?!…»«]+$/.test(w.t)) { if (cur.length) cur[cur.length - 1].t += w.t === "?" || w.t === ":" ? " " + w.t : w.t; return; } cur.push({ ...w }); const txt = cur.map((x) => x.t).join(" "); const end = /[.?!…]$/.test(w.t) || (/,$/.test(w.t) && txt.length > 14); if (end || txt.length > 26 || i === WORDS.length - 1) { lines.push(cur); cur = []; } });
+      if (cur.length) lines.push(cur);
+      if (lines.length > 1 && lines[lines.length - 1].length < 3) { const l = lines.pop(); lines[lines.length - 1].push(...l); }
+      lines.forEach((ln, i) => {
+        const d = document.createElement("div"); d.className = "ln"; d.id = "ln" + i;
+        ln.forEach((w, j) => { const s = document.createElement("span"); s.className = "w"; s.id = `w${i}_${j}`; s.textContent = w.t.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("Œ", "OE"); d.appendChild(s); });
+        cap.appendChild(d);
+        const t0 = ln[0].s - 0.04, t1 = lines[i + 1] ? lines[i + 1][0].s - 0.04 : ln[ln.length - 1].e + 1.2;
+        tl.set("#ln" + i, { opacity: 1 }, t0); tl.set("#ln" + i, { opacity: 0 }, t1);
+        ln.forEach((w, j) => { tl.fromTo(`#w${i}_${j}`, { opacity: 0.25, color: "#f4f2ee" }, { opacity: 1, color: "#ffd228", duration: 0.01 }, w.s); tl.set(`#w${i}_${j}`, { color: "#f4f2ee" }, Math.min(w.e + 0.15, t1)); });
+      });
+      tl.fromTo("#cap", { y: 300 }, { y: 0, duration: 0.3, ease: "steps(6)" }, 0.1);
+      tl.fromTo("#tri", { opacity: 1 }, { opacity: 0, duration: 0.3, repeat: Math.floor({{TOTAL}} / 0.6) - 1, yoyo: true, ease: "steps(1)" }, 0);
+
+      // ---- camera (world) + depth marker
+      tl.fromTo("#world", { y: 0, scale: 1 }, { y: 0, scale: 1, duration: 0.01 }, 0);
+      tl.fromTo("#dmk", { y: 0 }, { y: 0, duration: 0.01 }, 0);
+      tl.fromTo("#depth", { opacity: 0 }, { opacity: 1, duration: 0.3 }, W("niveau"));
+      // "plus on descend" preview: no — keep at surface; zoom slightly into tip for S2
+      tl.to("#world", { scale: 1.35, y: 140, duration: 0.8, ease: "power2.inOut" }, S(2));
+      tl.to("#world", { scale: 1, y: 0, duration: 0.6, ease: "power2.inOut" }, S(3));
+      // S7 dive
+      tl.to("#world", { y: -2400, duration: 2.2, ease: "power2.in" }, S(7));
+      tl.to("#dmk", { y: 520, duration: 2.2, ease: "power2.in" }, S(7));
+      tl.to("#depth", { opacity: 0, duration: 0.3 }, S(8));
+
+      // feathers fall throughout S1-S2
+      for (let i = 0; i < 18; i++) { const r = rng(40 + i); const t = W("ange") + r() * 6; tl.fromTo("#fe" + i, { y: -40, x: 0, rotation: 0 }, { y: 1400 + r() * 300, x: (r() - 0.5) * 300, rotation: (r() - 0.5) * 720, duration: 4 + r() * 3, ease: "none" }, t); }
+
+      // ===== S1
+      tl.fromTo("#t1", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.4, ease: "steps(6)" }, 0.15);
+      tl.fromTo("#t2", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power4.in" }, W("chainsaw") - 0.1);
+      shake("#root", W("chainsaw") + 0.2, 16);
+      pop("#t3", W("niveau") - 0.05);
+      tl.to(["#t1", "#t2", "#t3"], { opacity: 0, y: -60, duration: 0.4, ease: "steps(5)" }, W("beau") - 0.1);
+      // angel descends
+      tl.fromTo("#beam", { opacity: 0, scaleX: 0.2 }, { opacity: 1, scaleX: 1, duration: 0.5, ease: "power2.out" }, W("beau"));
+      tl.fromTo("#angel", { y: -900 }, { y: 0, duration: 1.4, ease: "power2.out" }, W("beau") + 0.2);
+      tl.to("#beam", { opacity: 0.35, duration: 1 }, W("ange") + 0.6);
+      flash(W("ange"), 0.8);
+      tl.fromTo("#halo-glow", { opacity: 0 }, { opacity: 1, duration: 0.4 }, W("ange"));
+      // idle bob for angel (S1-S5)
+      { let t = W("ange") + 0.6; const end = S(6); let k = 0; while (t < end - 0.8) { tl.to("#angel", { y: k % 2 ? 0 : -24, duration: 0.8, ease: "sine.inOut" }, t); t += 0.8; k++; } }
+      tl.to("#halo-glow", { opacity: 0.5, duration: 0.6, repeat: 12, yoyo: true, ease: "sine.inOut" }, W("ange") + 0.5);
+
+      // ===== S2
+      { const tA = W("auréole"), tB = W("ailes"), tC = W("visage");
+        [["#tg1", tA], ["#tg2", tB], ["#tg3", tC]].forEach(([s, t]) => tl.fromTo(s, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "steps(4)" }, t - 0.05));
+        tl.to(["#tg1", "#tg2", "#tg3"], { opacity: 0, duration: 0.2 }, W("garçon") - 0.2);
+        rise("#menu", W("garçon") - 0.2, 80);
+        tl.fromTo("#cursor", { x: 0, opacity: 0 }, { x: 0, opacity: 1, duration: 0.01 }, W("garçon"));
+        // cursor hesitates
+        const xs = [0, 360, 0, 360, 0, 360, 0]; xs.forEach((x, i) => tl.set("#cursor", { x }, W("garçon") + 0.6 + i * 0.4));
+        tl.fromTo("#ok", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, W("garçon", 15) - 0.05);
+        tl.set("#cursor", { x: 0 }, W("garçon", 15) - 0.1);
+        flash(W("garçon", 15), 0.5);
+      }
+
+      // ===== S3
+      { rise("#badge", S(3) + 0.05, -60);
+        tl.to("#angel", { x: -200, scale: 0.8, duration: 0.5, ease: "power2.inOut" }, S(3));
+        tl.to("#halo-glow", { x: -200, scale: 0.8, duration: 0.5, ease: "power2.inOut" }, S(3));
+        tl.to("#beam", { opacity: 0, duration: 0.4 }, S(3));
+        tl.fromTo("#aki", { x: 500 }, { x: 0, duration: 0.4, ease: "steps(6)" }, W("aki") - 0.25);
+        pop("#aki-tag", W("aki"));
+        pop("#nope", W("bosser", 19) - 0.05);
+        tl.to("#nope", { rotation: -8, duration: 0.01 }, W("bosser", 19) + 0.3);
+        tl.to("#nope", { opacity: 0, duration: 0.2 }, W("flemmard") - 0.4);
+        rise("#stats", W("flemmard") - 0.3, 60);
+        tl.fromTo("#st1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, W("flemmard"));
+        tl.fromTo("#st2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, W("râle"));
+        tl.fromTo("#st3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, W("fiche"));
+        ["#z1", "#z2", "#z3"].forEach((z, i) => tl.fromTo(z, { opacity: 0, y: 20 }, { opacity: 1, y: -20, duration: 0.6, repeat: 5, ease: "steps(4)" }, W("flemmard") + i * 0.2));
+      }
+
+      // ===== S4
+      { tl.to("#angel", { x: 0, scale: 1, duration: 0.4 }, S(4)); tl.to("#halo-glow", { x: 0, scale: 1, duration: 0.4 }, S(4));
+        tl.fromTo("#redtint", { opacity: 0 }, { opacity: 1, duration: 0.3 }, S(4));
+        tl.fromTo("#warn", { scaleY: 0 }, { scaleY: 1, duration: 0.2, ease: "steps(4)" }, W("touche") - 0.15);
+        tl.to("#warn", { opacity: 0.3, duration: 0.2, repeat: 9, yoyo: true, ease: "steps(1)" }, W("touche") + 0.2);
+        tl.fromTo("#hand", { x: 0 }, { x: 880, duration: 1, ease: "steps(10)" }, W("contact") - 0.4);
+        flash(W("peau"), 0.9); shake("#root", W("peau"), 24, 8);
+        rise("#hp", W("contact") - 0.2, 60);
+        const hp = { v: 80 }; tl.to(hp, { v: 20, duration: 1.4, ease: "power1.in", onUpdate: () => (document.getElementById("yrs").textContent = Math.round(hp.v) + " ANS") }, W("aspire"));
+        tl.fromTo("#hpfill", { scaleX: 1, backgroundColor: "#4ee07a" }, { scaleX: 0.25, backgroundColor: "#e0283a", duration: 1.4, ease: "power1.in" }, W("aspire"));
+        tl.fromTo("#minus", { opacity: 0, y: 40 }, { opacity: 1, y: -60, duration: 1, ease: "steps(8)" }, W("aspire") + 0.2);
+        tl.to("#minus", { opacity: 0, duration: 0.2 }, W("aspire") + 1.4);
+        pop("#noctrl", W("empêcher") - 0.3);
+      }
+
+      // ===== S5
+      { tl.fromTo("#bighalo", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, S(5) + 0.1);
+        tl.to("#angel", { opacity: 0.35, duration: 0.3 }, S(5) + 0.1);
+        tl.to("#bighalo", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 15, ease: "steps(2)" }, S(5) + 0.5);
+        tl.fromTo("#sword", { y: 120, opacity: 0, scaleY: 0.2 }, { y: 0, opacity: 1, scaleY: 1, duration: 0.35, ease: "back.out(2)" }, W("épées") - 0.1);
+        tl.to("#sword", { rotation: -30, x: -200, duration: 0.6, ease: "power2.out" }, W("épées") + 0.4);
+        tl.fromTo("#lance", { y: 160, opacity: 0, scaleY: 0.2 }, { y: 0, opacity: 1, scaleY: 1, duration: 0.35, ease: "back.out(2)" }, W("lances") - 0.1);
+        tl.to("#lance", { rotation: 25, x: 200, duration: 0.6, ease: "power2.out" }, W("lances") + 0.4);
+        flash(W("épées"), 0.5); flash(W("lances"), 0.5);
+        for (let i = 0; i < 10; i++) { const r = rng(90 + i); tl.fromTo("#rw" + i, { y: 0, rotation: (r() - 0.5) * 30 }, { y: 2300, duration: 1.4 + r() * 0.6, ease: "power2.in" }, W("auréole", 38) + i * 0.15); }
+        rise("#conv", W("plus", 40) - 0.3, 60);
+        tl.fromTo("#cb1", { scaleX: 0.1 }, { scaleX: 1, duration: 1.2, ease: "steps(10)" }, W("prend") - 0.1);
+        tl.fromTo("#cb2", { scaleX: 0.1 }, { scaleX: 1, duration: 1.2, ease: "steps(10)" }, W("puissante") - 0.6);
+        shake("#root", W("puissante"), 14);
+      }
+
+      // ===== S6 past
+      { tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "steps(6)" }, S(6));
+        tl.fromTo("#past-txt", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "steps(8)" }, S(6) + 0.2);
+        for (let i = 0; i < 5; i++) { tl.fromTo("#v" + i, { y: 0 }, { y: -12, duration: 0.3, yoyo: true, repeat: 7, ease: "steps(2)" }, W("village") + i * 0.1); tl.fromTo("#g" + i, { opacity: 0 }, { opacity: 0, duration: 0.01 }, S(6)); }
+        tl.fromTo("#dead", { opacity: 0 }, { opacity: 0, duration: 0.01 }, S(6));
+        tl.fromTo("#erase", { opacity: 0 }, { opacity: 0, duration: 0.01 }, S(6));
+        const tw = W("réveillé");
+        flash(tw - 0.1, 1);
+        tl.set(["#past"], { background: "linear-gradient(#3a3a4a, #2a2a36 45%, #1a2230 46%, #10141e)" }, tw);
+        tl.set("#sun", { opacity: 0 }, tw); tl.set("#ground", { backgroundColor: "#4a4a50" }, tw);
+        tl.set("#past-txt", { opacity: 0 }, tw);
+        for (let i = 0; i < 5; i++) { tl.set("#v" + i, { opacity: 0 }, tw); tl.set("#g" + i, { opacity: 1 }, tw); }
+        tl.set(".house img", { filter: "grayscale(1) brightness(0.55)" }, tw);
+        for (let i = 0; i < 40; i++) { const r = rng(200 + i); tl.fromTo("#rn" + i, { y: 0 }, { y: 2000, duration: 0.8 + r() * 0.4, repeat: 4, ease: "none" }, tw + r() * 0.8); }
+        tl.fromTo("#dead", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.in" }, W("morts") - 0.1);
+        shake("#root", W("morts") + 0.15, 20);
+        tl.fromTo("#erase", { opacity: 0 }, { opacity: 1, duration: 0.01 }, W("souvient") - 0.1);
+        for (let i = 0; i < 8; i++) tl.set("#erase", { x: (i % 2 ? 14 : -14), skewX: (i % 3 - 1) * 12, opacity: i % 3 ? 1 : 0.4 }, W("souvient") + i * 0.09);
+        tl.set("#erase", { x: 0, skewX: 0, opacity: 1 }, W("souvient") + 0.8);
+        tl.set("#mini-angel", { opacity: 0.85 }, tw);
+      }
+
+      // ===== S7 teaser
+      { tl.fromTo("#deepdark", { opacity: 0 }, { opacity: 1, duration: 1.6 }, S(7));
+        rise("#lvl", S(7) + 1.2, -40);
+        tl.fromTo([".meye"], { opacity: 0, scaleY: 0.1 }, { opacity: 1, scaleY: 1, duration: 0.25, ease: "steps(4)" }, W("effacé") - 0.1);
+        tl.to(".meye", { scaleY: 0.1, duration: 0.08, yoyo: true, repeat: 1 }, W("plus", 55) - 0.2);
+        pop("#q", W("iceberg", 55) - 0.2);
+      }
+
+      // ===== S8 CTA
+      { pop("#sub", S(8) + 0.05);
+        tl.fromTo("#ptr", { x: 200, y: 200 }, { x: 0, y: 0, duration: 0.5, ease: "steps(8)" }, S(8) + 0.3);
+        tl.to("#sub", { scale: 0.92, duration: 0.08, yoyo: true, repeat: 1 }, S(8) + 0.85);
+        tl.set("#sub", { backgroundColor: "#555a70" }, S(8) + 0.95); tl.set("#sub1", { opacity: 0 }, S(8) + 0.95); tl.set("#sub2", { opacity: 1 }, S(8) + 0.95);
+        rise("#next", W("commentaire") - 0.3, 80);
+        document.querySelectorAll("#grid .c").forEach((c, i) => tl.fromTo(c, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "steps(3)" }, W("commentaire") + i * 0.12));
+        document.querySelectorAll("#grid .c").forEach((c, i) => tl.to(c, { borderColor: "#ffd228", duration: 0.01, yoyo: true, repeat: 1, repeatDelay: 0.28 }, W("prochain") + i * 0.3));
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

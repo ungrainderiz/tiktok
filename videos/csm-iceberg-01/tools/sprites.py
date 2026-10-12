@@ -316,3 +316,52 @@ if __name__ == "__main__":
     for f in (zombie, pochita, power, makima, fox, future, angel, gun, icons):
         f()
     print("ok")
+
+
+# ---------------- extra sprites for the Angel episode ----------------
+def extras():
+    # Aki (black hair topknot, suit)
+    im, d = canvas(44, 52)
+    d.polygon([(6, 52), (10, 40), (34, 40), (38, 52)], fill=C["nv2"])
+    d.polygon([(17, 40), (22, 50), (27, 40)], fill=C["sh"])
+    d.rectangle([21, 42, 22, 50], fill=C["bk"])
+    d.rectangle([18, 33, 25, 40], fill=C["sk2"])
+    d.ellipse([11, 10, 32, 36], fill=C["sk"])
+    hair = (34, 30, 40, 255)
+    d.pieslice([9, 6, 34, 30], 180, 360, fill=hair)
+    d.polygon([(10, 17), (13, 22), (16, 15), (20, 20), (22, 15), (26, 20), (30, 15), (33, 21), (34, 15), (10, 14)], fill=hair)
+    d.rectangle([9, 14, 12, 24], fill=hair); d.rectangle([31, 14, 34, 24], fill=hair)
+    d.ellipse([18, 0, 25, 7], fill=hair)  # topknot
+    for ex in (14, 25):
+        d.rectangle([ex, 24, ex + 4, 25], fill=C["bu"]); d.line([ex - 1, 23, ex + 5, 22 if ex > 20 else 23], fill=K)
+    d.line([19, 31, 24, 31], fill=C["sk2"])
+    save(im, "aki")
+    # lance
+    im, d = canvas(12, 48)
+    d.polygon([(6, 0), (11, 10), (6, 14), (1, 10)], fill=C["gr3"]); d.line([6, 1, 6, 12], fill=C["wh"])
+    d.rectangle([5, 14, 6, 47], fill=C["ye2"]); d.rectangle([2, 14, 9, 15], fill=C["ye"])
+    save(im, "lance")
+    # hand reaching (pointing right)
+    im, d = canvas(30, 14)
+    d.rectangle([0, 3, 14, 11], fill=C["nv"])
+    d.rectangle([14, 3, 22, 11], fill=C["sk"])
+    d.rectangle([22, 4, 29, 6], fill=C["sk"])
+    d.rectangle([22, 7, 27, 8], fill=C["sk2"]); d.rectangle([22, 9, 26, 10], fill=C["sk2"])
+    save(im, "hand")
+    # villager silhouette
+    im, d = canvas(10, 20)
+    d.ellipse([2, 0, 7, 5], fill=(60, 50, 70, 255)); d.polygon([(1, 20), (2, 7), (7, 7), (8, 20)], fill=(60, 50, 70, 255))
+    save(im, "villager")
+    # grave
+    im, d = canvas(12, 16)
+    d.rectangle([5, 0, 6, 15], fill=(150, 140, 130, 255)); d.rectangle([1, 4, 10, 5], fill=(150, 140, 130, 255))
+    save(im, "grave")
+    # house
+    im, d = canvas(28, 24)
+    d.polygon([(0, 11), (14, 0), (27, 11)], fill=(150, 64, 54, 255))
+    d.rectangle([3, 11, 24, 23], fill=(214, 188, 150, 255))
+    d.rectangle([11, 15, 16, 23], fill=(90, 60, 50, 255)); d.rectangle([5, 14, 8, 17], fill=(255, 220, 120, 255)); d.rectangle([19, 14, 22, 17], fill=(255, 220, 120, 255))
+    save(im, "house")
+
+
+extras()
