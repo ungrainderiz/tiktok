@@ -1,6 +1,6 @@
 # TikTok — BECK : Mongolian Chop Squad
 
-**Fichier :** `renders/beck-tiktok.mp4` — 1080×1920, ~69 s, voix off FR + musique originale (synthétisée, libre de droits).
+**Fichier :** `renders/BECK_tiktok_final.mp4` — 1080×1920, ~69 s, voix off FR + musique originale (synthétisée, libre de droits).
 
 ## Légende à copier
 Cet anime a 20 ans et personne n'en parle 🎸 #beck #mongolianchopsquad #anime #manga #animefr #animerecommendations #rock #madhouse #pourtoi #fyp
