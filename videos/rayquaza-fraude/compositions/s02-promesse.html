@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s02-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s02{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 55%,#173f2c,#0B1F17 72%)}
+</style>
+<div id="s02" data-composition-id="s02" data-width="1080" data-height="1920">
+<style>
+#s02-ray{left:20px;top:520px;width:500px}
+#s02-arrow{left:470px;top:610px;font-size:170px;color:#F4C430;transform-origin:0 50%}
+#s02-chen{left:640px;top:600px;width:380px}
+#s02-txt{left:60px;top:1010px;width:900px;font-size:88px}
+#s02-txt span{display:inline-block}
+#s02-txt .g{color:#7ee08a}
+#s02-ring{left:620px;top:580px;width:420px;height:420px;border-radius:50%;border:10px solid #F4C430;opacity:0}
+</style>
+<img class="px" id="s02-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+<div class="disp" id="s02-arrow">→</div>
+<div class="abs" id="s02-ring"></div>
+<img class="px" id="s02-chen" src="assets/sprites/chenipan.png" alt="Chenipan">
+<div class="disp" id="s02-txt"><span>Doit</span> <span>redevenir</span> <span>un</span> <span class="g">Chenipan</span></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 3.35;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+// Rayquaza (plein cadre en 01) rétrécit vers la gauche
+tl.fromTo("#s02-ray", { x: 160, y: -200, scale: 1.8 }, { x: 0, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 0);
+tl.fromTo("#s02-txt span", { y: 140, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.12 }, W(3.36));
+tl.fromTo("#s02-arrow", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, W(3.7));
+// Chenipan pop sur son nom
+pop("#s02-chen", W(4.2), 0.5);
+tl.fromTo("#s02-ring", { scale: 0.4, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 0.6, ease: "power2.out" }, W(4.2));
+tl.fromTo("#s02-chen", { rotation: -10 }, { rotation: 10, duration: 0.18, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, W(4.75));
+// « prouver » : tout le monde se tend
+tl.to("#s02-ray", { x: -30, duration: 0.15, yoyo: true, repeat: 1 }, W(5.48));
+tl.fromTo("#s02-chen", { y: 0 }, { y: -60, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, W(5.5));
+window.__timelines["s02"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

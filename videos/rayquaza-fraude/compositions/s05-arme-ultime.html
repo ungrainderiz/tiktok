@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s05-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s05{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 70%,#3b1a5a,#120a1c 68%)}
+</style>
+<div id="s05" data-composition-id="s05" data-width="1080" data-height="1920">
+<style>
+#s05-ilya{left:60px;top:410px;font-size:42px;color:#cdb8ff}
+#s05-count{left:60px;top:470px;display:flex;align-items:flex-end;gap:26px;transform-origin:0 100%}
+#s05-n{font-family:"Archivo Black";font-size:220px;line-height:.9;letter-spacing:-.03em;color:#F3F1E4}
+#s05-ans{font-family:"Archivo Black";font-size:96px;color:#cdb8ff}
+#s05-az{left:60px;top:740px;font-size:32px;color:#cdb8ff}
+#s05-weapon{left:240px;top:860px;width:600px;height:600px}
+.s05-ring{position:absolute;left:240px;top:860px;width:600px;height:600px;border-radius:50%;border:12px solid #d6b4ff;opacity:0}
+.s05-mon{position:absolute;width:130px;image-rendering:pixelated}
+#s05-rift{left:0;top:1070px;width:1080px;height:200px;opacity:0;transform-origin:50% 50%}
+#s05-crack{left:0;top:1070px;width:1080px;height:200px}
+</style>
+<div class="cam" id="s05-cam">
+  <div class="pix" id="s05-ilya">IL Y A</div>
+  <div class="abs" id="s05-count"><div class="gstack" id="s05-gs"><span class="gc w s05-num">0</span><span class="gc c s05-num">0</span><span class="gb s05-num" id="s05-n">0</span></div><span id="s05-ans">ANS</span></div>
+  <div class="pix" id="s05-az">AZ ▸ L'ARME ULTIME</div>
+  <div class="s05-ring"></div><div class="s05-ring"></div><div class="s05-ring"></div>
+  <svg class="abs" id="s05-weapon" viewBox="0 0 100 100">
+    <defs><radialGradient id="s05-core-g"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#f2e6ff"/><stop offset="1" stop-color="#b07cff" stop-opacity="0"/></radialGradient></defs>
+    <g id="s05-petals" fill="#b07cff" stroke="#e7d6ff" stroke-width="1">
+      <ellipse cx="50" cy="27" rx="10" ry="22"/><ellipse cx="50" cy="73" rx="10" ry="22"/>
+      <ellipse cx="27" cy="50" rx="22" ry="10"/><ellipse cx="73" cy="50" rx="22" ry="10"/>
+      <ellipse cx="34" cy="34" rx="7" ry="16" transform="rotate(-45 34 34)" fill="#8e5ae6"/><ellipse cx="66" cy="66" rx="7" ry="16" transform="rotate(-45 66 66)" fill="#8e5ae6"/>
+      <ellipse cx="66" cy="34" rx="7" ry="16" transform="rotate(45 66 34)" fill="#8e5ae6"/><ellipse cx="34" cy="66" rx="7" ry="16" transform="rotate(45 34 66)" fill="#8e5ae6"/>
+    </g>
+    <circle id="s05-core" cx="50" cy="50" r="16" fill="url(#s05-core-g)"/>
+  </svg>
+  <img class="s05-mon" src="assets/sprites/foule/zigzaton.png" style="left:190px;top:900px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/goelise.png" style="left:760px;top:880px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/marill.png" style="left:110px;top:1120px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/medhyena.png" style="left:840px;top:1110px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/nirondelle.png" style="left:470px;top:780px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/nenupiot.png" style="left:300px;top:1250px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/tarsal.png" style="left:640px;top:1250px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/grainipiot.png" style="left:40px;top:1000px" alt="">
+  <svg class="abs" id="s05-rift" viewBox="0 0 1080 200" preserveAspectRatio="none"><polygon points="0,100 120,70 240,125 380,60 520,135 660,50 800,130 940,65 1080,105 1080,112 940,140 800,150 660,160 520,145 380,150 240,140 120,130 0,115" fill="#050208" stroke="#d6b4ff" stroke-width="6"/></svg>
+  <svg class="abs" id="s05-crack" viewBox="0 0 1080 200" preserveAspectRatio="none"><polyline pathLength="1" points="0,100 120,70 240,125 380,60 520,135 660,50 800,130 940,65 1080,105" fill="none" stroke="#fff" stroke-width="8" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+</div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 16.75;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+tl.fromTo("#s05-ilya", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 0);
+// compteur qui grossit avec la valeur
+const nums = gsap.utils.toArray(".s05-num");
+const cnt = { v: 0 };
+tl.fromTo("#s05-count", { scale: 0.55, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out" }, W(16.9));
+tl.fromTo(cnt, { v: 0 }, { v: 3000, duration: 0.7, ease: "power2.out", onUpdate: () => {
+  const s = Math.round(cnt.v / 10) * 10;
+  const txt = s >= 1000 ? Math.floor(s / 1000) + " " + String(s % 1000).padStart(3, "0") : String(s);
+  nums.forEach((n) => (n.textContent = txt));
+} }, W(16.9));
+tl.fromTo("#s05-az", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, W(17.76));
+// l'Arme fleurit puis tire
+tl.fromTo("#s05-weapon", { scale: 0, rotation: -120, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "back.out(1.6)" }, W(18.2));
+tl.fromTo("#s05-weapon", { rotation: 0 }, { rotation: 90, duration: 5, ease: "none", immediateRender: false }, W(18.8));
+tl.fromTo("#s05-core", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.8, duration: 0.18, yoyo: true, repeat: 5, ease: "power2.inOut" }, W(18.88));
+gsap.utils.toArray(".s05-ring").forEach((r, i) => {
+  tl.fromTo(r, { scale: 0.2, opacity: 1 }, { scale: 2.6, opacity: 0, duration: 0.9, ease: "power2.out" }, W(18.88) + i * 0.18);
+});
+// des milliers de Pokémon… éjectés
+const mons = gsap.utils.toArray(".s05-mon");
+mons.forEach((m, i) => {
+  tl.fromTo(m, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.5)" }, W(19.6) + i * 0.06);
+  const a = (i / mons.length) * Math.PI * 2 + hash(i) * 0.6;
+  tl.to(m, { x: Math.cos(a) * (520 + hash(i + 9) * 300), y: Math.sin(a) * (520 + hash(i + 4) * 300), rotation: (hash(i + 2) * 2 - 1) * 540, opacity: 0, duration: 0.8, ease: "power2.in" }, W(20.6) + i * 0.03);
+});
+gsap.utils.toArray(".s05-ring").forEach((r, i) => {
+  tl.fromTo(r, { scale: 0.2, opacity: 1 }, { scale: 3, opacity: 0, duration: 0.8, ease: "power2.out", immediateRender: false }, W(20.6) + i * 0.12);
+});
+shake("#s05-cam", W(20.6), 0.5, 20, 5);
+// la réalité se déchire
+tl.to("#s05-crack polyline", { strokeDashoffset: 0, duration: 0.3, ease: "power2.in" }, W(22.84));
+tl.fromTo("#s05-rift", { scaleY: 0, opacity: 1 }, { scaleY: 1, opacity: 1, duration: 0.45, ease: "expo.out" }, W(23.2));
+shake("#s05-cam", W(23.2), 0.8, 34, 6);
+glitch("#s05-gs", W(23.2), 0.6, 18);
+window.__timelines["s05"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

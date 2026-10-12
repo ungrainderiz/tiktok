@@ -47,3 +47,9 @@ Script verbatim (voix off) :
 
 - L'utilisateur ne veut PAS de sons générés par Claude (pas de SFX/musique générés). Seule exception : la voix off ElevenLabs avec sa voix « Mattyang », qu'il a demandée.
 - Sprites officiels uniquement, pas de Pokémon redessinés.
+
+## Customizations
+
+- Voix off : prise 1 retenue (82,8 s) parmi 3 prises ElevenLabs (assets/audio/voix/prise-1..3.mp3) ; timing mot à mot dans transcript.json (ElevenLabs Scribe).
+- Montage généré par tools/build.py à partir de tools/scenes/*.src (scènes + UI de combat + sous-titres).
+- GSAP embarqué localement (assets/vendor/gsap.min.js) car le CDN est bloqué dans l'environnement de rendu.

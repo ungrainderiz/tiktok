@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s13-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s13{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 70%,#3a1d10,#0c0806 72%)}
+</style>
+<div id="s13" data-composition-id="s13" data-width="1080" data-height="1920">
+<style>
+#s13-zoom{position:absolute;inset:0}
+#s13-lbl{left:60px;top:420px;font-size:34px;color:#ffcf9a}
+#s13-met{left:600px;top:380px;width:300px;height:300px}
+#s13-streak{position:absolute;left:150px;top:120px;width:760px;height:60px;background:linear-gradient(90deg,#ffb36bcc,transparent);transform-origin:0 50%;transform:rotate(-52deg);border-radius:30px}
+#s13-fire{position:absolute;inset:0;border-radius:50%;background:radial-gradient(#fff3b0,#ff7a1f 55%,transparent 72%)}
+#s13-dx{position:absolute;left:60px;top:60px;width:180px;image-rendering:pixelated}
+#s13-ray{left:0;top:600px;width:520px}
+.s13-p{position:absolute;left:740px;top:520px;width:26px;height:26px;background:#ffcf4a;opacity:0}
+#s13-boom{position:absolute;inset:0;background:#fff3d0;opacity:0}
+#s13-cry{left:640px;top:960px;width:120px;filter:drop-shadow(0 0 22px #7fffd0)}
+#s13-mark{left:540px;top:900px;width:320px;height:240px}
+#s13-oub{left:560px;top:790px;font-size:90px;color:#F4C430}
+</style>
+<div class="cam" id="s13-cam"><div id="s13-zoom">
+  <div class="pix" id="s13-lbl">DEOXYS N°1</div>
+  <div class="abs" id="s13-met"><div id="s13-streak"></div><div id="s13-fire"></div><img id="s13-dx" src="assets/sprites/deoxys.png" alt="Deoxys"></div>
+  <img class="px" id="s13-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+  <div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div>
+  <div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div><div class="s13-p"></div>
+  <svg class="abs" id="s13-cry" viewBox="0 0 20 30"><polygon points="10,0 20,12 10,30 0,12" fill="#7fffd0" stroke="#fff" stroke-width="1.2"/><polygon points="10,0 14,12 10,30 6,12" fill="#c8fff0" opacity=".7"/></svg>
+  <svg class="abs" id="s13-mark" viewBox="0 0 320 240"><ellipse pathLength="1" cx="160" cy="120" rx="148" ry="106" fill="none" stroke="#F4C430" stroke-width="12" stroke-dasharray="1" stroke-dashoffset="1" transform="rotate(-8 160 120)"/></svg>
+  <div class="disp" id="s13-oub">Oublié</div>
+</div></div>
+<div id="s13-boom"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 62.35;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+tl.fromTo("#s13-lbl", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.4, ease: "steps(10)" }, W(62.3));
+// la météorite tombe (flou de vitesse)
+tl.fromTo("#s13-met", { x: 700, y: -900, filter: "blur(10px)" }, { x: 0, y: 0, filter: "blur(0px)", duration: W(63.84), ease: "power2.in" }, 0);
+tl.fromTo("#s13-boom", { opacity: 0 }, { opacity: 0.8, duration: 0.05 }, W(63.84));
+tl.to("#s13-boom", { opacity: 0, duration: 0.4 }, W(63.9));
+shake("#s13-cam", W(63.84), 0.45, 26, 3);
+tl.fromTo("#s13-fire", { scale: 1 }, { scale: 1.15, duration: 0.12, yoyo: true, repeat: 7, ease: "sine.inOut" }, W(63.9));
+// Rayquaza le détruit
+tl.fromTo("#s13-ray", { x: -700 }, { x: 0, duration: 0.35, ease: "expo.out" }, W(64.8));
+tl.to("#s13-ray", { x: 140, duration: 0.15, yoyo: true, repeat: 1, ease: "power2.out" }, W(65.28));
+tl.to("#s13-met", { scale: 1.8, opacity: 0, duration: 0.3, ease: "power2.out" }, W(65.4));
+tl.fromTo("#s13-boom", { opacity: 0 }, { opacity: 0.9, duration: 0.05, immediateRender: false }, W(65.4));
+tl.to("#s13-boom", { opacity: 0, duration: 0.5 }, W(65.46));
+shake("#s13-cam", W(65.4), 0.5, 30, 5);
+gsap.utils.toArray(".s13-p").forEach((p, i) => {
+  const a = (i / 14) * Math.PI * 2 + hash(i) * 0.4, d = 280 + hash(i + 3) * 260;
+  tl.fromTo(p, { x: 0, y: 0, opacity: 1, rotation: 0 }, { x: Math.cos(a) * d, y: Math.sin(a) * d, opacity: 0, rotation: 360 * hash(i + 7), duration: 0.8, ease: "power3.out" }, W(65.4));
+});
+// … mais oublie le cristal
+pop("#s13-cry", W(66.24), 0.4);
+tl.fromTo("#s13-cry", { rotation: -10 }, { rotation: 10, duration: 0.3, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, W(66.6));
+tl.fromTo("#s13-zoom", { scale: 1, transformOrigin: "700px 1020px" }, { scale: 1.45, duration: 0.6, ease: "power3.inOut" }, W(66.72));
+tl.to("#s13-mark ellipse", { strokeDashoffset: 0, duration: 0.35, ease: "power2.inOut" }, W(67.08));
+tl.fromTo("#s13-oub", { scale: 0, rotation: -20, opacity: 0 }, { scale: 1, rotation: -6, opacity: 1, duration: 0.35, ease: "back.out(2.5)" }, W(67.3));
+window.__timelines["s13"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

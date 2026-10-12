@@ -1,0 +1,118 @@
+@@@ s01
+@bg radial-gradient(circle at 50% 42%,#5a1414 0,#2a0c0c 45%,#120707 78%)
+<style>
+#s01-ghost{left:-120px;top:640px;font-size:430px}
+#s01-ray{left:90px;top:250px;width:900px}
+#s01-top{left:60px;top:300px;font-size:78px}
+#s01-stamp{left:70px;top:770px;font-size:190px;background:#120707b0}
+#s01-leg{left:60px;top:1150px;font-size:82px;color:#F4C430}
+#s01-vig{position:absolute;inset:0;background:radial-gradient(circle,transparent 40%,#ff1e1e 120%);opacity:0}
+</style>
+<div class="ghost" id="s01-ghost">FRAUDE FRAUDE</div>
+<div class="cam" id="s01-cam">
+  <img class="px" id="s01-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+  <div class="disp" id="s01-top">La plus grosse</div>
+  <div class="stamp" id="s01-stamp"><div class="gstack" id="s01-gs"><span class="gc w">FRAUDE</span><span class="gc c">FRAUDE</span><span class="gb">FRAUDE</span></div></div>
+  <div class="disp" id="s01-leg">des légendaires</div>
+</div>
+<div id="s01-vig"></div>
+@@@js
+tl.fromTo("#s01-ghost", { x: 0 }, { x: -520, duration: 3.35, ease: "none" }, 0);
+// zoom brutal sur Rayquaza
+tl.fromTo("#s01-ray", { scale: 2.4, opacity: 0, filter: "brightness(3)" }, { scale: 1, opacity: 1, filter: "brightness(1)", duration: 0.55, ease: "expo.out" }, 0);
+tl.fromTo("#s01-ray", { y: 0 }, { y: -18, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, 0.55);
+tl.fromTo("#s01-top", { x: -700, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, W(1.6));
+// tampon FRAUDE qui s'écrase
+slam("#s01-stamp", W(2.2), 3, -9);
+shake("#s01-cam", W(2.44), 0.35, 26, 2);
+glitch("#s01-gs", W(2.44), 0.45, 14);
+tl.fromTo("#s01-vig", { opacity: 0 }, { opacity: 0.9, duration: 0.05 }, W(2.44));
+tl.to("#s01-vig", { opacity: 0, duration: 0.5 }, W(2.5));
+tl.fromTo("#s01-leg", { y: 120, opacity: 0, rotation: 4 }, { y: 0, opacity: 1, rotation: 0, duration: 0.4, ease: "back.out(2)" }, W(2.6));
+
+@@@ s02
+@bg radial-gradient(circle at 50% 55%,#173f2c,#0B1F17 72%)
+<style>
+#s02-ray{left:20px;top:520px;width:500px}
+#s02-arrow{left:470px;top:610px;font-size:170px;color:#F4C430;transform-origin:0 50%}
+#s02-chen{left:640px;top:600px;width:380px}
+#s02-txt{left:60px;top:1010px;width:900px;font-size:88px}
+#s02-txt span{display:inline-block}
+#s02-txt .g{color:#7ee08a}
+#s02-ring{left:620px;top:580px;width:420px;height:420px;border-radius:50%;border:10px solid #F4C430;opacity:0}
+</style>
+<img class="px" id="s02-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+<div class="disp" id="s02-arrow">→</div>
+<div class="abs" id="s02-ring"></div>
+<img class="px" id="s02-chen" src="assets/sprites/chenipan.png" alt="Chenipan">
+<div class="disp" id="s02-txt"><span>Doit</span> <span>redevenir</span> <span>un</span> <span class="g">Chenipan</span></div>
+@@@js
+// Rayquaza (plein cadre en 01) rétrécit vers la gauche
+tl.fromTo("#s02-ray", { x: 160, y: -200, scale: 1.8 }, { x: 0, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 0);
+tl.fromTo("#s02-txt span", { y: 140, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.12 }, W(3.36));
+tl.fromTo("#s02-arrow", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, W(3.7));
+// Chenipan pop sur son nom
+pop("#s02-chen", W(4.2), 0.5);
+tl.fromTo("#s02-ring", { scale: 0.4, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 0.6, ease: "power2.out" }, W(4.2));
+tl.fromTo("#s02-chen", { rotation: -10 }, { rotation: 10, duration: 0.18, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, W(4.75));
+// « prouver » : tout le monde se tend
+tl.to("#s02-ray", { x: -30, duration: 0.15, yoyo: true, repeat: 1 }, W(5.48));
+tl.fromTo("#s02-chen", { y: 0 }, { y: -60, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, W(5.5));
+
+@@@ s03
+@bg #1a1404
+<style>
+#s03-rays{left:-760px;top:-80px;width:2600px;height:2600px;border-radius:50%;background:repeating-conic-gradient(from 0deg,#4a3808 0 6deg,#1a1404 6deg 12deg)}
+#s03-glow{left:90px;top:520px;width:900px;height:720px;border-radius:50%;background:radial-gradient(#F4C43088,transparent 65%)}
+#s03-earth{left:-220px;top:1480px;width:1520px;height:1520px;border-radius:50%;background:radial-gradient(circle at 40% 25%,#4fa0e8,#1d4f86 55%,#0b2340);box-shadow:0 0 80px #7fd0ff77}
+#s03-ray{left:320px;top:610px;width:440px;filter:drop-shadow(0 0 34px #F4C430)}
+#s03-badge{left:60px;top:420px;font-size:32px;background:#F4C430;color:#10140F;padding:14px 22px}
+#s03-t1{left:60px;top:500px;width:960px;font-size:110px;color:#F4C430}
+#s03-t2{left:60px;top:1075px;font-size:60px;text-shadow:0 6px 0 #000}
+#s03-t3{left:60px;top:1148px;width:980px;font-size:56px;color:#F4C430;text-shadow:0 6px 0 #000}
+.s03-star{position:absolute;color:#ffe9a0;font-size:60px;font-family:"Archivo Black"}
+</style>
+<div class="abs" id="s03-rays"></div>
+<div class="abs" id="s03-glow"></div>
+<div class="abs" id="s03-earth"></div>
+<span data-layout-allow-overlap class="s03-star" style="left:150px;top:860px">✦</span>
+<span data-layout-allow-overlap class="s03-star" style="left:860px;top:760px">✦</span>
+<span data-layout-allow-overlap class="s03-star" style="left:820px;top:1040px">✦</span>
+<span data-layout-allow-overlap class="s03-star" style="left:210px;top:1060px">✦</span>
+<img class="px" id="s03-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+<div class="pix" id="s03-badge">✓ OFFICIEL</div>
+<div class="disp" id="s03-t1">Gardien ultime</div>
+<div class="disp" id="s03-t2">Dieu serpent du ciel</div>
+<div class="disp" id="s03-t3">Protecteur de l'humanité</div>
+@@@js
+tl.fromTo("#s03-rays", { rotation: 0 }, { rotation: 40, duration: 7.7, ease: "none" }, 0);
+tl.fromTo("#s03-earth", { y: 420 }, { y: 0, duration: 1.2, ease: "expo.out" }, 0);
+tl.fromTo("#s03-glow", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 1, ease: "power2.out" }, 0);
+tl.fromTo("#s03-glow", { scale: 1 }, { scale: 1.12, duration: 0.9, yoyo: true, repeat: 6, ease: "sine.inOut", immediateRender: false }, 1);
+tl.fromTo("#s03-ray", { y: 260, opacity: 0, scale: 0.7 }, { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: "expo.out" }, 0.1);
+tl.fromTo("#s03-ray", { y: 0 }, { y: -22, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: 7, immediateRender: false }, 1);
+gsap.utils.toArray(".s03-star").forEach((el, i) => {
+  tl.fromTo(el, { scale: 0, opacity: 0, rotation: 0 }, { scale: 1, opacity: 1, rotation: 90, duration: 0.5, ease: "back.out(3)", yoyo: true, repeat: 5 }, 0.6 + i * 0.35);
+});
+pop("#s03-badge", W(7.84), 0.4);
+tl.fromTo("#s03-t1", { scale: 1.6, opacity: 0, filter: "blur(16px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "power4.out" }, W(8.32));
+tl.fromTo("#s03-t2", { x: -900, opacity: 0 }, { x: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, W(10.4));
+tl.fromTo("#s03-t3", { y: 120, rotation: -6, opacity: 0 }, { y: 0, rotation: 0, opacity: 1, duration: 0.5, ease: "back.out(2)" }, W(12.0));
+
+@@@ s04
+@bg #0a1410
+<style>
+#s04-ok{left:60px;top:470px;font-size:270px}
+#s04-folder{left:70px;top:800px;width:880px;height:420px}
+#s04-tab{position:absolute;left:0;top:-52px;width:320px;height:70px;background:#d9c58a;border-radius:18px 18px 0 0}
+#s04-body{position:absolute;inset:0;background:#d9c58a;border-radius:0 18px 18px 18px;box-shadow:16px 16px 0 #00000088;padding:50px 54px;color:#10140F}
+#s04-num{font-family:"Press Start 2P";font-size:32px}
+#s04-bilan{font-family:"Archivo Black";font-size:150px;line-height:1;margin-top:30px;letter-spacing:-.03em}
+</style>
+<div class="disp" id="s04-ok">OK.</div>
+<div class="abs" id="s04-folder" data-layout-allow-overflow><div id="s04-tab"></div><div id="s04-body"><div id="s04-num">DOSSIER N°384</div><div id="s04-bilan">BILAN</div></div></div>
+@@@js
+// plan fixe : la phrase tombe, rien ne bouge autour
+tl.fromTo("#s04-ok", { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.out" }, W(14.08));
+tl.fromTo("#s04-folder", { y: 1000, rotation: 4 }, { y: 0, rotation: -3, duration: 0.5, ease: "expo.out" }, W(14.88));
+tl.fromTo("#s04-bilan", { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "power4.in" }, W(15.85));

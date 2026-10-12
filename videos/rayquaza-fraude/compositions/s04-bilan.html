@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s04-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s04{position:absolute;inset:0;overflow:hidden;background:#0a1410}
+</style>
+<div id="s04" data-composition-id="s04" data-width="1080" data-height="1920">
+<style>
+#s04-ok{left:60px;top:470px;font-size:270px}
+#s04-folder{left:70px;top:800px;width:880px;height:420px}
+#s04-tab{position:absolute;left:0;top:-52px;width:320px;height:70px;background:#d9c58a;border-radius:18px 18px 0 0}
+#s04-body{position:absolute;inset:0;background:#d9c58a;border-radius:0 18px 18px 18px;box-shadow:16px 16px 0 #00000088;padding:50px 54px;color:#10140F}
+#s04-num{font-family:"Press Start 2P";font-size:32px}
+#s04-bilan{font-family:"Archivo Black";font-size:150px;line-height:1;margin-top:30px;letter-spacing:-.03em}
+</style>
+<div class="disp" id="s04-ok">OK.</div>
+<div class="abs" id="s04-folder" data-layout-allow-overflow><div id="s04-tab"></div><div id="s04-body"><div id="s04-num">DOSSIER N°384</div><div id="s04-bilan">BILAN</div></div></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 14.2;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+// plan fixe : la phrase tombe, rien ne bouge autour
+tl.fromTo("#s04-ok", { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.out" }, W(14.08));
+tl.fromTo("#s04-folder", { y: 1000, rotation: 4 }, { y: 0, rotation: -3, duration: 0.5, ease: "expo.out" }, W(14.88));
+tl.fromTo("#s04-bilan", { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "power4.in" }, W(15.85));
+window.__timelines["s04"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

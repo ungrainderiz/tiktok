@@ -1,0 +1,182 @@
+@@@ s05
+@bg radial-gradient(circle at 50% 70%,#3b1a5a,#120a1c 68%)
+<style>
+#s05-ilya{left:60px;top:410px;font-size:42px;color:#cdb8ff}
+#s05-count{left:60px;top:470px;display:flex;align-items:flex-end;gap:26px;transform-origin:0 100%}
+#s05-n{font-family:"Archivo Black";font-size:220px;line-height:.9;letter-spacing:-.03em;color:#F3F1E4}
+#s05-ans{font-family:"Archivo Black";font-size:96px;color:#cdb8ff}
+#s05-az{left:60px;top:740px;font-size:32px;color:#cdb8ff}
+#s05-weapon{left:240px;top:860px;width:600px;height:600px}
+.s05-ring{position:absolute;left:240px;top:860px;width:600px;height:600px;border-radius:50%;border:12px solid #d6b4ff;opacity:0}
+.s05-mon{position:absolute;width:130px;image-rendering:pixelated}
+#s05-rift{left:0;top:1070px;width:1080px;height:200px;opacity:0;transform-origin:50% 50%}
+#s05-crack{left:0;top:1070px;width:1080px;height:200px}
+</style>
+<div class="cam" id="s05-cam">
+  <div class="pix" id="s05-ilya">IL Y A</div>
+  <div class="abs" id="s05-count"><div class="gstack" id="s05-gs"><span class="gc w s05-num">0</span><span class="gc c s05-num">0</span><span class="gb s05-num" id="s05-n">0</span></div><span id="s05-ans">ANS</span></div>
+  <div class="pix" id="s05-az">AZ ▸ L'ARME ULTIME</div>
+  <div class="s05-ring"></div><div class="s05-ring"></div><div class="s05-ring"></div>
+  <svg class="abs" id="s05-weapon" viewBox="0 0 100 100">
+    <defs><radialGradient id="s05-core-g"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#f2e6ff"/><stop offset="1" stop-color="#b07cff" stop-opacity="0"/></radialGradient></defs>
+    <g id="s05-petals" fill="#b07cff" stroke="#e7d6ff" stroke-width="1">
+      <ellipse cx="50" cy="27" rx="10" ry="22"/><ellipse cx="50" cy="73" rx="10" ry="22"/>
+      <ellipse cx="27" cy="50" rx="22" ry="10"/><ellipse cx="73" cy="50" rx="22" ry="10"/>
+      <ellipse cx="34" cy="34" rx="7" ry="16" transform="rotate(-45 34 34)" fill="#8e5ae6"/><ellipse cx="66" cy="66" rx="7" ry="16" transform="rotate(-45 66 66)" fill="#8e5ae6"/>
+      <ellipse cx="66" cy="34" rx="7" ry="16" transform="rotate(45 66 34)" fill="#8e5ae6"/><ellipse cx="34" cy="66" rx="7" ry="16" transform="rotate(45 34 66)" fill="#8e5ae6"/>
+    </g>
+    <circle id="s05-core" cx="50" cy="50" r="16" fill="url(#s05-core-g)"/>
+  </svg>
+  <img class="s05-mon" src="assets/sprites/foule/zigzaton.png" style="left:190px;top:900px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/goelise.png" style="left:760px;top:880px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/marill.png" style="left:110px;top:1120px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/medhyena.png" style="left:840px;top:1110px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/nirondelle.png" style="left:470px;top:780px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/nenupiot.png" style="left:300px;top:1250px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/tarsal.png" style="left:640px;top:1250px" alt="">
+  <img class="s05-mon" src="assets/sprites/foule/grainipiot.png" style="left:40px;top:1000px" alt="">
+  <svg class="abs" id="s05-rift" viewBox="0 0 1080 200" preserveAspectRatio="none"><polygon points="0,100 120,70 240,125 380,60 520,135 660,50 800,130 940,65 1080,105 1080,112 940,140 800,150 660,160 520,145 380,150 240,140 120,130 0,115" fill="#050208" stroke="#d6b4ff" stroke-width="6"/></svg>
+  <svg class="abs" id="s05-crack" viewBox="0 0 1080 200" preserveAspectRatio="none"><polyline pathLength="1" points="0,100 120,70 240,125 380,60 520,135 660,50 800,130 940,65 1080,105" fill="none" stroke="#fff" stroke-width="8" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+</div>
+@@@js
+tl.fromTo("#s05-ilya", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 0);
+// compteur qui grossit avec la valeur
+const nums = gsap.utils.toArray(".s05-num");
+const cnt = { v: 0 };
+tl.fromTo("#s05-count", { scale: 0.55, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out" }, W(16.9));
+tl.fromTo(cnt, { v: 0 }, { v: 3000, duration: 0.7, ease: "power2.out", onUpdate: () => {
+  const s = Math.round(cnt.v / 10) * 10;
+  const txt = s >= 1000 ? Math.floor(s / 1000) + " " + String(s % 1000).padStart(3, "0") : String(s);
+  nums.forEach((n) => (n.textContent = txt));
+} }, W(16.9));
+tl.fromTo("#s05-az", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, W(17.76));
+// l'Arme fleurit puis tire
+tl.fromTo("#s05-weapon", { scale: 0, rotation: -120, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "back.out(1.6)" }, W(18.2));
+tl.fromTo("#s05-weapon", { rotation: 0 }, { rotation: 90, duration: 5, ease: "none", immediateRender: false }, W(18.8));
+tl.fromTo("#s05-core", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.8, duration: 0.18, yoyo: true, repeat: 5, ease: "power2.inOut" }, W(18.88));
+gsap.utils.toArray(".s05-ring").forEach((r, i) => {
+  tl.fromTo(r, { scale: 0.2, opacity: 1 }, { scale: 2.6, opacity: 0, duration: 0.9, ease: "power2.out" }, W(18.88) + i * 0.18);
+});
+// des milliers de Pokémon… éjectés
+const mons = gsap.utils.toArray(".s05-mon");
+mons.forEach((m, i) => {
+  tl.fromTo(m, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.5)" }, W(19.6) + i * 0.06);
+  const a = (i / mons.length) * Math.PI * 2 + hash(i) * 0.6;
+  tl.to(m, { x: Math.cos(a) * (520 + hash(i + 9) * 300), y: Math.sin(a) * (520 + hash(i + 4) * 300), rotation: (hash(i + 2) * 2 - 1) * 540, opacity: 0, duration: 0.8, ease: "power2.in" }, W(20.6) + i * 0.03);
+});
+gsap.utils.toArray(".s05-ring").forEach((r, i) => {
+  tl.fromTo(r, { scale: 0.2, opacity: 1 }, { scale: 3, opacity: 0, duration: 0.8, ease: "power2.out", immediateRender: false }, W(20.6) + i * 0.12);
+});
+shake("#s05-cam", W(20.6), 0.5, 20, 5);
+// la réalité se déchire
+tl.to("#s05-crack polyline", { strokeDashoffset: 0, duration: 0.3, ease: "power2.in" }, W(22.84));
+tl.fromTo("#s05-rift", { scaleY: 0, opacity: 1 }, { scaleY: 1, opacity: 1, duration: 0.45, ease: "expo.out" }, W(23.2));
+shake("#s05-cam", W(23.2), 0.8, 34, 6);
+glitch("#s05-gs", W(23.2), 0.6, 18);
+
+@@@ s06
+@bg radial-gradient(circle at 50% 46%,#173b4a,#0a1820 70%)
+<style>
+.s06-ring{position:absolute;border:8px dashed #7fd0ff55;border-radius:50%}
+#s06-sweep{left:90px;top:450px;width:900px;height:900px;border-radius:50%;background:conic-gradient(from 0deg,#4fffb066 0deg,#4fffb000 50deg,transparent 360deg)}
+#s06-ghost{left:240px;top:600px;width:600px;filter:brightness(0) invert(1);opacity:.13}
+#s06-q{left:400px;top:560px;font-size:380px;color:#F4C430}
+#s06-stamp{left:150px;top:1050px;font-size:130px;background:#0a1820cc}
+</style>
+<div class="cam" id="s06-cam">
+  <div class="s06-ring" style="left:90px;top:450px;width:900px;height:900px"></div>
+  <div class="s06-ring" style="left:230px;top:590px;width:620px;height:620px"></div>
+  <div class="s06-ring" style="left:370px;top:730px;width:340px;height:340px"></div>
+  <div class="abs" id="s06-sweep"></div>
+  <img class="px" id="s06-ghost" src="assets/sprites/rayquaza.png" alt="">
+  <div class="disp" id="s06-q">?</div>
+  <div class="stamp" id="s06-stamp">Absent</div>
+</div>
+@@@js
+tl.fromTo("#s06-sweep", { rotation: 0 }, { rotation: 540, duration: 2.5, ease: "none" }, 0);
+tl.fromTo("#s06-ghost", { opacity: 0.05 }, { opacity: 0.2, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, 0);
+pop("#s06-q", W(24.6), 0.5);
+tl.fromTo("#s06-q", { rotation: -12 }, { rotation: 12, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, W(25.0));
+slam("#s06-stamp", W(25.7), 3, 6);
+shake("#s06-cam", W(25.94), 0.3, 22, 7);
+
+@@@ s07
+@bg radial-gradient(circle at 50% 60%,#26303a,#0e1216 72%)
+<style>
+#s07-h{left:60px;top:420px;width:960px;font-size:96px}
+#s07-h span{display:inline-block}
+#s07-h .r{color:#E23B3B}
+.s07-leg{position:absolute;width:340px;image-rendering:pixelated}
+.s07-x{position:absolute;font-family:"Archivo Black";font-size:300px;line-height:1;color:#E23B3B;-webkit-text-stroke:10px #0e1216;paint-order:stroke fill}
+.s07-lbl{position:absolute;font-family:"Press Start 2P";font-size:30px;color:#F3F1E4}
+</style>
+<div class="cam" id="s07-cam">
+  <div class="disp" id="s07-h"><span class="r" id="s07-aucun">Aucun</span> <span class="w">légendaire</span> <span class="w">n'a</span> <span class="w">bougé</span></div>
+  <img class="s07-leg" id="s07-arceus" src="assets/sprites/arceus.png" style="left:10px;top:770px" alt="Arceus">
+  <img class="s07-leg" id="s07-dialga" src="assets/sprites/dialga.png" style="left:370px;top:840px" alt="Dialga">
+  <img class="s07-leg" id="s07-palkia" src="assets/sprites/palkia.png" style="left:720px;top:770px" alt="Palkia">
+  <div class="s07-lbl" style="left:90px;top:1120px">ARCEUS</div>
+  <div class="s07-lbl" style="left:455px;top:1190px">DIALGA</div>
+  <div class="s07-lbl" style="left:810px;top:1120px">PALKIA</div>
+  <div class="s07-x" id="s07-x1" style="left:80px;top:790px">✕</div>
+  <div class="s07-x" id="s07-x2" style="left:440px;top:860px">✕</div>
+  <div class="s07-x" id="s07-x3" style="left:790px;top:790px">✕</div>
+</div>
+@@@js
+const legs = ["#s07-arceus", "#s07-dialga", "#s07-palkia"];
+legs.forEach((l, i) => {
+  tl.fromTo(l, { y: -1300 }, { y: 0, duration: 0.7, ease: "bounce.out" }, W(27.84) + i * 0.15);
+  tl.fromTo(l, { y: 0 }, { y: -16, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, W(27.84) + 0.9 + i * 0.2);
+});
+tl.fromTo(".s07-lbl", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.15 }, W(28.3));
+slam("#s07-aucun", W(28.8), 2.8);
+shake("#s07-cam", W(29.04), 0.25, 14, 3);
+tl.fromTo("#s07-h .w", { y: 90, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.12 }, W(29.36));
+[["#s07-x1", 30.8], ["#s07-x2", 31.72], ["#s07-x3", 32.6]].forEach(([x, t], i) => slam(x, W(t), 2.8, -8 + i * 6));
+// « Personne. » : tout le monde s'éteint
+tl.to(".s07-leg", { filter: "grayscale(1) brightness(0.55)", duration: 0.35, ease: "power2.out" }, W(33.44));
+shake("#s07-cam", W(33.44), 0.3, 12, 9);
+
+@@@ s08
+@bg radial-gradient(circle at 50% 55%,#173f2c,#0B1F17 72%)
+<style>
+#s08-autres{left:60px;top:450px;font-size:34px;color:#9fc7b2}
+.s08-leg{position:absolute;top:540px;width:300px;image-rendering:pixelated;filter:grayscale(1) brightness(.55)}
+#s08-zoom{position:absolute;inset:0}
+#s08-card{left:70px;top:430px;width:880px;height:830px;background:#F7F3D9;color:#10140F;padding:50px 54px;box-shadow:18px 18px 0 #00000088}
+#s08-card .k{font-family:"Space Mono";font-size:32px;margin-top:28px}
+#s08-card .t{font-family:"Space Mono";font-weight:700;font-size:38px;letter-spacing:.1em}
+#s08-card .rule{height:8px;background:#10140F;margin-top:20px}
+#s08-poste{font-family:"Archivo Black";font-size:80px;line-height:1.12;letter-spacing:-.03em;text-transform:uppercase;margin-top:12px}
+#s08-hl{background:linear-gradient(#F4C430,#F4C430) no-repeat 0 70%/0% 75%;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 8px}
+#s08-row{display:flex;align-items:center;gap:26px;margin-top:6px}
+#s08-row img{width:190px;image-rendering:pixelated}
+#s08-row span{font-family:"Archivo Black";font-size:78px;text-transform:uppercase;letter-spacing:-.02em}
+</style>
+<div class="pix" id="s08-autres">LES AUTRES :</div>
+<img class="s08-leg" src="assets/sprites/arceus.png" style="left:40px" alt="">
+<img class="s08-leg" src="assets/sprites/dialga.png" style="left:390px" alt="">
+<img class="s08-leg" src="assets/sprites/palkia.png" style="left:740px" alt="">
+<div id="s08-zoom">
+  <div class="abs" id="s08-card">
+    <div class="t">FICHE DE POSTE</div>
+    <div class="rule"></div>
+    <div class="k">POSTE :</div>
+    <div id="s08-poste"><span id="s08-hl">Gardien de la planète</span></div>
+    <div class="k">TITULAIRE :</div>
+    <div id="s08-row"><img src="assets/sprites/rayquaza.png" alt="Rayquaza"><span>Rayquaza</span></div>
+    <div class="k">MISSION : surveiller le ciel</div>
+  </div>
+</div>
+@@@js
+tl.fromTo("#s08-autres", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
+tl.fromTo(".s08-leg", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out", stagger: 0.08 }, W(34.72));
+// « LE gardien » : les autres dégagent, la fiche entre
+tl.to(".s08-leg", { x: -1300, duration: 0.4, ease: "power3.in", stagger: 0.05 }, W(36.7));
+tl.to("#s08-autres", { opacity: 0, duration: 0.2 }, W(36.7));
+tl.fromTo("#s08-card", { x: 1200, rotation: 6 }, { x: 0, rotation: -2, duration: 0.5, ease: "expo.out" }, W(36.95));
+tl.to("#s08-hl", { backgroundSize: "100% 75%", duration: 0.9, ease: "power1.inOut" }, W(37.2));
+tl.fromTo("#s08-row", { scale: 0.4, opacity: 0, transformOrigin: "0% 50%" }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.4)" }, W(38.56));
+tl.fromTo("#s08-row img", { rotation: -15 }, { rotation: 15, duration: 0.14, yoyo: true, repeat: 3, ease: "sine.inOut" }, W(39.2));
+// zoom sur la ligne surlignée
+tl.fromTo("#s08-zoom", { scale: 1, transformOrigin: "420px 1180px" }, { scale: 1.2, duration: 0.8, ease: "power3.inOut" }, W(40.04));

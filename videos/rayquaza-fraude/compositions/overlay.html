@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="overlay-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#overlay{position:absolute;inset:0;overflow:hidden;background:transparent}
+</style>
+<div id="overlay" data-composition-id="overlay" data-width="1080" data-height="1920">
+<style>
+#ov-hud{left:54px;top:150px;width:760px;height:227px;opacity:0}
+#ov-hudbox{position:absolute;inset:0;background:#F7F3D9;border:12px solid #384838;border-radius:26px 26px 26px 0;box-shadow:13px 13px 0 #00000066;color:#384838;padding:22px 34px}
+#ov-hudbox .nm{font-family:"Press Start 2P";font-size:42px;display:flex;justify-content:space-between}
+#ov-hudbox .bar{margin-top:26px;display:flex;align-items:center;gap:16px}
+#ov-hudbox .bar i{font-family:"Press Start 2P";font-style:normal;font-size:23px;background:#384838;color:#F4C430;padding:6px 10px;border-radius:8px}
+#ov-track{flex:1;height:36px;background:#506850;border:7px solid #384838;border-radius:18px;overflow:hidden}
+#ov-fill{width:100%;height:100%;background:#58D080;transform-origin:0 50%}
+#ov-num{font-family:"Press Start 2P";font-size:28px;text-align:right;margin-top:12px}
+.ov-dlg{position:absolute;left:40px;width:1000px;background:#284860;border:11px solid #C8A048;border-radius:22px;box-shadow:inset 0 0 0 10px #F8F8F8;padding:36px 52px;font-family:"Press Start 2P";color:#fff;opacity:0}
+.ov-dlg span{display:block;white-space:nowrap;font-size:38px;line-height:1.55;clip-path:inset(0 100% 0 0)}
+#ov-dlg{top:405px;height:200px}
+#ov-ko{top:1320px;height:210px}
+#ov-flash{position:absolute;inset:0;background:#fff;opacity:0}
+</style>
+<div class="abs" id="ov-hud"><div id="ov-hudbox">
+  <div class="nm"><span>RAYQUAZA</span><span>N.70</span></div>
+  <div class="bar"><i>CRÉDIB.</i><div id="ov-track"><div id="ov-fill"></div></div></div>
+  <div id="ov-num">100/100</div>
+</div></div>
+<div class="ov-dlg" id="ov-dlg"><span id="ov-dlg-t">C'est super efficace !</span></div>
+<div class="ov-dlg" id="ov-ko"><span id="ov-ko-t">RAYQUAZA est K.O. !</span></div>
+<div id="ov-flash"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 0;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+// HUD de combat : entre sur « prouver »
+tl.fromTo("#ov-hud", { y: -320, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "back.out(1.6)" }, W(5.48));
+
+// barre CRÉDIBILITÉ : chaque preuve = une attaque
+const HITS = [
+  [W(26.0), 80], [W(41.12), 62], [W(56.64), 40], [W(67.3), 22], [W(77.3), 5], [W(82.15), 0],
+];
+const color = (v) => (v > 50 ? "#58D080" : v >= 25 ? "#F8D030" : "#F05030");
+const hp = { v: 100 };
+const num = document.getElementById("ov-num");
+let prev = 100;
+HITS.forEach(([t, v], i) => {
+  shake("#ov-hudbox", t, 0.4, 16, i + 3);
+  tl.to("#ov-fill", { opacity: 0.25, duration: 0.06, yoyo: true, repeat: 5, ease: "none" }, t);
+  tl.to("#ov-fill", { scaleX: v / 100, backgroundColor: color(v), duration: 0.7, ease: "power2.out" }, t + 0.1);
+  tl.fromTo(hp, { v: prev }, { v, duration: 0.7, ease: "power2.out", immediateRender: false,
+    onUpdate: () => { num.textContent = Math.round(hp.v) + "/100"; } }, t + 0.1);
+  prev = v;
+  if (i < 5) {
+    // « C'est super efficace ! » sous l'UI
+    tl.fromTo("#ov-dlg", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out", immediateRender: i === 0 }, t + 0.12);
+    tl.fromTo("#ov-dlg-t", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.45, ease: "steps(22)", immediateRender: i === 0 }, t + 0.2);
+    tl.to("#ov-dlg", { opacity: 0, duration: 0.12 }, t + 1.35);
+  }
+});
+
+// K.O. final (zone des sous-titres libérée)
+tl.fromTo("#ov-ko", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.15 }, 83.15);
+tl.fromTo("#ov-ko-t", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "steps(19)" }, 83.25);
+tl.to("#ov-ko", { opacity: 0, duration: 0.15 }, 85.0);
+// l'UI disparaît pendant l'anti-évolution
+tl.to("#ov-hud", { opacity: 0, y: -80, duration: 0.4, ease: "power2.in" }, 84.9);
+
+// flashs blancs « début de combat » entre les actes
+[6.5, 42.0, 57.2].forEach((t) => {
+  tl.set("#ov-flash", { opacity: 1 }, t - 0.04);
+  tl.to("#ov-flash", { opacity: 0, duration: 0.42, ease: "power2.out" }, t + 0.03);
+});
+window.__timelines["overlay"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

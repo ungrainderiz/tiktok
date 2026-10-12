@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s14-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s14{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#2a0d0d,#5a1a0a 66%,#1a0a06)}
+</style>
+<div id="s14" data-composition-id="s14" data-width="1080" data-height="1920">
+<style>
+#s14-lbl{left:60px;top:420px;font-size:30px;color:#ffcf9a}
+#s14-city{position:absolute;inset:0}
+.s14-b{position:absolute;background:#1c0a0a repeating-linear-gradient(0deg,transparent 0 34px,#ffcf6b33 34px 46px);border-top:6px solid #3a1414}
+#s14-dx{left:800px;top:500px;width:220px}
+#s14-dxl{left:760px;top:460px;font-size:26px;color:#F4C430}
+#s14-ray{left:160px;top:560px;width:640px}
+.s14-line{position:absolute;left:0;width:1080px;height:8px;background:#ffffff66;opacity:0}
+#s14-title{left:60px;top:430px;font-size:84px}
+#s14-stamp{left:110px;top:1080px;font-size:130px;background:#1a0a06cc}
+#s14-red{position:absolute;inset:0;background:#ff2a1a;opacity:0}
+</style>
+<div class="cam" id="s14-cam">
+  <div class="pix" id="s14-lbl">QUELQUES ANNÉES PLUS TARD…</div>
+  <div id="s14-city">
+    <div class="s14-b" style="left:10px;top:900px;width:130px;height:380px"></div>
+    <div class="s14-b" style="left:150px;top:760px;width:160px;height:520px"></div>
+    <div class="s14-b" style="left:320px;top:960px;width:110px;height:320px"></div>
+    <div class="s14-b" style="left:440px;top:820px;width:180px;height:460px"></div>
+    <div class="s14-b" style="left:630px;top:930px;width:130px;height:350px"></div>
+    <div class="s14-b" style="left:770px;top:780px;width:170px;height:500px"></div>
+    <div class="s14-b" style="left:950px;top:880px;width:120px;height:400px"></div>
+  </div>
+  <div class="pix" id="s14-dxl">DEOXYS N°2</div>
+  <img class="px" id="s14-dx" src="assets/sprites/deoxys-attaque.png" alt="Deoxys">
+  <div class="s14-line" style="top:640px"></div><div class="s14-line" style="top:760px"></div><div class="s14-line" style="top:880px"></div><div class="s14-line" style="top:1000px"></div>
+  <img class="px" id="s14-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+  <div class="disp" id="s14-title">Larousse City</div>
+  <div class="stamp" id="s14-stamp">Ravagée</div>
+</div>
+<div id="s14-red"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 68.15;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+tl.fromTo("#s14-lbl", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.6, ease: "steps(26)" }, 0.05);
+tl.fromTo("#s14-city", { y: 300 }, { y: 0, duration: 0.8, ease: "expo.out" }, 0);
+pop("#s14-dx", W(69.92), 0.4);
+pop("#s14-dxl", W(69.92), 0.3);
+tl.fromTo("#s14-dx", { y: 0 }, { y: -20, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, W(70.32));
+// Rayquaza arrive en furie
+tl.fromTo("#s14-ray", { x: -1400, y: 500, rotation: -32, filter: "blur(18px)" }, { x: 0, y: 0, rotation: -14, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, W(71.12));
+gsap.utils.toArray(".s14-line").forEach((l, i) => {
+  tl.fromTo(l, { x: -1100, opacity: 0.9 }, { x: 1100, opacity: 0, duration: 0.35, ease: "power2.in" }, W(71.12) + i * 0.04);
+});
+tl.to(["#s14-dx", "#s14-dxl"], { x: 600, opacity: 0, duration: 0.3, ease: "power3.in" }, W(71.4));
+tl.to("#s14-lbl", { opacity: 0, duration: 0.2 }, W(71.4));
+shake("#s14-cam", W(71.5), 0.4, 22, 2);
+// ravage
+gsap.utils.toArray(".s14-b").forEach((b, i) => {
+  tl.to(b, { y: 180 + hash(i) * 320, rotation: (hash(i + 5) * 2 - 1) * 22, duration: 0.6, ease: "power2.in" }, W(72.72) + i * 0.06);
+});
+shake("#s14-cam", W(72.72), 1.2, 30, 4);
+tl.fromTo("#s14-red", { opacity: 0 }, { opacity: 0.55, duration: 0.05 }, W(72.72));
+tl.to("#s14-red", { opacity: 0, duration: 0.5 }, W(72.8));
+tl.fromTo("#s14-title", { x: -900, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, W(73.1));
+slam("#s14-stamp", W(73.7), 3, -7);
+shake("#s14-cam", W(73.94), 0.3, 20, 8);
+window.__timelines["s14"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s09-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s09{position:absolute;inset:0;overflow:hidden;background:#0B1F17}
+</style>
+<div id="s09" data-composition-id="s09" data-width="1080" data-height="1920">
+<style>
+#s09-red{position:absolute;inset:0;background:radial-gradient(circle at 25% 25%,#a3260b,#5c1206 60%);clip-path:polygon(0 0,100% 0,100% 40%,0 64%)}
+#s09-blue{position:absolute;inset:0;background:radial-gradient(circle at 75% 75%,#1350b0,#06275c 60%);clip-path:polygon(0 64%,100% 40%,100% 100%,0 100%)}
+#s09-g1{left:-60px;top:250px;font-size:300px;opacity:.1}
+#s09-g2{left:-40px;top:1380px;font-size:300px;opacity:.1}
+#s09-groudon{left:-10px;top:330px;width:600px;filter:drop-shadow(0 0 30px #ff5a1f)}
+#s09-kyogre{left:470px;top:860px;width:600px;filter:drop-shadow(0 0 30px #3fa9ff)}
+#s09-earth{left:430px;top:770px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 38% 30%,#6cc47a,#2a6f8f 58%,#0b2340);box-shadow:0 0 0 10px #ffffff33}
+#s09-dry,#s09-wet{position:absolute;inset:0;border-radius:50%;opacity:0}
+#s09-dry{background:radial-gradient(circle at 38% 30%,#ffcf6b,#c2410c 70%)}
+#s09-wet{background:radial-gradient(circle at 38% 30%,#7fd0ff,#0b3a8a 70%)}
+#s09-t1{left:560px;top:480px;width:480px;font-size:64px;color:#ffc9a8;text-shadow:0 6px 0 #000}
+#s09-t2{left:60px;top:1040px;width:420px;font-size:64px;color:#bfe3ff;text-shadow:0 6px 0 #000}
+</style>
+<div class="cam" id="s09-cam">
+  <div id="s09-red"></div><div id="s09-blue"></div>
+  <div class="ghost" id="s09-g1">LAVE</div><div class="ghost" id="s09-g2">DÉLUGE</div>
+  <img class="px" id="s09-groudon" src="assets/sprites/primo-groudon.png" alt="Primo-Groudon">
+  <img class="px" id="s09-kyogre" src="assets/sprites/primo-kyogre.png" alt="Primo-Kyogre">
+  <div class="abs" id="s09-earth"><div id="s09-dry"></div><div id="s09-wet"></div></div>
+  <div class="disp" id="s09-t1">Assécher les océans</div>
+  <div class="disp" id="s09-t2">Noyer la planète</div>
+</div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 42.0;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+tl.fromTo("#s09-red", { x: -1100 }, { x: 0, duration: 0.35, ease: "expo.out" }, 0);
+tl.fromTo("#s09-blue", { x: 1100 }, { x: 0, duration: 0.35, ease: "expo.out" }, 0);
+tl.fromTo("#s09-g1", { x: 0 }, { x: -300, duration: 4.2, ease: "none" }, 0);
+tl.fromTo("#s09-g2", { x: -300 }, { x: 0, duration: 4.2, ease: "none" }, 0);
+tl.fromTo("#s09-earth", { scale: 0, rotation: 0 }, { scale: 1, rotation: 20, duration: 0.5, ease: "back.out(2)" }, 0.2);
+tl.fromTo("#s09-groudon", { x: -700 }, { x: 0, duration: 0.4, ease: "expo.out" }, W(41.92));
+shake("#s09-cam", W(42.2), 0.3, 18, 2);
+tl.fromTo("#s09-kyogre", { x: 700 }, { x: 0, duration: 0.4, ease: "expo.out" }, W(42.72));
+shake("#s09-cam", W(43.0), 0.3, 18, 4);
+tl.fromTo("#s09-groudon", { y: 0 }, { y: -18, duration: 0.5, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, W(42.4));
+tl.fromTo("#s09-kyogre", { y: 0 }, { y: 18, duration: 0.5, yoyo: true, repeat: 4, ease: "sine.inOut", immediateRender: false }, W(43.2));
+tl.fromTo("#s09-t1", { scale: 1.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power4.out" }, W(43.76));
+tl.to("#s09-dry", { opacity: 0.85, duration: 0.4 }, W(43.76));
+tl.fromTo("#s09-t2", { scale: 1.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power4.out" }, W(44.88));
+tl.to("#s09-dry", { opacity: 0, duration: 0.3 }, W(44.88));
+tl.to("#s09-wet", { opacity: 0.9, duration: 0.4 }, W(44.88));
+tl.to("#s09-earth", { rotation: -20, duration: 0.12, yoyo: true, repeat: 7, ease: "sine.inOut" }, W(43.8));
+window.__timelines["s09"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

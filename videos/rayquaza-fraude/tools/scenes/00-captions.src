@@ -1,0 +1,45 @@
+@@@ captions
+@bg transparent
+<style>
+#cap-wrap{position:absolute;left:60px;top:1290px;width:860px;height:240px}
+.cc{position:absolute;left:0;right:0;top:0;text-align:center;font-family:"Archivo Black";font-size:76px;line-height:1.08;text-transform:uppercase;color:#fff;-webkit-text-stroke:13px #0a0a0a;paint-order:stroke fill;opacity:0}
+.cw{display:inline-block}
+.cw + .cw{margin-left:.16em}
+</style>
+<div id="cap-wrap"></div>
+@@@js
+const WORDS = __WORDS__;
+const wrapEl = document.getElementById("cap-wrap");
+const chunks = [];
+let cur = null;
+WORDS.forEach((w, i) => {
+  const p = WORDS[i - 1];
+  const len = cur ? cur.w.map((x) => x.t).join(" ").length : 0;
+  const brk = !cur || cur.w.length >= 3 || /[.,?!…:]$/.test(p.t) || w.s - p.e > 0.35 || len + w.t.length > 19;
+  if (brk) { cur = { w: [] }; chunks.push(cur); }
+  cur.w.push(w);
+});
+chunks.forEach((c, ci) => {
+  const div = document.createElement("div");
+  div.className = "cc";
+  div.id = "cc-" + ci;
+  c.w.forEach((w, wi) => {
+    const sp = document.createElement("span");
+    sp.className = "cw";
+    sp.id = `cw-${ci}-${wi}`;
+    sp.textContent = w.t.replace(/[.,…]+$/, "");
+    if (wi) div.appendChild(document.createTextNode(" "));
+    div.appendChild(sp);
+  });
+  wrapEl.appendChild(div);
+  const start = c.w[0].s - 0.04;
+  const next = chunks[ci + 1];
+  const end = next ? next.w[0].s - 0.04 : c.w[c.w.length - 1].e + 0.35;
+  tl.fromTo(div, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.5)" }, start);
+  tl.set(div, { opacity: 0 }, end);
+  c.w.forEach((w, wi) => {
+    const sp = document.getElementById(`cw-${ci}-${wi}`);
+    tl.fromTo(sp, { color: "#ffffff", scale: 1 }, { color: "#F4C430", scale: 1.12, duration: 0.08, ease: "power2.out" }, w.s);
+    tl.to(sp, { scale: 1, duration: 0.1 }, Math.max(w.e, w.s + 0.1));
+  });
+});

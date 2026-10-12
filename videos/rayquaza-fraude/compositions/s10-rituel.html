@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s10-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s10{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 45%,#2a1010,#100808 72%)}
+</style>
+<div id="s10" data-composition-id="s10" data-width="1080" data-height="1920">
+<style>
+#s10-flash{position:absolute;inset:0;background:radial-gradient(circle,#E23B3B,#5a0d0d 70%);opacity:0}
+#s10-q{left:60px;top:420px;width:960px;font-size:64px;color:#d9cfc0}
+#s10-q span{display:inline-block}
+#s10-non{left:40px;top:560px;font-size:320px;color:#E23B3B}
+#s10-list{left:80px;top:940px;font-family:"Archivo Black";font-size:72px;line-height:1.45;text-transform:uppercase;color:#F3F1E4}
+.s10-li{position:relative;display:flex;align-items:center;gap:26px}
+.s10-box{position:relative;width:64px;height:64px;border:8px solid #F3F1E4;border-radius:8px}
+.s10-chk{position:absolute;left:-4px;top:-46px;font-size:96px;color:#7ee08a;opacity:0}
+</style>
+<div id="s10-flash"></div>
+<div class="cam" id="s10-cam">
+  <div class="disp" id="s10-q"><span>Il</span> <span>intervient</span> <span>de</span> <span>lui-même</span> <span>?</span></div>
+  <div class="disp" id="s10-non">NON.</div>
+  <div class="abs" id="s10-list">
+    <div class="s10-li"><div class="s10-box"><span class="s10-chk">✓</span></div>Prier</div>
+    <div class="s10-li"><div class="s10-box"><span class="s10-chk">✓</span></div>Supplier</div>
+    <div class="s10-li"><div class="s10-box"><span class="s10-chk">✓</span></div>Tout le rituel</div>
+  </div>
+</div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 46.2;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+tl.fromTo("#s10-q span", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "back.out(2)", stagger: 0.1 }, W(46.4));
+slam("#s10-non", W(48.1), 3);
+shake("#s10-cam", W(48.34), 0.45, 30, 3);
+tl.fromTo("#s10-flash", { opacity: 0 }, { opacity: 0.9, duration: 0.05 }, W(48.34));
+tl.to("#s10-flash", { opacity: 0, duration: 0.6, ease: "power2.out" }, W(48.4));
+const rows = gsap.utils.toArray(".s10-li");
+const chks = gsap.utils.toArray(".s10-chk");
+[49.64, 50.28, 50.84].forEach((t, i) => {
+  tl.fromTo(rows[i], { x: -700, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, W(t) - 0.1);
+  pop(chks[i], W(t) + 0.15, 0.3);
+});
+// « rituel… » : la liste tremble d'impatience
+tl.fromTo("#s10-list", { rotation: 0 }, { rotation: -1.5, duration: 0.1, yoyo: true, repeat: 5, ease: "sine.inOut" }, W(51.5));
+window.__timelines["s10"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

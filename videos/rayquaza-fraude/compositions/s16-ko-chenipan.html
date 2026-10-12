@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s16-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s16{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 46%,#173f2c,#0B1F17 72%)}
+</style>
+<div id="s16" data-composition-id="s16" data-width="1080" data-height="1920">
+<style>
+#s16-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,#ffffff 0,#d8fff0 16%,#1e8a55 42%,#0B1F17 72%);opacity:0}
+#s16-q{left:60px;top:660px;width:960px;font-size:84px}
+.s16-dx{position:absolute;top:380px;width:240px;image-rendering:pixelated}
+#s16-ray{left:290px;top:940px;width:500px}
+#s16-chen{left:350px;top:890px;width:380px;opacity:0}
+.s16-r{position:absolute;width:170px;height:147px}
+.s16-r svg{width:100%;height:100%;display:block}
+#s16-flash{position:absolute;inset:0;background:#fff;opacity:0}
+#s16-end{left:40px;top:1300px;width:1000px;text-align:center;white-space:nowrap;font-size:64px;-webkit-text-stroke:12px #0a0a0a;paint-order:stroke fill}
+#s16-end .g{color:#9df07a}#s16-end .a{color:#F4C430}
+#s16-cl{left:40px;top:1400px;width:1000px;text-align:center;font-size:40px;color:#F4C430}
+</style>
+<div id="s16-glow"></div>
+<div class="cam" id="s16-cam">
+  <img class="s16-dx" src="assets/sprites/deoxys.png" style="left:20px" alt="Deoxys">
+  <img class="s16-dx" src="assets/sprites/deoxys-attaque.png" style="left:280px" alt="Deoxys Attaque">
+  <img class="s16-dx" src="assets/sprites/deoxys-defense.png" style="left:540px" alt="Deoxys Défense">
+  <img class="s16-dx" src="assets/sprites/deoxys-vitesse.png" style="left:800px" alt="Deoxys Vitesse">
+  <div class="disp" id="s16-q">Qui vient le sauver ?</div>
+  <img class="px" id="s16-ray" src="assets/sprites/rayquaza.png" alt="Rayquaza">
+  <img class="px" id="s16-chen" src="assets/sprites/chenipan.png" alt="Chenipan">
+  <div id="s16-pile"></div>
+  <div class="disp" id="s16-end">Rayquaza <span class="a">→</span> <span class="g">Chenipan</span></div>
+  <div class="pix" id="s16-cl">AFFAIRE CLASSÉE.</div>
+</div>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="s16-bot" viewBox="0 0 15 13" shape-rendering="crispEdges">
+  <rect x="7" y="0" width="1" height="2" fill="#c9d1d9"/><rect x="3" y="2" width="9" height="5" fill="#8b949e"/><rect x="4" y="3" width="2" height="2" fill="#ff3b3b"/><rect x="9" y="3" width="2" height="2" fill="#ff3b3b"/>
+  <rect x="1" y="7" width="13" height="6" fill="#6e7681"/><rect x="0" y="8" width="1" height="3" fill="#484f58"/><rect x="14" y="8" width="1" height="3" fill="#484f58"/><rect x="5" y="9" width="5" height="2" fill="#30363d"/>
+</symbol></defs></svg>
+<div id="s16-flash"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 78.2;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+// la pile de robots recouvre encore Rayquaza
+const pile = document.getElementById("s16-pile");
+const SPOTS = [[200, 1120], [370, 1100], [540, 1110], [710, 1120], [280, 980], [450, 970], [620, 980], [370, 850], [540, 860]];
+const bots = SPOTS.map(([x, y], i) => {
+  const d = document.createElement("div");
+  d.className = "s16-r";
+  d.style.left = x + "px";
+  d.style.top = y + "px";
+  d.innerHTML = '<svg viewBox="0 0 15 13"><use href="#s16-bot"/></svg>';
+  pile.appendChild(d);
+  return d;
+});
+tl.fromTo("#s16-q", { scale: 1.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power4.out" }, W(78.7));
+tl.to("#s16-q", { opacity: 0, y: -40, duration: 0.25 }, W(80.8));
+// les Deoxys arrivent en formation
+gsap.utils.toArray(".s16-dx").forEach((d, i) => {
+  tl.fromTo(d, { y: -900 }, { y: 0, duration: 0.45, ease: "back.out(1.5)" }, W(79.9) + i * 0.1);
+  tl.fromTo(d, { y: 0 }, { y: -18, duration: 0.4, yoyo: true, repeat: 9, ease: "sine.inOut", immediateRender: false }, W(80.5) + i * 0.08);
+});
+// … et le sortent des robots
+bots.forEach((b, i) => {
+  const dir = SPOTS[i][0] < 540 ? -1 : 1;
+  tl.to(b, { x: dir * (700 + hash(i) * 300), y: -900 - hash(i + 2) * 500, rotation: dir * 360 * hash(i + 4), duration: 0.6, ease: "power2.in" }, W(80.9) + i * 0.04);
+});
+tl.fromTo("#s16-ray", { y: 0 }, { y: -180, duration: 0.6, ease: "back.out(1.6)" }, W(81.2));
+// PV 0 → K.O.
+tl.to("#s16-ray", { y: -110, duration: 0.3, ease: "power2.in" }, G(82.5));
+tl.fromTo("#s16-ray", { opacity: 1 }, { opacity: 0.35, duration: 0.07, yoyo: true, repeat: 5, ease: "none" }, G(82.5));
+tl.to(".s16-dx", { opacity: 0.35, duration: 0.6 }, G(83.4));
+// anti-évolution : silhouette blanche qui alterne Rayquaza / Chenipan
+tl.to("#s16-glow", { opacity: 1, duration: 0.8, ease: "power2.inOut" }, G(83.4));
+tl.to("#s16-ray", { filter: "brightness(0) invert(1)", duration: 0.4 }, G(83.6));
+tl.set("#s16-chen", { filter: "brightness(0) invert(1)" }, G(83.6));
+const SWAPS = [84.0, 84.35, 84.65, 84.9, 85.1, 85.26, 85.38, 85.48, 85.56, 85.62];
+SWAPS.forEach((t, i) => {
+  const chen = i % 2 === 0;
+  tl.set("#s16-ray", { opacity: chen ? 0 : 1 }, G(t));
+  tl.set("#s16-chen", { opacity: chen ? 1 : 0 }, G(t));
+});
+tl.set("#s16-ray", { opacity: 0 }, G(85.66));
+tl.set("#s16-chen", { opacity: 1 }, G(85.66));
+tl.fromTo("#s16-flash", { opacity: 0 }, { opacity: 1, duration: 0.05 }, G(85.64));
+tl.to("#s16-flash", { opacity: 0, duration: 0.6, ease: "power2.out" }, G(85.7));
+tl.set("#s16-chen", { filter: "brightness(1) invert(0)" }, G(85.68));
+tl.to("#s16-glow", { opacity: 0.25, duration: 0.6 }, G(85.7));
+tl.fromTo("#s16-chen", { scale: 1 }, { scale: 1.35, duration: 0.35, ease: "back.out(3)", immediateRender: false }, G(85.7));
+tl.fromTo("#s16-chen", { rotation: 0 }, { rotation: 8, duration: 0.15, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, G(86.0));
+tl.to("#s16-chen", { y: -120, duration: 0.4, ease: "power2.out" }, G(85.75));
+tl.fromTo("#s16-end", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(2)" }, G(85.85));
+tl.fromTo("#s16-cl", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.45, ease: "steps(16)" }, G(86.2));
+window.__timelines["s16"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

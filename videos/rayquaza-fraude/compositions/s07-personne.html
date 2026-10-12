@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s07-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s07{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 60%,#26303a,#0e1216 72%)}
+</style>
+<div id="s07" data-composition-id="s07" data-width="1080" data-height="1920">
+<style>
+#s07-h{left:60px;top:420px;width:960px;font-size:96px}
+#s07-h span{display:inline-block}
+#s07-h .r{color:#E23B3B}
+.s07-leg{position:absolute;width:340px;image-rendering:pixelated}
+.s07-x{position:absolute;font-family:"Archivo Black";font-size:300px;line-height:1;color:#E23B3B;-webkit-text-stroke:10px #0e1216;paint-order:stroke fill}
+.s07-lbl{position:absolute;font-family:"Press Start 2P";font-size:30px;color:#F3F1E4}
+</style>
+<div class="cam" id="s07-cam">
+  <div class="disp" id="s07-h"><span class="r" id="s07-aucun">Aucun</span> <span class="w">légendaire</span> <span class="w">n'a</span> <span class="w">bougé</span></div>
+  <img class="s07-leg" id="s07-arceus" src="assets/sprites/arceus.png" style="left:10px;top:770px" alt="Arceus">
+  <img class="s07-leg" id="s07-dialga" src="assets/sprites/dialga.png" style="left:370px;top:840px" alt="Dialga">
+  <img class="s07-leg" id="s07-palkia" src="assets/sprites/palkia.png" style="left:720px;top:770px" alt="Palkia">
+  <div class="s07-lbl" style="left:90px;top:1120px">ARCEUS</div>
+  <div class="s07-lbl" style="left:455px;top:1190px">DIALGA</div>
+  <div class="s07-lbl" style="left:810px;top:1120px">PALKIA</div>
+  <div class="s07-x" id="s07-x1" style="left:80px;top:790px">✕</div>
+  <div class="s07-x" id="s07-x2" style="left:440px;top:860px">✕</div>
+  <div class="s07-x" id="s07-x3" style="left:790px;top:790px">✕</div>
+</div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 27.0;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+const legs = ["#s07-arceus", "#s07-dialga", "#s07-palkia"];
+legs.forEach((l, i) => {
+  tl.fromTo(l, { y: -1300 }, { y: 0, duration: 0.7, ease: "bounce.out" }, W(27.84) + i * 0.15);
+  tl.fromTo(l, { y: 0 }, { y: -16, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, W(27.84) + 0.9 + i * 0.2);
+});
+tl.fromTo(".s07-lbl", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.15 }, W(28.3));
+slam("#s07-aucun", W(28.8), 2.8);
+shake("#s07-cam", W(29.04), 0.25, 14, 3);
+tl.fromTo("#s07-h .w", { y: 90, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.12 }, W(29.36));
+[["#s07-x1", 30.8], ["#s07-x2", 31.72], ["#s07-x3", 32.6]].forEach(([x, t], i) => slam(x, W(t), 2.8, -8 + i * 6));
+// « Personne. » : tout le monde s'éteint
+tl.to(".s07-leg", { filter: "grayscale(1) brightness(0.55)", duration: 0.35, ease: "power2.out" }, W(33.44));
+shake("#s07-cam", W(33.44), 0.3, 12, 9);
+window.__timelines["s07"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

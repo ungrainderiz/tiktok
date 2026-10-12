@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s06-template">
+<style>
+
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.disp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;line-height:.92;letter-spacing:-.03em;color:#F3F1E4}
+.pix{position:absolute;font-family:"Press Start 2P";line-height:1.35;color:#F3F1E4}
+.mono{font-family:"Space Mono"}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:#E23B3B;border:16px solid #E23B3B;border-radius:22px;padding:4px 34px;letter-spacing:.02em;line-height:1.05}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.07;white-space:nowrap;line-height:.8;text-transform:uppercase}
+.gstack{display:grid}
+.gstack>*{grid-area:1/1}
+.gb{position:relative;z-index:2}
+.gc{z-index:1;opacity:0;mix-blend-mode:screen}
+.gc.w{color:#ff3b6b}.gc.c{color:#3bd5ff}
+.cam{position:absolute;inset:0}
+
+#s06{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 46%,#173b4a,#0a1820 70%)}
+</style>
+<div id="s06" data-composition-id="s06" data-width="1080" data-height="1920">
+<style>
+.s06-ring{position:absolute;border:8px dashed #7fd0ff55;border-radius:50%}
+#s06-sweep{left:90px;top:450px;width:900px;height:900px;border-radius:50%;background:conic-gradient(from 0deg,#4fffb066 0deg,#4fffb000 50deg,transparent 360deg)}
+#s06-ghost{left:240px;top:600px;width:600px;filter:brightness(0) invert(1);opacity:.13}
+#s06-q{left:400px;top:560px;font-size:380px;color:#F4C430}
+#s06-stamp{left:150px;top:1050px;font-size:130px;background:#0a1820cc}
+</style>
+<div class="cam" id="s06-cam">
+  <div class="s06-ring" style="left:90px;top:450px;width:900px;height:900px"></div>
+  <div class="s06-ring" style="left:230px;top:590px;width:620px;height:620px"></div>
+  <div class="s06-ring" style="left:370px;top:730px;width:340px;height:340px"></div>
+  <div class="abs" id="s06-sweep"></div>
+  <img class="px" id="s06-ghost" src="assets/sprites/rayquaza.png" alt="">
+  <div class="disp" id="s06-q">?</div>
+  <div class="stamp" id="s06-stamp">Absent</div>
+</div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 24.5;
+const W = (t) => +(t + 0.2 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+tl.fromTo("#s06-sweep", { rotation: 0 }, { rotation: 540, duration: 2.5, ease: "none" }, 0);
+tl.fromTo("#s06-ghost", { opacity: 0.05 }, { opacity: 0.2, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, 0);
+pop("#s06-q", W(24.6), 0.5);
+tl.fromTo("#s06-q", { rotation: -12 }, { rotation: 12, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, W(25.0));
+slam("#s06-stamp", W(25.7), 3, 6);
+shake("#s06-cam", W(25.94), 0.3, 22, 7);
+window.__timelines["s06"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>
