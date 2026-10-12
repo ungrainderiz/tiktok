@@ -2,13 +2,16 @@
 @bg transparent
 <style>
 #cap-wrap{position:absolute;left:60px;top:1290px;width:860px;height:240px}
-.cc{position:absolute;left:0;right:0;top:0;text-align:center;font-family:"Archivo Black";font-size:76px;line-height:1.08;text-transform:uppercase;color:#fff;-webkit-text-stroke:13px #0a0a0a;paint-order:stroke fill;opacity:0}
+__CAPFONT__
+.cc{position:absolute;left:0;right:0;top:0;text-align:center;font-family:var(--cap-font);font-size:var(--cap-size);line-height:1.08;text-transform:var(--cap-case);color:var(--cap-fill);-webkit-text-stroke:var(--cap-stroke);paint-order:stroke fill;filter:var(--cap-shadow);opacity:0}
 .cw{display:inline-block}
 .cw + .cw{margin-left:.16em}
 </style>
 <div id="cap-wrap"></div>
 @@@js
 const WORDS = __WORDS__;
+const CAP_FILL = __CAP_FILL__;
+const CAP_HL = __CAP_HL__;
 const wrapEl = document.getElementById("cap-wrap");
 const chunks = [];
 let cur = null;
@@ -39,7 +42,7 @@ chunks.forEach((c, ci) => {
   tl.set(div, { opacity: 0 }, end);
   c.w.forEach((w, wi) => {
     const sp = document.getElementById(`cw-${ci}-${wi}`);
-    tl.fromTo(sp, { color: "#ffffff", scale: 1 }, { color: "#F4C430", scale: 1.12, duration: 0.08, ease: "power2.out" }, w.s);
+    tl.fromTo(sp, { color: CAP_FILL, scale: 1 }, { color: CAP_HL, scale: 1.12, duration: 0.08, ease: "power2.out" }, w.s);
     tl.to(sp, { scale: 1, duration: 0.1 }, Math.max(w.e, w.s + 0.1));
   });
 });

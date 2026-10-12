@@ -26,16 +26,16 @@ STARTS = {
 }
 # cris officiels (PokéAPI) : (fichier, début global, durée, volume)
 CRIES = [
-    ("rayquaza-legacy", 0.0, 1.37, 0.4),
-    ("chenipan-legacy", 4.45, 0.39, 0.35),
-    ("groudon-legacy", 42.1, 1.74, 0.4),
-    ("kyogre-legacy", 42.9, 1.68, 0.4),
-    ("rayquaza-legacy", 56.7, 1.37, 0.4),
-    ("deoxys-legacy", 64.0, 0.98, 0.45),
-    ("deoxys-legacy", 70.1, 0.98, 0.4),
-    ("rayquaza-legacy", 71.3, 1.37, 0.45),
-    ("deoxys-legacy", 80.15, 0.98, 0.45),
-    ("chenipan-legacy", 85.75, 0.39, 0.9),
+    ("rayquaza-legacy", 0.0, 1.37, 0.1),
+    ("chenipan-legacy", 4.45, 0.39, 0.2),
+    ("groudon-legacy", 42.1, 1.74, 0.2),
+    ("kyogre-legacy", 42.9, 1.68, 0.2),
+    ("rayquaza-legacy", 56.7, 1.37, 0.18),
+    ("deoxys-legacy", 64.0, 0.98, 0.22),
+    ("deoxys-legacy", 70.1, 0.98, 0.2),
+    ("rayquaza-legacy", 71.3, 1.37, 0.2),
+    ("deoxys-legacy", 80.15, 0.98, 0.22),
+    ("chenipan-legacy", 85.75, 0.39, 0.5),
 ]
 NAMES = {
     "s01": "accusation", "s02": "promesse", "s03": "pub", "s04": "bilan", "s05": "arme-ultime",
@@ -101,10 +101,25 @@ def lane(points):
 
 
 # musique A : de 0 à « Ok. » (coupe nette) ; musique B : reprend après le plan fixe
-MUSIC_A = lane([(0, 0.3), (13.95, 0.3), (14.15, 0)])
+MUSIC_A = lane([(0, 0.36), (13.95, 0.36), (14.15, 0)])
 # t en secondes depuis le début du clip B (16.75 s) : on baisse pendant l'anti-évolution,
 # on remonte après la révélation de Chenipan, puis fondu final
-MUSIC_B = lane([(0, 0.3), (66.4, 0.3), (66.9, 0.2), (68.9, 0.2), (69.0, 0.55), (69.85, 0.55), (70.25, 0)])
+MUSIC_B = lane([(0, 0.36), (66.4, 0.36), (66.9, 0.25), (68.9, 0.25), (69.0, 0.62), (69.85, 0.62), (70.25, 0)])
+
+
+def caption_style():
+    """Sous-titres : police Pokémon (logo) si un fichier assets/fonts/pokemon*.{ttf,otf,woff,woff2} existe."""
+    found = sorted(glob.glob(os.path.join(ROOT, "assets", "fonts", "[Pp]okemon*")))
+    if found:
+        rel = os.path.relpath(found[0], ROOT).replace(os.sep, "/")
+        fmt = {"ttf": "truetype", "otf": "opentype", "woff": "woff", "woff2": "woff2"}[rel.rsplit(".", 1)[1].lower()]
+        css = (f'@font-face{{font-family:"Pokemon Sous-titres";src:url({rel}) format("{fmt}")}}\n'
+               '#cap-wrap{--cap-font:"Pokemon Sous-titres","Archivo Black";--cap-size:84px;--cap-case:none;'
+               '--cap-fill:#FFCB05;--cap-stroke:12px #2A75BB;--cap-shadow:drop-shadow(0 7px 0 #1d3c7a)}')
+        return css, "#FFCB05", "#ffffff"
+    css = ('#cap-wrap{--cap-font:"Archivo Black";--cap-size:76px;--cap-case:uppercase;'
+           '--cap-fill:#fff;--cap-stroke:13px #0a0a0a;--cap-shadow:none}')
+    return css, "#ffffff", "#F4C430"
 
 
 def parse_sources():
@@ -187,6 +202,10 @@ def main():
         if sid in scenes:
             bg, markup, js = scenes[sid]
             js = js.replace("__WORDS__", json.dumps(merged, ensure_ascii=False))
+            if sid == "captions":
+                css, fill, hl = caption_style()
+                markup = markup.replace("__CAPFONT__", css)
+                js = js.replace("__CAP_FILL__", json.dumps(fill)).replace("__CAP_HL__", json.dumps(hl))
             open(os.path.join(ROOT, f"compositions/{sid}.html"), "w", encoding="utf-8").write(wrap(sid, bg, markup, js, 0))
     cries = "\n".join(
         f'    <audio id="cri-{i:02d}-{f}" src="assets/audio/cris/{f}.ogg" data-start="{t}" data-duration="{d}" data-track-index="{12 if f.startswith('kyogre') else 11}" data-volume="{v}"></audio>'
@@ -210,8 +229,8 @@ def main():
     <div id="slot-overlay" data-composition-id="overlay" data-composition-src="compositions/overlay.html" data-start="0" data-duration="{TOTAL}" data-track-index="3" data-width="1080" data-height="1920"></div>
     <div id="slot-captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="4" data-width="1080" data-height="1920"></div>
 {cries}
-    <audio id="musique-a" src="assets/audio/musique/rayquaza-battle.mp3" data-start="0" data-duration="14.15" data-media-start="14.0" data-track-index="13" data-volume="0.3" data-automation="{MUSIC_A}"></audio>
-    <audio id="musique-b" src="assets/audio/musique/rayquaza-battle.mp3" data-start="16.75" data-duration="70.25" data-media-start="28.15" data-track-index="13" data-volume="0.3" data-automation="{MUSIC_B}"></audio>
+    <audio id="musique-a" src="assets/audio/musique/rayquaza-battle.mp3" data-start="0" data-duration="14.15" data-media-start="14.0" data-track-index="13" data-volume="0.36" data-automation="{MUSIC_A}"></audio>
+    <audio id="musique-b" src="assets/audio/musique/rayquaza-battle.mp3" data-start="16.75" data-duration="70.25" data-media-start="28.15" data-track-index="13" data-volume="0.36" data-automation="{MUSIC_B}"></audio>
     <audio id="bruitages" src="assets/audio/bruitages/bruitages-stem.wav" data-start="0" data-duration="{TOTAL}" data-track-index="14" data-volume="0.55"></audio>
     <audio id="voix" src="assets/audio/voix/prise-1.mp3" data-start="{VO_OFFSET}" data-duration="82.76" data-track-index="10" data-volume="1"></audio>
     </div>
