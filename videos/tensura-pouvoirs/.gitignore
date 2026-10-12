@@ -1,0 +1,6 @@
+snapshots/
+node_modules/
+.hyperframes/
+renders/raw.mp4
+renders/work-*/
+renders/.raw*
