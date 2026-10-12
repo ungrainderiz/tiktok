@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>BECK — remake</title>
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Anton"; src: url("fonts/Anton-Regular.ttf"); }
+      @font-face { font-family: "Marker"; src: url("fonts/PermanentMarker-Regular.ttf"); }
+      @font-face { font-family: "Rubik"; src: url("fonts/RubikMonoOne-Regular.ttf"); }
+      :root { --ink: #111014; --paper: #efe6d2; --red: #d7262b; --yel: #ffd23f; --blue: #1f4fd1; --wh: #fffdf6; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--paper); font-family: "Anton", sans-serif; color: var(--ink); }
+      .abs { position: absolute; display: block; }
+      .layer { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .cam { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+      svg { display: block; overflow: visible; }
+
+      /* backgrounds */
+      .bg { position: absolute; inset: -200px; }
+      .paper { background-color: var(--paper); background-image: radial-gradient(circle, rgba(0,0,0,0.09) 2px, transparent 2.6px); background-size: 14px 14px; }
+      .red { background-color: var(--red); background-image: radial-gradient(circle, rgba(0,0,0,0.16) 3px, transparent 3.6px); background-size: 18px 18px; }
+      .black { background-color: #121015; background-image: radial-gradient(circle, rgba(255,255,255,0.07) 2px, transparent 2.6px); background-size: 16px 16px; }
+      .yellow { background-color: var(--yel); background-image: radial-gradient(circle, rgba(0,0,0,0.12) 3px, transparent 3.6px); background-size: 18px 18px; }
+      .stripes { position: absolute; inset: -400px; background: repeating-linear-gradient(-30deg, rgba(0,0,0,0.07) 0 40px, transparent 40px 110px); }
+      .burst { position: absolute; left: -460px; top: -40px; width: 2000px; height: 2000px; background: repeating-conic-gradient(rgba(255,255,255,0.14) 0 6deg, transparent 6deg 15deg); }
+      .burst.k { background: repeating-conic-gradient(rgba(0,0,0,0.12) 0 6deg, transparent 6deg 15deg); }
+
+      /* image treatments */
+      .card { position: absolute; background: var(--wh); padding: 14px; border: 6px solid var(--ink); box-shadow: 18px 18px 0 var(--ink); }
+      .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .card .tp { position: absolute; left: 50%; top: -30px; width: 200px; height: 56px; margin-left: -100px; background: rgba(255,240,170,0.75); transform: rotate(-4deg); border-left: 3px dashed rgba(0,0,0,0.12); border-right: 3px dashed rgba(0,0,0,0.12); }
+      .cut { position: absolute; filter: drop-shadow(12px 12px 0 var(--ink)); }
+      .cut img { display: block; width: 100%; height: 100%; }
+
+      /* type */
+      .big { position: absolute; font-family: "Anton"; color: var(--wh); -webkit-text-stroke: 14px var(--ink); paint-order: stroke fill; text-shadow: 12px 12px 0 var(--ink); white-space: nowrap; line-height: 1; text-align: center; }
+      .big.y { color: var(--yel); } .big.r { color: var(--red); } .big.k { color: var(--ink); -webkit-text-stroke: 0; text-shadow: 10px 10px 0 rgba(0,0,0,0.18); }
+      .stk { position: absolute; font-family: "Anton"; font-size: 62px; line-height: 1.15; padding: 6px 26px; background: var(--ink); color: var(--wh); white-space: nowrap; box-shadow: 10px 10px 0 rgba(0,0,0,0.3); }
+      .stk.y { background: var(--yel); color: var(--ink); border: 6px solid var(--ink); } .stk.r { background: var(--red); color: var(--wh); border: 6px solid var(--ink); } .stk.w { background: var(--wh); color: var(--ink); border: 6px solid var(--ink); }
+      .mk { position: absolute; font-family: "Marker"; color: var(--ink); white-space: nowrap; }
+      .stamp { position: absolute; font-family: "Anton"; font-size: 120px; color: var(--red); border: 12px solid var(--red); padding: 0 30px; white-space: nowrap; opacity: 0; }
+
+      /* fx */
+      #flash { background: #fff; opacity: 0; }
+      #invert { background: #fff; mix-blend-mode: difference; opacity: 0; }
+      .vign { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 60%, rgba(0,0,0,0.35) 100%); }
+      #grain { background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1.4px); background-size: 6px 7px; }
+
+      /* captions */
+      #cap { left: 40px; top: 1380px; width: 1000px; height: 200px; }
+      #cap .ln { position: absolute; left: 0; top: 0; width: 1000px; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 20px; opacity: 0; }
+      #cap .w { font-family: "Anton"; font-size: 76px; line-height: 1.15; color: #fff; -webkit-text-stroke: 12px var(--ink); paint-order: stroke fill; text-shadow: 7px 7px 0 var(--ink); }
+
+      /* misc pieces */
+      .vinyl { position: absolute; width: 520px; height: 520px; border-radius: 50%; background: repeating-radial-gradient(circle, #1b1a1f 0 6px, #2a2930 6px 9px); border: 8px solid var(--ink); box-shadow: 16px 16px 0 rgba(0,0,0,0.4); }
+      .vinyl::after { content: ""; position: absolute; left: 165px; top: 165px; width: 174px; height: 174px; border-radius: 50%; background: radial-gradient(circle, #111 0 12px, var(--red) 13px 100%); border: 6px solid var(--ink); }
+      .vinyl i { position: absolute; left: 60px; top: 70px; width: 120px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.14); transform: rotate(-35deg); }
+      .eq { position: absolute; display: flex; align-items: flex-end; gap: 12px; }
+      .eq i { display: block; width: 40px; height: 240px; background: var(--yel); border: 5px solid var(--ink); transform-origin: 50% 100%; }
+      .row { position: absolute; left: 0; width: 100%; font-family: "Anton"; font-size: 58px; padding: 8px 26px; border-bottom: 5px solid var(--ink); white-space: nowrap; }
+      .chk { position: absolute; width: 96px; height: 96px; border: 8px solid var(--ink); background: var(--wh); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="86.0" data-width="1080" data-height="1920">
+
+      <!-- S1 intro BECK -->
+      <section id="s1" class="scene clip" data-start="0" data-duration="7.08" data-track-index="1">
+        <div class="bg red"></div><div class="burst" id="b1"></div>
+        <div class="cam" id="c1">
+          <div class="big" id="beck1" style="left:0;top:210px;width:1080px;font-size:400px">BECK</div>
+          <div class="abs" id="mcs" style="left:60px;top:640px;width:960px;height:110px;background:var(--ink);transform:rotate(-3deg)">
+            <span class="abs" id="mcs1" style="left:40px;top:8px;font-size:84px;color:var(--wh)">MONGOLIAN</span>
+            <span class="abs" id="mcs2" style="left:455px;top:8px;font-size:84px;color:var(--yel)">CHOP</span>
+            <span class="abs" id="mcs3" style="left:650px;top:8px;font-size:84px;color:var(--wh)">SQUAD</span>
+          </div>
+          <div class="cut" id="ky1" style="left:170px;top:700px;width:740px;height:752px"><img src="assets/koyuki.png" alt="" /></div>
+          <div class="card" id="post1" style="left:250px;top:560px;width:580px;height:866px"><img src="assets/poster.png" alt="" /><div class="tp"></div></div>
+          <div class="stk y" id="inc" style="left:150px;top:780px;font-size:96px;transform:rotate(-7deg)">INCONTOURNABLE</div>
+          <div class="stk" id="mus" style="left:60px;top:1180px">MUSIQUE</div>
+          <div class="stk w" id="hist" style="left:420px;top:1240px">HISTOIRE INSPIRANTE</div>
+        </div>
+      </section>
+
+      <!-- S2 Koyuki x Ryusuke -->
+      <section id="s2" class="scene clip" data-start="7.08" data-duration="5.98" data-track-index="1">
+        <div class="bg paper"></div><div class="stripes" id="st2"></div>
+        <div class="cam" id="c2">
+          <div class="cut" id="ky2" style="left:40px;top:330px;width:620px;height:630px"><img src="assets/koyuki.png" alt="" /></div>
+          <div class="mk" id="kyn" style="left:600px;top:360px;font-size:110px;transform:rotate(-6deg)">Koyuki</div>
+          <div class="stk r" id="sansbut" style="left:560px;top:540px;transform:rotate(4deg)">ADO SANS BUT</div>
+          <div class="card" id="hand2" style="left:40px;top:560px;width:1000px;height:330px"><img src="assets/handshake.png" alt="" /></div>
+          <div class="cut" id="ry2" style="left:330px;top:620px;width:760px;height:634px"><img src="assets/ryusuke.png" alt="" /></div>
+          <div class="mk" id="ryn" style="left:560px;top:420px;font-size:110px;transform:rotate(5deg);color:var(--red)">Ryusuke</div>
+          <div class="stk" id="guit" style="left:40px;top:1120px;transform:rotate(-3deg)">GUITARISTE TALENTUEUX</div>
+        </div>
+      </section>
+
+      <!-- S3 world of rock -->
+      <section id="s3" class="scene clip" data-start="13.06" data-duration="7.08" data-track-index="1">
+        <div class="bg black"></div><div class="burst" id="b3"></div>
+        <div class="cam" id="c3">
+          <div class="cut" id="fly3" style="left:40px;top:300px;width:1000px;height:520px"><img src="assets/flyer.png" alt="" /></div>
+          <div class="cut" id="rock3" style="left:290px;top:760px;width:500px;height:481px;filter:drop-shadow(10px 10px 0 #000)"><img src="assets/rock.png" alt="" /></div>
+          <div class="card" id="bd3" style="left:110px;top:420px;width:860px;height:440px"><img src="assets/band_dark.png" alt="" /></div>
+          <svg class="abs" id="up3" style="left:820px;top:250px;width:180px;height:220px" viewBox="0 0 180 220"><path d="M90 10 L170 110 L120 110 L120 210 L60 210 L60 110 L10 110Z" fill="#3fd17a" stroke="#111014" stroke-width="10" stroke-linejoin="round" /></svg>
+          <svg class="abs" id="dn3" style="left:80px;top:830px;width:180px;height:220px" viewBox="0 0 180 220"><path d="M90 210 L170 110 L120 110 L120 10 L60 10 L60 110 L10 110Z" fill="#d7262b" stroke="#111014" stroke-width="10" stroke-linejoin="round" /></svg>
+          <div class="card" id="stg3" style="left:170px;top:470px;width:740px;height:560px"><img src="assets/stage.png" alt="" /></div>
+          <svg class="abs" id="chart3" style="left:80px;top:300px;width:920px;height:300px" viewBox="0 0 920 300"><path id="chp" d="M10 280 L200 220 L330 250 L520 140 L640 170 L900 20" fill="none" stroke="#ffd23f" stroke-width="22" stroke-linejoin="round" stroke-linecap="round" /><path d="M900 20 L840 30 M900 20 L890 80" stroke="#ffd23f" stroke-width="22" stroke-linecap="round" /></svg>
+          <div class="big" id="succ" style="left:0;top:560px;width:1080px;font-size:150px">SUCCÈS FACILE</div>
+          <svg class="abs" id="scr3" style="left:60px;top:560px;width:960px;height:180px" viewBox="0 0 960 180"><path id="scrp" d="M10 120 C200 40 300 160 480 80 C640 10 760 150 950 50" fill="none" stroke="#d7262b" stroke-width="30" stroke-linecap="round" /></svg>
+          <div class="stk r" id="pas3" style="left:330px;top:420px;font-size:90px;transform:rotate(-5deg)">PAS DE</div>
+        </div>
+      </section>
+
+      <!-- S4 realism + stage magic -->
+      <section id="s4" class="scene clip" data-start="20.14" data-duration="10.68" data-track-index="1">
+        <div class="bg paper"></div><div class="stripes" id="st4"></div>
+        <div class="cam" id="c4">
+          <div class="card" id="road4" style="left:60px;top:300px;width:960px;height:768px"><img src="assets/cover_road.png" alt="" /><div class="tp"></div></div>
+          <div class="stamp" id="brut" style="left:150px;top:1020px;transform:rotate(-6deg)">RÉALISME BRUT</div>
+          <div class="stk" id="l1" style="left:70px;top:360px;font-size:80px;transform:rotate(-5deg)">GALÈRES</div>
+          <div class="stk r" id="l2" style="left:480px;top:540px;font-size:80px;transform:rotate(4deg)">PRESSION</div>
+          <div class="stk y" id="l3" style="left:110px;top:740px;font-size:80px;transform:rotate(-3deg)">RIVALITÉS</div>
+          <div class="stk w" id="l4" style="left:520px;top:920px;font-size:80px;transform:rotate(6deg)">DOUTE</div>
+          <div class="layer" id="crowd4" style="opacity:0"><img src="assets/crowd.png" alt="" style="position:absolute;left:-470px;top:0;width:3030px;height:1920px;object-fit:cover" id="crowdimg" />
+            <div class="abs" id="beam1" style="left:140px;top:-200px;width:300px;height:1600px;background:linear-gradient(rgba(255,240,170,0.65),rgba(255,240,170,0));clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);transform-origin:50% 0"></div>
+            <div class="abs" id="beam2" style="left:640px;top:-200px;width:300px;height:1600px;background:linear-gradient(rgba(255,120,120,0.6),rgba(255,120,120,0));clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);transform-origin:50% 0"></div>
+            <div class="layer" style="background:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.55))"></div>
+          </div>
+          <div class="big y" id="magie" style="left:0;top:330px;width:1080px;font-size:130px">MAGIE DE LA SCÈNE</div>
+          <div class="big r" id="adre" style="left:0;top:620px;width:1080px;font-size:170px">ADRÉNALINE</div>
+          <div class="stk w" id="perf" style="left:260px;top:880px;font-size:80px;transform:rotate(-3deg)">PERFORMANCES</div>
+        </div>
+      </section>
+
+      <!-- S5 evolution -->
+      <section id="s5" class="scene clip" data-start="30.82" data-duration="8.04" data-track-index="1">
+        <div class="bg red"></div><div class="burst" id="b5"></div>
+        <div class="cam" id="c5">
+          <div class="big" id="evo" style="left:0;top:250px;width:1080px;font-size:170px">ÉVOLUTION</div>
+          <div class="card" id="vol5" style="left:300px;top:470px;width:480px;height:678px"><img src="assets/manga_vol.png" alt="" /><div class="tp"></div></div>
+          <div class="card" id="kp5" style="left:50px;top:280px;width:600px;height:340px"><img src="assets/koyuki_panel.png" alt="" /></div>
+          <div class="stk w" id="avant" style="left:60px;top:230px;font-size:52px;transform:rotate(-4deg)">AVANT : ADO TIMIDE</div>
+          <svg class="abs" id="arr5" style="left:560px;top:560px;width:400px;height:380px" viewBox="0 0 400 380"><path id="arrp" d="M40 30 C340 20 380 200 220 300" fill="none" stroke="#111014" stroke-width="18" stroke-linecap="round" /><path id="arrh" d="M250 250 L215 305 L285 312" fill="none" stroke="#111014" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <div class="card" id="bw5" style="left:300px;top:860px;width:720px;height:526px"><img src="assets/ryusuke_bw.png" alt="" /></div>
+          <div class="stk y" id="apres" style="left:180px;top:800px;font-size:52px;transform:rotate(3deg)">APRÈS : MUSICIEN ACCOMPLI</div>
+          <div class="big y" id="ysi" style="left:0;top:1170px;width:1080px;font-size:120px">COMME SI ON Y ÉTAIT</div>
+        </div>
+      </section>
+
+      <!-- S6 manga narration / missing piece -->
+      <section id="s6" class="scene clip" data-start="38.86" data-duration="5.12" data-track-index="1">
+        <div class="bg paper"></div><div class="burst k" id="b6"></div>
+        <div class="cam" id="c6">
+          <div class="big k" id="mg6" style="left:0;top:220px;width:1080px;font-size:130px">LE MANGA</div>
+          <div class="card" id="mgt6" style="left:110px;top:400px;width:520px;height:647px"><img src="assets/manga_guitar.png" alt="" /><div class="tp"></div></div>
+          <div class="stk" id="nar" style="left:560px;top:560px;font-size:60px;transform:rotate(3deg)">NARRATION ✔</div>
+          <div class="stk r" id="int" style="left:580px;top:720px;font-size:60px;transform:rotate(-3deg)">INTENSITÉ ✔</div>
+          <div class="abs" id="slot" style="left:600px;top:880px;width:300px;height:300px;border:12px dashed var(--ink);background:rgba(255,255,255,0.6)"><div class="abs" id="q6" style="left:0;top:10px;width:276px;text-align:center;font-size:230px;line-height:1;color:var(--red)">?</div></div>
+          <div class="big y" id="cle" style="left:0;top:1170px;width:1080px;font-size:110px">UN ÉLÉMENT CLÉ</div>
+        </div>
+      </section>
+
+      <!-- S7 the anime + OST -->
+      <section id="s7" class="scene clip" data-start="43.98" data-duration="8.12" data-track-index="1">
+        <div class="bg black"></div><div class="burst" id="b7"></div>
+        <div class="cam" id="c7">
+          <div class="card" id="cc7" style="left:200px;top:330px;width:680px;height:964px"><img src="assets/cover_chars.png" alt="" /><div class="tp"></div></div>
+          <div class="big y" id="anime7" style="left:0;top:200px;width:1080px;font-size:170px">L'ANIME</div>
+          <div class="vinyl" id="vin7" style="left:280px;top:400px"><i></i></div>
+          <div class="eq" id="eq7" style="left:230px;top:700px"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="stk y" id="ost7" style="left:160px;top:980px;font-size:96px;transform:rotate(-4deg)">OST INOUBLIABLE</div>
+          <div class="card" id="gd7" style="left:60px;top:380px;width:960px;height:686px"><img src="assets/group_dog.png" alt="" /></div>
+          <div class="stk r" id="dim7" style="left:200px;top:1060px;font-size:80px;transform:rotate(3deg)">UNE VRAIE DIMENSION</div>
+        </div>
+      </section>
+
+      <!-- S8 tracklist -->
+      <section id="s8" class="scene clip" data-start="52.1" data-duration="5.04" data-track-index="1">
+        <div class="bg yellow"></div><div class="burst k" id="b8"></div>
+        <div class="cam" id="c8">
+          <div class="vinyl" id="vin8" style="left:500px;top:220px"><i></i></div>
+          <div class="card" id="cg8" style="left:60px;top:240px;width:600px;height:604px"><img src="assets/cover_guitar.png" alt="" /></div>
+          <div class="abs" id="tl8" style="left:60px;top:900px;width:960px;height:400px;background:var(--wh);border:8px solid var(--ink);box-shadow:16px 16px 0 var(--ink)">
+            <div class="row" style="top:0;background:var(--ink);color:var(--yel)">TRACKLIST · BECK</div>
+            <div class="row" id="tr1" style="top:96px">01 · MOON ON THE WATER</div>
+            <div class="row" id="tr2" style="top:192px">02 · SLIP OUT</div>
+            <div class="row" id="tr3" style="top:288px;border-bottom:0">03 · FACE</div>
+          </div>
+          <div class="stamp" id="grav" style="left:200px;top:560px;transform:rotate(-8deg);background:rgba(255,255,255,0.85)">GRAVÉS À VIE</div>
+        </div>
+      </section>
+
+      <!-- S9 time / authentic / path -->
+      <section id="s9" class="scene clip" data-start="57.14" data-duration="9.66" data-track-index="1">
+        <div class="bg paper"></div><div class="stripes" id="st9"></div>
+        <div class="cam" id="c9">
+          <div class="mk" id="tps" style="left:0;top:240px;width:1080px;text-align:center;font-size:58px">« le manga prend son temps »</div>
+          <div class="card" id="hg9" style="left:110px;top:400px;width:860px;height:576px"><img src="assets/hourglass.png" alt="" /><div class="tp"></div></div>
+          <div class="stamp" id="auth" style="left:140px;top:900px;transform:rotate(-7deg);background:rgba(255,255,255,0.85)">AUTHENTIQUE</div>
+          <div class="cut" id="rock9" style="left:320px;top:300px;width:440px;height:424px"><img src="assets/rock.png" alt="" /></div>
+          <div class="big" id="pasj" style="left:0;top:760px;width:1080px;font-size:110px">PAS JUSTE DU ROCK</div>
+          <svg class="abs" id="path9" style="left:0;top:260px;width:1080px;height:1000px" viewBox="0 0 1080 1000">
+            <path id="pp" d="M120 950 C120 760 900 820 900 620 C900 440 180 520 180 330 C180 170 700 220 860 90" fill="none" stroke="#111014" stroke-width="26" stroke-dasharray="1 0" stroke-linecap="round" />
+            <g id="obs"><g class="ob"><rect x="450" y="760" width="80" height="80" fill="#d7262b" stroke="#111014" stroke-width="8" transform="rotate(12 490 800)" /></g><g class="ob"><rect x="760" y="480" width="80" height="80" fill="#d7262b" stroke="#111014" stroke-width="8" transform="rotate(-10 800 520)" /></g><g class="ob"><rect x="300" y="370" width="80" height="80" fill="#d7262b" stroke="#111014" stroke-width="8" transform="rotate(8 340 410)" /></g></g>
+            <g id="star9"><path d="M860 0 L885 60 L950 62 L898 102 L918 166 L860 128 L802 166 L822 102 L770 62 L835 60Z" fill="#ffd23f" stroke="#111014" stroke-width="8" stroke-linejoin="round" /></g>
+          </svg>
+          <div class="stk r" id="emb" style="left:560px;top:860px;transform:rotate(4deg)">SEMÉ D'EMBÛCHES</div>
+          <div class="stk y" id="vic" style="left:120px;top:470px;font-size:64px;transform:rotate(-4deg)">CHAQUE VICTOIRE SE MÉRITE</div>
+        </div>
+      </section>
+
+      <!-- S10 VF -->
+      <section id="s10" class="scene clip" data-start="66.8" data-duration="5.04" data-track-index="1">
+        <div class="layer" style="background:linear-gradient(90deg,#1f4fd1 0 33.3%,#fffdf6 33.3% 66.6%,#d7262b 66.6%)"></div><div class="burst k" id="b10"></div>
+        <div class="cam" id="c10">
+          <div class="big" id="meil" style="left:0;top:240px;width:1080px;font-size:130px">LE MEILLEUR ?</div>
+          <div class="card" id="cf10" style="left:90px;top:430px;width:900px;height:722px"><img src="assets/cover_flag.png" alt="" /><div class="tp"></div></div>
+          <div class="stk y" id="vf" style="left:200px;top:300px;font-size:120px;transform:rotate(-5deg)">DISPO EN VF</div>
+          <div class="stk" id="exc" style="left:220px;top:1050px;font-size:76px;transform:rotate(3deg)">PLUS D'EXCUSES</div>
+          <div class="big y" id="pep" style="left:0;top:1180px;width:1080px;font-size:130px">PÉPITE</div>
+          <div id="spk"></div>
+        </div>
+      </section>
+
+      <!-- S11 checklist + must -->
+      <section id="s11" class="scene clip" data-start="71.84" data-duration="9.8" data-track-index="1">
+        <div class="bg red"></div><div class="burst" id="b11"></div>
+        <div class="cam" id="c11">
+          <div class="card" id="ban11" style="left:90px;top:220px;width:900px;height:511px"><img src="assets/banner.png" alt="" /></div>
+          <div class="abs" id="list11" style="left:60px;top:790px;width:960px;height:500px;background:var(--wh);border:8px solid var(--ink);box-shadow:16px 16px 0 var(--ink)">
+            <div class="chk" style="left:40px;top:40px"></div><div class="row" style="left:160px;top:42px;width:760px;border:0;font-size:66px">PERSÉVÉRANCE</div>
+            <div class="chk" style="left:40px;top:200px"></div><div class="row" style="left:160px;top:202px;width:760px;border:0;font-size:66px">L'UNIVERS DU ROCK</div>
+            <div class="chk" style="left:40px;top:360px"></div><div class="row" style="left:160px;top:362px;width:760px;border:0;font-size:66px">SE BATTRE POUR SES RÊVES</div>
+            <svg class="abs" style="left:30px;top:20px;width:130px;height:460px" viewBox="0 0 130 460"><path class="ck" id="ck1" d="M18 70 L50 104 L118 18" fill="none" stroke="#d7262b" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" /><path class="ck" id="ck2" d="M18 230 L50 264 L118 178" fill="none" stroke="#d7262b" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" /><path class="ck" id="ck3" d="M18 390 L50 424 L118 338" fill="none" stroke="#d7262b" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </div>
+          <div class="big" id="beck11" style="left:0;top:330px;width:1080px;font-size:330px">BECK</div>
+          <div class="abs" id="mcs11" style="left:60px;top:700px;width:960px;height:110px;background:var(--ink);transform:rotate(-3deg)"><span class="abs" style="left:0;top:8px;width:960px;text-align:center;font-size:84px;color:var(--wh)">MONGOLIAN <span style="color:var(--yel)">CHOP</span> SQUAD</span></div>
+          <div class="cut" id="ky11" style="left:250px;top:830px;width:580px;height:590px"><img src="assets/koyuki.png" alt="" /></div>
+          <div class="stamp" id="must" style="left:560px;top:1130px;transform:rotate(10deg);background:var(--wh);font-size:150px">MUST</div>
+        </div>
+      </section>
+
+      <!-- S12 CTA -->
+      <section id="s12" class="scene clip" data-start="81.64" data-duration="4.36" data-track-index="1">
+        <div class="bg black"></div><div class="burst" id="b12"></div>
+        <div class="cam" id="c12">
+          <div class="big" id="dv" style="left:0;top:220px;width:1080px;font-size:120px">TU L'AS DÉJÀ...</div>
+          <div class="card" id="vu" style="left:70px;top:420px;width:440px;height:624px"><img src="assets/cover_chars.png" alt="" /></div>
+          <div class="card" id="lu" style="left:570px;top:420px;width:440px;height:621px"><img src="assets/manga_vol.png" alt="" /></div>
+          <div class="stk y" id="vut" style="left:200px;top:980px;font-size:110px;transform:rotate(-5deg)">VU ?</div>
+          <div class="stk r" id="lut" style="left:700px;top:980px;font-size:110px;transform:rotate(5deg)">LU ?</div>
+          <div class="abs" id="bub" style="left:120px;top:1140px;width:840px;height:150px;background:var(--wh);border:8px solid var(--ink);border-radius:40px;box-shadow:12px 12px 0 rgba(0,0,0,0.5);font-size:76px;text-align:center;line-height:134px">DIS-MOI EN COMMENTAIRE</div>
+        </div>
+      </section>
+
+      <div id="fx" class="layer clip" data-start="0" data-duration="86.0" data-track-index="5">
+        <div class="abs" id="cap"></div>
+        <div class="layer" id="flash"></div>
+        <div class="layer" id="invert"></div>
+        <div class="layer" id="grain"></div>
+        <div class="vign"></div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="86.0" data-track-index="9" data-volume="1"></audio>
+    </div>
+
+    <script>
+      const WORDS = [{"text":"Beck,","type":"word","start":0.1,"end":0.32},{"text":"de","type":"word","start":0.82,"end":0.9},{"text":"son","type":"word","start":0.96,"end":1.06},{"text":"deuxième","type":"word","start":1.1,"end":1.38},{"text":"nom","type":"word","start":1.44,"end":1.68},{"text":"Mongolian","type":"word","start":1.76,"end":2.18},{"text":"Chop","type":"word","start":2.24,"end":2.4},{"text":"Squad,","type":"word","start":2.44,"end":2.74},{"text":"c'est","type":"word","start":2.9,"end":3.02},{"text":"le","type":"word","start":3.2,"end":3.34},{"text":"manga","type":"word","start":3.4,"end":3.78},{"text":"incontournable","type":"word","start":3.86,"end":4.6},{"text":"pour","type":"word","start":4.66,"end":4.74},{"text":"les","type":"word","start":4.76,"end":4.86},{"text":"passionnés","type":"word","start":4.9,"end":5.28},{"text":"de","type":"word","start":5.3,"end":5.38},{"text":"musique","type":"word","start":5.42,"end":5.84},{"text":"et","type":"word","start":5.88,"end":5.96},{"text":"d'histoire","type":"word","start":5.98,"end":6.32},{"text":"inspirante.","type":"word","start":6.58,"end":7.1},{"text":"Koyuki,","type":"word","start":7.14,"end":7.56},{"text":"un","type":"word","start":8.2,"end":8.26},{"text":"ado","type":"word","start":8.34,"end":8.52},{"text":"sans","type":"word","start":8.66,"end":8.78},{"text":"but,","type":"word","start":8.82,"end":9.02},{"text":"voit","type":"word","start":9.12,"end":9.26},{"text":"sa","type":"word","start":9.32,"end":9.42},{"text":"vie","type":"word","start":9.48,"end":9.64},{"text":"bouleversée","type":"word","start":9.68,"end":10.28},{"text":"en","type":"word","start":10.34,"end":10.4},{"text":"rencontrant","type":"word","start":10.44,"end":11.02},{"text":"Ryusuke,","type":"word","start":11.14,"end":11.78},{"text":"un","type":"word","start":11.86,"end":11.94},{"text":"guitariste","type":"word","start":11.98,"end":12.44},{"text":"talentueux.","type":"word","start":12.58,"end":13.08},{"text":"Ils","type":"word","start":13.12,"end":13.22},{"text":"se","type":"word","start":13.28,"end":13.36},{"text":"retrouvent","type":"word","start":13.4,"end":13.8},{"text":"plongés","type":"word","start":13.86,"end":14.2},{"text":"dans","type":"word","start":14.24,"end":14.32},{"text":"le","type":"word","start":14.34,"end":14.42},{"text":"monde","type":"word","start":14.46,"end":14.64},{"text":"du","type":"word","start":14.68,"end":14.78},{"text":"rock","type":"word","start":14.84,"end":15.0},{"text":"et","type":"word","start":15.06,"end":15.12},{"text":"découvrent","type":"word","start":15.16,"end":15.58},{"text":"les","type":"word","start":15.62,"end":15.82},{"text":"hauts","type":"word","start":15.86,"end":16.1},{"text":"et","type":"word","start":16.14,"end":16.2},{"text":"les","type":"word","start":16.239,"end":16.36},{"text":"bas","type":"word","start":16.42,"end":16.64},{"text":"d'un","type":"word","start":16.7,"end":16.86},{"text":"groupe","type":"word","start":16.92,"end":17.34},{"text":"en","type":"word","start":17.42,"end":17.58},{"text":"pleine","type":"word","start":17.62,"end":17.8},{"text":"ascension.","type":"word","start":17.86,"end":18.32},{"text":"Mais","type":"word","start":18.36,"end":18.44},{"text":"ici,","type":"word","start":18.6,"end":18.88},{"text":"pas","type":"word","start":18.96,"end":19.06},{"text":"de","type":"word","start":19.1,"end":19.18},{"text":"succès","type":"word","start":19.24,"end":19.52},{"text":"facile.","type":"word","start":19.58,"end":19.96},{"text":"Beck,","type":"word","start":20.2,"end":20.44},{"text":"c'est","type":"word","start":20.88,"end":20.98},{"text":"le","type":"word","start":21.02,"end":21.08},{"text":"réalisme","type":"word","start":21.14,"end":21.54},{"text":"brut,","type":"word","start":21.6,"end":21.86},{"text":"les","type":"word","start":22.58,"end":22.68},{"text":"galères","type":"word","start":22.74,"end":23.04},{"text":"du","type":"word","start":23.08,"end":23.14},{"text":"milieu","type":"word","start":23.18,"end":23.38},{"text":"musical,","type":"word","start":23.42,"end":23.84},{"text":"la","type":"word","start":24.06,"end":24.16},{"text":"pression","type":"word","start":24.2,"end":24.52},{"text":"des","type":"word","start":24.56,"end":24.66},{"text":"concerts,","type":"word","start":24.7,"end":25.2},{"text":"les","type":"word","start":25.28,"end":25.38},{"text":"rivalités,","type":"word","start":25.44,"end":26.08},{"text":"les","type":"word","start":26.16,"end":26.24},{"text":"moments","type":"word","start":26.3,"end":26.54},{"text":"de","type":"word","start":26.6,"end":26.72},{"text":"doute,","type":"word","start":26.78,"end":27.0},{"text":"mais","type":"word","start":27.14,"end":27.24},{"text":"aussi","type":"word","start":27.28,"end":27.6},{"text":"la","type":"word","start":27.7,"end":27.78},{"text":"magie","type":"word","start":27.9,"end":28.18},{"text":"de","type":"word","start":28.24,"end":28.28},{"text":"la","type":"word","start":28.32,"end":28.42},{"text":"scène,","type":"word","start":28.52,"end":28.74},{"text":"l'adrénaline","type":"word","start":28.82,"end":29.52},{"text":"des","type":"word","start":29.58,"end":29.68},{"text":"performances","type":"word","start":29.72,"end":30.36},{"text":"et","type":"word","start":30.86,"end":30.92},{"text":"l'évolution","type":"word","start":30.96,"end":31.72},{"text":"incroyable","type":"word","start":31.8,"end":32.58},{"text":"de","type":"word","start":32.72,"end":32.8},{"text":"Koyuki,","type":"word","start":32.86,"end":33.32},{"text":"qui","type":"word","start":33.38,"end":33.52},{"text":"passe","type":"word","start":33.58,"end":33.8},{"text":"d'ado","type":"word","start":33.84,"end":34.12},{"text":"timide","type":"word","start":34.18,"end":34.54},{"text":"à","type":"word","start":35.04,"end":35.06},{"text":"musicien","type":"word","start":35.14,"end":35.56},{"text":"accompli.","type":"word","start":35.62,"end":36.14},{"text":"Chaque","type":"word","start":36.18,"end":36.38},{"text":"moment","type":"word","start":36.42,"end":36.62},{"text":"est","type":"word","start":36.66,"end":36.74},{"text":"ressent-,","type":"word","start":36.78,"end":37.1},{"text":"ressenti","type":"word","start":37.42,"end":37.84},{"text":"comme","type":"word","start":37.88,"end":38.04},{"text":"si","type":"word","start":38.1,"end":38.16},{"text":"on","type":"word","start":38.2,"end":38.28},{"text":"y","type":"word","start":38.3,"end":38.34},{"text":"était.","type":"word","start":38.38,"end":38.76},{"text":"Là","type":"word","start":38.9,"end":38.98},{"text":"où","type":"word","start":39.02,"end":39.06},{"text":"le","type":"word","start":39.1,"end":39.18},{"text":"manga","type":"word","start":39.22,"end":39.56},{"text":"brille","type":"word","start":39.62,"end":39.92},{"text":"par","type":"word","start":39.96,"end":40.06},{"text":"sa","type":"word","start":40.1,"end":40.18},{"text":"narration","type":"word","start":40.24,"end":40.62},{"text":"et","type":"word","start":40.66,"end":40.72},{"text":"son","type":"word","start":40.76,"end":40.88},{"text":"intensité,","type":"word","start":40.94,"end":41.42},{"text":"il","type":"word","start":42.02,"end":42.08},{"text":"lui","type":"word","start":42.12,"end":42.24},{"text":"manque","type":"word","start":42.3,"end":42.5},{"text":"un","type":"word","start":42.54,"end":42.62},{"text":"élément","type":"word","start":42.66,"end":42.98},{"text":"clé.","type":"word","start":43.04,"end":43.28},{"text":"Et","type":"word","start":44.02,"end":44.1},{"text":"c'est","type":"word","start":44.18,"end":44.28},{"text":"là","type":"word","start":44.34,"end":44.72},{"text":"que","type":"word","start":44.76,"end":44.84},{"text":"l'anime","type":"word","start":44.9,"end":45.3},{"text":"prend","type":"word","start":45.36,"end":45.52},{"text":"toute","type":"word","start":45.74,"end":45.9},{"text":"son","type":"word","start":45.94,"end":46.06},{"text":"importance.","type":"word","start":46.12,"end":46.78},{"text":"Avec","type":"word","start":46.88,"end":47.06},{"text":"une","type":"word","start":47.12,"end":47.2},{"text":"OST","type":"word","start":47.38,"end":47.86},{"text":"inoubliable,","type":"word","start":47.96,"end":48.58},{"text":"il","type":"word","start":49.06,"end":49.16},{"text":"donne","type":"word","start":49.2,"end":49.34},{"text":"une","type":"word","start":49.38,"end":49.54},{"text":"vraie","type":"word","start":49.64,"end":49.78},{"text":"dimension","type":"word","start":49.82,"end":50.24},{"text":"aux","type":"word","start":50.26,"end":50.34},{"text":"performances","type":"word","start":50.4,"end":50.82},{"text":"du","type":"word","start":50.86,"end":50.96},{"text":"groupe.","type":"word","start":51.0,"end":51.28},{"text":"Des","type":"word","start":52.14,"end":52.26},{"text":"morceaux","type":"word","start":52.3,"end":52.6},{"text":"comme","type":"word","start":52.64,"end":52.82},{"text":"Moon","type":"word","start":52.88,"end":53.0},{"text":"on","type":"word","start":53.04,"end":53.08},{"text":"the","type":"word","start":53.2,"end":53.26},{"text":"Water,","type":"word","start":53.3,"end":53.68},{"text":"Slip","type":"word","start":53.78,"end":54.06},{"text":"Out,","type":"word","start":54.16,"end":54.3},{"text":"Face","type":"word","start":54.56,"end":54.9},{"text":"restent","type":"word","start":55.36,"end":55.64},{"text":"gravés","type":"word","start":55.8,"end":56.1},{"text":"longtemps","type":"word","start":56.18,"end":56.48},{"text":"après.","type":"word","start":56.54,"end":56.9},{"text":"Certains","type":"word","start":57.2,"end":57.54},{"text":"trouvent","type":"word","start":57.6,"end":57.86},{"text":"que","type":"word","start":58.16,"end":58.24},{"text":"le","type":"word","start":58.28,"end":58.36},{"text":"manga","type":"word","start":58.4,"end":58.7},{"text":"prend","type":"word","start":58.76,"end":58.96},{"text":"son","type":"word","start":59.02,"end":59.16},{"text":"temps,","type":"word","start":59.2,"end":59.5},{"text":"mais","type":"word","start":59.92,"end":60.02},{"text":"c'est","type":"word","start":60.06,"end":60.2},{"text":"ce","type":"word","start":60.26,"end":60.4},{"text":"qui","type":"word","start":60.44,"end":60.54},{"text":"le","type":"word","start":60.6,"end":60.68},{"text":"rend","type":"word","start":60.74,"end":61.06},{"text":"authentique.","type":"word","start":61.12,"end":61.74},{"text":"Il","type":"word","start":61.78,"end":61.86},{"text":"ne","type":"word","start":61.9,"end":61.96},{"text":"s'agit","type":"word","start":62.0,"end":62.24},{"text":"pas","type":"word","start":62.28,"end":62.36},{"text":"juste","type":"word","start":62.42,"end":62.64},{"text":"de","type":"word","start":62.68,"end":62.76},{"text":"rock,","type":"word","start":62.82,"end":63.04},{"text":"mais","type":"word","start":63.54,"end":63.64},{"text":"d'un","type":"word","start":63.68,"end":63.82},{"text":"parcours","type":"word","start":63.86,"end":64.18},{"text":"semé","type":"word","start":64.26,"end":64.5},{"text":"d'embûches","type":"word","start":64.54,"end":65.36},{"text":"où","type":"word","start":65.42,"end":65.6},{"text":"chaque","type":"word","start":65.66,"end":65.86},{"text":"victoire","type":"word","start":65.9,"end":66.22},{"text":"se","type":"word","start":66.28,"end":66.36},{"text":"mérite.","type":"word","start":66.4,"end":66.8},{"text":"Et","type":"word","start":66.84,"end":66.88},{"text":"le","type":"word","start":66.92,"end":66.98},{"text":"meilleur","type":"word","start":67.04,"end":67.28},{"text":"dans","type":"word","start":67.3,"end":67.42},{"text":"tout","type":"word","start":67.46,"end":67.54},{"text":"ça","type":"word","start":67.62,"end":67.7},{"text":"?","type":"word","start":67.86,"end":67.86},{"text":"L'anime","type":"word","start":67.92,"end":68.24},{"text":"est","type":"word","start":68.28,"end":68.34},{"text":"dispo","type":"word","start":68.54,"end":68.86},{"text":"en","type":"word","start":68.9,"end":68.96},{"text":"version","type":"word","start":69.0,"end":69.3},{"text":"française.","type":"word","start":69.38,"end":69.94},{"text":"Plus","type":"word","start":69.98,"end":70.1},{"text":"d'excuses","type":"word","start":70.12,"end":70.58},{"text":"pour","type":"word","start":70.6,"end":70.7},{"text":"ne","type":"word","start":70.72,"end":70.8},{"text":"pas","type":"word","start":70.84,"end":70.92},{"text":"découvrir","type":"word","start":70.96,"end":71.32},{"text":"cette","type":"word","start":71.38,"end":71.52},{"text":"pépite.","type":"word","start":71.56,"end":71.8},{"text":"Alors,","type":"word","start":71.88,"end":72.14},{"text":"si","type":"word","start":72.46,"end":72.58},{"text":"t'aimes","type":"word","start":72.62,"end":72.8},{"text":"les","type":"word","start":72.84,"end":72.94},{"text":"récits","type":"word","start":72.98,"end":73.2},{"text":"de","type":"word","start":73.22,"end":73.32},{"text":"persévérance,","type":"word","start":73.38,"end":74.04},{"text":"l'univers","type":"word","start":74.66,"end":75.04},{"text":"du","type":"word","start":75.08,"end":75.18},{"text":"rock","type":"word","start":75.24,"end":75.54},{"text":"et","type":"word","start":75.62,"end":75.68},{"text":"les","type":"word","start":75.7,"end":75.82},{"text":"histoires","type":"word","start":75.84,"end":76.34},{"text":"où","type":"word","start":76.42,"end":76.46},{"text":"les","type":"word","start":76.48,"end":76.58},{"text":"personnages","type":"word","start":76.62,"end":77.04},{"text":"se","type":"word","start":77.1,"end":77.2},{"text":"battent","type":"word","start":77.26,"end":77.68},{"text":"pour","type":"word","start":77.72,"end":77.82},{"text":"leurs","type":"word","start":77.86,"end":78.0},{"text":"rêves,","type":"word","start":78.06,"end":78.3},{"text":"Beck","type":"word","start":78.52,"end":78.78},{"text":"Mongolian","type":"word","start":78.86,"end":79.4},{"text":"Chop","type":"word","start":79.44,"end":79.64},{"text":"Squad","type":"word","start":79.7,"end":80.26},{"text":"est","type":"word","start":80.34,"end":80.48},{"text":"un","type":"word","start":80.52,"end":80.6},{"text":"must.","type":"word","start":80.64,"end":81.08},{"text":"Tu","type":"word","start":81.7,"end":81.78},{"text":"l'as","type":"word","start":81.84,"end":81.92},{"text":"déjà","type":"word","start":81.98,"end":82.22},{"text":"vu","type":"word","start":82.26,"end":82.34},{"text":"ou","type":"word","start":82.5,"end":82.54},{"text":"lu","type":"word","start":82.86,"end":82.86},{"text":"?","type":"word","start":82.86,"end":82.86},{"text":"Dis-moi","type":"word","start":82.92,"end":83.18},{"text":"en","type":"word","start":83.22,"end":83.28},{"text":"commentaire.","type":"word","start":83.32,"end":83.94}].filter((w) => w.type === "word").map((w) => ({ t: w.text, s: w.start, e: w.end }));
+      const SC = [{"start": 0, "dur": 7.08}, {"start": 7.08, "dur": 5.98}, {"start": 13.06, "dur": 7.08}, {"start": 20.14, "dur": 10.68}, {"start": 30.82, "dur": 8.04}, {"start": 38.86, "dur": 5.12}, {"start": 43.98, "dur": 8.12}, {"start": 52.1, "dur": 5.04}, {"start": 57.14, "dur": 9.66}, {"start": 66.8, "dur": 5.04}, {"start": 71.84, "dur": 9.8}, {"start": 81.64, "dur": 4.36}];
+      const TOTAL = 86.0;
+      const W = (sub, after = 0) => { for (const w of WORDS) if (w.s >= after && w.t.toLowerCase().includes(sub)) return w.s; throw new Error("word " + sub); };
+      function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const tl = gsap.timeline({ paused: true });
+      const S = (i) => SC[i - 1].start, E = (i) => SC[i - 1].start + SC[i - 1].dur;
+      const $ = (id) => document.getElementById(id);
+
+      // ---- helpers
+      const pop = (sel, t, r = 0) => tl.fromTo(sel, { scale: 0, opacity: 0, rotation: r - 12 }, { scale: 1, opacity: 1, rotation: r, duration: 0.3, ease: "back.out(2.6)" }, t);
+      const slam = (sel, t, from = 2.6) => tl.fromTo(sel, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.16, ease: "power4.in" }, t);
+      const inL = (sel, t, r = 0) => tl.fromTo(sel, { x: -1300, rotation: r - 10 }, { x: 0, rotation: r, duration: 0.35, ease: "power3.out" }, t);
+      const inR = (sel, t, r = 0) => tl.fromTo(sel, { x: 1300, rotation: r + 10 }, { x: 0, rotation: r, duration: 0.35, ease: "power3.out" }, t);
+      const inU = (sel, t, r = 0) => tl.fromTo(sel, { y: 1500, rotation: r }, { y: 0, rotation: r, duration: 0.4, ease: "back.out(1.2)" }, t);
+      const inD = (sel, t, r = 0) => tl.fromTo(sel, { y: -1500, rotation: r }, { y: 0, rotation: r, duration: 0.4, ease: "back.out(1.2)" }, t);
+      const out = (sel, t, d = 0.2) => tl.to(sel, { opacity: 0, duration: d }, t);
+      const flyOut = (sel, t, x = -1300) => tl.to(sel, { x, rotation: x > 0 ? 15 : -15, duration: 0.3, ease: "power3.in" }, t);
+      const shake = (sel, t, a = 16, n = 6) => { const r = rng(Math.floor(t * 97)); for (let k = 0; k < n; k++) tl.to(sel, { x: (r() - 0.5) * 2 * a, y: (r() - 0.5) * 2 * a, duration: 0.04, ease: "none" }, t + k * 0.04); tl.to(sel, { x: 0, y: 0, duration: 0.05 }, t + n * 0.04); };
+      const flash = (t, o = 0.8) => { tl.set("#flash", { opacity: o }, t); tl.to("#flash", { opacity: 0, duration: 0.3, ease: "power2.out" }, t + 0.01); };
+      const punch = (cam, t, s = 1.08) => tl.fromTo(cam, { scale: s }, { scale: 1, duration: 0.35, ease: "power3.out", immediateRender: false }, t);
+      const impact = (cam, t, k = 1) => { punch(cam, t, 1 + 0.08 * k); shake(cam, t + 0.02, 14 * k, 5); };
+      const inv = (t) => { tl.set("#invert", { opacity: 1 }, t); tl.set("#invert", { opacity: 0 }, t + 0.06); };
+      const draw = (sel, t, d = 0.5, len = 3000) => { tl.set(sel, { strokeDasharray: len, strokeDashoffset: len }, 0); tl.to(sel, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t); };
+      const spin = (sel, t0, t1, deg = 120) => tl.fromTo(sel, { rotation: 0 }, { rotation: deg * (t1 - t0) / 10, duration: t1 - t0, ease: "none" }, t0);
+      const drift = (cam, i) => tl.fromTo(cam, { scale: 1 }, { scale: 1.06, duration: SC[i - 1].dur, ease: "none" }, S(i));
+      const stripes = (sel, i) => tl.fromTo(sel, { x: 0 }, { x: 128, duration: SC[i - 1].dur, ease: "none" }, S(i));
+
+      // ---- captions
+      const cap = $("cap"); const lines = []; let cur = [];
+      WORDS.forEach((w, i) => { if (/^[:?!…]+$/.test(w.t)) { if (cur.length) cur[cur.length - 1].t += " " + w.t; else if (lines.length) { const l = lines[lines.length - 1]; l[l.length - 1].t += " " + w.t; } return; } cur.push({ ...w }); const txt = cur.map((x) => x.t).join(" "); const end = /[.?!…]$/.test(w.t) || (/,$/.test(w.t) && txt.length > 12); if (end || txt.length > 20 || i === WORDS.length - 1) { lines.push(cur); cur = []; } });
+      if (cur.length) lines.push(cur);
+      lines.forEach((ln, i) => {
+        const d = document.createElement("div"); d.className = "ln"; d.id = "ln" + i;
+        ln.forEach((w, j) => { const s = document.createElement("span"); s.className = "w"; s.id = `w${i}_${j}`; s.textContent = w.t.toUpperCase(); d.appendChild(s); });
+        cap.appendChild(d);
+        const t0 = ln[0].s - 0.05, t1 = lines[i + 1] ? lines[i + 1][0].s - 0.05 : Math.min(TOTAL - 0.05, ln[ln.length - 1].e + 1.0);
+        tl.set("#ln" + i, { opacity: 1 }, t0); tl.fromTo("#ln" + i, { scale: 0.85 }, { scale: 1, duration: 0.12, ease: "back.out(3)", immediateRender: false }, t0); tl.set("#ln" + i, { opacity: 0 }, t1);
+        ln.forEach((w, j) => { tl.fromTo(`#w${i}_${j}`, { color: "#ffffff" }, { color: "#ffd23f", duration: 0.01 }, w.s); tl.set(`#w${i}_${j}`, { color: "#ffffff" }, Math.min(w.e + 0.1, t1)); });
+      });
+
+      // bursts rotate, stripes drift, cameras breathe
+      ["b1", "b3", "b5", "b6", "b7", "b8", "b10", "b11", "b12"].forEach((b) => { const i = +b.slice(1); spin("#" + b, S(i), E(i), 60); });
+      [["#st2", 2], ["#st4", 4], ["#st9", 9]].forEach(([s, i]) => stripes(s, i));
+      for (let i = 1; i <= 12; i++) drift("#c" + i, i);
+
+      // ===== S1
+      { slam("#beck1", 0.08, 4); inv(0.22); impact("#c1", 0.22, 1.4); flash(0.22, 0.6);
+        inU("#ky1", 0.45);
+        tl.fromTo("#mcs", { scaleX: 0 }, { scaleX: 1, duration: 0.25, ease: "power3.out" }, W("mongolian") - 0.15);
+        pop("#mcs1", W("mongolian")); pop("#mcs2", W("chop")); pop("#mcs3", W("squad"));
+        const tm = W("manga"); flyOut("#ky1", tm - 0.25, -1300); tl.to(["#beck1", "#mcs"], { y: -120, scale: 0.8, duration: 0.3, ease: "power3.inOut" }, tm - 0.2);
+        tl.fromTo("#post1", { y: 1500, rotation: 20 }, { y: 0, rotation: -5, duration: 0.4, ease: "back.out(1.3)" }, tm - 0.15);
+        slam("#inc", W("incontournable") - 0.05, 3); impact("#c1", W("incontournable") + 0.1, 1.1);
+        pop("#mus", W("musique") - 0.05, -4); pop("#hist", W("histoire") - 0.05, 3); }
+
+      // ===== S2
+      { inL("#ky2", S(2), -3); tl.fromTo("#kyn", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.25 }, S(2) + 0.1);
+        pop("#sansbut", W("ado") - 0.05, 4);
+        const tb = W("bouleversée"); shake("#c2", tb, 22, 10); tl.to("#ky2", { rotation: 8, duration: 0.1, yoyo: true, repeat: 5 }, tb); inv(tb + 0.1);
+        const tr = W("rencontrant"); out(["#sansbut", "#kyn"], tr - 0.15, 0.1); tl.to("#ky2", { scale: 0.62, x: -150, y: -160, duration: 0.3, ease: "power3.inOut" }, tr - 0.2);
+        slam("#hand2", tr, 2.2); impact("#c2", tr + 0.12, 1.2); flash(tr + 0.1, 0.5);
+        const ty = W("ryusuke"); tl.to("#hand2", { y: -330, scale: 0.7, duration: 0.3, ease: "power3.inOut" }, ty - 0.1);
+        inR("#ry2", ty - 0.05, 2); tl.fromTo("#ryn", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.2 }, ty + 0.15);
+        pop("#guit", W("guitariste") - 0.05, -3); impact("#c2", W("talentueux"), 0.7); }
+
+      // ===== S3
+      { const tp = W("plongés"); tl.fromTo("#fly3", { x: -900, y: -900, rotation: -40, opacity: 1 }, { x: 0, y: 0, rotation: 6, duration: 0.5, ease: "power2.out" }, tp - 0.4);
+        tl.fromTo("#rock3", { scale: 0, rotation: -200 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(1.8)" }, W("rock") - 0.1); impact("#c3", W("rock") + 0.2, 1.3); inv(W("rock") + 0.2);
+        const th = W("hauts"); tl.to(["#fly3", "#rock3"], { y: -1600, duration: 0.3, ease: "power3.in" }, th - 0.3);
+        inU("#bd3", th - 0.2, -2); pop("#up3", th); tl.to("#bd3", { y: -70, duration: 0.15, ease: "power2.out" }, th + 0.05);
+        pop("#dn3", W("bas", 16)); tl.to("#bd3", { y: 80, duration: 0.15, ease: "power2.out" }, W("bas", 16) + 0.05);
+        const tg = W("groupe", 16); tl.to(["#bd3", "#up3", "#dn3"], { x: -1400, duration: 0.3, ease: "power3.in" }, tg - 0.25);
+        inR("#stg3", tg - 0.1, 2); tl.set("#chp", { strokeDasharray: 1300, strokeDashoffset: 1300 }, 0); tl.set("#chart3", { opacity: 0 }, 0); tl.set("#chart3", { opacity: 1 }, W("ascension") - 0.1); tl.to("#chp", { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, W("ascension") - 0.1);
+        const ts = W("succès"); tl.to(["#stg3", "#chart3"], { opacity: 0, scale: 0.8, duration: 0.2 }, ts - 0.4);
+        pop("#pas3", W("pas", 18.9) - 0.05, -5); slam("#succ", ts - 0.05, 2.5); draw("#scrp", W("facile"), 0.3, 1300); impact("#c3", W("facile") + 0.25, 1.1); }
+
+      // ===== S4
+      { inD("#road4", S(4), -2); impact("#c4", S(4) + 0.35, 0.8);
+        tl.fromTo("#brut", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.in" }, W("réalisme") - 0.05); impact("#c4", W("réalisme") + 0.1, 1);
+        out("#brut", W("galères") - 0.2, 0.15);
+        [["#l1", "galères", 0], ["#l2", "pression", 0], ["#l3", "rivalités", 0], ["#l4", "doute", 0]].forEach(([s, w], i) => { slam(s, W(w) - 0.05, 2.4); punch("#c4", W(w) + 0.1, 1.04); tl.to("#road4 img", { filter: `grayscale(${0.25 * (i + 1)}) brightness(${1 - 0.1 * (i + 1)})`, duration: 0.2 }, W(w)); });
+        const tm = W("magie"); tl.to("#crowd4", { opacity: 1, duration: 0.15 }, tm - 0.25); out(["#road4", "#l1", "#l2", "#l3", "#l4"], tm - 0.1, 0.1);
+        tl.fromTo("#crowdimg", { x: 0 }, { x: 300, duration: E(4) - tm + 0.3, ease: "none" }, tm - 0.25);
+        tl.fromTo("#beam1", { rotation: -25 }, { rotation: 25, duration: 0.8, repeat: 4, yoyo: true, ease: "sine.inOut" }, tm - 0.25);
+        tl.fromTo("#beam2", { rotation: 25 }, { rotation: -25, duration: 0.7, repeat: 5, yoyo: true, ease: "sine.inOut" }, tm - 0.25);
+        slam("#magie", tm - 0.05, 2.2); flash(tm, 0.5);
+        slam("#adre", W("l'adrénaline") - 0.05, 3); impact("#c4", W("l'adrénaline") + 0.1, 1.4); inv(W("l'adrénaline") + 0.1);
+        pop("#perf", W("performances") - 0.05, -3); shake("#adre", W("performances"), 10, 8); }
+
+      // ===== S5
+      { slam("#evo", W("l'évolution") - 0.05, 3); impact("#c5", W("l'évolution") + 0.1, 1);
+        tl.fromTo("#vol5", { scale: 0, rotation: -360 }, { scale: 1, rotation: 4, duration: 0.5, ease: "back.out(1.4)" }, W("incroyable") - 0.2);
+        const ta = W("d'ado") - 0.3; tl.to(["#evo", "#vol5"], { opacity: 0, scale: 0.6, duration: 0.2 }, ta - 0.1);
+        inL("#kp5", ta, -3); pop("#avant", ta + 0.25, -4); draw("#arrp", W("timide") + 0.1, 0.45, 700); draw("#arrh", W("timide") + 0.5, 0.15, 200);
+        inR("#bw5", W("musicien") - 0.1, 2); pop("#apres", W("musicien") + 0.15, 3); impact("#c5", W("accompli"), 1);
+        const tc = W("chaque", 36); tl.to(["#kp5", "#avant", "#arr5", "#apres"], { opacity: 0, duration: 0.2 }, tc - 0.1);
+        tl.to("#bw5", { x: -260, y: -520, scale: 1.45, rotation: 0, duration: 0.5, ease: "power3.inOut" }, tc - 0.1);
+        slam("#ysi", W("comme", 37) - 0.05, 2.4); impact("#c5", W("était", 38) , 1.2); flash(W("était", 38), 0.5); }
+
+      // ===== S6
+      { slam("#mg6", S(6) + 0.05, 2.2); inL("#mgt6", S(6) + 0.1, -4); impact("#c6", W("brille") , 0.7);
+        pop("#nar", W("narration") - 0.05, 3); pop("#int", W("intensité") - 0.05, -3);
+        const tq = W("manque"); tl.to("#mgt6 img", { filter: "grayscale(1) contrast(1.2)", duration: 0.3 }, tq);
+        pop("#slot", tq - 0.1, -4); tl.fromTo("#q6", { scale: 0.6 }, { scale: 1.15, duration: 0.25, repeat: 5, yoyo: true, ease: "sine.inOut" }, tq + 0.2);
+        slam("#cle", W("élément") - 0.05, 2.2); impact("#c6", W("clé") , 1.1); inv(W("clé")); }
+
+      // ===== S7
+      { const ta = W("l'anime", 44); tl.fromTo("#cc7", { scale: 2.2, opacity: 0, rotation: 8 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.18, ease: "power4.in" }, ta - 0.1); impact("#c7", ta + 0.1, 1.4); flash(ta + 0.08, 0.7);
+        slam("#anime7", ta + 0.1, 2.5); tl.to("#cc7", { y: 20, duration: 0.6, repeat: 2, yoyo: true, ease: "sine.inOut" }, ta + 0.4);
+        const to = W("ost"); tl.to(["#cc7", "#anime7"], { x: -1400, duration: 0.3, ease: "power3.in" }, to - 0.35);
+        inR("#vin7", to - 0.15); spin("#vin7", to - 0.15, W("dimension") , 2400);
+        document.querySelectorAll("#eq7 i").forEach((b, i) => { const r = rng(7 + i); tl.set(b, { scaleY: 0.1 }, 0); for (let t = to; t < W("dimension") - 0.3; t += 0.14) tl.to(b, { scaleY: 0.15 + r() * 0.85, duration: 0.12, ease: "power2.out" }, t); });
+        tl.fromTo("#eq7", { opacity: 0 }, { opacity: 1, duration: 0.2 }, to); slam("#ost7", W("inoubliable") - 0.05, 2.4); impact("#c7", W("inoubliable") + 0.1, 1);
+        const td = W("vraie"); tl.to(["#vin7", "#eq7", "#ost7"], { y: 1600, duration: 0.3, ease: "power3.in" }, td - 0.3);
+        inD("#gd7", td - 0.15, 2); pop("#dim7", W("dimension") - 0.05, 3); impact("#c7", W("groupe", 50), 1.2); }
+
+      // ===== S8
+      { inL("#cg8", S(8), -4); inR("#vin8", S(8) + 0.1); spin("#vin8", S(8), E(8), 2400); inU("#tl8", S(8) + 0.15);
+        [["#tr1", "moon"], ["#tr2", "slip"], ["#tr3", "face", 54]].forEach(([s, w, a]) => { tl.fromTo(s, { background: "rgba(255,210,63,0)", x: 0 }, { background: "rgba(255,210,63,1)", x: 20, duration: 0.15 }, W(w, a || 0) - 0.05); tl.to(s, { background: "rgba(255,210,63,0)", x: 0, duration: 0.2 }, W(w, a || 0) + 0.7); punch("#c8", W(w, a || 0), 1.04); });
+        tl.fromTo("#grav", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.in" }, W("gravés") - 0.05); impact("#c8", W("gravés") + 0.1, 1.1); }
+
+      // ===== S9
+      { tl.fromTo("#tps", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, S(9) + 0.05); inU("#hg9", S(9), -2);
+        tl.to("#hg9", { rotation: 178, duration: 0.6, ease: "power2.inOut" }, W("temps", 59) - 0.4);
+        tl.fromTo("#auth", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.in" }, W("authentique") - 0.05); impact("#c9", W("authentique") + 0.1, 1.2);
+        const tj = W("juste") - 0.3; tl.to(["#hg9", "#auth", "#tps"], { y: -1600, duration: 0.3, ease: "power3.in" }, tj - 0.1);
+        tl.fromTo("#rock9", { scale: 0, rotation: 200 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(1.8)" }, tj); slam("#pasj", W("rock", 62) - 0.1, 2.2);
+        const tpa = W("parcours"); tl.to(["#rock9", "#pasj"], { opacity: 0, scale: 0.5, duration: 0.2 }, tpa - 0.3);
+        tl.set("#path9", { opacity: 0 }, 0); tl.set("#path9", { opacity: 1 }, tpa - 0.1); draw("#pp", tpa - 0.1, 1.8, 3400);
+        document.querySelectorAll("#obs .ob").forEach((o, i) => tl.fromTo(o, { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(3)" }, W("semé") + i * 0.18));
+        pop("#emb", W("d'embûches") - 0.1, 4);
+        tl.fromTo("#star9", { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(3)" }, W("victoire") - 0.05); pop("#vic", W("victoire"), -4); impact("#c9", W("mérite") , 1.1); }
+
+      // ===== S10
+      { slam("#meil", S(10) + 0.05, 2.5); punch("#c10", W("meilleur") + 0.1, 1.05);
+        const ta = W("l'anime", 67); tl.to("#meil", { y: -60, scale: 0.8, opacity: 0, duration: 0.2 }, ta - 0.15);
+        tl.fromTo("#cf10", { scale: 2.4, opacity: 0, rotation: -10 }, { scale: 1, opacity: 1, rotation: 2, duration: 0.18, ease: "power4.in" }, ta - 0.05); impact("#c10", ta + 0.12, 1.3);
+        slam("#vf", W("dispo") - 0.05, 2.6); impact("#c10", W("française"), 0.8);
+        pop("#exc", W("d'excuses") - 0.1, 3);
+        const tpp = W("pépite"); slam("#pep", tpp - 0.1, 2.2); flash(tpp, 0.6);
+        const SP = $("spk"); const r = rng(10); for (let i = 0; i < 10; i++) { const x = 100 + r() * 860, y = 300 + r() * 1000, s = 50 + r() * 70; SP.insertAdjacentHTML("beforeend", `<svg class="abs sp" id="sp${i}" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px" viewBox="0 0 100 100"><path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40Z" fill="#ffd23f" stroke="#111014" stroke-width="5" /></svg>`); tl.fromTo("#sp" + i, { scale: 0, rotation: 0, opacity: 1 }, { scale: 1, rotation: 90, duration: 0.3, ease: "back.out(3)" }, tpp + i * 0.03); tl.to("#sp" + i, { scale: 0, duration: 0.2 }, E(10) - 0.2); } }
+
+      // ===== S11
+      { inD("#ban11", S(11), -2); inU("#list11", S(11) + 0.1, 1);
+        [["#ck1", "persévérance"], ["#ck2", "rock", 74], ["#ck3", "rêves"]].forEach(([s, w, a]) => { draw(s, W(w, a || 0) - 0.05, 0.25, 220); punch("#c11", W(w, a || 0) + 0.15, 1.04); });
+        const tb = W("beck", 78); tl.to(["#ban11", "#list11"], { y: 1700, duration: 0.3, ease: "power3.in" }, tb - 0.3);
+        slam("#beck11", tb - 0.05, 4); impact("#c11", tb + 0.1, 1.4); inv(tb + 0.1);
+        tl.fromTo("#mcs11", { scaleX: 0 }, { scaleX: 1, duration: 0.25, ease: "power3.out" }, W("mongolian", 78)); inU("#ky11", W("squad", 79) - 0.1);
+        tl.fromTo("#must", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.in" }, W("must") - 0.05); impact("#c11", W("must") + 0.1, 1.5); flash(W("must") + 0.1, 0.6); }
+
+      // ===== S12
+      { slam("#dv", S(12) + 0.05, 2.4);
+        inL("#vu", W("vu", 81) - 0.15, -4); pop("#vut", W("vu", 81) + 0.05, -5); impact("#c12", W("vu", 81), 0.7);
+        inR("#lu", W("lu", 82) - 0.2, 4); pop("#lut", W("lu", 82) - 0.05, 5); impact("#c12", W("lu", 82), 0.7);
+        tl.fromTo("#bub", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)" }, W("dis-moi") - 0.05);
+        tl.to("#bub", { scale: 1.06, duration: 0.25, repeat: 5, yoyo: true, ease: "sine.inOut" }, W("dis-moi") + 0.4); }
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
