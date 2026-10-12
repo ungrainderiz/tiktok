@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>JoJo — Limp Bizkit</title>
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Anton"; src: url("fonts/Anton-Regular.ttf"); }
+      @font-face { font-family: "Dela"; src: url("fonts/DelaGothicOne-Regular.ttf"); }
+      :root { --ink: #0b0b10; --paper: #f3ecdc; --toxic: #b6ff3c; --acid: #e8ff5a; --purple: #7a2cff; --magenta: #ff2fa8; --blood: #e3122f; --teal: #19d3c5; --gold: #ffcc1a; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #08060c; font-family: "Anton", sans-serif; color: var(--paper); }
+      .abs { position: absolute; display: block; }
+      .layer { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      svg { display: block; overflow: visible; }
+
+      /* JoJo title text: stroke layer + gradient layer stacked */
+      .jt { position: absolute; white-space: nowrap; line-height: 1; }
+      .jt span { display: block; }
+      .jt .o { -webkit-text-stroke: 22px var(--ink); color: var(--ink); text-shadow: 14px 14px 0 var(--ink); }
+      .jt .f { position: absolute; left: 0; top: 0; background: linear-gradient(180deg, #fff6a8 0%, #ffd21a 38%, #ff3d7f 70%, #7a2cff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .jt.green .f { background-image: linear-gradient(180deg, #f4ffd0 0%, #b6ff3c 40%, #22c45e 70%, #0d5a4a 100%); }
+      .jt.red .f { background-image: linear-gradient(180deg, #fff 0%, #ffb3b3 30%, #e3122f 65%, #5a0010 100%); }
+      .jt.white .f { background-image: linear-gradient(180deg, #ffffff, #e8e0ff); }
+      .ono { position: absolute; font-family: "Dela"; color: #c04dff; -webkit-text-stroke: 10px var(--ink); paint-order: stroke fill; text-shadow: 8px 8px 0 var(--ink); opacity: 0; white-space: nowrap; }
+      .tag { position: absolute; font-family: "Anton"; font-size: 46px; letter-spacing: 1px; color: var(--ink); background: var(--paper); padding: 8px 22px; border: 6px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); white-space: nowrap; }
+      .tag.t { background: var(--toxic); } .tag.p { background: #d9b8ff; } .tag.r { background: var(--blood); color: #fff; } .tag.k { background: var(--ink); color: var(--paper); border-color: var(--paper); box-shadow: 10px 10px 0 rgba(0,0,0,0.6); }
+      .stamp { position: absolute; font-family: "Anton"; color: var(--blood); border: 10px solid var(--blood); padding: 4px 26px; font-size: 96px; opacity: 0; white-space: nowrap; mix-blend-mode: multiply; }
+      .panel { position: absolute; background: var(--paper); border: 10px solid var(--ink); box-shadow: 16px 16px 0 rgba(0,0,0,0.55); overflow: hidden; }
+
+      /* backgrounds (JoJo palette swaps) */
+      .bgc { position: absolute; inset: 0; opacity: 0; }
+      #bgA { background: radial-gradient(ellipse at 50% 40%, #3b1470 0%, #1a0a33 55%, #07040e 100%); opacity: 1; }
+      #bgB { background: radial-gradient(ellipse at 50% 40%, #7a0b20 0%, #2a0410 60%, #090205 100%); }
+      #bgC { background: radial-gradient(ellipse at 50% 40%, #1b6b3a 0%, #0b2a24 55%, #03100c 100%); }
+      #bgD { background: radial-gradient(ellipse at 50% 40%, #fff7e0 0%, #f0c9e8 55%, #b07ad8 100%); }
+      #bgE { background: radial-gradient(ellipse at 50% 40%, #155e8a 0%, #0b2346 60%, #050a18 100%); }
+      .tone { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(0,0,0,0.42) 3px, transparent 3.6px); background-size: 16px 16px; opacity: 0.55; }
+      #focus { left: -460px; top: -40px; width: 2000px; height: 2000px; background: repeating-conic-gradient(rgba(255,255,255,0.85) 0 0.8deg, transparent 0.8deg 5deg); -webkit-mask-image: radial-gradient(circle, transparent 20%, #000 46%); mask-image: radial-gradient(circle, transparent 20%, #000 46%); opacity: 0; }
+      #focusK { left: -460px; top: -40px; width: 2000px; height: 2000px; background: repeating-conic-gradient(rgba(0,0,0,0.85) 0 0.8deg, transparent 0.8deg 5deg); -webkit-mask-image: radial-gradient(circle, transparent 20%, #000 46%); mask-image: radial-gradient(circle, transparent 20%, #000 46%); opacity: 0; }
+      #fog { left: -200px; top: 900px; width: 1480px; height: 1100px; background: radial-gradient(ellipse at 30% 50%, rgba(140,255,120,0.18), transparent 60%), radial-gradient(ellipse at 75% 60%, rgba(160,90,255,0.2), transparent 55%); }
+
+      /* fx */
+      #invert { background: #fff; mix-blend-mode: difference; opacity: 0; }
+      #flash { background: #fff; opacity: 0; }
+      #redwash { background: #ff0030; mix-blend-mode: multiply; opacity: 0; }
+      #sepia { background: #b88a4a; mix-blend-mode: color; opacity: 0; }
+      #sepia2 { background: rgba(60,35,10,0.25); opacity: 0; }
+      .vign { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0,0,0,0.7) 100%); }
+      #grain { background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1.4px); background-size: 7px 9px; }
+      #badge { left: 40px; top: 110px; }
+      #badge .tag { position: relative; display: inline-block; font-size: 34px; padding: 4px 16px; border-width: 5px; box-shadow: 6px 6px 0 var(--ink); }
+
+      /* captions: manga caption box */
+      #cap { left: 50px; top: 1330px; width: 980px; height: 210px; }
+      #cap .ln { position: absolute; left: 0; top: 0; width: 980px; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 22px; opacity: 0; }
+      #cap .w { font-family: "Anton"; font-size: 84px; line-height: 1.12; color: #fff; -webkit-text-stroke: 12px var(--ink); paint-order: stroke fill; text-shadow: 8px 8px 0 var(--ink); }
+
+      /* S1 prison */
+      #bars { left: 0; top: 0; width: 1080px; height: 1920px; }
+      #lightcone { left: 240px; top: -300px; width: 600px; height: 1700px; background: linear-gradient(180deg, rgba(255,255,220,0.5), rgba(255,255,220,0)); clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); transform-origin: 50% 0; opacity: 0; }
+      #pname { left: 0; top: 560px; width: 1080px; text-align: center; }
+      #pname .s { font-size: 58px; color: var(--paper); letter-spacing: 8px; text-shadow: 6px 6px 0 var(--ink); }
+      #pname .b { display: inline-block; margin-top: 12px; font-size: 120px; color: var(--ink); background: var(--gold); padding: 0 30px; border: 8px solid var(--ink); box-shadow: 14px 14px 0 rgba(0,0,0,0.6); }
+      #so { left: 0; top: 330px; width: 1080px; display: flex; justify-content: center; }
+      .drip { position: absolute; top: 0; width: 40px; background: linear-gradient(#9a0018, #e3122f); border-radius: 0 0 20px 20px; transform-origin: 50% 0; }
+      
+      #standS1 { left: 190px; top: 560px; width: 700px; height: 1120px; opacity: 0; }
+      #title { left: 0; top: 300px; width: 1080px; height: 400px; }
+      #title .jt { font-size: 212px; left: 50%; }
+      #title .kana { position: absolute; left: 0; top: 270px; width: 1080px; text-align: center; font-family: "Dela"; font-size: 64px; color: var(--toxic); -webkit-text-stroke: 3px var(--ink); text-shadow: 6px 6px 0 var(--ink); }
+      #user1 { left: 0; top: 1150px; width: 1080px; display: flex; justify-content: center; }
+
+      /* S2 dossier */
+      #dossier { left: 70px; top: 270px; width: 940px; height: 1000px; background: #e9dfc6; border: 10px solid var(--ink); box-shadow: 18px 18px 0 rgba(0,0,0,0.6); }
+      #dossier .hd { position: absolute; left: 0; top: 0; width: 100%; height: 110px; background: var(--ink); color: var(--paper); font-size: 64px; padding: 14px 34px; letter-spacing: 4px; }
+      #mx2 { left: 360px; top: 400px; width: 600px; height: 720px; }
+      #disc { left: 110px; top: 470px; width: 300px; height: 300px; opacity: 0; }
+      #ws { left: 90px; top: 970px; }
+      #gframe { left: 130px; top: 360px; width: 820px; height: 860px; opacity: 0; }
+      #gl1 { left: 210px; top: 1110px; }
+      #gl2 { left: 520px; top: 1110px; }
+
+      /* S3 power */
+      #stand3 { left: 290px; top: 230px; width: 500px; height: 800px; }
+      #pow { left: 0; top: 250px; width: 1080px; text-align: center; }
+      #ground { left: 0; top: 1070px; width: 1080px; height: 260px; background: linear-gradient(#1c1026, #07040c); border-top: 8px solid var(--ink); }
+      .tomb { position: absolute; width: 150px; height: 190px; background: #6f6880; border: 8px solid var(--ink); border-radius: 75px 75px 0 0; }
+      .tomb::after { content: "RIP"; position: absolute; left: 0; top: 46px; width: 100%; text-align: center; font-size: 46px; color: #2e2838; }
+      .zb { position: absolute; }
+      .zb .sol { position: absolute; inset: 0; }
+      .zb .gh { position: absolute; inset: 0; opacity: 0; }
+      #z1 { left: 70px; top: 640px; width: 260px; height: 520px; }
+      #z2 { left: 700px; top: 860px; width: 330px; height: 230px; }
+      #z3 { left: 760px; top: 600px; width: 220px; height: 160px; }
+      .hand { position: absolute; width: 120px; height: 200px; }
+      #invis { left: 0; top: 380px; width: 1080px; height: 300px; }
+      #invis .jt { font-size: 168px; left: 50%; }
+      #mag { left: 400px; top: 640px; width: 300px; height: 300px; opacity: 0; }
+
+      /* S4 invisible army */
+      #corr { left: 0; top: 0; width: 1080px; height: 1920px; }
+      .fp { position: absolute; width: 70px; height: 120px; opacity: 0; }
+      .sense { position: absolute; width: 300px; height: 300px; opacity: 0; }
+      #see { left: 390px; top: 380px; }
+      #hear { left: 140px; top: 620px; }
+      #feel { left: 640px; top: 620px; }
+      #army { left: 40px; top: 340px; width: 1000px; height: 700px; }
+      .ga { position: absolute; width: 150px; height: 300px; opacity: 0; }
+      #cant { left: 0; top: 980px; width: 1080px; text-align: center; }
+      .hp { position: absolute; width: 260px; height: 320px; opacity: 0; }
+
+      /* S5 death / head */
+      #fou { left: 0; top: 280px; width: 1080px; height: 260px; }
+      #fou .jt { font-size: 150px; left: 50%; }
+      #ecg { left: 60px; top: 250px; width: 960px; height: 220px; }
+      #mx5 { left: 240px; top: 470px; width: 600px; height: 720px; }
+      #skull { left: 390px; top: 520px; width: 300px; height: 320px; opacity: 0; }
+      #zi { left: 0; top: 1160px; width: 1080px; display: flex; justify-content: center; }
+      #angle { left: 140px; top: 260px; width: 800px; height: 800px; opacity: 0; }
+      #imp { left: 0; top: 300px; width: 1080px; height: 220px; }
+      #imp .jt { font-size: 130px; left: 50%; }
+
+      /* S6 Ermes */
+      #split { left: 0; top: 0; width: 1080px; height: 1920px; }
+      #mx6 { left: -60px; top: 520px; width: 520px; height: 624px; opacity: 0.55; }
+      #er6 { left: 330px; top: 360px; width: 760px; height: 912px; }
+      #ername { left: 50px; top: 260px; }
+      #kiss { left: 60px; top: 380px; }
+      .lip { position: absolute; width: 150px; height: 90px; opacity: 0; }
+      #veng { left: 0; top: 820px; width: 1080px; height: 300px; }
+      #veng .jt { font-size: 200px; left: 50%; }
+      #gmini { left: 70px; top: 520px; width: 260px; height: 300px; opacity: 0; }
+
+      /* S7 band fact */
+      #amp { left: 140px; top: 330px; width: 800px; height: 560px; background: #1d1a22; border: 12px solid var(--ink); border-radius: 18px; box-shadow: 18px 18px 0 rgba(0,0,0,0.6); }
+      #amp .grill { position: absolute; left: 40px; top: 120px; width: 700px; height: 380px; border-radius: 10px; background-color: #2c2834; background-image: repeating-linear-gradient(45deg, #3e3848 0 4px, transparent 4px 18px), repeating-linear-gradient(-45deg, #3e3848 0 4px, transparent 4px 18px); }
+      #amp .logo { position: absolute; left: 40px; top: 24px; font-size: 64px; color: var(--paper); letter-spacing: 6px; }
+      .knob { position: absolute; top: 34px; width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #eee, #888); border: 5px solid var(--ink); }
+      #eq { left: 230px; top: 530px; width: 620px; height: 300px; display: flex; align-items: flex-end; gap: 14px; }
+      #eq i { display: block; width: 56px; height: 300px; background: linear-gradient(0deg, var(--toxic), var(--acid) 60%, var(--magenta)); border: 5px solid var(--ink); transform-origin: 50% 100%; }
+      #nu { left: 0; top: 920px; width: 1080px; display: flex; justify-content: center; gap: 24px; }
+      #meter { left: 90px; top: 360px; width: 900px; height: 300px; padding: 30px 36px; opacity: 0; }
+      #meter .h { font-size: 66px; color: var(--ink); }
+      #meter .bar { margin-top: 24px; width: 808px; height: 80px; border: 8px solid var(--ink); background: #ddd2b8; }
+      #meter .bar i { display: block; width: 792px; height: 64px; background: repeating-linear-gradient(-45deg, #e3122f 0 30px, #9a0018 30px 60px); transform-origin: 0 50%; }
+      #meter .v { position: absolute; right: 40px; top: 30px; font-size: 66px; color: var(--blood); }
+      #glau { left: 0; top: 720px; width: 1080px; height: 260px; }
+      #glau .jt { font-size: 128px; left: 50%; }
+
+      /* S8 CTA */
+      #sub { left: 190px; top: 300px; width: 700px; height: 170px; background: var(--blood); border: 10px solid var(--ink); box-shadow: 16px 16px 0 rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 92px; color: #fff; letter-spacing: 2px; }
+      #next { left: 70px; top: 540px; width: 940px; height: 600px; padding: 34px; }
+      #next .h { font-size: 70px; color: var(--ink); text-align: center; }
+      #grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 26px; }
+      #grid .c { height: 112px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 50px; letter-spacing: 1px; }
+      #tbc { left: 40px; top: 1170px; width: 700px; height: 140px; }
+      #tbc .arrow { position: absolute; inset: 0; background: #d9c58f; border: 0; clip-path: polygon(0 50%, 22% 0, 22% 22%, 100% 22%, 100% 78%, 22% 78%, 22% 100%); }
+      #tbc .tx { position: absolute; left: 175px; top: 38px; font-size: 56px; color: #3b2a12; letter-spacing: 2px; white-space: nowrap; }
+      #tbc .tx2 { position: absolute; left: 140px; top: -70px; font-family: "Dela"; font-size: 40px; color: #d9c58f; -webkit-text-stroke: 2px var(--ink); white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1080" data-height="1920">
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <pattern id="ht" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="2.4" fill="#0b0b10" /></pattern>
+          <pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="5" height="14" fill="#0b0b10" /></pattern>
+          <linearGradient id="gStand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8ff9a" stop-opacity="0.55" /><stop offset="0.7" stop-color="#5dff8a" stop-opacity="0.22" /><stop offset="1" stop-color="#5dff8a" stop-opacity="0" /></linearGradient>
+          <linearGradient id="gDisc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9ae0" /><stop offset="0.35" stop-color="#9ae6ff" /><stop offset="0.65" stop-color="#e8ff9a" /><stop offset="1" stop-color="#c79aff" /></linearGradient>
+        </defs>
+      </svg>
+
+      <div id="bgwrap" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="0">
+        <div class="bgc" id="bgA"></div><div class="bgc" id="bgB"></div><div class="bgc" id="bgC"></div><div class="bgc" id="bgD"></div><div class="bgc" id="bgE"></div>
+        <div class="tone"></div>
+        <div class="abs" id="fog"></div>
+        <div class="abs" id="focus"></div>
+        <div class="abs" id="focusK"></div>
+        <div id="onos"></div>
+      </div>
+
+      <section id="s1" class="scene clip" data-start="{{S1}}" data-duration="{{D1}}" data-track-index="1">
+        <div class="abs" id="lightcone"></div>
+        <svg class="abs" id="bars" viewBox="0 0 1080 1920"></svg>
+        <div class="abs" id="pname"><div class="s">GREEN DOLPHIN STREET</div><div class="b">PRISON</div></div>
+        <div class="abs" id="so"><span class="tag t" style="position:relative">JOJO PARTIE 6 · STONE OCEAN</span></div>
+        <div id="drips"></div>
+        <div class="abs jt red" id="horror" style="font-size:150px;left:540px;top:900px"><span class="o">FILM D'HORREUR</span><span class="f">FILM D'HORREUR</span></div>
+        <div class="abs stand" id="standS1"></div>
+        <div class="abs" id="title">
+          <div class="jt green" id="t1"><span class="o">LIMP BIZKIT</span><span class="f">LIMP BIZKIT</span></div>
+          <div class="kana">「リンプ・ビズキット」</div>
+        </div>
+        <div class="abs" id="user1"><span class="tag p" style="position:relative">MANIEUR : SPORTS MAXX</span></div>
+      </section>
+
+      <section id="s2" class="scene clip" data-start="{{S2}}" data-duration="{{D2}}" data-track-index="1">
+        <div class="abs" id="dossier"><div class="hd">DOSSIER N°36 — SPORTS MAXX</div></div>
+        <div class="abs maxx" id="mx2"></div>
+        <span class="tag r" id="gang" style="left:110px;top:430px">GANGSTER</span>
+        <span class="tag" id="gds" style="left:110px;top:560px">GREEN DOLPHIN ST.</span>
+        <svg class="abs" id="disc" style="top:650px" viewBox="0 0 300 300"><circle cx="150" cy="150" r="140" fill="url(#gDisc)" stroke="#0b0b10" stroke-width="10" /><circle cx="150" cy="150" r="104" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="4" /><circle cx="150" cy="150" r="70" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><circle cx="150" cy="150" r="38" fill="#e9dfc6" stroke="#0b0b10" stroke-width="8" /><circle cx="150" cy="150" r="14" fill="#0b0b10" /><path d="M60 90 Q110 40 180 50" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.8" /></svg>
+        <span class="tag k" id="ws" style="opacity:0">BOSS : WHITESNAKE</span>
+        <div class="abs" id="gframe"></div>
+        <span class="tag" id="gl1" style="opacity:0">GLORIA</span>
+        <span class="tag r" id="gl2" style="opacity:0">SŒUR D'ERMES</span>
+        <div class="stamp" id="tuee" style="left:300px;top:640px">TUÉE</div>
+      </section>
+
+      <section id="s3" class="scene clip" data-start="{{S3}}" data-duration="{{D3}}" data-track-index="1">
+        <div class="abs stand" id="stand3"></div>
+        <div class="abs" id="pow"><span class="tag t" style="position:relative;font-size:64px">POUVOIR : RÉSURRECTION</span></div>
+        <div class="zb" id="z1"><div class="sol"></div><div class="gh"></div></div>
+        <div class="zb" id="z2"><div class="sol"></div><div class="gh"></div></div>
+        <div class="zb" id="z3"><div class="sol"></div><div class="gh"></div></div>
+        <div class="abs" id="ground">
+          <div class="tomb" style="left:60px;top:-150px"></div>
+          <div class="tomb" style="left:460px;top:-120px;transform:scale(0.85)"></div>
+          <div class="tomb" style="left:860px;top:-150px"></div>
+        </div>
+        <div id="hands"></div>
+        <span class="tag" id="hum" style="left:70px;top:520px;opacity:0">HUMAINS</span>
+        <span class="tag" id="ani" style="left:720px;top:470px;opacity:0">ANIMAUX</span>
+        <div class="stamp" id="peu" style="left:240px;top:760px;transform:rotate(-8deg)">PEU IMPORTE</div>
+        <svg class="abs" id="mag" viewBox="0 0 300 300"><circle cx="120" cy="120" r="90" fill="rgba(200,240,255,0.25)" stroke="#0b0b10" stroke-width="22" /><circle cx="120" cy="120" r="90" fill="none" stroke="#f3ecdc" stroke-width="8" /><path d="M186 186 L280 280" stroke="#0b0b10" stroke-width="40" stroke-linecap="round" /><path d="M186 186 L280 280" stroke="#a0603a" stroke-width="24" stroke-linecap="round" /></svg>
+        <div class="abs" id="invis"><div class="jt white" id="t3"><span class="o">INVISIBLES</span><span class="f">INVISIBLES</span></div></div>
+      </section>
+
+      <section id="s4" class="scene clip" data-start="{{S4}}" data-duration="{{D4}}" data-track-index="1">
+        <svg class="abs" id="corr" viewBox="0 0 1080 1920">
+          <polygon points="0,0 1080,0 760,700 320,700" fill="#120c1a" />
+          <polygon points="320,700 760,700 1080,1920 0,1920" fill="#2a2234" />
+          <polygon points="0,0 320,700 0,1920" fill="#1a1424" /><polygon points="1080,0 760,700 1080,1920" fill="#1a1424" />
+          <g stroke="#0b0b10" stroke-width="6" fill="none"><path d="M320 700 L0 1920 M760 700 L1080 1920 M320 700 L760 700 M320 700 L0 0 M760 700 L1080 0" /><path d="M250 960 L830 960 M150 1340 L930 1340" opacity="0.6" /></g>
+          <rect x="460" y="560" width="160" height="140" fill="#000" stroke="#0b0b10" stroke-width="6" />
+          <g fill="#b6ff3c" opacity="0.18"><polygon points="460,560 620,560 1080,1920 0,1920" /></g>
+        </svg>
+        <div id="fps"></div>
+        <div id="army"></div>
+        <svg class="abs sense" id="see" viewBox="0 0 300 300"><path d="M20 150 Q150 30 280 150 Q150 270 20 150Z" fill="#f3ecdc" stroke="#0b0b10" stroke-width="14" /><circle cx="150" cy="150" r="52" fill="#0b0b10" /><circle cx="168" cy="132" r="14" fill="#fff" /><path d="M40 260 L260 40" stroke="#e3122f" stroke-width="30" stroke-linecap="round" /></svg>
+        <svg class="abs sense" id="hear" viewBox="0 0 300 300"><path d="M180 60 C110 40 70 100 90 150 C110 190 150 170 140 220 C130 260 90 250 90 250" fill="none" stroke="#0b0b10" stroke-width="40" stroke-linecap="round" /><path d="M180 60 C110 40 70 100 90 150 C110 190 150 170 140 220 C130 260 90 250 90 250" fill="none" stroke="#e2ad86" stroke-width="24" stroke-linecap="round" /><g fill="none" stroke="#b6ff3c" stroke-width="12" stroke-linecap="round"><path d="M215 110 Q240 150 215 190" /><path d="M245 80 Q290 150 245 220" /></g></svg>
+        <svg class="abs sense" id="feel" viewBox="0 0 300 300"><g fill="none" stroke="#b6ff3c" stroke-width="12" stroke-linecap="round"><path d="M60 230 Q90 200 60 170 Q30 140 60 110 Q90 80 60 50" /><path d="M150 240 Q180 210 150 180 Q120 150 150 120 Q180 90 150 60" /><path d="M240 230 Q270 200 240 170 Q210 140 240 110 Q270 80 240 50" /></g></svg>
+        <div class="abs" id="cant"><div class="jt red" style="font-size:118px;left:540px"><span class="o">TU NE PEUX PAS</span><span class="f">TU NE PEUX PAS</span></div><div class="jt red" style="font-size:150px;left:540px;top:130px"><span class="o">LES VOIR</span><span class="f">LES VOIR</span></div></div>
+        <div id="hps"></div>
+      </section>
+
+      <section id="s5" class="scene clip" data-start="{{S5}}" data-duration="{{D5}}" data-track-index="1">
+        <div class="abs" id="fou"><div class="jt" id="t5"><span class="o">LE PLUS FOU ?</span><span class="f">LE PLUS FOU ?</span></div></div>
+        <div class="abs maxx" id="mx5"></div>
+        <svg class="abs" id="ecg" viewBox="0 0 960 220"><path id="ecgf" d="M0 110 L960 110" fill="none" stroke="#e3122f" stroke-width="12" opacity="0" /><path id="ecgp" d="M0 110 L200 110 L230 40 L260 190 L290 110 L420 110 L450 30 L480 200 L510 110 L960 110" fill="none" stroke="#b6ff3c" stroke-width="12" stroke-linejoin="round" /></svg>
+        <svg class="abs" id="skull" viewBox="0 0 300 320"><path d="M150 10 C60 10 20 80 30 150 C36 190 60 200 70 220 L80 270 L220 270 L230 220 C240 200 264 190 270 150 C280 80 240 10 150 10Z" fill="#f3ecdc" stroke="#0b0b10" stroke-width="12" /><ellipse cx="100" cy="150" rx="38" ry="44" fill="#0b0b10" /><ellipse cx="200" cy="150" rx="38" ry="44" fill="#0b0b10" /><path d="M150 190 L132 230 L168 230Z" fill="#0b0b10" /><g stroke="#0b0b10" stroke-width="8"><path d="M110 270 L110 300 M150 270 L150 305 M190 270 L190 300" /><path d="M90 300 L210 300" /></g><circle cx="100" cy="150" r="9" fill="#b6ff3c" /><circle cx="200" cy="150" r="9" fill="#b6ff3c" /></svg>
+        <div class="abs" id="zi"><span class="tag t" style="position:relative;font-size:60px">ZOMBIE INVISIBLE</span></div>
+        <svg class="abs" id="angle" viewBox="0 0 800 800"><circle cx="400" cy="400" r="330" fill="none" stroke="#b6ff3c" stroke-width="8" stroke-dasharray="26 18" /><path id="arcp" d="M400 400 L730 400 A330 330 0 1 0 400 730 Z" fill="rgba(182,255,60,0.18)" stroke="#b6ff3c" stroke-width="6" /><text x="400" y="420" text-anchor="middle" font-family="Anton" font-size="120" fill="#f3ecdc" stroke="#0b0b10" stroke-width="10" paint-order="stroke">270°</text></svg>
+        <div class="abs" id="imp"><div class="jt green" id="t5b"><span class="o">ANGLE IMPOSSIBLE</span><span class="f">ANGLE IMPOSSIBLE</span></div></div>
+      </section>
+
+      <section id="s6" class="scene clip" data-start="{{S6}}" data-duration="{{D6}}" data-track-index="1">
+        <svg class="abs" id="split" viewBox="0 0 1080 1920"><polygon id="splitR" points="560,0 1080,0 1080,1920 300,1920" fill="#f3ecdc" /><polygon points="560,0 300,1920" stroke="#0b0b10" stroke-width="16" /><line x1="560" y1="0" x2="300" y2="1920" stroke="#0b0b10" stroke-width="16" /></svg>
+        <div class="abs" id="er6bg" style="left:0;top:0;width:1080px;height:1920px"></div>
+        <div class="abs maxx" id="mx6"></div>
+        <div class="abs ermes" id="er6"></div>
+        <span class="tag p" id="ername" style="opacity:0;font-size:64px">ERMES COSTELLO</span>
+        <span class="tag k" id="kiss" style="opacity:0">STAND : KISS</span>
+        <div id="lips"></div>
+        <div class="abs" id="gmini"></div>
+        <div class="abs" id="veng"><div class="jt red" id="t6"><span class="o">VENGEANCE</span><span class="f">VENGEANCE</span></div></div>
+      </section>
+
+      <section id="s7" class="scene clip" data-start="{{S7}}" data-duration="{{D7}}" data-track-index="1">
+        <div class="abs" id="amp"><div class="logo">LIMP BIZKIT</div><div class="knob" style="left:520px"></div><div class="knob" style="left:600px"></div><div class="knob" style="left:680px"></div><div class="grill"></div></div>
+        <div class="abs" id="eq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="abs" id="nu"><span class="tag t" style="position:relative;font-size:64px">GROUPE DE NU METAL</span></div>
+        <div class="abs panel" id="meter"><div class="h">GLAUQUE-O-MÈTRE</div><div class="bar"><i id="mfill"></i></div><div class="v" id="mval">0%</div></div>
+        <div class="abs" id="glau"><div class="jt red" id="t7"><span class="o">LE PLUS GLAUQUE</span><span class="f">LE PLUS GLAUQUE</span></div></div>
+      </section>
+
+      <section id="s8" class="scene clip" data-start="{{S8}}" data-duration="{{D8}}" data-track-index="1">
+        <div class="layer" style="background:rgba(6,4,10,0.55)"></div>
+        <div class="abs" id="sub"><span id="sub1">ABONNE-TOI</span><span id="sub2" style="position:absolute;opacity:0">ABONNÉ ✓</span></div>
+        <div class="abs panel" id="next">
+          <div class="h">PROCHAIN STAND ?</div>
+          <div id="grid">
+            <div class="c">KISS</div><div class="c">WHITESNAKE</div>
+            <div class="c">STONE FREE</div><div class="c">KILLER QUEEN</div>
+            <div class="c">KING CRIMSON</div><div class="c">CRAZY DIAMOND</div>
+          </div>
+        </div>
+      </section>
+
+      <div id="fx" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="5">
+        <div class="layer" id="redwash"></div>
+        <div class="abs" id="badge"><span class="tag k">STAND FILE #02</span></div>
+        <div class="abs" id="cap"></div>
+        <div class="layer" id="sepia"></div>
+        <div class="layer" id="sepia2"></div>
+        <div class="abs" id="tbc"><div class="arrow"></div><div class="tx">TO BE CONTINUED</div><div class="tx2">つづく</div></div>
+        <div class="layer" id="flash"></div>
+        <div class="layer" id="invert"></div>
+        <div class="layer" id="grain"></div>
+        <div class="vign"></div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="{{TOTAL}}" data-track-index="9" data-volume="1"></audio>
+    </div>
+
+    <script>
+      const OFF = {{OFF}};
+      const WORDS = {{WORDS}}.filter((w) => w.type === "word").map((w) => ({ t: w.text, s: w.start + OFF, e: w.end + OFF }));
+      const SC = {{SCENES}};
+      const TOTAL = {{TOTAL}};
+      const W = (sub, after = 0) => { for (const w of WORDS) if (w.s >= after && w.t.toLowerCase().includes(sub)) return w.s; throw new Error("word " + sub); };
+      function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const tl = gsap.timeline({ paused: true });
+      const S = (i) => SC[i - 1].start, E = (i) => SC[i - 1].start + SC[i - 1].dur;
+      const $ = (id) => document.getElementById(id);
+
+      // ---- ink-style characters (original drawings, manga look)
+      const MAXX = `<svg viewBox="0 0 400 480" width="100%" height="100%"><g class="body">
+        <path d="M10 480 C20 390 80 345 150 334 L250 334 C320 345 380 390 390 480Z" fill="#e0782c" stroke="#0b0b10" stroke-width="9"/>
+        <path d="M14 470 C26 392 80 350 150 336 L172 336 L120 480Z" fill="url(#hatch)" opacity="0.3"/>
+        <path d="M158 266 L156 344 L244 344 L242 266Z" fill="#d49870" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M158 296 L242 296 L242 272 L158 272Z" fill="url(#hatch)" opacity="0.45"/>
+        <path d="M148 334 L200 400 L252 334" fill="#e9dfc6" stroke="#0b0b10" stroke-width="8"/>
+        <rect x="72" y="402" width="108" height="42" fill="#f3ecdc" stroke="#0b0b10" stroke-width="6"/>
+        <text x="126" y="434" text-anchor="middle" font-family="Anton" font-size="30" fill="#0b0b10">MX-036</text></g>
+        <g class="head">
+        <path d="M114 172 C98 168 94 208 118 224" fill="#e2ad86" stroke="#0b0b10" stroke-width="7"/><path d="M286 172 C302 168 306 208 282 224" fill="#e2ad86" stroke="#0b0b10" stroke-width="7"/>
+        <path d="M118 140 C116 90 150 62 200 62 C250 62 284 90 282 140 L278 222 C272 266 242 296 200 300 C158 296 128 266 122 222Z" fill="#e2ad86" stroke="#0b0b10" stroke-width="9"/>
+        <path d="M252 150 L279 150 L276 222 C270 262 246 290 214 298 C246 268 260 220 252 150Z" fill="url(#ht)" opacity="0.5"/>
+        <path d="M138 246 C160 292 240 292 262 246 C244 304 156 304 138 246Z" fill="url(#ht)" opacity="0.6"/>
+        <path d="M108 150 C104 60 150 22 200 22 C250 22 296 60 292 150Z" fill="#2a2a34" stroke="#0b0b10" stroke-width="9"/>
+        <path d="M104 156 C140 128 260 128 296 156 L298 120 C262 96 138 96 102 120Z" fill="#3c3c4a" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M122 112 L122 142 M140 106 L140 136 M158 102 L158 132 M176 100 L176 130 M194 99 L194 129 M212 99 L212 129 M230 100 L230 130 M248 102 L248 132 M266 106 L266 136 M282 112 L282 142" stroke="#1a1a22" stroke-width="5"/>
+        <path d="M132 176 L192 190 L190 205 L130 191Z" fill="#0b0b10"/><path d="M268 176 L208 190 L210 205 L270 191Z" fill="#0b0b10"/>
+        <path d="M142 212 Q166 199 190 213 Q166 224 142 212Z" fill="#fff" stroke="#0b0b10" stroke-width="5"/><circle cx="175" cy="212" r="6" fill="#0b0b10"/>
+        <path d="M258 212 Q234 199 210 213 Q234 224 258 212Z" fill="#fff" stroke="#0b0b10" stroke-width="5"/><circle cx="225" cy="212" r="6" fill="#0b0b10"/>
+        <path d="M146 230 L184 232 M216 232 L254 230 M150 238 L176 240 M224 240 L250 238" stroke="#0b0b10" stroke-width="3"/>
+        <path d="M200 216 L190 254 L211 258" fill="none" stroke="#0b0b10" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M150 266 Q200 292 252 262 Q242 286 200 290 Q162 288 150 266Z" fill="#fff" stroke="#0b0b10" stroke-width="6"/>
+        <path d="M174 273 L175 287 M200 277 L200 290 M226 273 L225 287" stroke="#0b0b10" stroke-width="3"/>
+        <path d="M236 160 L264 244" stroke="#8a2020" stroke-width="5"/><path d="M242 184 L256 178 M248 204 L262 198 M254 224 L268 218" stroke="#8a2020" stroke-width="3"/></g></svg>`;
+
+      const STAND = `<svg viewBox="0 0 500 800" width="100%" height="100%"><g stroke="#d8ff9a" stroke-width="6" fill="url(#gStand)" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M180 262 C80 240 60 140 112 88" fill="none" stroke-width="16"/><path d="M320 262 C420 240 440 140 388 88" fill="none" stroke-width="16"/>
+        <path d="M170 252 C150 330 190 380 200 430 C180 500 170 560 190 650 L310 650 C330 560 320 500 300 430 C310 380 350 330 330 252Z"/>
+        <path d="M190 300 Q250 332 310 300 M195 342 Q250 372 305 342 M200 384 Q250 408 300 384" fill="none"/>
+        <path d="M172 262 C110 300 92 400 82 520 L72 600" fill="none" stroke-width="22"/><path d="M328 262 C390 300 408 400 418 520 L428 600" fill="none" stroke-width="22"/>
+        <path d="M72 600 l-22 44 M72 600 l0 50 M72 600 l22 44 M428 600 l-22 44 M428 600 l0 50 M428 600 l22 44" fill="none" stroke-width="8"/>
+        <path d="M250 30 C340 30 380 100 370 170 C362 226 320 266 250 270 C180 266 138 226 130 170 C120 100 160 30 250 30Z"/>
+        <g fill="#0b0b10" fill-opacity="0.5" stroke="none"><circle cx="200" cy="90" r="11"/><circle cx="250" cy="80" r="11"/><circle cx="300" cy="90" r="11"/><circle cx="170" cy="130" r="9"/><circle cx="330" cy="130" r="9"/><circle cx="250" cy="120" r="9"/></g>
+        <path d="M184 150 L226 162 L222 206 L188 190Z" fill="#eaff6b" stroke="#0b0b10" stroke-width="5"/><path d="M316 150 L274 162 L278 206 L312 190Z" fill="#eaff6b" stroke="#0b0b10" stroke-width="5"/>
+        <path d="M196 232 L304 232" fill="none" stroke-dasharray="10 9" stroke-width="8"/></g></svg>`;
+
+      const ERMES = `<svg viewBox="0 0 400 480" width="100%" height="100%">
+        <path d="M0 480 C10 390 80 350 150 340 L250 340 C320 350 390 390 400 480Z" fill="#1f8f8a" stroke="#0b0b10" stroke-width="9"/>
+        <path d="M300 352 C350 370 390 410 398 470 L330 480Z" fill="url(#hatch)" opacity="0.3"/>
+        <path d="M164 276 L162 350 L238 350 L236 276Z" fill="#7b4a33" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M150 340 Q200 404 250 340" fill="#7b4a33" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M96 210 C66 120 108 30 200 26 C292 30 334 120 304 210 C292 166 108 166 96 210Z" fill="#141018" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M126 150 C124 100 156 70 200 70 C244 70 276 100 274 150 L270 220 C264 262 236 292 200 296 C164 292 136 262 130 220Z" fill="#8a5538" stroke="#0b0b10" stroke-width="9"/>
+        <path d="M246 150 L273 150 L270 220 C264 260 242 288 214 294 C242 266 254 220 246 150Z" fill="url(#ht)" opacity="0.5"/>
+        <path d="M160 46 L148 -26 L186 26 L200 -48 L214 26 L252 -26 L240 46Z" fill="#141018" stroke="#0b0b10" stroke-width="7" stroke-linejoin="round"/>
+        <path d="M120 152 C110 92 140 40 200 34 C260 40 290 92 280 152 C260 112 230 102 200 106 C170 102 140 112 120 152Z" fill="#141018" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M122 134 C150 106 250 106 278 134 L276 154 C250 126 150 126 124 154Z" fill="#ff5fb8" stroke="#0b0b10" stroke-width="6"/>
+        <circle cx="128" cy="240" r="18" fill="none" stroke="#ffcc1a" stroke-width="7"/><circle cx="272" cy="240" r="18" fill="none" stroke="#ffcc1a" stroke-width="7"/>
+        <path d="M140 176 L192 186 L190 199 L138 189Z" fill="#0b0b10"/><path d="M260 176 L208 186 L210 199 L262 189Z" fill="#0b0b10"/>
+        <path d="M146 208 Q168 194 192 208 Q168 218 146 208Z" fill="#fff" stroke="#0b0b10" stroke-width="5"/><circle cx="172" cy="207" r="7" fill="#0b0b10"/>
+        <path d="M254 208 Q232 194 208 208 Q232 218 254 208Z" fill="#fff" stroke="#0b0b10" stroke-width="5"/><circle cx="228" cy="207" r="7" fill="#0b0b10"/>
+        <path d="M146 206 L134 198 M254 206 L266 198" stroke="#0b0b10" stroke-width="5" stroke-linecap="round"/>
+        <path d="M200 212 L193 248 Q200 254 213 248" fill="none" stroke="#0b0b10" stroke-width="5"/>
+        <path d="M166 268 Q184 256 200 263 Q216 256 234 268 Q200 290 166 268Z" fill="#6a1a2e" stroke="#0b0b10" stroke-width="5"/>
+        <path d="M150 226 L170 232 M154 236 L172 241 M230 232 L250 226 M228 241 L246 236" stroke="#0b0b10" stroke-width="3"/>
+        <g transform="translate(286 412) rotate(-12)"><rect x="-58" y="-38" width="116" height="76" rx="12" fill="#f3ecdc" stroke="#0b0b10" stroke-width="5"/><path d="M-38 0 Q-19 -20 0 -9 Q19 -20 38 0 Q0 28 -38 0Z" fill="#ff2fa8" stroke="#0b0b10" stroke-width="4"/></g></svg>`;
+
+      const LIP = `<svg viewBox="0 0 150 90" width="100%" height="100%"><rect x="4" y="4" width="142" height="82" rx="14" fill="#f3ecdc" stroke="#0b0b10" stroke-width="6"/><path d="M28 45 Q52 18 75 32 Q98 18 122 45 Q75 80 28 45Z" fill="#ff2fa8" stroke="#0b0b10" stroke-width="5"/><path d="M34 45 Q75 52 116 45" stroke="#0b0b10" stroke-width="4" fill="none"/></svg>`;
+
+      const GLORIA = (crack) => `<svg viewBox="0 0 820 860" width="100%" height="100%">
+        <rect x="10" y="10" width="800" height="840" fill="#5a3a1e" stroke="#0b0b10" stroke-width="12"/><rect x="34" y="34" width="752" height="792" fill="none" stroke="#a87a3e" stroke-width="10"/>
+        <rect x="70" y="70" width="680" height="720" fill="#e9dcc0" stroke="#0b0b10" stroke-width="8"/>
+        <path d="M250 520 C220 360 260 200 410 190 C560 200 600 360 570 520 C560 600 600 680 640 790 L180 790 C220 680 260 600 250 520Z" fill="#2c1f1a"/>
+        <path d="M200 790 C220 640 300 600 410 600 C520 600 600 640 620 790Z" fill="#c25f8e" stroke="#0b0b10" stroke-width="6"/>
+        <path d="M376 520 L372 610 L448 610 L444 520Z" fill="#8a5538"/>
+        <ellipse cx="410" cy="390" rx="118" ry="148" fill="#9a6444" stroke="#0b0b10" stroke-width="6"/>
+        <path d="M300 330 C320 250 380 236 410 238 C470 236 510 270 522 330 C480 290 340 290 300 330Z" fill="#2c1f1a"/>
+        <path d="M352 384 Q372 398 392 384 M428 384 Q448 398 468 384" stroke="#0b0b10" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M372 462 Q410 488 448 462" stroke="#0b0b10" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <rect x="70" y="70" width="680" height="720" fill="url(#ht)" opacity="0.12"/>
+        <path d="M640 70 L750 70 L750 180Z" fill="#0b0b10"/><path d="M70 680 L70 790 L180 790Z" fill="#0b0b10"/>
+        ${crack ? `<g class="crk"><path d="M540 70 L480 230 L560 310 L430 440 L510 530 L380 650 L430 790" fill="none" stroke="#0b0b10" stroke-width="14"/><path d="M540 70 L480 230 L560 310 L430 440 L510 530 L380 650 L430 790" fill="none" stroke="#fff" stroke-width="5"/><path d="M480 230 L380 250 M430 440 L300 470 M510 530 L640 590" fill="none" stroke="#fff" stroke-width="4"/></g>` : ""}</svg>`;
+
+      const ZHUM = (st) => `<svg viewBox="0 0 260 520" width="100%" height="100%"><g ${st}>
+        <circle cx="128" cy="74" r="50"/><path d="M95 130 C70 150 70 260 85 330 L70 512 L120 512 L132 384 L145 512 L195 512 L180 330 C195 260 200 160 165 130Z"/>
+        <path d="M96 150 C60 170 32 198 8 208 L14 236 C50 226 80 212 102 198Z"/><path d="M164 150 C200 160 238 178 256 186 L250 214 C220 206 190 198 158 196Z"/></g>
+        <circle cx="110" cy="72" r="8" fill="#b6ff3c"/><circle cx="146" cy="72" r="8" fill="#b6ff3c"/></svg>`;
+      const ZDOG = (st) => `<svg viewBox="0 0 330 230" width="100%" height="100%"><g ${st}>
+        <path d="M20 70 L60 40 L74 10 L90 44 L118 70 L110 96 L60 110 L18 98Z"/>
+        <path d="M100 80 C140 70 220 70 270 80 C300 60 316 40 326 30 L322 64 C306 86 292 96 286 104 L290 222 L262 222 L250 140 L150 140 L136 222 L108 222 L104 120 C96 110 96 96 100 80Z"/></g>
+        <circle cx="62" cy="66" r="7" fill="#b6ff3c"/></svg>`;
+      const ZBIRD = (st) => `<svg viewBox="0 0 220 160" width="100%" height="100%"><g ${st}>
+        <path d="M10 92 C60 62 90 72 110 82 C130 30 172 8 212 20 C182 40 162 70 152 92 C172 102 192 102 212 98 C182 122 122 132 82 122 C52 117 30 107 10 92Z"/></g>
+        <circle cx="40" cy="86" r="6" fill="#b6ff3c"/></svg>`;
+      const SOLID = 'fill="#3b3346" stroke="#0b0b10" stroke-width="8" stroke-linejoin="round"';
+      const GHOST = 'fill="rgba(182,255,60,0.06)" stroke="#b6ff3c" stroke-width="5" stroke-dasharray="14 10" stroke-linejoin="round"';
+      const HAND = `<svg viewBox="0 0 120 200" width="100%" height="100%"><g stroke-linecap="round" fill="none">
+        <path d="M60 200 L58 112 M72 200 L72 112 M40 104 L28 52 L22 22 M52 98 L48 40 L46 6 M66 98 L70 38 L72 4 M80 102 L90 48 L96 20 M44 112 L16 86 L6 66" stroke="#0b0b10" stroke-width="20"/>
+        <path d="M60 200 L58 112 M72 200 L72 112 M40 104 L28 52 L22 22 M52 98 L48 40 L46 6 M66 98 L70 38 L72 4 M80 102 L90 48 L96 20 M44 112 L16 86 L6 66" stroke="#f3ecdc" stroke-width="10"/>
+        <path d="M36 92 Q64 120 90 94" stroke="#0b0b10" stroke-width="26"/><path d="M36 92 Q64 120 90 94" stroke="#f3ecdc" stroke-width="14"/></g></svg>`;
+      const FOOT = `<svg viewBox="0 0 70 120" width="100%" height="100%"><g fill="rgba(182,255,60,0.8)"><ellipse cx="36" cy="78" rx="24" ry="38"/><circle cx="14" cy="26" r="8"/><circle cx="28" cy="16" r="8"/><circle cx="43" cy="14" r="8"/><circle cx="56" cy="22" r="7"/><circle cx="63" cy="36" r="6"/></g></svg>`;
+      const HPRINT = `<svg viewBox="0 0 260 320" width="100%" height="100%"><g fill="rgba(210,255,190,0.55)" stroke="rgba(182,255,60,0.9)" stroke-width="4"><path d="M60 300 C30 240 40 170 60 150 L54 40 C54 22 78 22 80 40 L88 130 L96 20 C98 0 124 0 124 20 L122 128 L140 26 C144 6 170 10 166 30 L152 138 L184 60 C192 42 214 50 208 70 L178 190 C220 150 246 160 236 182 C200 240 170 300 120 316 C96 322 72 318 60 300Z"/></g></svg>`;
+
+      // ---- animation helpers (smooth, manga-impact style)
+      const pop = (sel, t, s = 0) => tl.fromTo(sel, { scale: s, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(2.6)" }, t);
+      const slam = (sel, t, from = 3, rot = 0) => tl.fromTo(sel, { scale: from, opacity: 0, rotation: rot * 2 }, { scale: 1, opacity: 1, rotation: rot, duration: 0.16, ease: "power4.in" }, t);
+      const rise = (sel, t, y = 80) => tl.fromTo(sel, { y, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, t);
+      const out = (sel, t, d = 0.2) => tl.to(sel, { opacity: 0, duration: d }, t);
+      const shake = (sel, t, a = 16, n = 6) => { const r = rng(Math.floor(t * 97)); for (let k = 0; k < n; k++) tl.to(sel, { x: (r() - 0.5) * 2 * a, y: (r() - 0.5) * 2 * a, duration: 0.045, ease: "none" }, t + k * 0.045); tl.to(sel, { x: 0, y: 0, duration: 0.06 }, t + n * 0.045); };
+      const flash = (t, o = 0.9) => { tl.set("#flash", { opacity: o }, t); tl.to("#flash", { opacity: 0, duration: 0.35, ease: "power2.out" }, t + 0.01); };
+      const bg = (id, t, d = 0.15) => { ["#bgB", "#bgC", "#bgD", "#bgE"].forEach((b) => tl.to(b, { opacity: b === id ? 1 : 0, duration: d }, t)); };
+      const impact = (t, strong = 1) => { tl.set("#invert", { opacity: 1 }, t); tl.set("#invert", { opacity: 0 }, t + 0.06 * strong); tl.fromTo("#root", { scale: 1 + 0.07 * strong }, { scale: 1, duration: 0.3, ease: "power3.out" }, t); shake("#root", t + 0.02, 14 * strong, 5); };
+      const focus = (t, d = 0.8, dark = false) => { const f = dark ? "#focusK" : "#focus"; tl.set(f, { opacity: 1 }, t); tl.fromTo(f, { rotation: 0, scale: 1.15 }, { rotation: 6, scale: 1, duration: d, ease: "none" }, t); tl.to(f, { opacity: 0, duration: 0.15 }, t + d); };
+      const glitch = (sel, t, n = 6) => { for (let i = 0; i < n; i++) tl.set(sel, { x: i % 2 ? 22 : -22, skewX: (i % 3 - 1) * 16 }, t + i * 0.05); tl.set(sel, { x: 0, skewX: 0 }, t + n * 0.05); };
+      // menacing ゴゴゴ / ドドド floating on the sides (each call gets its own glyphs)
+      let onoK = 0;
+      const menace = (t, d = 2.5, seed = 1, ch = "ゴ", col = "#c04dff", n = 8) => { const r = rng(seed); for (let i = 0; i < n; i++) { const id = "ono" + onoK++; $("onos").insertAdjacentHTML("beforeend", `<div class="ono" id="${id}" style="font-size:${120 + (i % 3) * 30}px;color:${col}">${ch}</div>`); const x = (i % 2 ? 780 : 30) + r() * 160, y = 260 + r() * 900; tl.fromTo("#" + id, { x, y, opacity: 0, scale: 0.5, rotation: (r() - 0.5) * 30 }, { x: x + (r() - 0.5) * 50, y: y - 140, opacity: 1, scale: 1, duration: d * 0.45, ease: "power2.out" }, t + i * 0.07); tl.to("#" + id, { opacity: 0, duration: 0.25 }, t + d); } };
+
+      // ---- captions (manga text, current word in toxic green)
+      const cap = $("cap");
+      const lines = []; let cur = [];
+      WORDS.forEach((w, i) => { if (/^[:?!…»«]+$/.test(w.t)) { if (cur.length) cur[cur.length - 1].t += w.t === "?" || w.t === ":" ? " " + w.t : w.t; else if (lines.length) { const l = lines[lines.length - 1]; l[l.length - 1].t += " " + w.t; } return; } cur.push({ ...w }); const txt = cur.map((x) => x.t).join(" "); const end = /[.?!…]$/.test(w.t) || (/,$/.test(w.t) && txt.length > 12); if (end || txt.length > 20 || i === WORDS.length - 1) { lines.push(cur); cur = []; } });
+      if (cur.length) lines.push(cur);
+      if (lines.length > 1 && lines[lines.length - 1].length < 3) { const l = lines.pop(); lines[lines.length - 1].push(...l); }
+      lines.forEach((ln, i) => {
+        const d = document.createElement("div"); d.className = "ln"; d.id = "ln" + i;
+        ln.forEach((w, j) => { const s = document.createElement("span"); s.className = "w"; s.id = `w${i}_${j}`; s.textContent = w.t.toUpperCase(); d.appendChild(s); });
+        cap.appendChild(d);
+        const t0 = ln[0].s - 0.04, t1 = lines[i + 1] ? lines[i + 1][0].s - 0.04 : ln[ln.length - 1].e + 1.0;
+        tl.set("#ln" + i, { opacity: 1 }, t0); tl.fromTo("#ln" + i, { scale: 0.85 }, { scale: 1, duration: 0.12, ease: "back.out(3)", immediateRender: false }, t0); tl.set("#ln" + i, { opacity: 0 }, t1);
+        ln.forEach((w, j) => { tl.fromTo(`#w${i}_${j}`, { color: "#ffffff" }, { color: "#b6ff3c", duration: 0.01 }, w.s); tl.set(`#w${i}_${j}`, { color: "#ffffff" }, Math.min(w.e + 0.12, t1)); });
+      });
+      gsap.set(".jt", { xPercent: -50 });
+
+      // ---- inject drawings
+      document.querySelectorAll(".maxx").forEach((d) => (d.innerHTML = MAXX));
+      document.querySelectorAll(".stand").forEach((d) => (d.innerHTML = STAND));
+      document.querySelectorAll(".ermes").forEach((d) => (d.innerHTML = ERMES));
+      $("gframe").innerHTML = GLORIA(true); $("gmini").innerHTML = GLORIA(false);
+      [["z1", ZHUM], ["z2", ZDOG], ["z3", ZBIRD]].forEach(([id, f]) => { $(id).querySelector(".sol").innerHTML = f(SOLID); $(id).querySelector(".gh").innerHTML = f(GHOST); });
+      tl.set("#gframe .crk", { opacity: 0 }, 0);
+      // single big onomatopoeia
+      let onoS = 0;
+      const ono1 = (txt, x, y, t, size = 170, col = "#c04dff", rot = -8, d = 1.0) => { const id = "os" + onoS++; $("onos").insertAdjacentHTML("beforeend", `<div class="ono" id="${id}" style="left:${x}px;top:${y}px;font-size:${size}px;color:${col}">${txt}</div>`); tl.fromTo("#" + id, { scale: 2.6, opacity: 0, rotation: rot * 2 }, { scale: 1, opacity: 1, rotation: rot, duration: 0.14, ease: "power4.in" }, t); tl.to("#" + id, { opacity: 0, scale: 1.15, duration: 0.25 }, t + d); };
+
+      // ===== S1 cold open: prison -> LIMP BIZKIT
+      { const B = $("bars"); let h = "";
+        for (let i = 0; i < 8; i++) { const x = 30 + i * 140; h += `<rect x="${x}" y="-20" width="50" height="1960" fill="#55525e" stroke="#0b0b10" stroke-width="8"/><rect x="${x + 10}" y="-20" width="10" height="1960" fill="#8c8898"/>`; }
+        h += `<rect x="-20" y="250" width="1120" height="46" fill="#55525e" stroke="#0b0b10" stroke-width="8"/><rect x="-20" y="1560" width="1120" height="46" fill="#55525e" stroke="#0b0b10" stroke-width="8"/>`;
+        B.innerHTML = `<g id="barsg">${h}</g>`;
+        const D = $("drips"); for (let i = 0; i < 9; i++) D.insertAdjacentHTML("beforeend", `<div class="drip" id="dr${i}" style="left:${40 + i * 120}px;height:${300 + ((i * 137) % 260)}px"></div>`);
+        tl.set("#lightcone", { opacity: 1 }, 0.1); tl.fromTo("#lightcone", { rotation: -28 }, { rotation: 28, duration: 1.6, ease: "sine.inOut", repeat: 3, yoyo: true }, 0.1);
+        menace(0.05, 2.0, 11);
+        tl.fromTo("#barsg", { x: -1100 }, { x: 0, duration: 0.18, ease: "power4.in" }, 0.42); impact(0.6, 1.2);
+        rise("#pname .s", 0.95); slam("#pname .b", 1.35, 3, -3); impact(1.5, 0.8);
+        const ts = W("stone"); out("#pname", ts - 0.15, 0.15); tl.to("#lightcone", { opacity: 0, duration: 0.3 }, ts);
+        pop("#so", ts - 0.05);
+        const tp = W("prison"); shake("#barsg", tp, 18, 7); flash(tp, 0.35);
+        const tf = W("film"); tl.to("#redwash", { opacity: 0.55, duration: 0.2 }, tf);
+        for (let i = 0; i < 9; i++) tl.fromTo("#dr" + i, { scaleY: 0 }, { scaleY: 1, duration: 1.0 + (i % 3) * 0.3, ease: "power2.in" }, tf + (i % 4) * 0.08);
+        slam("#horror", W("horreur") - 0.05, 2.6, -4); glitch("#horror", W("horreur") + 0.35, 6);
+        const tl1 = W("limp") - 0.08;
+        tl.set(["#barsg", "#so", "#drips", "#horror"], { opacity: 0 }, tl1); tl.set("#redwash", { opacity: 0 }, tl1); bg("#bgC", tl1, 0.05);
+        slam("#t1", tl1, 4, -5); impact(tl1 + 0.12, 1.5); focus(tl1 + 0.12, 1.6); flash(tl1 + 0.1, 0.8);
+        menace(tl1 + 0.1, 2.4, 13, "ド", "#b6ff3c");
+        tl.fromTo("#title .kana", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, W("bizkit") + 0.1);
+        tl.fromTo("#standS1", { y: 700, opacity: 0 }, { y: 0, opacity: 0.95, duration: 0.6, ease: "power3.out" }, tl1 + 0.1);
+        tl.fromTo("#standS1", { filter: "drop-shadow(0 0 0px #b6ff3c)" }, { filter: "drop-shadow(0 0 30px #b6ff3c)", duration: 0.5, repeat: 3, yoyo: true }, tl1 + 0.4);
+        tl.fromTo("#t1", { y: 0 }, { y: -10, duration: 0.6, repeat: 3, yoyo: true, ease: "sine.inOut" }, tl1 + 0.3);
+        rise("#user1", W("sports") - 0.1); }
+
+      // ===== S2 Sports Maxx dossier
+      { bg("#bgB", S(2));
+        tl.fromTo("#dossier", { x: 1150, rotation: 6 }, { x: 0, rotation: -2, duration: 0.3, ease: "power3.out" }, S(2));
+        tl.fromTo("#mx2", { y: 900 }, { y: 0, duration: 0.35, ease: "back.out(1.3)" }, S(2) + 0.1); impact(S(2) + 0.3, 0.8);
+        slam("#gang", W("gangster") - 0.05, 2.5, -6); impact(W("gangster") + 0.08, 0.7);
+        rise("#gds", W("green") - 0.1, 60);
+        tl.fromTo("#disc", { x: -600, rotation: -540, opacity: 1 }, { x: 0, rotation: 0, duration: 0.45, ease: "power3.out" }, W("homme") - 0.1);
+        tl.to("#disc", { rotation: 360, duration: 2.4, ease: "none" }, W("homme") + 0.35);
+        pop("#ws", W("whitesnake")); glitch(["#mx2", "#disc"], W("whitesnake") + 0.2, 7); ono1("ズン", 700, 330, W("whitesnake"), 120, "#ffffff", 6, 0.8);
+        const tsu = W("surtout"); tl.to("#mx2", { scale: 1.22, y: -40, duration: 0.8, ease: "power2.inOut" }, tsu); focus(tsu, 0.9, true); out(["#gang", "#gds", "#disc", "#ws"], tsu, 0.2);
+        const tc = W("celui"); out(["#dossier", "#mx2"], tc - 0.1, 0.12);
+        tl.fromTo("#gframe", { scale: 0.5, opacity: 0, rotation: 4 }, { scale: 1, opacity: 1, rotation: -2, duration: 0.35, ease: "back.out(1.6)" }, tc);
+        const tt = W("tué"); tl.set("#gframe .crk", { opacity: 1 }, tt); impact(tt, 1.3); flash(tt, 0.7); tl.set("#redwash", { opacity: 0.5 }, tt); tl.to("#redwash", { opacity: 0, duration: 0.8 }, tt + 0.1);
+        tl.fromTo("#tuee", { scale: 3, opacity: 0, rotation: -30 }, { scale: 1, opacity: 1, rotation: -14, duration: 0.14, ease: "power4.in" }, tt + 0.05);
+        pop("#gl1", W("gloria")); pop("#gl2", W("sœur"));
+        tl.fromTo("#gframe", { y: 0 }, { y: 18, duration: 0.5, repeat: 2, yoyo: true, ease: "sine.inOut" }, W("gloria")); }
+
+      // ===== S3 power: resurrection -> invisible
+      { bg("#bgC", S(3));
+        tl.fromTo("#stand3", { y: 900, opacity: 0 }, { y: 0, opacity: 0.95, duration: 0.45, ease: "power3.out" }, S(3)); impact(S(3) + 0.35, 0.9);
+        tl.fromTo("#stand3", { filter: "drop-shadow(0 0 0px #b6ff3c)" }, { filter: "drop-shadow(0 0 34px #b6ff3c)", duration: 0.45, repeat: 5, yoyo: true }, S(3) + 0.3);
+        slam("#pow", W("pouvoir") - 0.05, 2.4, -3);
+        tl.fromTo("#ground", { y: 900 }, { y: 0, duration: 0.35, ease: "power3.out" }, W("ramène") - 0.1);
+        const H = $("hands"); const hx = [190, 330, 600, 760, 900];
+        hx.forEach((x, i) => { H.insertAdjacentHTML("beforeend", `<div class="hand" id="hd${i}" style="left:${x - 60}px;top:${930 + (i % 2) * 30}px">${HAND}</div>`); tl.fromTo("#hd" + i, { y: 260, opacity: 0, rotation: (i % 2 ? 8 : -8) }, { y: 0, opacity: 1, duration: 0.25, ease: "back.out(2)" }, W("morts") + i * 0.07); });
+        impact(W("morts") + 0.1, 0.6); menace(W("morts"), 2.2, 21, "ゴ", "#b6ff3c");
+        tl.to("#stand3", { opacity: 0.35, duration: 0.3 }, W("humains") - 0.2); out("#pow", W("humains") - 0.2);
+        tl.fromTo("#z1", { y: 500, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, W("humains") - 0.1); pop("#hum", W("humains"));
+        tl.fromTo("#z2", { y: 300, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, W("animaux") - 0.1);
+        tl.fromTo("#z3", { x: 300, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, W("animaux")); pop("#ani", W("animaux"));
+        tl.fromTo("#peu", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power4.in" }, W("importe") - 0.1); out("#peu", W("importe") + 0.9);
+        const tr = W("relèvent"); ["#z1", "#z2", "#z3"].forEach((z, i) => tl.to(z, { y: -40, duration: 0.12, yoyo: true, repeat: 3, ease: "power1.inOut" }, tr + i * 0.05)); impact(tr + 0.1, 0.9); ono1("ズズ…", 300, 380, tr, 150, "#b6ff3c", -6, 1.0);
+        const td = W("détail"); out(["#hum", "#ani"], td - 0.2); tl.fromTo("#mag", { opacity: 0, x: -340, scale: 0.6 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, td - 0.1);
+        tl.to("#mag", { x: 220, y: -80, duration: 1.2, ease: "sine.inOut" }, td + 0.3); focus(W("tout", 25) - 0.1, 0.9, true);
+        const ti = W("invisibles"); out("#mag", ti - 0.3, 0.15);
+        ["#z1", "#z2", "#z3"].forEach((z) => { tl.to(z + " .sol", { opacity: 0, duration: 0.5 }, ti); tl.to(z + " .gh", { opacity: 1, duration: 0.3 }, ti); });
+        glitch(["#z1", "#z2", "#z3"], ti, 8); tl.to("#stand3", { opacity: 0.18, duration: 0.4 }, ti);
+        slam("#invis", ti - 0.05, 3, -3); impact(ti + 0.08, 1.2); flash(ti + 0.05, 0.5);
+        tl.to("#t3", { opacity: 0.25, duration: 0.12, repeat: 5, yoyo: true }, ti + 0.4); }
+
+      // ===== S4 invisible army
+      { bg("#bgE", S(4), 0.05);
+        tl.fromTo("#corr", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" }, S(4));
+        const F = $("fps"); const t0 = W("imagine"); const n = 12;
+        for (let i = 0; i < n; i++) { const k = i / (n - 1); const sc = 0.35 + k * 1.3, y = 700 + k * 560, x = 540 + (i % 2 ? 1 : -1) * (24 + k * 70) - 35;
+          F.insertAdjacentHTML("beforeend", `<div class="fp" id="fp${i}" style="left:${x}px;top:${y}px">${FOOT}</div>`);
+          tl.fromTo("#fp" + i, { opacity: 0, scale: sc * 1.4, rotation: i % 2 ? 8 : -8 }, { opacity: 1, scale: sc, duration: 0.08 }, t0 + 0.2 + i * 0.48); tl.to("#fp" + i, { opacity: 0, duration: 0.5 }, t0 + 1.4 + i * 0.48); }
+        const A = $("army"); const ta = W("armée") - 0.1; const rr = rng(44);
+        for (let i = 0; i < 14; i++) { const row = Math.floor(i / 5), x = 20 + (i % 5) * 190 + (row % 2) * 90 + rr() * 30, y = 40 + row * 170;
+          A.insertAdjacentHTML("beforeend", `<div class="ga" id="ga${i}" style="left:${x}px;top:${y}px">${ZHUM(GHOST)}</div>`);
+          tl.fromTo("#ga" + i, { opacity: 0, scale: 0.6 }, { opacity: 0.9, scale: 1, duration: 0.15, ease: "back.out(2)" }, ta + i * 0.045); tl.to("#ga" + i, { opacity: 0, duration: 0.18 }, W("vois") - 0.05 + rr() * 0.15); }
+        glitch("#army", W("vois") - 0.1, 6);
+        pop("#see", W("vois") - 0.05); impact(W("vois"), 0.6); out("#see", W("entends") - 0.2);
+        pop("#hear", W("entends") - 0.05); tl.to("#hear", { x: -14, duration: 0.08, repeat: 7, yoyo: true }, W("entends") + 0.2);
+        pop("#feel", W("sens", 30) - 0.05); tl.to("#feel", { y: -20, duration: 0.15, repeat: 5, yoyo: true }, W("sens", 30) + 0.2);
+        out(["#hear", "#feel"], W("peux") - 0.35);
+        slam("#cant", W("peux") - 0.1, 2.4, -2);
+        const tv = W("voir", 33); const P = $("hps"); const hp = [[80, 340, -18], [700, 280, 14], [430, 560, -4]];
+        hp.forEach(([x, y, r], i) => { P.insertAdjacentHTML("beforeend", `<div class="hp" id="hp${i}" style="left:${x}px;top:${y}px">${HPRINT}</div>`); tl.fromTo("#hp" + i, { opacity: 0, scale: 1.6, rotation: r }, { opacity: 1, scale: 1, rotation: r, duration: 0.08 }, tv + i * 0.12); impact(tv + i * 0.12, 0.7); });
+        flash(tv, 0.5); }
+
+      // ===== S5 Maxx dies -> invisible zombie -> head detach
+      { bg("#bgB", S(5), 0.05);
+        const tfo = W("fou") - 0.1; slam("#fou", tfo, 3, -4); impact(tfo + 0.12, 1); focus(tfo + 0.12, 0.8);
+        const tq = W("quand"); out("#fou", tq - 0.1, 0.12);
+        tl.fromTo("#mx5", { y: 1500 }, { y: 0, duration: 0.3, ease: "power3.out" }, tq - 0.1);
+        tl.set("#ecg", { opacity: 0 }, 0); tl.set("#ecgp", { strokeDasharray: 1500, strokeDashoffset: 1500 }, 0); tl.set("#ecg", { opacity: 1 }, tq);
+        tl.to("#ecgp", { strokeDashoffset: 0, duration: 0.55, ease: "none" }, tq);
+        const tm = W("meurt"); tl.set("#ecgp", { opacity: 0 }, tm); tl.set("#ecgf", { opacity: 1 }, tm); impact(tm, 1.4); flash(tm, 0.6);
+        tl.set("#mx5", { filter: "grayscale(1) brightness(0.7)" }, tm);
+        tl.fromTo("#skull", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power4.in" }, tm + 0.02); out("#skull", W("devient") - 0.1, 0.15);
+        const tdv = W("devient"); out("#ecg", tdv, 0.2); bg("#bgC", tdv, 0.3);
+        tl.to("#mx5", { opacity: 0.5, duration: 0.6 }, tdv); tl.set("#mx5", { filter: "grayscale(0.4) drop-shadow(0 0 22px #b6ff3c) drop-shadow(0 0 6px #b6ff3c)" }, tdv);
+        glitch("#mx5", tdv + 0.1, 6); glitch("#mx5", W("invisible", 37), 6);
+        rise("#zi", W("zombie", 37) - 0.1); menace(W("zombie", 37), 2.5, 31, "ゴ", "#b6ff3c");
+        const tdt = W("détacher"); shake("#mx5 .head", tdt, 10, 10);
+        const tte = W("tête"); tl.to("#mx5 .head", { y: -230, rotation: -22, duration: 0.25, ease: "power3.out" }, tte - 0.05); impact(tte, 1.2); ono1("ボキッ", 600, 300, tte - 0.05, 160, "#ffffff", 10, 0.7);
+        const tat = W("attaquer"); out("#zi", tat - 0.1);
+        tl.fromTo("#angle", { opacity: 0, rotation: -90, scale: 0.6 }, { opacity: 1, rotation: 0, scale: 1, duration: 0.5, ease: "power3.out" }, tat - 0.1);
+        tl.to("#mx5 .head", { keyframes: [{ x: 210, y: -320, rotation: 90, duration: 0.3 }, { x: 260, y: 40, rotation: 200, duration: 0.3 }, { x: -120, y: 120, rotation: 300, duration: 0.3 }, { x: -60, y: -260, rotation: 340, duration: 0.25 }], ease: "power2.inOut" }, tat);
+        tl.to("#angle", { rotation: 40, duration: 1.6, ease: "none" }, tat + 0.4);
+        const tim = W("impossible"); slam("#imp", tim - 0.05, 3, -3); impact(tim + 0.08, 1.3); focus(tim + 0.08, 0.8); }
+
+      // ===== S6 Ermes: vengeance
+      { bg("#bgD", S(6), 0.1);
+        tl.fromTo("#split", { x: 900 }, { x: 0, duration: 0.25, ease: "power3.out" }, S(6));
+        tl.fromTo("#mx6", { x: -500 }, { x: 0, duration: 0.3, ease: "power3.out" }, S(6) + 0.05);
+        tl.set("#mx6", { filter: "grayscale(0.4) drop-shadow(0 0 18px #b6ff3c)" }, 0);
+        const te = W("ermes", 43); tl.fromTo("#er6", { x: 800, opacity: 0 }, { x: 0, opacity: 1, duration: 0.18, ease: "power4.in" }, te - 0.12);
+        impact(te + 0.06, 1.5); flash(te + 0.05, 0.8); focus(te + 0.06, 1.2, true); ono1("ドォーン", 120, 1080, te, 140, "#ff2fa8", -6, 1.4);
+        slam("#ername", te + 0.15, 2.5, -4); rise("#kiss", te + 0.55);
+        const L = $("lips"); const lp = [[620, 330, -14], [140, 760, 10], [820, 1000, -6], [260, 1120, 12]];
+        const tk = W("ermes", 45); lp.forEach(([x, y, r], i) => { L.insertAdjacentHTML("beforeend", `<div class="lip" id="lp${i}" style="left:${x}px;top:${y}px">${LIP}</div>`); tl.fromTo("#lp" + i, { opacity: 0, scale: 2.2, rotation: r * 2 }, { opacity: 1, scale: 1, rotation: r, duration: 0.1, ease: "power4.in" }, tk + i * 0.22); });
+        out(["#ername", "#kiss"], W("chose", 44) - 0.1);
+        tl.fromTo("#gmini", { opacity: 0, scale: 0.4, rotation: -10 }, { opacity: 1, scale: 1, rotation: -6, duration: 0.3, ease: "back.out(2)" }, W("tête", 45) - 0.2);
+        const tvg = W("venger"); out("#lips", tvg - 0.1, 0.15); slam("#veng", tvg - 0.05, 3.2, -4); impact(tvg + 0.1, 1.6); tl.set("#redwash", { opacity: 0.4 }, tvg + 0.05); tl.to("#redwash", { opacity: 0, duration: 0.6 }, tvg + 0.3);
+        menace(tvg, 1.6, 41, "ド", "#e3122f"); tl.to("#gmini", { scale: 1.12, duration: 0.18, repeat: 3, yoyo: true }, W("sœur", 46)); }
+
+      // ===== S7 the name: nu metal band
+      { bg("#bgE", S(7), 0.1);
+        tl.fromTo("#amp", { y: -900 }, { y: 0, duration: 0.35, ease: "back.out(1.2)" }, S(7)); impact(S(7) + 0.3, 1);
+        rise("#eq", S(7) + 0.3); const r = rng(77);
+        document.querySelectorAll("#eq i").forEach((b, i) => { tl.set(b, { scaleY: 0.2 }, 0); for (let t = S(7) + 0.4; t < W("donné") - 0.2; t += 0.16) tl.to(b, { scaleY: 0.15 + r() * 0.85, duration: 0.14, ease: "power2.out" }, t); });
+        slam("#nu", W("groupe") - 0.05, 2.4, -3); impact(W("metal"), 1.1); menace(W("metal"), 1.4, 51, "ド", "#ff2fa8");
+        const tdn = W("donné"); tl.to(["#amp", "#eq", "#nu"], { y: -1400, duration: 0.3, ease: "power3.in" }, tdn - 0.15);
+        pop("#meter", tdn + 0.05, 0.6);
+        { const m = { v: 0 }; tl.fromTo("#mfill", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power2.in" }, W("combats")); tl.to(m, { v: 100, duration: 0.8, ease: "power2.in", onUpdate: () => ($("mval").textContent = Math.round(m.v) + "%") }, W("combats")); }
+        const tg = W("glauques"); slam("#glau", tg - 0.05, 3, -4); impact(tg + 0.1, 1.3); tl.set("#redwash", { opacity: 0.35 }, tg); tl.to("#redwash", { opacity: 0, duration: 0.5 }, tg + 0.2);
+        shake("#meter", tg + 0.1, 16, 8); flash(W("jojo"), 0.5); }
+
+      // ===== S8 CTA + To Be Continued freeze
+      { bg("#bgA", S(8), 0.1);
+        slam("#sub", W("abonne") - 0.05, 2.2, -2); impact(W("abonne") + 0.08, 0.9);
+        tl.to("#sub", { scale: 0.9, duration: 0.08, yoyo: true, repeat: 1 }, W("abonne") + 0.6); tl.set("#sub1", { opacity: 0 }, W("abonne") + 0.68); tl.set("#sub2", { opacity: 1 }, W("abonne") + 0.68); tl.set("#sub", { background: "#2a2a34" }, W("abonne") + 0.68);
+        rise("#next", W("commentaire") - 0.4, 120);
+        document.querySelectorAll("#grid .c").forEach((c, i) => tl.fromTo(c, { opacity: 0, x: i % 2 ? 80 : -80 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out" }, W("commentaire") - 0.2 + i * 0.1));
+        tl.to("#grid .c", { background: "#3b1470", duration: 0.15, stagger: 0.12, yoyo: true, repeat: 1 }, W("ensuite"));
+        const tb = E(8) - 2.3; tl.set("#sepia", { opacity: 0.9 }, tb); tl.set("#sepia2", { opacity: 1 }, tb); tl.set("#root", { scale: 1.03 }, tb);
+        tl.fromTo("#tbc", { x: -800, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, tb + 0.05); }
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
