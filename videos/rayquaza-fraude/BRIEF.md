@@ -39,7 +39,8 @@ Script verbatim (voix off) :
 ## Assets
 
 - Voix off : ElevenLabs, voix clonée « Mattyang » (voice_id LJyZNyC1T0VPHgeMjROb), demandée par l'utilisateur.
-- Sprites : style pixel art Gen 3 (Rubis/Saphir/Émeraude) — fournis par l'utilisateur (voir liste dans STORYBOARD.md).
+- assets/sprites/ — sprites officiels des jeux (PokéAPI) téléchargés à la demande de l'utilisateur : Gen 3 Émeraude/RS/RFVF (Rayquaza face+dos, Chenipan, Groudon, Kyogre, Deoxys ×4 formes), DP Platine (Arceus, Dialga, Palkia), Primo-Groudon, Primo-Kyogre, Méga-Rayquaza ; foule/ = Pokémon de Hoenn pour la ola.
+- assets/fonts/ — Archivo Black, Press Start 2P, Space Mono (woff2 locaux).
 - Cris, musiques et bruitages Pokémon : fournis par l'utilisateur.
 
 ## Notes

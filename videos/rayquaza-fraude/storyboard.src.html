@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rayquaza : la fraude — storyboard v1</title>
+<style>
+@font-face{font-family:"Archivo Black";src:url(assets/fonts/ArchivoBlack.woff2) format("woff2")}
+@font-face{font-family:"Press Start 2P";src:url(assets/fonts/PressStart2P.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:400;src:url(assets/fonts/SpaceMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Space Mono";font-weight:700;src:url(assets/fonts/SpaceMono-Bold.woff2) format("woff2")}
+:root{
+  --bg:#0B1F17; --bg2:#123526; --em:#1E8A55; --em2:#2FC27A; --fg:#F3F1E4;
+  --gold:#F4C430; --red:#E23B3B; --ink:#10140F; --cream:#F7F3D9; --sheet:#0d1310;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--sheet);color:var(--fg);font-family:"Space Mono",ui-monospace,monospace;padding:40px 32px 80px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:3px solid var(--em);padding-bottom:18px;margin-bottom:28px;flex-wrap:wrap}
+header h1{font-family:"Archivo Black";font-size:44px;letter-spacing:-.02em;line-height:1}
+header h1 span{color:var(--gold)}
+header p{opacity:.8;font-size:15px;margin-top:8px;max-width:760px}
+.tag{font-family:"Press Start 2P";font-size:11px;background:var(--em);color:var(--ink);padding:10px 12px;border-radius:4px;white-space:nowrap}
+.act{grid-column:1/-1;font-family:"Press Start 2P";font-size:12px;color:var(--gold);padding:14px 0 4px;border-top:2px dashed #2a4a3a;margin-top:10px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 22px}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.frame{display:flex;flex-direction:column;gap:8px}
+.cell{aspect-ratio:9/16;container-type:inline-size;position:relative;overflow:hidden;border-radius:10px;background:var(--bg);box-shadow:0 0 0 2px #24493a}
+.lbl{display:flex;justify-content:space-between;font-family:"Press Start 2P";font-size:9px;color:#9fc7b2;letter-spacing:.02em}
+.note{font-size:12.5px;line-height:1.45;opacity:.9}
+.note b{color:var(--gold)}
+.chip{align-self:flex-start;font-family:"Press Start 2P";font-size:8px;border:1.5px solid var(--em2);color:var(--em2);padding:5px 7px;border-radius:3px}
+/* ---- inside a 9:16 cell: 1cqw = 10.8px of the 1080x1920 frame ---- */
+.a{position:absolute}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.disp{font-family:"Archivo Black";line-height:.92;letter-spacing:-.03em;text-transform:uppercase}
+.pix{font-family:"Press Start 2P";line-height:1.3}
+.glow{position:absolute;border-radius:50%;filter:blur(6cqw)}
+.ghost{position:absolute;font-family:"Archivo Black";color:#fff;opacity:.06;font-size:40cqw;line-height:.8;white-space:nowrap}
+/* TikTok safe zone guides */
+.safe{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none}
+.safe:before{content:"";position:absolute;left:0;right:0;top:0;height:12cqw;background:repeating-linear-gradient(45deg,#ffffff08 0 1cqw,transparent 1cqw 2cqw)}
+.safe:after{content:"";position:absolute;left:0;right:0;bottom:0;height:34cqw;background:repeating-linear-gradient(45deg,#ffffff08 0 1cqw,transparent 1cqw 2cqw)}
+/* captions */
+.cap{position:absolute;left:6cqw;right:14cqw;top:122cqw;text-align:center;font-family:"Archivo Black";font-size:6.6cqw;line-height:1.05;text-transform:uppercase;color:#fff;-webkit-text-stroke:.9cqw #0a0a0a;paint-order:stroke fill}
+.cap em{font-style:normal;color:var(--gold)}
+/* Gen3 battle HUD */
+.hud{position:absolute;left:5cqw;right:14cqw;top:14cqw;height:21cqw;background:var(--cream);border:1.1cqw solid #384838;border-radius:2.4cqw 2.4cqw 2.4cqw 0;box-shadow:1.2cqw 1.2cqw 0 #00000055;color:#384838;padding:2.4cqw 3.4cqw}
+.hud .nm{font-family:"Press Start 2P";font-size:4cqw;display:flex;justify-content:space-between}
+.hud .bar{margin-top:2.6cqw;display:flex;align-items:center;gap:1.6cqw}
+.hud .bar i{font-family:"Press Start 2P";font-style:normal;font-size:2.3cqw;background:#384838;color:var(--gold);padding:.6cqw 1cqw;border-radius:.8cqw}
+.hud .trk{flex:1;height:3.2cqw;background:#506850;border:.6cqw solid #384838;border-radius:1.6cqw;overflow:hidden}
+.hud .fill{height:100%;background:#58D080}
+.hud .pc{font-family:"Press Start 2P";font-size:2.6cqw;text-align:right;margin-top:1.4cqw}
+.hud.y .fill{background:#F8D030}.hud.r .fill{background:#F05030}
+.dlg{position:absolute;left:4cqw;right:4cqw;bottom:36cqw;height:20cqw;background:#284860;border:1cqw solid #C8A048;border-radius:2cqw;box-shadow:inset 0 0 0 1cqw #F8F8F8;padding:4cqw 5cqw;font-family:"Press Start 2P";font-size:4.2cqw;line-height:1.6;color:#fff}
+.stamp{position:absolute;font-family:"Archivo Black";text-transform:uppercase;color:var(--red);border:1.4cqw solid var(--red);border-radius:2cqw;padding:1cqw 3cqw;letter-spacing:.02em;mix-blend-mode:normal}
+.xmark{position:absolute;color:var(--red);font-family:"Archivo Black";line-height:1}
+.dash{position:absolute;border:.8cqw dashed #ffffff55;border-radius:50%}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Rayquaza : <span>la fraude</span> — storyboard v1</h1>
+    <p>Réquisitoire en 16 scènes. Fil rouge : un combat Pokémon Gen 3 où la barre « CRÉDIBILITÉ » de Rayquaza tombe à chaque preuve, jusqu'au K.O. et à l'anti-évolution en Chenipan. Zones hachurées = interface TikTok (haut / bas) — rien d'important dedans.</p>
+  </div>
+  <div class="tag">1080×1920 · ~80 S · 16 SCÈNES</div>
+</header>
+
+<div class="grid">
+
+<div class="act">ACTE 1 — L'ACCUSATION</div>
+
+<!-- 01 -->
+<div class="frame"><div class="cell" id="frame-01" style="background:radial-gradient(circle at 50% 45%,#5a1414 0,#2a0c0c 45%,#120707 75%)">
+  <div class="ghost" style="left:-10cqw;top:60cqw;opacity:.07">FRAUDE</div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:6cqw;top:22cqw;width:88cqw">
+  <div class="a disp" style="left:6cqw;top:16cqw;font-size:7cqw;color:var(--fg)">La plus grosse</div>
+  <div class="stamp" style="left:8cqw;top:64cqw;font-size:17cqw;transform:rotate(-9deg);background:#12070799">FRAUDE</div>
+  <div class="a disp" style="left:6cqw;top:106cqw;font-size:7cqw;color:var(--gold)">des légendaires</div>
+  <div class="cap">Ce ptit con de <em>Rayquaza</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>01 · ACCUSATION</span><span>0.0–3.5s</span></div>
+<p class="note"><b>Zoom brutal sur Rayquaza</b> + cri, puis le tampon FRAUDE s'écrase avec un glitch RGB sur « fraude ».</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 02 -->
+<div class="frame"><div class="cell" id="frame-02" style="background:radial-gradient(circle at 50% 60%,var(--bg2),var(--bg) 70%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:100%"></div></div></div><div class="pc">100/100</div></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:2cqw;top:46cqw;width:46cqw">
+  <div class="a disp" style="left:44cqw;top:62cqw;font-size:14cqw;color:var(--gold)">→</div>
+  <img class="a px" src="assets/sprites/chenipan.png" style="left:58cqw;top:54cqw;width:36cqw">
+  <div class="a disp" style="left:6cqw;top:94cqw;font-size:7.4cqw;width:80cqw">Doit redevenir un <span style="color:var(--em2)">Chenipan</span></div>
+  <div class="cap">Et j'vais te le <em>prouver</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>02 · PROMESSE</span><span>3.5–7.0s</span></div>
+<p class="note"><b>Rayquaza rétrécit, Chenipan pop.</b> Sur « prouver », l'UI de combat descend d'en haut — elle reste tout le film.</p>
+<span class="chip">FLASH BLANC →</span></div>
+
+<!-- 03 -->
+<div class="frame"><div class="cell" id="frame-03" style="background:repeating-conic-gradient(from 0deg at 50% 70%,#3a2c08 0 6deg,#1a1404 6deg 12deg)">
+  <div class="glow" style="left:10cqw;top:50cqw;width:80cqw;height:60cqw;background:#F4C43066"></div>
+  <div class="a" style="left:-20cqw;top:138cqw;width:140cqw;height:140cqw;border-radius:50%;background:radial-gradient(circle at 40% 30%,#3f8fd8,#1d4f86 60%,#0b2340);box-shadow:0 0 6cqw #7fd0ff66"></div>
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:100%"></div></div></div><div class="pc">100/100</div></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:24cqw;top:62cqw;width:52cqw;filter:drop-shadow(0 0 3cqw #F4C430)">
+  <div class="a pix" style="left:6cqw;top:39cqw;font-size:3cqw;background:var(--gold);color:var(--ink);padding:1.4cqw 2cqw">✓ OFFICIEL</div>
+  <div class="a disp" style="left:6cqw;top:47cqw;font-size:9.4cqw;color:var(--gold);width:84cqw">Gardien ultime</div>
+  <div class="a disp" style="left:6cqw;top:106cqw;font-size:6.2cqw;color:var(--fg);width:84cqw;text-shadow:0 .6cqw 0 #000">Dieu serpent du ciel</div>
+  <div class="cap" style="top:124cqw">Le grand protecteur de l'<em>humanité</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>03 · LA PUB</span><span>7.0–14.0s</span></div>
+<p class="note"><b>Façon pub télé :</b> rayons dorés qui tournent, la Terre en bas, les trois titres claquent l'un après l'autre sur chaque phrase.</p>
+<span class="chip">CUT SEC (MUSIQUE STOP) →</span></div>
+
+<!-- 04 -->
+<div class="frame"><div class="cell" id="frame-04" style="background:#0a1410">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:100%"></div></div></div><div class="pc">100/100</div></div>
+  <div class="a disp" style="left:6cqw;top:44cqw;font-size:24cqw;color:var(--fg)">OK.</div>
+  <div class="a" style="left:6cqw;top:74cqw;width:82cqw;height:36cqw;background:#d9c58a;border-radius:1.5cqw;transform:rotate(-3deg)"></div>
+  <div class="a" style="left:6cqw;top:70cqw;width:30cqw;height:6cqw;background:#d9c58a;border-radius:1.5cqw 1.5cqw 0 0;transform:rotate(-3deg)"></div>
+  <div class="a" style="left:10cqw;top:80cqw;transform:rotate(-3deg);color:var(--ink)"><div class="pix" style="font-size:3cqw">DOSSIER N°384</div><div class="disp" style="font-size:13cqw;margin-top:2cqw">BILAN</div></div>
+  <div class="cap">Maintenant on regarde son <em>bilan</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>04 · BILAN (PLAN FIXE)</span><span>14.0–16.5s</span></div>
+<p class="note"><b>Le seul plan calme.</b> La musique coupe net, « OK. » tient, le dossier glisse en place. Aucun mouvement d'ambiance.</p>
+<span class="chip">CUT →</span></div>
+
+<div class="act">ACTE 2 — PREUVE N°1 : L'ARME ULTIME</div>
+
+<!-- 05 -->
+<div class="frame"><div class="cell" id="frame-05" style="background:radial-gradient(circle at 50% 95%,#3b1a5a,#120a1c 60%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:100%"></div></div></div><div class="pc">100/100</div></div>
+  <div class="a pix" style="left:6cqw;top:38cqw;font-size:4cqw;color:#cdb8ff">IL Y A</div>
+  <div class="a disp" style="left:6cqw;top:44cqw;font-size:20cqw;color:var(--fg)">3 000<span style="font-size:9cqw;color:#cdb8ff"> ANS</span></div>
+  <svg class="a" viewBox="0 0 100 100" style="left:20cqw;top:76cqw;width:60cqw">
+    <circle cx="50" cy="50" r="48" fill="none" stroke="#d6b4ff" stroke-width="1.2" opacity=".5"/>
+    <circle cx="50" cy="50" r="36" fill="none" stroke="#d6b4ff" stroke-width="1.6" opacity=".7"/>
+    <g fill="#b07cff"><ellipse cx="50" cy="30" rx="9" ry="20"/><ellipse cx="50" cy="70" rx="9" ry="20"/><ellipse cx="30" cy="50" rx="20" ry="9"/><ellipse cx="70" cy="50" rx="20" ry="9"/></g>
+    <circle cx="50" cy="50" r="10" fill="#fff"/>
+  </svg>
+  <div class="a pix" style="left:6cqw;top:74cqw;font-size:3cqw;color:#cdb8ff">AZ → ARME ULTIME</div>
+  <img class="a px" src="assets/sprites/foule/zigzaton.png" style="left:2cqw;top:98cqw;width:16cqw;opacity:.6;transform:rotate(-30deg)">
+  <img class="a px" src="assets/sprites/foule/goelise.png" style="left:76cqw;top:78cqw;width:18cqw;opacity:.6;transform:rotate(25deg)">
+  <img class="a px" src="assets/sprites/foule/marill.png" style="left:74cqw;top:104cqw;width:14cqw;opacity:.5;transform:rotate(40deg)">
+  <svg class="a" viewBox="0 0 100 20" preserveAspectRatio="none" style="left:0;top:112cqw;width:100cqw;height:10cqw"><polyline points="0,10 12,4 22,14 35,6 48,15 60,3 72,13 85,5 100,11" fill="none" stroke="#fff" stroke-width="1.4"/></svg>
+  <div class="cap">Capable de <em>déchirer la réalité</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>05 · ARME ULTIME</span><span>16.5–23.5s</span></div>
+<p class="note"><b>Compteur qui défile jusqu'à 3 000</b>, l'Arme fleurit, onde de choc qui éjecte les petits Pokémon, puis l'écran se fend.</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 06 -->
+<div class="frame"><div class="cell" id="frame-06" style="background:radial-gradient(circle at 50% 50%,#173b4a,#0a1820 70%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:80%"></div></div></div><div class="pc">80/100</div></div>
+  <div class="dash" style="left:10cqw;top:40cqw;width:80cqw;height:80cqw"></div>
+  <div class="dash" style="left:25cqw;top:55cqw;width:50cqw;height:50cqw"></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:20cqw;top:48cqw;width:60cqw;filter:brightness(0) invert(1);opacity:.14">
+  <div class="a disp" style="left:38cqw;top:56cqw;font-size:34cqw;color:var(--gold)">?</div>
+  <div class="stamp" style="left:14cqw;top:96cqw;font-size:11cqw;transform:rotate(6deg)">ABSENT</div>
+  <div class="dlg" style="bottom:auto;top:126cqw">C'est super<br>efficace !</div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>06 · ABSENT</span><span>23.5–26.5s</span></div>
+<p class="note"><b>Radar qui balaie un ciel vide</b>, la place de Rayquaza en fantôme. ABSENT tamponné → <b>1re attaque : PV 100 → 80.</b></p>
+<span class="chip">CUT →</span></div>
+
+<!-- 07 -->
+<div class="frame"><div class="cell" id="frame-07" style="background:radial-gradient(circle at 50% 60%,#26303a,#0e1216 70%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:80%"></div></div></div><div class="pc">80/100</div></div>
+  <div class="a disp" style="left:6cqw;top:36cqw;font-size:9.5cqw;width:86cqw"><span style="color:var(--red)">Aucun</span> légendaire n'a bougé</div>
+  <img class="a px" src="assets/sprites/arceus.png" style="left:2cqw;top:66cqw;width:32cqw">
+  <img class="a px" src="assets/sprites/dialga.png" style="left:34cqw;top:72cqw;width:32cqw">
+  <img class="a px" src="assets/sprites/palkia.png" style="left:64cqw;top:66cqw;width:32cqw;filter:grayscale(1) brightness(.7)">
+  <div class="xmark" style="left:8cqw;top:68cqw;font-size:26cqw">✕</div>
+  <div class="xmark" style="left:40cqw;top:74cqw;font-size:26cqw">✕</div>
+  <div class="a pix" style="left:4cqw;top:102cqw;font-size:2.6cqw">ARCEUS</div><div class="a pix" style="left:38cqw;top:108cqw;font-size:2.6cqw">DIALGA</div><div class="a pix" style="left:68cqw;top:102cqw;font-size:2.6cqw">PALKIA</div>
+  <div class="cap">Ni Arceus, ni Dialga, ni <em>Palkia</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>07 · PERSONNE</span><span>26.5–32.0s</span></div>
+<p class="note"><b>Les trois tombent en cascade</b>, une croix rouge à chaque nom prononcé. Sur « Personne », ils passent tous en gris.</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 08 -->
+<div class="frame"><div class="cell" id="frame-08" style="background:radial-gradient(circle at 50% 60%,var(--bg2),var(--bg) 70%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:62%"></div></div></div><div class="pc">62/100</div></div>
+  <div class="a" style="left:7cqw;top:36cqw;width:80cqw;height:82cqw;background:var(--cream);color:var(--ink);transform:rotate(-2deg);padding:5cqw;box-shadow:2cqw 2cqw 0 #00000066">
+    <div style="font-weight:700;font-size:3.4cqw;letter-spacing:.1em">FICHE DE POSTE</div>
+    <div style="height:.6cqw;background:var(--ink);margin:2cqw 0 4cqw"></div>
+    <div style="font-size:3cqw">POSTE :</div>
+    <div class="disp" style="font-size:8.6cqw;margin:1.5cqw 0 4cqw"><span style="background:var(--gold);padding:0 1cqw;box-decoration-break:clone">Gardien de la planète</span></div>
+    <div style="font-size:3cqw">TITULAIRE :</div>
+    <div style="display:flex;align-items:center;gap:2cqw"><img class="px" src="assets/sprites/rayquaza.png" style="width:20cqw"><span class="disp" style="font-size:7cqw">Rayquaza</span></div>
+    <div style="font-size:3cqw;margin-top:2cqw">MISSION : surveiller le ciel</div>
+  </div>
+  <div class="cap">Littéralement sa <em>fiche de poste</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>08 · FICHE DE POSTE</span><span>32.0–38.0s</span></div>
+<p class="note"><b>« LE gardien » : zoom sur la ligne surlignée</b> au marqueur jaune. Sur « fiche de poste » → <b>PV 80 → 62</b>.</p>
+<span class="chip">FLASH BLANC →</span></div>
+
+<div class="act">ACTE 3 — PREUVE N°2 : GROUDON &amp; KYOGRE</div>
+
+<!-- 09 -->
+<div class="frame"><div class="cell" id="frame-09" style="background:linear-gradient(160deg,#5c1206 0 50%,#06275c 50% 100%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:62%"></div></div></div><div class="pc">62/100</div></div>
+  <img class="a px" src="assets/sprites/primo-groudon.png" style="left:0cqw;top:32cqw;width:56cqw;filter:drop-shadow(0 0 3cqw #ff5a1f)">
+  <div class="a disp" style="left:52cqw;top:42cqw;font-size:6.4cqw;width:40cqw;color:#ffb38a">Assécher les océans</div>
+  <img class="a px" src="assets/sprites/primo-kyogre.png" style="left:42cqw;top:80cqw;width:56cqw;filter:drop-shadow(0 0 3cqw #3fa9ff)">
+  <div class="a disp" style="left:6cqw;top:90cqw;font-size:6.4cqw;width:40cqw;color:#9fd2ff">Noyer la planète</div>
+  <div class="a" style="left:38cqw;top:70cqw;width:22cqw;height:22cqw;border-radius:50%;background:radial-gradient(circle at 40% 30%,#59b36b,#2a6f8f 60%,#0b2340);box-shadow:0 0 0 1cqw #ffffff33"></div>
+  <div class="cap">Primo-Groudon et <em>Primo-Kyogre</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>09 · PRIMO</span><span>38.0–42.5s</span></div>
+<p class="note"><b>Écran coupé en diagonale</b>, chaque Primo entre de son côté avec son cri. La planète au milieu tremble entre lave et eau.</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 10 -->
+<div class="frame"><div class="cell" id="frame-10" style="background:radial-gradient(circle at 50% 50%,#2a1010,#100808 70%)">
+  <div class="hud"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:62%"></div></div></div><div class="pc">62/100</div></div>
+  <div class="a disp" style="left:6cqw;top:36cqw;font-size:6.4cqw;width:86cqw;color:#d9cfc0">Il intervient de lui-même ?</div>
+  <div class="a disp" style="left:4cqw;top:46cqw;font-size:30cqw;color:var(--red)">NON.</div>
+  <div class="a" style="left:8cqw;top:84cqw;font-family:'Archivo Black';font-size:6.8cqw;line-height:1.5;text-transform:uppercase">
+    <div><span style="color:var(--em2)">☑</span> Prier</div><div><span style="color:var(--em2)">☑</span> Supplier</div><div><span style="color:var(--em2)">☑</span> Tout le rituel</div>
+  </div>
+  <div class="cap">Il faut que les humains <em>prient</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>10 · LE RITUEL</span><span>42.5–48.5s</span></div>
+<p class="note"><b>NON claque plein écran</b> (impact + shake), puis la checklist se coche ligne par ligne sur « prient / supplient / rituel ».</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 11 -->
+<div class="frame"><div class="cell" id="frame-11" style="background:radial-gradient(circle at 50% 40%,#1d4a35,#0b1f17 70%)">
+  <div class="hud y"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:40%"></div></div></div><div class="pc">40/100</div></div>
+  <div class="a" style="left:30cqw;top:68cqw;width:40cqw;height:10cqw;background:#8a7a5a"></div>
+  <div class="a" style="left:22cqw;top:78cqw;width:56cqw;height:10cqw;background:#776849"></div>
+  <div class="a" style="left:14cqw;top:88cqw;width:72cqw;height:10cqw;background:#62553a"></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:32cqw;top:34cqw;width:36cqw">
+  <div class="a pix" style="left:34cqw;top:71cqw;font-size:2.6cqw;color:#f3e7c4">AUTEL ✓</div>
+  <img class="a px" src="assets/sprites/foule/zigzaton.png" style="left:0cqw;top:96cqw;width:16cqw">
+  <img class="a px" src="assets/sprites/foule/marill.png" style="left:14cqw;top:90cqw;width:16cqw">
+  <img class="a px" src="assets/sprites/foule/arcko.png" style="left:28cqw;top:86cqw;width:16cqw">
+  <img class="a px" src="assets/sprites/foule/poussifeu.png" style="left:42cqw;top:90cqw;width:16cqw">
+  <img class="a px" src="assets/sprites/foule/gobou.png" style="left:56cqw;top:96cqw;width:16cqw">
+  <img class="a px" src="assets/sprites/foule/tarsal.png" style="left:70cqw;top:98cqw;width:16cqw">
+  <div class="a disp" style="left:6cqw;top:110cqw;font-size:7cqw;color:var(--gold)">+ une ola 🙌</div>
+  <div class="cap" style="top:126cqw">Et que tu lui fais une <em>ola</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>11 · AUTEL + OLA</span><span>48.5–53.5s</span></div>
+<p class="note"><b>L'autel se construit marche par marche</b>, la foule de Pokémon de Hoenn fait la ola en vague, Rayquaza daigne descendre. <b>PV 62 → 40 (jaune).</b></p>
+<span class="chip">FLASH BLANC →</span></div>
+
+<div class="act">ACTE 4 — PREUVE N°3 : DEOXYS → VERDICT</div>
+
+<!-- 12 -->
+<div class="frame"><div class="cell" id="frame-12" style="background:radial-gradient(circle at 30% 20%,#1b1f3d,#05060f 70%)">
+  <div class="a" style="inset:0;background-image:radial-gradient(#fff 0.3cqw,transparent 0.4cqw);background-size:9cqw 11cqw;opacity:.35"></div>
+  <div class="hud y"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:40%"></div></div></div><div class="pc">40/100</div></div>
+  <div class="a" style="left:-30cqw;top:140cqw;width:160cqw;height:160cqw;border-radius:50%;background:radial-gradient(circle at 50% 10%,#3f8fd8,#163f6e 40%,#0b1f3a);box-shadow:0 -2cqw 6cqw #7fd0ff55"></div>
+  <div class="a" style="left:6cqw;top:62cqw;width:88cqw;height:34cqw;border:.6cqw solid #7fd0ff66;border-radius:50%;transform:rotate(-12deg)"></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:56cqw;top:52cqw;width:34cqw">
+  <div class="a pix" style="left:58cqw;top:86cqw;font-size:2.4cqw;background:var(--gold);color:var(--ink);padding:1cqw">SÉCURITÉ</div>
+  <div class="a disp" style="left:6cqw;top:36cqw;font-size:6cqw;color:#cfd7ff">Son <span style="color:var(--gold)">seul</span> taf :</div>
+  <div class="a disp" style="left:6cqw;top:100cqw;font-size:9cqw;width:80cqw">Surveiller le ciel</div>
+  <div class="cap" style="top:124cqw">C'est surveiller le <em>ciel</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>12 · DÉFENSE SPATIALE</span><span>53.5–58.5s</span></div>
+<p class="note"><b>Caméra qui monte dans l'espace</b>, Rayquaza tourne en orbite avec son badge. « SEUL » pulse en jaune.</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 13 -->
+<div class="frame"><div class="cell" id="frame-13" style="background:radial-gradient(circle at 50% 70%,#3a1d10,#0c0806 70%)">
+  <div class="hud r"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:22%"></div></div></div><div class="pc">22/100</div></div>
+  <div class="a" style="left:40cqw;top:30cqw;width:60cqw;height:6cqw;background:linear-gradient(90deg,transparent,#ffb36b);transform:rotate(-40deg);transform-origin:right center;opacity:.8"></div>
+  <div class="a" style="left:58cqw;top:36cqw;width:26cqw;height:26cqw;border-radius:50%;background:radial-gradient(#fff3b0,#ff7a1f 55%,transparent 72%)"></div>
+  <img class="a px" src="assets/sprites/deoxys.png" style="left:61cqw;top:38cqw;width:20cqw">
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:2cqw;top:52cqw;width:46cqw">
+  <div class="a pix" style="left:6cqw;top:38cqw;font-size:3cqw;color:#ffcf9a">DEOXYS N°1</div>
+  <svg class="a" viewBox="0 0 20 30" style="left:56cqw;top:88cqw;width:12cqw"><polygon points="10,0 20,12 10,30 0,12" fill="#7fffd0" stroke="#fff" stroke-width="1"/></svg>
+  <div class="a" style="left:46cqw;top:84cqw;width:32cqw;height:24cqw;border:1cqw solid var(--gold);border-radius:50%;transform:rotate(-8deg)"></div>
+  <div class="a disp" style="left:58cqw;top:110cqw;font-size:7cqw;color:var(--gold);transform:rotate(-6deg)">OUBLIÉ</div>
+  <div class="cap" style="top:124cqw">Mais oublie le <em>cristal</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>13 · LE CRISTAL</span><span>58.5–64.0s</span></div>
+<p class="note"><b>Météorite en traînée</b>, Rayquaza l'explose (flash) ; le zoom glisse sur le cristal qui brille, entouré au marqueur. <b>PV 40 → 22 (rouge + bip).</b></p>
+<span class="chip">CUT →</span></div>
+
+<!-- 14 -->
+<div class="frame"><div class="cell" id="frame-14" style="background:linear-gradient(#2a0d0d,#5a1a0a 70%,#1a0a06)">
+  <div class="hud r"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:22%"></div></div></div><div class="pc">22/100</div></div>
+  <div class="a" style="left:0;right:0;top:86cqw;height:40cqw;background:
+    linear-gradient(#140808,#140808) 2cqw 14cqw/12cqw 40cqw no-repeat,
+    linear-gradient(#1c0a0a,#1c0a0a) 16cqw 0/14cqw 40cqw no-repeat,
+    linear-gradient(#140808,#140808) 32cqw 20cqw/10cqw 40cqw no-repeat,
+    linear-gradient(#1c0a0a,#1c0a0a) 44cqw 6cqw/16cqw 40cqw no-repeat,
+    linear-gradient(#140808,#140808) 62cqw 16cqw/12cqw 40cqw no-repeat,
+    linear-gradient(#1c0a0a,#1c0a0a) 76cqw 2cqw/18cqw 40cqw no-repeat"></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:14cqw;top:44cqw;width:72cqw;transform:rotate(-14deg)">
+  <div class="a" style="left:0;top:50cqw;width:100cqw;height:1cqw;background:#ffffff44"></div>
+  <div class="a" style="left:0;top:60cqw;width:70cqw;height:.6cqw;background:#ffffff33"></div>
+  <img class="a px" src="assets/sprites/deoxys-attaque.png" style="left:74cqw;top:36cqw;width:18cqw">
+  <div class="a disp" style="left:6cqw;top:36cqw;font-size:7cqw">Larousse City</div>
+  <div class="stamp" style="left:10cqw;top:104cqw;font-size:11cqw;transform:rotate(-7deg);background:#1a0a06aa">RAVAGÉE</div>
+  <div class="cap" style="top:126cqw">Ravage Larousse City <em>entière</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>14 · LAROUSSE CITY</span><span>64.0–70.5s</span></div>
+<p class="note"><b>Deoxys n°2 débarque</b>, Rayquaza traverse l'écran en diagonale, caméra qui tremble, les immeubles s'effondrent, tampon RAVAGÉE.</p>
+<span class="chip">CUT →</span></div>
+
+<!-- 15 -->
+<div class="frame"><div class="cell" id="frame-15" style="background:radial-gradient(circle at 50% 70%,#2a2f36,#0c0e10 70%)">
+  <div class="hud r"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:5%"></div></div></div><div class="pc">5/100</div></div>
+  <img class="a px" src="assets/sprites/rayquaza.png" style="left:60cqw;top:96cqw;width:30cqw;transform:rotate(30deg)">
+  <svg class="a" viewBox="0 0 100 70" style="left:0;top:50cqw;width:100cqw">
+    <defs><g id="rb"><rect x="0" y="2" width="12" height="9" fill="#8b949e" stroke="#30363d" stroke-width="1"/><rect x="3" y="0" width="6" height="3" fill="#6e7681"/><rect x="3" y="5" width="2" height="2" fill="#ff3b3b"/><rect x="7" y="5" width="2" height="2" fill="#ff3b3b"/></g></defs>
+    <use href="#rb" x="44" y="2"/><use href="#rb" x="36" y="12"/><use href="#rb" x="50" y="12"/>
+    <use href="#rb" x="28" y="22"/><use href="#rb" x="42" y="22"/><use href="#rb" x="56" y="22"/>
+    <use href="#rb" x="20" y="32"/><use href="#rb" x="34" y="32"/><use href="#rb" x="48" y="32"/><use href="#rb" x="62" y="32"/>
+    <use href="#rb" x="12" y="42"/><use href="#rb" x="26" y="42"/><use href="#rb" x="40" y="42"/><use href="#rb" x="54" y="42"/>
+    <use href="#rb" x="4" y="52"/><use href="#rb" x="18" y="52"/><use href="#rb" x="32" y="52"/><use href="#rb" x="46" y="52"/>
+  </svg>
+  <div class="a disp" style="left:6cqw;top:36cqw;font-size:13cqw;color:var(--fg)">Coincé.</div>
+  <div class="cap" style="top:126cqw">Une montagne de <em>robots de sécurité</em></div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>15 · ROBOTS</span><span>70.5–74.0s</span></div>
+<p class="note"><b>Les robots tombent et s'empilent</b> en rythme jusqu'à cacher Rayquaza (il ne reste que sa queue). <b>PV 22 → 5.</b></p>
+<span class="chip">CUT →</span></div>
+
+<!-- 16 -->
+<div class="frame"><div class="cell" id="frame-16" style="background:radial-gradient(circle at 50% 40%,#ffffff 0,#d8fff0 12%,#1e8a55 32%,#0b1f17 62%)">
+  <div class="hud r"><div class="nm"><span>RAYQUAZA</span><span>N.70</span></div><div class="bar"><i>CRÉDIB.</i><div class="trk"><div class="fill" style="width:0%"></div></div></div><div class="pc">0/100</div></div>
+  <img class="a px" src="assets/sprites/deoxys.png" style="left:2cqw;top:34cqw;width:22cqw">
+  <img class="a px" src="assets/sprites/deoxys-attaque.png" style="left:26cqw;top:32cqw;width:22cqw">
+  <img class="a px" src="assets/sprites/deoxys-defense.png" style="left:50cqw;top:34cqw;width:22cqw">
+  <img class="a px" src="assets/sprites/deoxys-vitesse.png" style="left:74cqw;top:32cqw;width:22cqw">
+  <img class="a px" src="assets/sprites/chenipan.png" style="left:28cqw;top:58cqw;width:44cqw">
+  <div class="a disp" style="left:6cqw;top:100cqw;font-size:7.2cqw;width:88cqw;text-align:center;-webkit-text-stroke:.8cqw #0a0a0a;paint-order:stroke fill">Rayquaza <span style="color:var(--gold)">→</span> <span style="color:#9df07a">Chenipan</span></div>
+  <div class="a pix" style="left:6cqw;top:110cqw;width:88cqw;text-align:center;font-size:3cqw;color:var(--gold)">AFFAIRE CLASSÉE.</div>
+  <div class="dlg" style="bottom:auto;top:122cqw;font-size:3.8cqw">RAYQUAZA est K.O. !</div>
+  <div class="safe"></div>
+</div>
+<div class="lbl"><span>16 · K.O. → CHENIPAN</span><span>74.0–80.5s</span></div>
+<p class="note"><b>Les 4 Deoxys arrivent en formation</b> et le sortent des robots. « exterminer » → <b>PV 0, K.O.</b> → évolution à l'envers (silhouette blanche qui alterne) → Chenipan.</p>
+<span class="chip">FIN (CRI CHENIPAN)</span></div>
+
+<!-- seam map -->
+<div class="frame" style="grid-column:span 3;align-self:start"><div style="border:2px solid #24493a;border-radius:10px;padding:18px">
+  <div class="pix" style="font-size:11px;color:var(--gold);margin-bottom:14px">CARTE DES TRANSITIONS</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;font-family:'Press Start 2P';font-size:8px;line-height:1.6">
+    <span>01</span><span>│cut│</span><span>02</span><span style="color:#fff;background:#ffffff22">│flash│</span><span>03</span><span style="color:var(--red)">│cut + musique stop│</span><span>04</span><span>│cut│</span><span>05</span><span>│cut│</span><span>06</span><span>│cut│</span><span>07</span><span>│cut│</span><span>08</span><span style="color:#fff;background:#ffffff22">│flash│</span><span>09</span><span>│cut│</span><span>10</span><span>│cut│</span><span>11</span><span style="color:#fff;background:#ffffff22">│flash│</span><span>12</span><span>│cut│</span><span>13</span><span>│cut│</span><span>14</span><span>│cut│</span><span>15</span><span>│cut│</span><span>16</span>
+  </div>
+  <p class="note" style="margin-top:14px">Coupes sèches calées sur la voix. Le <b>flash blanc « début de combat »</b> marque chaque nouvel acte. L'UI de combat ne bouge jamais entre les scènes : c'est elle qui fait le lien. Barre CRÉDIBILITÉ : 100 → 80 (06) → 62 (08) → 40 (11) → 22 (13) → 5 (15) → 0 (16).</p>
+</div></div>
+
+<!-- tokens -->
+<div class="frame" style="grid-column:span 2"><div style="border:2px solid #24493a;border-radius:10px;padding:18px;height:100%">
+  <div class="pix" style="font-size:11px;color:var(--gold);margin-bottom:14px">TOKENS</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+    <span style="width:48px;height:48px;background:#0B1F17;border:1px solid #fff3"></span>
+    <span style="width:48px;height:48px;background:#1E8A55"></span>
+    <span style="width:48px;height:48px;background:#F3F1E4"></span>
+    <span style="width:48px;height:48px;background:#F4C430"></span>
+    <span style="width:48px;height:48px;background:#E23B3B"></span>
+    <span style="width:48px;height:48px;background:#F7F3D9"></span>
+  </div>
+  <p class="note"><b>Fond</b> nuit émeraude #0B1F17 · <b>Accent</b> jaune Rayquaza #F4C430 · <b>Preuves</b> rouge #E23B3B · <b>UI</b> crème GBA #F7F3D9.</p>
+  <p class="note" style="margin-top:8px"><span style="font-family:'Archivo Black';font-size:18px">ARCHIVO BLACK</span> punchlines · <span style="font-family:'Press Start 2P';font-size:10px">PRESS START 2P</span> UI de combat · <span style="font-family:'Space Mono'">Space Mono</span> dossiers.</p>
+  <p class="note" style="margin-top:8px"><b>Interdits :</b> sprites lissés/flous, sons générés, diaporama (chaque scène bouge sur la phrase), écran figé à la fin, texte dans les zones hachurées.</p>
+</div></div>
+
+</div>
+</body>
+</html>

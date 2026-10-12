@@ -46,6 +46,7 @@ Dossier : `videos/rayquaza-fraude/assets/audio/`
 
 ## Frame 1 — L'accusation
 
+- status: built
 - scene: Rayquaza en gros plan, tampon rouge « FRAUDE » qui s'écrase dessus
 - duration: 3.5s
 - transition_in: cut
@@ -59,6 +60,7 @@ Hook : Rayquaza entre en zoom, « LA PLUS GROSSE FRAUDE DES LÉGENDAIRES » claq
 
 ## Frame 2 — La promesse
 
+- status: built
 - scene: Rayquaza → flèche → Chenipan ; l'UI de combat apparaît avec la barre CRÉDIBILITÉ pleine
 - duration: 3.5s
 - transition_in: cut
@@ -70,6 +72,7 @@ Rayquaza rétrécit, Chenipan pop à côté. Sur « prouver », l'UI de combat g
 
 ## Frame 3 — La pub mensongère
 
+- status: built
 - scene: Rayquaza en majesté façon affiche officielle, trois titres qui claquent
 - duration: 7s
 - transition_in: flash
@@ -82,6 +85,7 @@ Lumière dorée, rayons, Terre qui tourne derrière. « GARDIEN ULTIME », « DI
 
 ## Frame 4 — Le bilan (plan fixe)
 
+- status: built
 - scene: Écran noir-vert, « OK. MAINTENANT ON REGARDE SON BILAN. » ; un dossier « BILAN » s'ouvre
 - duration: 2.5s
 - transition_in: cut
@@ -94,6 +98,7 @@ Le seul moment calme du film. Tout s'arrête pour que la phrase tombe.
 
 ## Frame 5 — L'Arme Ultime
 
+- status: built
 - scene: Compteur « IL Y A 3 000 ANS », AZ + Arme Ultime, onde de choc qui disperse des sprites, écran qui se déchire
 - duration: 7s
 - transition_in: cut
@@ -105,6 +110,7 @@ Le compteur défile jusqu'à -3000, flash de l'Arme, onde circulaire, l'écran s
 
 ## Frame 6 — Absent
 
+- status: built
 - scene: Ciel vide, radar qui cherche, « ? » ; tampon « ABSENT » ; 1re attaque sur la barre
 - duration: 3s
 - transition_in: cut
@@ -117,6 +123,7 @@ Silhouette de Rayquaza en pointillés = place vide. Barre CRÉDIBILITÉ : 100 �
 
 ## Frame 7 — Personne n'a bougé
 
+- status: built
 - scene: Arceus, Dialga, Palkia alignés, chacun barré d'une croix ; « AUCUN LÉGENDAIRE N'A BOUGÉ »
 - duration: 5.5s
 - transition_in: cut
@@ -128,6 +135,7 @@ Les trois tombent en cascade, une croix rouge à chaque nom prononcé. Sur « Pe
 
 ## Frame 8 — La fiche de poste
 
+- status: built
 - scene: Fiche de poste officielle « POSTE : GARDIEN DE LA PLANÈTE — Titulaire : Rayquaza », surlignée
 - duration: 6s
 - transition_in: cut
@@ -140,6 +148,7 @@ Les autres légendaires glissent hors champ, Rayquaza reste. Document en Space M
 
 ## Frame 9 — Primo-Groudon vs Primo-Kyogre
 
+- status: built
 - scene: Écran coupé en deux : Groudon (lave, rouge) / Kyogre (océan, bleu) ; planète au milieu qui sèche / se noie
 - duration: 4.5s
 - transition_in: flash
@@ -150,6 +159,7 @@ Les autres légendaires glissent hors champ, Rayquaza reste. Document en Space M
 
 ## Frame 10 — Le rituel
 
+- status: built
 - scene: « INTERVIENT DE LUI-MÊME ? » → « NON » qui claque ; checklist « ☑ PRIER ☑ SUPPLIER ☑ RITUEL »
 - duration: 6s
 - transition_in: cut
@@ -159,6 +169,7 @@ Les autres légendaires glissent hors champ, Rayquaza reste. Document en Space M
 
 ## Frame 11 — L'autel et la ola
 
+- status: built
 - scene: Pilier Céleste / autel, une rangée de petits dresseurs pixel qui font la ola, Rayquaza qui daigne apparaître
 - duration: 5s
 - transition_in: cut
@@ -171,6 +182,7 @@ Barre : 62 → 40 (passe au jaune).
 
 ## Frame 12 — La défense spatiale
 
+- status: built
 - scene: Espace, Terre en bas, Rayquaza en orbite avec un badge « SÉCURITÉ » ; « SON SEUL TAF : SURVEILLER LE CIEL »
 - duration: 5s
 - transition_in: flash
@@ -180,6 +192,7 @@ Barre : 62 → 40 (passe au jaune).
 
 ## Frame 13 — Le cristal oublié
 
+- status: built
 - scene: Météorite Deoxys qui tombe, Rayquaza l'explose ; un petit cristal qui brille entouré au marqueur « OUBLIÉ »
 - duration: 5.5s
 - transition_in: cut
@@ -192,6 +205,7 @@ Barre : 40 → 22 (rouge, bip PV bas).
 
 ## Frame 14 — Larousse City
 
+- status: built
 - scene: Skyline de Larousse City, Rayquaza qui fonce en furie, bâtiments qui tremblent, « LAROUSSE CITY : RAVAGÉE »
 - duration: 6.5s
 - transition_in: cut
@@ -201,6 +215,7 @@ Barre : 40 → 22 (rouge, bip PV bas).
 
 ## Frame 15 — La montagne de robots
 
+- status: built
 - scene: Des dizaines de robots qui s'empilent sur Rayquaza jusqu'à le recouvrir
 - duration: 3.5s
 - transition_in: cut
@@ -213,6 +228,7 @@ Barre : 22 → 5.
 
 ## Frame 16 — Sauvé par Deoxys → K.O. → Chenipan
 
+- status: built
 - scene: Les Deoxys arrivent et le sauvent ; barre à 0 ; « RAYQUAZA est K.O. » ; anti-évolution en Chenipan
 - duration: 6.5s
 - transition_in: cut
