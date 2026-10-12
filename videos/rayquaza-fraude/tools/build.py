@@ -94,6 +94,19 @@ const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, 
 """
 
 
+def lane(points):
+    """Lane de volume au format data-automation, échappée pour un attribut HTML."""
+    js = json.dumps({"version": 1, "lanes": [{"target": "volume", "points": [{"t": t, "v": v} for t, v in points]}]})
+    return js.replace('"', "&quot;")
+
+
+# musique A : de 0 à « Ok. » (coupe nette) ; musique B : reprend après le plan fixe
+MUSIC_A = lane([(0, 0.3), (13.95, 0.3), (14.15, 0)])
+# t en secondes depuis le début du clip B (16.75 s) : on baisse pendant l'anti-évolution,
+# on remonte après la révélation de Chenipan, puis fondu final
+MUSIC_B = lane([(0, 0.3), (66.4, 0.3), (66.9, 0.2), (68.9, 0.2), (69.0, 0.55), (69.85, 0.55), (70.25, 0)])
+
+
 def parse_sources():
     scenes = {}
     for path in sorted(glob.glob(os.path.join(ROOT, "tools", "scenes", "*.src"))):
@@ -197,6 +210,9 @@ def main():
     <div id="slot-overlay" data-composition-id="overlay" data-composition-src="compositions/overlay.html" data-start="0" data-duration="{TOTAL}" data-track-index="3" data-width="1080" data-height="1920"></div>
     <div id="slot-captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="4" data-width="1080" data-height="1920"></div>
 {cries}
+    <audio id="musique-a" src="assets/audio/musique/rayquaza-battle.mp3" data-start="0" data-duration="14.15" data-media-start="14.0" data-track-index="13" data-volume="0.3" data-automation="{MUSIC_A}"></audio>
+    <audio id="musique-b" src="assets/audio/musique/rayquaza-battle.mp3" data-start="16.75" data-duration="70.25" data-media-start="28.15" data-track-index="13" data-volume="0.3" data-automation="{MUSIC_B}"></audio>
+    <audio id="bruitages" src="assets/audio/bruitages/bruitages-stem.wav" data-start="0" data-duration="{TOTAL}" data-track-index="14" data-volume="0.55"></audio>
     <audio id="voix" src="assets/audio/voix/prise-1.mp3" data-start="{VO_OFFSET}" data-duration="82.76" data-track-index="10" data-volume="1"></audio>
     </div>
     <script>
