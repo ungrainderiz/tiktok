@@ -108,17 +108,21 @@ MUSIC_B = lane([(0, 0.36), (66.4, 0.36), (66.9, 0.25), (68.9, 0.25), (69.0, 0.62
 
 
 def caption_style():
-    """Sous-titres : police Pokémon (logo) si un fichier assets/fonts/pokemon*.{ttf,otf,woff,woff2} existe."""
-    found = sorted(glob.glob(os.path.join(ROOT, "assets", "fonts", "[Pp]okemon*")))
-    if found:
-        rel = os.path.relpath(found[0], ROOT).replace(os.sep, "/")
-        fmt = {"ttf": "truetype", "otf": "opentype", "woff": "woff", "woff2": "woff2"}[rel.rsplit(".", 1)[1].lower()]
-        css = (f'@font-face{{font-family:"Pokemon Sous-titres";src:url({rel}) format("{fmt}")}}\n'
-               '#cap-wrap{--cap-font:"Pokemon Sous-titres","Archivo Black";--cap-size:84px;--cap-case:none;'
-               '--cap-fill:#FFCB05;--cap-stroke:12px #2A75BB;--cap-shadow:drop-shadow(0 7px 0 #1d3c7a)}')
+    """Sous-titres : police pixel (Minecraft + accents FR, voir tools/accents.py) aux couleurs du logo Pokémon.
+
+    Si assets/fonts/sous-titres.ttf est absent, on retombe sur Archivo Black blanc/jaune.
+    """
+    if os.path.exists(os.path.join(ROOT, "assets", "fonts", "sous-titres.ttf")):
+        px = 9  # 72 px de police = 9 px par pixel de la police : contour net sur la grille
+        ring = [(x, y) for x in (-px, 0, px) for y in (-px, 0, px) if (x, y) != (0, 0)]
+        outline = ",".join(f"{x}px {y}px 0 #2A75BB" for x, y in ring)
+        outline += f",0 {2 * px}px 0 #16305f,{px}px {2 * px}px 0 #16305f,-{px}px {2 * px}px 0 #16305f"
+        css = ('@font-face{font-family:"Sous-titres Pixel";src:url(assets/fonts/sous-titres.ttf) format("truetype")}\n'
+               '#cap-wrap{--cap-font:"Sous-titres Pixel","Archivo Black";--cap-size:72px;--cap-case:uppercase;'
+               f'--cap-gap:.55em;--cap-fill:#FFCB05;--cap-stroke:0px transparent;--cap-shadow:none;--cap-tshadow:{outline}}}')
         return css, "#FFCB05", "#ffffff"
     css = ('#cap-wrap{--cap-font:"Archivo Black";--cap-size:76px;--cap-case:uppercase;'
-           '--cap-fill:#fff;--cap-stroke:13px #0a0a0a;--cap-shadow:none}')
+           '--cap-gap:.16em;--cap-fill:#fff;--cap-stroke:13px #0a0a0a;--cap-shadow:none;--cap-tshadow:none}')
     return css, "#ffffff", "#F4C430"
 
 
