@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>JoJo — Diver Down</title>
+    <script src="gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "PS2P"; src: url("fonts/PressStart2P-Regular.ttf"); }
+      @font-face { font-family: "Silk"; src: url("fonts/Silkscreen-Bold.ttf"); }
+      @font-face { font-family: "Dela"; src: url("fonts/DelaGothicOne-Regular.ttf"); }
+      :root { --ink: #12091c; --navy: #1c0f33; --white: #f6f2ff; --gold: #ffd228; --red: #ff2e63; --cyan: #28d7e8; --purple: #8a3cff; --pink: #ff8fc7; --green: #3cdc7a; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #160a2a; font-family: "PS2P", monospace; color: var(--white); }
+      img { image-rendering: pixelated; display: block; }
+      .abs { position: absolute; display: block; }
+      .layer { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .spr { position: absolute; overflow: hidden; }
+      .spr img { position: absolute; left: 0; top: 0; }
+      .pbox { background: var(--navy); border: 8px solid var(--white); box-shadow: 0 0 0 8px var(--ink), 12px 12px 0 8px rgba(0,0,0,0.5); }
+      .lbl { font-family: "PS2P"; font-size: 30px; color: var(--ink); background: var(--gold); padding: 12px 16px; box-shadow: 6px 6px 0 var(--ink); white-space: nowrap; }
+      .big { font-family: "Silk"; color: var(--white); text-shadow: 6px 0 0 var(--red), -6px 0 0 var(--cyan), 12px 12px 0 var(--ink); white-space: nowrap; }
+      .scan { position: absolute; inset: 0; background: repeating-linear-gradient(rgba(0,0,0,0.14) 0 3px, transparent 3px 6px); }
+      .vign { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,0.55) 100%); }
+      .dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.16) 3px, transparent 3.6px); background-size: 22px 22px; }
+      .go { position: absolute; font-family: "Dela"; font-size: 120px; color: #b04cff; text-shadow: 6px 6px 0 var(--ink), -3px -3px 0 #ffd6ff; opacity: 0; }
+
+      /* backgrounds */
+      #bg { background: linear-gradient(160deg, #3a0f6e, #9c1f8f 55%, #ff5a5f); }
+      #bgalt { background: linear-gradient(200deg, #063a4f, #0e7a8c 55%, #2ad0c8); opacity: 0; }
+      #bgred { background: linear-gradient(170deg, #4a0618, #b0123c 60%, #ff7a2e); opacity: 0; }
+      #speed { left: -460px; top: -40px; width: 2000px; height: 2000px; background: repeating-conic-gradient(rgba(255,255,255,0.25) 0 2deg, transparent 2deg 12deg); opacity: 0; }
+      #gray { background: #777; mix-blend-mode: saturation; opacity: 0; }
+      #invert { background: #fff; mix-blend-mode: difference; opacity: 0; }
+      #flash { background: #fff; opacity: 0; }
+
+      /* HUD */
+      #hud { left: 40px; top: 120px; width: 1000px; height: 120px; }
+      .hp { position: absolute; top: 20px; width: 420px; height: 40px; border: 6px solid var(--white); background: #3a0a1a; box-shadow: 0 0 0 6px var(--ink); }
+      .hp i { position: absolute; inset: 0; background: linear-gradient(#ffe066, #ffb000); transform-origin: 0 50%; }
+      .hpn { position: absolute; top: 76px; font-size: 22px; color: var(--white); text-shadow: 4px 4px 0 var(--ink); }
+      #timer { position: absolute; left: 448px; top: 0; width: 104px; height: 84px; display: flex; align-items: center; justify-content: center; font-size: 44px; color: var(--gold); text-shadow: 4px 4px 0 var(--ink); }
+
+      /* S1 */
+      #clock { left: 390px; top: 420px; width: 300px; height: 300px; border-radius: 50%; border: 18px solid var(--white); background: var(--navy); box-shadow: 0 0 0 10px var(--ink); }
+      #clock .hand { position: absolute; left: 123px; top: 30px; width: 18px; height: 120px; background: var(--gold); transform-origin: 50% 100%; }
+      #stop { left: 0; top: 780px; width: 1080px; text-align: center; font-size: 70px; }
+      #title { left: 0; top: 330px; width: 1080px; text-align: center; }
+      #title .t { display: block; font-size: 116px; line-height: 1; }
+      #title .k { display: block; margin-top: 20px; font-family: "Dela"; font-size: 70px; color: var(--gold); text-shadow: 6px 6px 0 var(--ink); }
+      #standon { left: 0; top: 640px; width: 1080px; display: flex; justify-content: center; }
+      #dd1 { left: 316px; top: 720px; width: 448px; height: 672px; }
+      #user1 { left: 0; top: 1150px; width: 1080px; display: flex; justify-content: center; gap: 20px; }
+
+      /* S2 */
+      #an2 { left: 358px; top: 470px; width: 364px; height: 588px; }
+      #biz { left: 0; top: 290px; width: 1080px; text-align: center; font-size: 110px; }
+      .tag2 { position: absolute; }
+      #bars { left: 300px; top: 420px; width: 480px; height: 680px; background: repeating-linear-gradient(90deg, transparent 0 62px, #2a2a36 62px 80px); border-top: 20px solid #2a2a36; border-bottom: 20px solid #2a2a36; }
+      #mug { left: 260px; top: 1110px; width: 560px; text-align: center; font-size: 30px; color: var(--ink); background: var(--white); padding: 14px; box-shadow: 8px 8px 0 var(--ink); }
+      .sil { position: absolute; width: 140px; height: 300px; }
+      .sil .h { position: absolute; left: 40px; top: 0; width: 60px; height: 60px; border-radius: 50%; background: #2a1840; }
+      .sil .b { position: absolute; left: 20px; top: 66px; width: 100px; height: 234px; background: #2a1840; clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
+      #crack { left: 470px; top: 560px; width: 140px; height: 130px; }
+      .px { position: absolute; width: 36px; height: 36px; background: #2a1840; }
+      #litt { left: 0; top: 860px; width: 1080px; text-align: center; font-size: 84px; }
+
+      /* S3 */
+      #card { left: 70px; top: 300px; width: 940px; height: 220px; padding: 26px 34px; }
+      #card .s { font-size: 26px; color: var(--cyan); }
+      #card .n { font-family: "Silk"; font-size: 84px; margin-top: 10px; color: var(--white); text-shadow: 6px 6px 0 var(--purple); }
+      #card .u { font-size: 22px; margin-top: 12px; color: var(--pink); }
+      #dd3 { left: 316px; top: 560px; width: 448px; height: 672px; }
+      .ring { position: absolute; width: 90px; height: 90px; border: 8px solid var(--gold); border-radius: 50%; opacity: 0; }
+
+      /* S4 */
+      #wall { left: 600px; top: 520px; width: 420px; height: 640px; background: #9b4b3b; background-image: linear-gradient(#6e2f24 6px, transparent 6px), linear-gradient(90deg, #6e2f24 6px, transparent 6px); background-size: 140px 60px, 70px 60px; border: 8px solid var(--ink); }
+      #core { left: 740px; top: 760px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, #fff 0 20%, #ffe066 30%, #ff9f1c 55%, rgba(255,80,0,0) 72%); opacity: 0; }
+      #dd4 { left: 60px; top: 520px; width: 448px; height: 672px; }
+      #gauge { left: 90px; top: 300px; width: 900px; height: 150px; padding: 22px 28px; font-size: 26px; }
+      #gauge .bar { margin-top: 18px; width: 830px; height: 44px; border: 6px solid var(--white); }
+      #gauge .bar i { display: block; width: 818px; height: 32px; background: linear-gradient(90deg, #ffe066, #ff2e63); transform-origin: 0 50%; }
+      .brick { position: absolute; width: 70px; height: 54px; background: #9b4b3b; border: 6px solid #6e2f24; }
+      #boom { left: 0; top: 560px; width: 1080px; text-align: center; font-size: 180px; }
+
+      /* S5 */
+      #crate { left: 360px; top: 760px; width: 360px; height: 300px; background: #b07a3c; border: 10px solid #6a4420; background-image: linear-gradient(45deg, transparent 47%, #6a4420 47% 53%, transparent 53%), linear-gradient(-45deg, transparent 47%, #6a4420 47% 53%, transparent 53%); }
+      #dd5 { left: 380px; top: 300px; width: 320px; height: 480px; }
+      .rip { position: absolute; left: 540px; top: 760px; width: 40px; height: 14px; border: 6px solid var(--cyan); border-radius: 50%; opacity: 0; }
+      #jx { left: 372px; top: 380px; width: 336px; height: 560px; }
+      #xray { left: 392px; top: 600px; width: 296px; height: 300px; background: rgba(40,215,232,0.25); border: 6px solid var(--cyan); }
+      .gear { position: absolute; border-radius: 50%; background: repeating-conic-gradient(var(--gold) 0 15deg, transparent 15deg 30deg); }
+      .gear::after { content: ""; position: absolute; inset: 18%; border-radius: 50%; background: #c08a10; border: 6px solid var(--ink); }
+      #wrench { left: 0; top: 1000px; width: 1080px; display: flex; justify-content: center; }
+
+      /* S6 */
+      #an6 { left: 90px; top: 520px; width: 364px; height: 588px; }
+      #jo6 { left: 640px; top: 548px; width: 336px; height: 560px; }
+      #jt6 { left: 358px; top: 470px; width: 364px; height: 588px; }
+      .heart { position: absolute; width: 88px; height: 80px; }
+      .heart img { width: 88px; height: 80px; }
+      #ringbox { left: 0; top: 300px; width: 1080px; text-align: center; font-size: 60px; }
+      #dots3 { left: 0; top: 330px; width: 1080px; text-align: center; font-size: 110px; color: var(--white); text-shadow: 6px 6px 0 var(--ink); }
+
+      /* S7 */
+      #ratings { left: 90px; top: 1040px; width: 900px; height: 200px; padding: 26px 30px; font-size: 30px; line-height: 2; }
+      #ratings .r { display: flex; justify-content: space-between; }
+      #ratings .v { color: var(--gold); }
+      #an7 { left: 160px; top: 420px; width: 364px; height: 588px; }
+      #dd7 { left: 520px; top: 340px; width: 448px; height: 672px; }
+
+      /* S8 */
+      #tbc { left: 40px; top: 1060px; width: 620px; height: 120px; }
+      #tbc .arrow { position: absolute; inset: 0; background: #e8d9a8; clip-path: polygon(0 20%, 78% 20%, 78% 0, 100% 50%, 78% 100%, 78% 80%, 0 80%); }
+      #tbc .tx { position: absolute; left: 30px; top: 40px; font-family: "Silk"; font-size: 40px; color: #3a2a10; }
+      #sub { left: 210px; top: 300px; width: 660px; height: 150px; background: var(--red); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 44px; border: 8px solid var(--white); box-shadow: 0 0 0 8px var(--ink), 14px 14px 0 8px rgba(0,0,0,0.5); }
+      #ptr { left: 760px; top: 400px; width: 80px; height: 80px; }
+      #next { left: 90px; top: 540px; width: 900px; height: 440px; padding: 30px; }
+      #next .h { font-size: 30px; color: var(--gold); text-align: center; }
+      #grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 28px; }
+      #grid .c { height: 90px; background: #2a1a52; border: 6px solid var(--white); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+
+      /* captions */
+      #cap { left: 60px; top: 1290px; width: 960px; height: 210px; padding: 26px 34px; }
+      #cap .ln { position: absolute; left: 34px; top: 30px; width: 892px; display: flex; flex-wrap: wrap; gap: 8px 22px; opacity: 0; }
+      #cap .w { font-family: "PS2P"; font-size: 44px; line-height: 1.5; color: var(--white); }
+      #cap .tri { position: absolute; right: 30px; bottom: 18px; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 18px solid var(--gold); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1080" data-height="1920">
+      <div id="bgwrap" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="0">
+        <div class="layer" id="bg"></div>
+        <div class="layer" id="bgalt"></div>
+        <div class="layer" id="bgred"></div>
+        <div class="dots"></div>
+        <div class="abs" id="speed"></div>
+        <div id="gos"></div>
+      </div>
+
+      <section id="s1" class="scene clip" data-start="{{S1}}" data-duration="{{D1}}" data-track-index="1">
+        <div class="abs" id="clock"><div class="hand" id="hand1"></div></div>
+        <div class="abs big" id="stop">TEMPS : STOP</div>
+        <div class="abs" id="title"><span class="t big">DIVER DOWN</span><span class="k">ダイバー・ダウン</span></div>
+        <div class="abs" id="standon"><span class="lbl" style="background:#28d7e8">STAND ON!</span></div>
+        <div class="spr" id="dd1"><img src="sprites/diver_anim.png" alt="" style="width:4032px;height:672px" /></div>
+        <div class="abs" id="user1"><span class="lbl">NARCISO ANASUI</span><span class="lbl" style="background:#3cdc7a">STONE OCEAN</span></div>
+      </section>
+
+      <section id="s2" class="scene clip" data-start="{{S2}}" data-duration="{{D2}}" data-track-index="1">
+        <div class="abs big" id="biz">BIZARRE x2</div>
+        <div class="abs" id="bars"></div>
+        <div class="spr" id="an2"><img src="sprites/anasui_anim.png" alt="" style="width:3276px;height:588px" /></div>
+        <span class="tag2 lbl" id="tg1" style="left:60px;top:560px;background:#ff8fc7">CHEVEUX LONGS</span>
+        <span class="tag2 lbl" id="tg2" style="left:640px;top:700px;background:#28d7e8">ANDROGYNE</span>
+        <div class="abs" id="mug">DETENU · GREEN DOLPHIN</div>
+        <div class="sil" id="silA" style="left:300px;top:520px"><div class="h"></div><div class="b"></div></div>
+        <div class="sil" id="silB" style="left:640px;top:520px"><div class="h"></div><div class="b"></div></div>
+        <svg class="abs" id="crack" viewBox="0 0 14 13" shape-rendering="crispEdges"><path d="M7 12 L1 6 L1 3 L3 1 L5 1 L7 3 L9 1 L11 1 L13 3 L13 6 Z" fill="#ff2e63" stroke="#12091c" stroke-width="0.8"/><path d="M7 3 L6 6 L8 7 L6 10" stroke="#12091c" stroke-width="0.9" fill="none"/></svg>
+        <div id="pxs"></div>
+        <div class="abs big" id="litt">LITTERALEMENT.</div>
+      </section>
+
+      <section id="s3" class="scene clip" data-start="{{S3}}" data-duration="{{D3}}" data-track-index="1">
+        <div class="abs pbox" id="card"><div class="s">「スタンド」 STAND</div><div class="n">DIVER DOWN</div><div class="u">MANIEUR : NARCISO ANASUI</div></div>
+        <div class="spr" id="dd3"><img src="sprites/diver_anim.png" alt="" style="width:4032px;height:672px" /></div>
+        <div class="ring" id="rg1" style="left:476px;top:556px"></div>
+        <div class="ring" id="rg2" style="left:406px;top:774px"></div>
+        <div class="ring" id="rg3" style="left:504px;top:774px"></div>
+        <div class="ring" id="rg4" style="left:406px;top:1020px"></div>
+        <div class="ring" id="rg5" style="left:496px;top:1020px"></div>
+      </section>
+
+      <section id="s4" class="scene clip" data-start="{{S4}}" data-duration="{{D4}}" data-track-index="1">
+        <div class="abs pbox" id="gauge"><div>ENERGIE STOCKEE</div><div class="bar"><i id="gfill"></i></div></div>
+        <div class="abs" id="wall"></div>
+        <div class="abs" id="core"></div>
+        <div class="spr" id="dd4"><img src="sprites/diver_punch.png" alt="" style="width:2240px;height:672px" /></div>
+        <div id="bricks"></div>
+        <div class="abs big" id="boom">BOOM!</div>
+      </section>
+
+      <section id="s5" class="scene clip" data-start="{{S5}}" data-duration="{{D5}}" data-track-index="1">
+        <div class="abs" id="crate"></div>
+        <div class="spr" id="dd5"><img src="sprites/diver_anim.png" alt="" style="width:2880px;height:480px" /></div>
+        <div class="rip" id="rp1"></div><div class="rip" id="rp2"></div><div class="rip" id="rp3"></div>
+        <div class="spr" id="jx"><img src="sprites/jolyne_anim.png" alt="" style="width:3024px;height:560px" /></div>
+        <div class="abs" id="xray">
+          <div class="gear" id="g1" style="left:20px;top:30px;width:130px;height:130px"></div>
+          <div class="gear" id="g2" style="left:140px;top:120px;width:120px;height:120px"></div>
+          <div class="gear" id="g3" style="left:40px;top:170px;width:90px;height:90px"></div>
+        </div>
+        <div class="abs" id="wrench"><span class="lbl" style="background:#28d7e8">MODE : MECANICIEN INTERNE</span></div>
+      </section>
+
+      <section id="s6" class="scene clip" data-start="{{S6}}" data-duration="{{D6}}" data-track-index="1">
+        <div class="abs big" id="ringbox">OBJECTIF : MARIAGE</div>
+        <div class="spr" id="an6"><img src="sprites/anasui_anim.png" alt="" style="width:3276px;height:588px" /></div>
+        <div class="spr" id="jo6"><img src="sprites/jolyne_anim.png" alt="" style="width:3024px;height:560px" /></div>
+        <div class="heart" id="h1" style="left:440px;top:600px"><img src="sprites/heart.png" alt="" /></div>
+        <div class="heart" id="h2" style="left:520px;top:520px"><img src="sprites/heart.png" alt="" /></div>
+        <div class="heart" id="h3" style="left:480px;top:440px"><img src="sprites/heart.png" alt="" /></div>
+        <div class="spr" id="jt6"><img src="sprites/jotaro_anim.png" alt="" style="width:3276px;height:588px" /></div>
+        <div class="abs" id="dots3">. . .</div>
+      </section>
+
+      <section id="s7" class="scene clip" data-start="{{S7}}" data-duration="{{D7}}" data-track-index="1">
+        <div class="spr" id="an7"><img src="sprites/anasui_anim.png" alt="" style="width:3276px;height:588px" /></div>
+        <div class="spr" id="dd7"><img src="sprites/diver_anim.png" alt="" style="width:4032px;height:672px" /></div>
+        <div class="abs pbox" id="ratings">
+          <div class="r" id="ra1"><span>DISCRETION</span><span class="v">★★★★☆</span></div>
+          <div class="r" id="ra2"><span>CREATIVITE</span><span class="v">★★★★★</span></div>
+        </div>
+      </section>
+
+      <section id="s8" class="scene clip" data-start="{{S8}}" data-duration="{{D8}}" data-track-index="1">
+        <div class="layer" style="background:rgba(10,4,20,0.7)"></div>
+        <div class="abs" id="sub"><span id="sub1">ABONNE-TOI</span><span id="sub2" style="position:absolute;opacity:0">ABONNE !</span></div>
+        <div class="abs" id="ptr"><svg viewBox="0 0 10 10" width="80" height="80" shape-rendering="crispEdges"><path d="M1 0h1v1h1v1h1v1h1v1h1v1h1v1h-3v1h1v2h-1v-1h-1v-2h-1v1h-1z" fill="#f6f2ff" stroke="#12091c" stroke-width="0.6" /></svg></div>
+        <div class="abs pbox" id="next">
+          <div class="h">PROCHAIN STAND ?</div>
+          <div id="grid">
+            <div class="c">STAR PLATINUM</div><div class="c">KING CRIMSON</div>
+            <div class="c">KILLER QUEEN</div><div class="c">GOLD EXPERIENCE</div>
+            <div class="c">MADE IN HEAVEN</div><div class="c">THE WORLD</div>
+          </div>
+        </div>
+        <div class="abs" id="tbc"><div class="arrow"></div><div class="tx">TO BE CONTINUED</div></div>
+      </section>
+
+      <div id="fx" class="layer clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="5">
+        <div class="abs" id="hud">
+          <div class="hp" style="left:0"><i id="hpL"></i></div><div class="hp" style="left:580px"><i id="hpR"></i></div>
+          <div class="hpn" style="left:0">ANASUI</div><div class="hpn" style="left:580px">???</div>
+          <div id="timer">99</div>
+        </div>
+        <div class="layer" id="gray"></div>
+        <div class="layer" id="flash"></div>
+        <div class="layer" id="invert"></div>
+        <div class="abs pbox" id="cap"><div class="tri" id="tri"></div></div>
+        <div class="scan"></div>
+        <div class="vign"></div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="{{TOTAL}}" data-track-index="9" data-volume="1"></audio>
+    </div>
+
+    <script>
