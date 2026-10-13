@@ -150,6 +150,21 @@ def main():
         w.setframerate(SR)
         w.writeframes(pcm.tobytes())
 
+    # la voix clonée sort basse (≈ -27 LUFS) : gain linéaire vers -20 LUFS + écrêtage doux des crêtes
+    # (pas de loudnorm : il raccourcit la piste de ~0,1 s et décalerait la fin de la boucle)
+    meas = subprocess.run(["ffmpeg", "-hide_banner", "-i", os.path.join(VOIX, "voix.wav"), "-af", "ebur128", "-f", "null", "-"],
+                          capture_output=True, text=True).stderr
+    lufs = float(re.findall(r"I:\s+(-?[0-9.]+) LUFS", meas)[-1])
+    g = 10 ** ((-20 - lufs) / 20)
+    x = out * g
+    x = np.where(np.abs(x) > 0.85, np.sign(x) * (0.85 + 0.14 * np.tanh((np.abs(x) - 0.85) / 0.14)), x)
+    pcm = (np.clip(x, -1, 1) * 32767).astype(np.int16)
+    with wave.open(os.path.join(VOIX, "voix.wav"), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(SR)
+        w.writeframes(pcm.tobytes())
+
     res = []
     for part, ws, ts in ((1, w1, t1), (2, w2, t2)):
         for w, (s, e) in zip(ws, ts):

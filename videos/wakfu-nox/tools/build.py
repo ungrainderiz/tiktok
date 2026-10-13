@@ -344,7 +344,7 @@ def main():
 {chr(10).join(slots)}
     <div id="slot-captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="4" data-width="1080" data-height="1920"></div>
     <audio id="musique" src="assets/audio/musique/ost.m4a" data-start="0" data-duration="{TOTAL}" data-media-start="{OST_START}" data-track-index="13" data-volume="0.9"></audio>
-    <audio id="bruitages" src="assets/audio/bruitages/bruitages-stem.wav" data-start="0" data-duration="{TOTAL}" data-track-index="14" data-volume="0.45"></audio>
+    <audio id="bruitages" src="assets/audio/bruitages/bruitages-stem.wav" data-start="0" data-duration="{TOTAL}" data-track-index="14" data-volume="0.4"></audio>
     <audio id="voix" src="assets/audio/voix/voix.wav" data-start="0" data-duration="{TOTAL}" data-track-index="10" data-volume="1"></audio>
     </div>
     <script>
