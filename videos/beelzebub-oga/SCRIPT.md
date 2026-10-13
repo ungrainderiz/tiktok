@@ -13,19 +13,19 @@ Là-bas, cent pour cent des élèves sont des racailles. Et Oga, c'est le pire d
 Un jour, il voit un mec énorme flotter sur la rivière. Il le repêche.
 Le mec se fend en deux… et dedans, y a un bébé.
 Tout nu. Les cheveux verts. Qui le fixe.
-Et qui décide, là, tout de suite, que c'est LUI son papa.
+Et qui décide que c'est LUI son papa.
 
 Sauf que ce bébé, c'est Beelzebub. Le fils du Grand Roi des Démons.
 Sa mission ? Détruire l'humanité.
-Et pourquoi il a choisi Oga ? Parce qu'il est fort, sans pitié, et qu'il a un sale caractère. Le parent PARFAIT.
+Pourquoi Oga ? Parce qu'il est fort, sans pitié, et qu'il a un sale caractère. Le parent PARFAIT.
 
 Mais le pire, c'est les règles.
 S'il s'éloigne à plus de quinze mètres du bébé : bam. Électrocuté.
 Si le bébé pleure : bam. Électrocuté.
 Si le bébé s'ennuie… tu devines.
 
-Et pendant ce temps, à Ishiyama, les quatre boss du lycée veulent sa tête. Kanzaki. Himekawa. Kunieda. Tôjô.
-Alors Oga a un plan. Un seul.
+Et pendant ce temps, à Ishiyama, les quatre boss du lycée veulent tous sa tête.
+Alors Oga a un plan.
 Trouver un mec plus fort et plus méchant que lui… et lui refiler le gosse.
 Sauf qu'à chaque baston qu'il gagne, le bébé l'admire un peu plus.
 Il serre les poings comme lui. Il fait la même tête que lui. Il se cramponne à son dos comme à un trône.
