@@ -70,7 +70,19 @@ Références : `videos/rayquaza-fraude/BRIEF.md` (script « Rayquaza la fraude �
   Une prise coûte ≈ 1 crédit par caractère du script : vérifier le solde avant de lancer.
 - **Visuels** : vrais assets (sprites officiels, images de l'œuvre), jamais redessinés. Motion design
   dynamique, coupes sur la voix.
+  - **Horreur = SOMBRE** : nuit, noirs profonds, peu de lumière (une seule source : lampe, flamme, écran),
+    couleurs désaturées, grain, vignette lourde. Pas de décors de jour colorés : l'atmosphère doit faire peur.
+  - **Pas de plans « marche à la 1re personne sur une route »** (sol en perspective qui défile) : jugés ratés
+    (Funécire, Wakfu). Préférer des plans fixes ou lents, cadrés serré, en intérieur/gros plans.
+  - Pixel art « HD » si on dessine : paquets de formes ombrées, 5–6 tons par matière, sans contour
+    (références : arbre pixel art, Nox fan art, Sadida du jeu — voir `videos/wakfu-nox/tools/pixelart.py`).
 - **Sous-titres** : mot à mot, style TikTok, mot prononcé mis en valeur.
 - **Audio** : musique sous la voix (creusée/duckée), cris de Pokémon discrets (≈ 10–20 %),
   bruitages présents mais jamais au-dessus de la voix. Copie finale normalisée à -14 LUFS.
+  - **Banque de bruitages partagée : `bruitages/`** (sons envoyés par Matt, un fichier par son, `index.json`
+    + `BRUITAGES.md` avec ambiance et usage). La consulter à chaque vidéo et y piocher aux moments
+    appropriés (horreur → horreur/tension/impact ; drôle → memes). Nouvelle compilation reçue →
+    `python3 bruitages/tools/importer.py <video> <coupes.json>`. Compléter avec des sons synthétisés si besoin.
+  - Voix clonée souvent basse : la remonter vers -20 LUFS par gain linéaire (pas de loudnorm, qui raccourcit
+    la piste et casse la boucle).
 - **Livraison** : envoyer une copie compressée (< 30 Mo) ; les rendus restent hors de git.

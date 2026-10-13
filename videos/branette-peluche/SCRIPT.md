@@ -1,7 +1,7 @@
-# Polichombr — « La peluche » (horreur, vue subjective, boucle)
+# Branette — « La peluche » (horreur, vue subjective, boucle)
 
 Registre : récit d'horreur en « tu » (même famille que Funécire « Le brouillard » et Wakfu « Vingt minutes »).
-Pokémon : Polichombr (Spectre). L'histoire suit son Pokédex : une peluche abandonnée, rongée par la rancune,
+Pokémon : Branette (n° 354, Spectre ; évolution de Polichombr). L'histoire suit son Pokédex : une peluche abandonnée, rongée par la rancune,
 qui cherche l'enfant qui l'a jetée ; sa bouche à fermeture éclair retient une énergie maudite.
 
 ## Texte
@@ -22,7 +22,7 @@ Tu la brûles. Tu l'enterres. Tu la jettes dans la mer.
 Chaque fois, elle revient. Chaque fois, un cran de plus.
 
 Alors tu sors ton Pokédex. Tu la scannes.
-Et l'écran affiche un nom : Polichombr.
+Et l'écran affiche un nom : Branette.
 Une peluche abandonnée, rongée par la rancune. Elle cherche l'enfant qui l'a jetée.
 Et en dessous, une ligne que t'aurais préféré pas lire :
 sa bouche retient une énergie maudite. Si la fermeture s'ouvre… elle s'échappe.
@@ -48,6 +48,6 @@ la fin s'arrête au moment où la porte s'entrouvre, le début montre la peluche
 
 ## Notes de lore
 
-- Polichombr (n° 354) : Pokédex — une peluche abandonnée devenue Pokémon à cause de la rancune ; elle erre
+- Branette (n° 354, anglais Banette) : Pokédex — une peluche abandonnée devenue Pokémon à cause de la rancune ; elle erre
   à la recherche de l'enfant qui l'a jetée.
 - Sa bouche à fermeture éclair retient l'énergie maudite accumulée dans son corps ; si elle s'ouvre, l'énergie s'échappe.

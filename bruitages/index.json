@@ -1,0 +1,376 @@
+{
+ "999-credit-score-siren": {
+  "nom": "-999 Credit Score Siren",
+  "fichier": "memes/999-credit-score-siren.ogg",
+  "duree": 3.83,
+  "ambiance": [
+   "meme",
+   "alarme"
+  ],
+  "usage": "sirène : alerte comique"
+ },
+ "bass-drop": {
+  "nom": "Bass Drop",
+  "fichier": "memes/bass-drop.ogg",
+  "duree": 3.66,
+  "ambiance": [
+   "impact"
+  ],
+  "usage": "chute grave : coupe brutale, « Grosse erreur »"
+ },
+ "bone-crack": {
+  "nom": "Bone Crack",
+  "fichier": "memes/bone-crack.ogg",
+  "duree": 0.85,
+  "ambiance": [
+   "impact",
+   "horreur"
+  ],
+  "usage": "craquement d'os : chute, corps, Pokémon qui se brise"
+ },
+ "bye-bye-mewing": {
+  "nom": "Bye Bye Mewing",
+  "fichier": "memes/bye-bye-mewing.ogg",
+  "duree": 4.37,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "collect-gold": {
+  "nom": "Collect Gold",
+  "fichier": "memes/collect-gold.ogg",
+  "duree": 2.78,
+  "ambiance": [
+   "jeu"
+  ],
+  "usage": "récompense / objet ramassé"
+ },
+ "dark-piano-dexter": {
+  "nom": "Dark Piano Dexter",
+  "fichier": "memes/dark-piano-dexter.ogg",
+  "duree": 4.84,
+  "ambiance": [
+   "horreur",
+   "tension"
+  ],
+  "usage": "piano sombre : montée de malaise, révélation calme et inquiétante"
+ },
+ "depressed-penguin": {
+  "nom": "Depressed Penguin",
+  "fichier": "memes/depressed-penguin.ogg",
+  "duree": 4.66,
+  "ambiance": [
+   "meme",
+   "triste"
+  ],
+  "usage": "tristesse ironique"
+ },
+ "don-pollo-ahh-sound": {
+  "nom": "Don Pollo Ahh Sound",
+  "fichier": "memes/don-pollo-ahh-sound.ogg",
+  "duree": 5.95,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "english-or-spanish": {
+  "nom": "English OR Spanish",
+  "fichier": "memes/english-or-spanish.ogg",
+  "duree": 5.97,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "exaggerated-among-us": {
+  "nom": "Exaggerated Among Us",
+  "fichier": "memes/exaggerated-among-us.ogg",
+  "duree": 4.59,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "fahh": {
+  "nom": "Fahh",
+  "fichier": "memes/fahh.ogg",
+  "duree": 2.16,
+  "ambiance": [
+   "meme",
+   "choc"
+  ],
+  "usage": "« Fahh » : choc comique"
+ },
+ "flashbang": {
+  "nom": "Flashbang",
+  "fichier": "memes/flashbang.ogg",
+  "duree": 3.51,
+  "ambiance": [
+   "choc",
+   "acouphène"
+  ],
+  "usage": "flash + sifflement : choc, perte de repères"
+ },
+ "fortnite-shield-potion": {
+  "nom": "Fortnite Shield Potion",
+  "fichier": "memes/fortnite-shield-potion.ogg",
+  "duree": 7.32,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "french-meme": {
+  "nom": "French Meme",
+  "fichier": "memes/french-meme.ogg",
+  "duree": 4.35,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "gay-echo-voice": {
+  "nom": "Gay Echo Voice",
+  "fichier": "memes/gay-echo-voice.ogg",
+  "duree": 3.19,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "get-out": {
+  "nom": "Get Out!",
+  "fichier": "memes/get-out.ogg",
+  "duree": 1.01,
+  "ambiance": [
+   "voix",
+   "choc"
+  ],
+  "usage": "« Get out! » : à éviter en VF, sauf clin d'œil"
+ },
+ "glass-breaking": {
+  "nom": "Glass Breaking",
+  "fichier": "memes/glass-breaking.ogg",
+  "duree": 0.83,
+  "ambiance": [
+   "impact"
+  ],
+  "usage": "verre brisé : fenêtre, miroir, rupture"
+ },
+ "god-damn": {
+  "nom": "God Damn!",
+  "fichier": "memes/god-damn.ogg",
+  "duree": 1.09,
+  "ambiance": [
+   "meme",
+   "voix"
+  ],
+  "usage": "exclamation comique"
+ },
+ "grandma-house": {
+  "nom": "Grandma House",
+  "fichier": "memes/grandma-house.ogg",
+  "duree": 4.49,
+  "ambiance": [
+   "nostalgie"
+  ],
+  "usage": "ambiance douce/nostalgique : souvenir d'enfance (à détourner en malaise)"
+ },
+ "hells-kitchen-suspense": {
+  "nom": "Hells Kitchen Suspense",
+  "fichier": "memes/hells-kitchen-suspense.ogg",
+  "duree": 2.63,
+  "ambiance": [
+   "tension"
+  ],
+  "usage": "stinger de suspense : juste avant une révélation"
+ },
+ "i-be-poppin-bottles-boosted": {
+  "nom": "I Be Poppin Bottles (Boosted)",
+  "fichier": "memes/i-be-poppin-bottles-boosted.ogg",
+  "duree": 5.47,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "impact-grave": {
+  "nom": "Impact grave (sans titre, type « vine boom »)",
+  "fichier": "memes/impact-grave.ogg",
+  "duree": 1.18,
+  "ambiance": [
+   "impact"
+  ],
+  "usage": "boom grave court : punchline, apparition"
+ },
+ "laugh-toy-world-animation": {
+  "nom": "Laugh Toy World Animation",
+  "fichier": "memes/laugh-toy-world-animation.ogg",
+  "duree": 3.52,
+  "ambiance": [
+   "horreur",
+   "jouet"
+  ],
+  "usage": "rire de jouet : poupée/peluche qui s'anime (parfait pour Polichombr)"
+ },
+ "long-brain-fart": {
+  "nom": "Long Brain Fart",
+  "fichier": "memes/long-brain-fart.ogg",
+  "duree": 5.44,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "magic-spells": {
+  "nom": "Magic Spells",
+  "fichier": "memes/magic-spells.ogg",
+  "duree": 1.3,
+  "ambiance": [
+   "magie"
+  ],
+  "usage": "sort magique : apparition, transformation"
+ },
+ "mentality": {
+  "nom": "Mentality",
+  "fichier": "memes/mentality.ogg",
+  "duree": 0.64,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "metal-pipe-falling-loud": {
+  "nom": "Metal Pipe Falling (Loud)",
+  "fichier": "memes/metal-pipe-falling-loud.ogg",
+  "duree": 2.66,
+  "ambiance": [
+   "meme",
+   "impact"
+  ],
+  "usage": "barre de métal : comique, à éviter en horreur"
+ },
+ "optimus-prime": {
+  "nom": "Optimus Prime",
+  "fichier": "memes/optimus-prime.ogg",
+  "duree": 7.32,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "transformation"
+ },
+ "ps2-startup-screen": {
+  "nom": "PS2 Startup Screen",
+  "fichier": "memes/ps2-startup-screen.ogg",
+  "duree": 6.54,
+  "ambiance": [
+   "meme",
+   "angoisse"
+  ],
+  "usage": "démarrage PS2 : nappe angoissante culte"
+ },
+ "rdr2-low-honor": {
+  "nom": "RDR2 Low Honor",
+  "fichier": "memes/rdr2-low-honor.ogg",
+  "duree": 2.81,
+  "ambiance": [
+   "meme",
+   "jugement"
+  ],
+  "usage": "mauvais choix : « tu viens de faire une erreur »"
+ },
+ "slow-motion": {
+  "nom": "Slow Motion",
+  "fichier": "memes/slow-motion.ogg",
+  "duree": 5.38,
+  "ambiance": [
+   "ralenti"
+  ],
+  "usage": "ralenti : moment suspendu avant le drame"
+ },
+ "spawn": {
+  "nom": "Spawn",
+  "fichier": "memes/spawn.ogg",
+  "duree": 1.78,
+  "ambiance": [
+   "apparition"
+  ],
+  "usage": "apparition : un Pokémon/objet surgit"
+ },
+ "spongebob-walking": {
+  "nom": "Spongebob Walking",
+  "fichier": "memes/spongebob-walking.ogg",
+  "duree": 3.23,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "super-idol": {
+  "nom": "Super Idol",
+  "fichier": "memes/super-idol.ogg",
+  "duree": 5.35,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "taco-bell": {
+  "nom": "Taco Bell",
+  "fichier": "memes/taco-bell.ogg",
+  "duree": 1.45,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "travis-scott-meme": {
+  "nom": "Travis Scott Meme",
+  "fichier": "memes/travis-scott-meme.ogg",
+  "duree": 3.9,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "meme comique (réquisitoire drôle type Rayquaza)"
+ },
+ "undertakers-bell": {
+  "nom": "Undertakers Bell",
+  "fichier": "memes/undertakers-bell.ogg",
+  "duree": 3.45,
+  "ambiance": [
+   "horreur",
+   "glas"
+  ],
+  "usage": "glas lugubre : révélation, mort, fin d'un acte"
+ },
+ "windows-95-startup": {
+  "nom": "Windows 95 Startup",
+  "fichier": "memes/windows-95-startup.ogg",
+  "duree": 5.6,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "démarrage : ton rétro"
+ },
+ "windows-xp-shutdown": {
+  "nom": "Windows XP Shutdown",
+  "fichier": "memes/windows-xp-shutdown.ogg",
+  "duree": 2.39,
+  "ambiance": [
+   "meme",
+   "fin"
+  ],
+  "usage": "extinction : écran qui s'éteint (ton ironique)"
+ },
+ "windows-xp-start": {
+  "nom": "Windows XP Start",
+  "fichier": "memes/windows-xp-start.ogg",
+  "duree": 3.54,
+  "ambiance": [
+   "meme"
+  ],
+  "usage": "démarrage : ton rétro"
+ }
+}
