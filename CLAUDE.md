@@ -49,8 +49,14 @@ Références : `videos/rayquaza-fraude/BRIEF.md` (script « Rayquaza la fraude �
   « Ce ptit con de Rayquaza est la plus grosse fraude des légendaires… »
 - **Pas d'outro** : pas de carton de fin, pas de fondu au noir, pas de silence. La voix démarre dès 0 s
   et la dernière syllabe tombe sur la toute dernière image.
-- **Image** : la dernière image rejoint la première (même plan, même cadrage ou même flash/zoom),
-  pour que la coupe du retour ressemble à une coupe du montage.
+- **Montage (image)** : la toute dernière image et la toute première doivent se raccorder comme une
+  coupe normale du montage. Techniques, au choix :
+  - **raccord par le blanc/flash** : la fin monte vers un écran blanc, le début sort de ce même blanc
+    (ex. Rayquaza : Chenipan se remet à briller → blanc → Rayquaza surgit du blanc = « il ré-évolue ») ;
+  - **même plan** : la vidéo finit sur le plan qui l'ouvre, même cadrage et même zoom ;
+  - **mouvement continu** : le zoom / travelling de fin continue dans le même sens que celui du début.
+  - Les éléments d'interface (HUD, sous-titres) doivent être dans le même état à la fin et au début
+    (masqués des deux côtés).
 - **Son** : la musique ne fait ni fade-in ni fade-out ; la vidéo se termine sur un temps fort du morceau
   et le début de la musique repart sur un temps fort, pour que le raccord tombe en rythme.
 

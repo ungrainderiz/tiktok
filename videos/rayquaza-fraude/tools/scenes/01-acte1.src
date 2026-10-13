@@ -7,6 +7,7 @@
 #s01-stamp{left:70px;top:770px;font-size:190px;background:#120707b0}
 #s01-leg{left:60px;top:1150px;font-size:82px;color:#F4C430}
 #s01-vig{position:absolute;inset:0;background:radial-gradient(circle,transparent 40%,#ff1e1e 120%);opacity:0}
+#s01-white{position:absolute;inset:0;background:#fff}
 </style>
 <div class="ghost" id="s01-ghost">FRAUDE FRAUDE</div>
 <div class="cam" id="s01-cam">
@@ -16,7 +17,10 @@
   <div class="disp" id="s01-leg">des légendaires</div>
 </div>
 <div id="s01-vig"></div>
+<div id="s01-white"></div>
 @@@js
+// BOUCLE : on repart du blanc sur lequel la vidéo se termine
+tl.fromTo("#s01-white", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.out" }, 0);
 tl.fromTo("#s01-ghost", { x: 0 }, { x: -520, duration: 3.35, ease: "none" }, 0);
 // zoom brutal sur Rayquaza
 tl.fromTo("#s01-ray", { scale: 2.4, opacity: 0, filter: "brightness(3)" }, { scale: 1, opacity: 1, filter: "brightness(1)", duration: 0.55, ease: "expo.out" }, 0);

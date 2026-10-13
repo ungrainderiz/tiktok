@@ -13,7 +13,7 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "assets", "audio", "bruitages")
 SR = 44100
-TOTAL = 87.0
+TOTAL = 86.4
 rng = np.random.default_rng(384)  # graine fixe : rendu identique à chaque build
 
 
@@ -230,12 +230,20 @@ def s_robots():  # pluie de robots qui s'empilent (18 chocs métalliques)
     return norm(crush(x, 2, 6), 0.7)
 
 
+def s_montee():  # ré-évolution qui monte jusqu'au blanc (raccord de la boucle)
+    d = 0.45
+    t = t_axis(d)
+    sweep = tri(np.geomspace(330, 2600, len(t)), d) * np.linspace(0.3, 1, len(t))
+    shimmer = lowpass(noise(d), np.geomspace(1500, 12000, len(t))) * np.linspace(0, 0.6, len(t))
+    return norm(sweep * 0.7 + shimmer, 0.6)
+
+
 SOUNDS = {
     "coup": s_coup, "pv": s_pv, "pv-bas": s_pv_bas, "dialogue": s_dialogue, "menu": s_menu,
     "flash": s_flash, "tampon": s_tampon, "whoosh": s_whoosh, "pop": s_pop, "pop-bas": s_pop_bas,
     "explosion": s_explosion, "grondement": s_grondement, "radar": s_radar, "compteur": s_compteur,
     "coche": s_coche, "arret": s_arret, "ko": s_ko, "evolution-inverse": s_evolution_inverse,
-    "evolution-fin": s_evolution_fin, "robots": s_robots,
+    "evolution-fin": s_evolution_fin, "robots": s_robots, "montee": s_montee,
 }
 
 V = 0.2  # la voix démarre à 0.2 s
@@ -260,7 +268,7 @@ CUES = [
     ("pop", 70.12, 0.7), ("whoosh", 71.32, 0.8), ("grondement", 72.92, 0.9), ("explosion", 72.92, 0.6), ("tampon", 74.14, 1.0),
     ("tampon", 75.84, 0.9), ("robots", 76.32, 0.8),
     ("whoosh", 80.1, 0.6), ("whoosh", 81.1, 0.6), ("explosion", 81.1, 0.3),
-    ("ko", 82.6, 0.9), ("dialogue", 83.3, 0.8), ("evolution-inverse", 83.6, 0.9), ("evolution-fin", 85.64, 1.0), ("dialogue", 86.25, 0.6),
+    ("ko", 82.6, 0.9), ("dialogue", 83.3, 0.8), ("evolution-inverse", 83.6, 0.9), ("evolution-fin", 85.64, 1.0), ("montee", 85.95, 0.9),
 ]
 for t in HITS:
     CUES += [("coup", t, 1.0), ("pv", t + 0.1, 0.8), ("dialogue", t + 0.2, 0.7)]

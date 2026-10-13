@@ -16,7 +16,7 @@ import glob, json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VO_OFFSET = 0.2  # la voix démarre à 0.2 s dans la vidéo
-TOTAL = 87.0
+TOTAL = 86.4
 
 # début (global) de chaque scène ; la suivante démarre à la fin de la précédente
 STARTS = {
@@ -104,7 +104,8 @@ def lane(points):
 MUSIC_A = lane([(0, 0.36), (13.95, 0.36), (14.15, 0)])
 # t en secondes depuis le début du clip B (16.75 s) : on baisse pendant l'anti-évolution,
 # on remonte après la révélation de Chenipan, puis fondu final
-MUSIC_B = lane([(0, 0.36), (66.4, 0.36), (66.9, 0.25), (68.9, 0.25), (69.0, 0.62), (69.85, 0.62), (70.25, 0)])
+# pas de fondu final : la musique tient jusqu'à la dernière image (boucle)
+MUSIC_B = lane([(0, 0.36), (66.4, 0.36), (66.9, 0.25), (68.9, 0.25), (69.0, 0.62), (69.62, 0.62), (69.65, 0)])
 
 
 def caption_style():
@@ -234,7 +235,7 @@ def main():
     <div id="slot-captions" data-track-kind="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="4" data-width="1080" data-height="1920"></div>
 {cries}
     <audio id="musique-a" src="assets/audio/musique/rayquaza-battle.mp3" data-start="0" data-duration="14.15" data-media-start="14.0" data-track-index="13" data-volume="0.36" data-automation="{MUSIC_A}"></audio>
-    <audio id="musique-b" src="assets/audio/musique/rayquaza-battle.mp3" data-start="16.75" data-duration="70.25" data-media-start="28.15" data-track-index="13" data-volume="0.36" data-automation="{MUSIC_B}"></audio>
+    <audio id="musique-b" src="assets/audio/musique/rayquaza-battle.mp3" data-start="16.75" data-duration="{round(TOTAL - 16.75, 3)}" data-media-start="28.15" data-track-index="13" data-volume="0.36" data-automation="{MUSIC_B}"></audio>
     <audio id="bruitages" src="assets/audio/bruitages/bruitages-stem.wav" data-start="0" data-duration="{TOTAL}" data-track-index="14" data-volume="0.55"></audio>
     <audio id="voix" src="assets/audio/voix/prise-1.mp3" data-start="{VO_OFFSET}" data-duration="82.76" data-track-index="10" data-volume="1"></audio>
     </div>
