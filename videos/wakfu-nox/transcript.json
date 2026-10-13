@@ -1,0 +1,1312 @@
+{
+ "words": [
+  {
+   "text": "Vingt",
+   "type": "word",
+   "start": 0.07,
+   "end": 0.318
+  },
+  {
+   "text": "minutes.",
+   "type": "word",
+   "start": 0.346,
+   "end": 0.719
+  },
+  {
+   "text": "C'est",
+   "type": "word",
+   "start": 1.18,
+   "end": 1.624
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 1.674,
+   "end": 1.896
+  },
+  {
+   "text": "temps",
+   "type": "word",
+   "start": 1.92,
+   "end": 2.365
+  },
+  {
+   "text": "qu'il",
+   "type": "word",
+   "start": 2.414,
+   "end": 2.858
+  },
+  {
+   "text": "te",
+   "type": "word",
+   "start": 2.907,
+   "end": 3.13
+  },
+  {
+   "text": "reste.",
+   "type": "word",
+   "start": 3.154,
+   "end": 3.672
+  },
+  {
+   "text": "Tic.",
+   "type": "word",
+   "start": 4.08,
+   "end": 4.395
+  },
+  {
+   "text": "Tac.",
+   "type": "word",
+   "start": 4.99,
+   "end": 5.224
+  },
+  {
+   "text": "T'es",
+   "type": "word",
+   "start": 5.3,
+   "end": 5.477
+  },
+  {
+   "text": "un",
+   "type": "word",
+   "start": 5.497,
+   "end": 5.603
+  },
+  {
+   "text": "petit",
+   "type": "word",
+   "start": 5.614,
+   "end": 5.827
+  },
+  {
+   "text": "Sadida,",
+   "type": "word",
+   "start": 5.85,
+   "end": 6.133
+  },
+  {
+   "text": "au",
+   "type": "word",
+   "start": 6.165,
+   "end": 6.271
+  },
+  {
+   "text": "fond",
+   "type": "word",
+   "start": 6.283,
+   "end": 6.459
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 6.479,
+   "end": 6.585
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 6.597,
+   "end": 6.703
+  },
+  {
+   "text": "forêt.",
+   "type": "word",
+   "start": 6.715,
+   "end": 6.962
+  },
+  {
+   "text": "Ici,",
+   "type": "word",
+   "start": 7.47,
+   "end": 7.643
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 7.662,
+   "end": 7.8
+  },
+  {
+   "text": "arbres",
+   "type": "word",
+   "start": 7.816,
+   "end": 8.058
+  },
+  {
+   "text": "parlent.",
+   "type": "word",
+   "start": 8.084,
+   "end": 8.395
+  },
+  {
+   "text": "Ils",
+   "type": "word",
+   "start": 8.79,
+   "end": 8.97
+  },
+  {
+   "text": "chantent,",
+   "type": "word",
+   "start": 8.99,
+   "end": 9.44
+  },
+  {
+   "text": "ils",
+   "type": "word",
+   "start": 9.98,
+   "end": 10.115
+  },
+  {
+   "text": "rigolent,",
+   "type": "word",
+   "start": 10.13,
+   "end": 10.466
+  },
+  {
+   "text": "ils",
+   "type": "word",
+   "start": 10.503,
+   "end": 10.638
+  },
+  {
+   "text": "te",
+   "type": "word",
+   "start": 10.653,
+   "end": 10.754
+  },
+  {
+   "text": "racontent",
+   "type": "word",
+   "start": 10.765,
+   "end": 11.102
+  },
+  {
+   "text": "des",
+   "type": "word",
+   "start": 11.139,
+   "end": 11.274
+  },
+  {
+   "text": "histoires.",
+   "type": "word",
+   "start": 11.289,
+   "end": 11.659
+  },
+  {
+   "text": "Sauf",
+   "type": "word",
+   "start": 12.62,
+   "end": 12.778
+  },
+  {
+   "text": "qu'aujourd'hui…",
+   "type": "word",
+   "start": 12.796,
+   "end": 13.302
+  },
+  {
+   "text": "ils",
+   "type": "word",
+   "start": 13.358,
+   "end": 13.484
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 13.498,
+   "end": 13.593
+  },
+  {
+   "text": "taisent.",
+   "type": "word",
+   "start": 13.604,
+   "end": 13.888
+  },
+  {
+   "text": "Tic.",
+   "type": "word",
+   "start": 14.19,
+   "end": 14.496
+  },
+  {
+   "text": "Tac.",
+   "type": "word",
+   "start": 14.9,
+   "end": 15.17
+  },
+  {
+   "text": "Un",
+   "type": "word",
+   "start": 15.68,
+   "end": 15.787
+  },
+  {
+   "text": "truc",
+   "type": "word",
+   "start": 15.799,
+   "end": 15.977
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 15.997,
+   "end": 16.104
+  },
+  {
+   "text": "pose",
+   "type": "word",
+   "start": 16.116,
+   "end": 16.295
+  },
+  {
+   "text": "sur",
+   "type": "word",
+   "start": 16.314,
+   "end": 16.457
+  },
+  {
+   "text": "ta",
+   "type": "word",
+   "start": 16.473,
+   "end": 16.58
+  },
+  {
+   "text": "main.",
+   "type": "word",
+   "start": 16.592,
+   "end": 16.806
+  },
+  {
+   "text": "Un",
+   "type": "word",
+   "start": 17.21,
+   "end": 17.291
+  },
+  {
+   "text": "insecte.",
+   "type": "word",
+   "start": 17.3,
+   "end": 17.543
+  },
+  {
+   "text": "Sauf",
+   "type": "word",
+   "start": 17.86,
+   "end": 18.044
+  },
+  {
+   "text": "qu'il",
+   "type": "word",
+   "start": 18.064,
+   "end": 18.284
+  },
+  {
+   "text": "est",
+   "type": "word",
+   "start": 18.309,
+   "end": 18.456
+  },
+  {
+   "text": "en",
+   "type": "word",
+   "start": 18.472,
+   "end": 18.582
+  },
+  {
+   "text": "métal,",
+   "type": "word",
+   "start": 18.594,
+   "end": 18.851
+  },
+  {
+   "text": "avec",
+   "type": "word",
+   "start": 19.2,
+   "end": 19.396
+  },
+  {
+   "text": "une",
+   "type": "word",
+   "start": 19.417,
+   "end": 19.574
+  },
+  {
+   "text": "petite",
+   "type": "word",
+   "start": 19.591,
+   "end": 19.865
+  },
+  {
+   "text": "horloge",
+   "type": "word",
+   "start": 19.896,
+   "end": 20.209
+  },
+  {
+   "text": "à",
+   "type": "word",
+   "start": 20.243,
+   "end": 20.322
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 20.33,
+   "end": 20.448
+  },
+  {
+   "text": "place",
+   "type": "word",
+   "start": 20.461,
+   "end": 20.696
+  },
+  {
+   "text": "du",
+   "type": "word",
+   "start": 20.722,
+   "end": 20.839
+  },
+  {
+   "text": "ventre.",
+   "type": "word",
+   "start": 20.852,
+   "end": 21.165
+  },
+  {
+   "text": "Une",
+   "type": "word",
+   "start": 21.63,
+   "end": 21.807
+  },
+  {
+   "text": "Noxine.",
+   "type": "word",
+   "start": 21.827,
+   "end": 22.181
+  },
+  {
+   "text": "Elle",
+   "type": "word",
+   "start": 23.38,
+   "end": 23.569
+  },
+  {
+   "text": "te",
+   "type": "word",
+   "start": 23.59,
+   "end": 23.703
+  },
+  {
+   "text": "pique.",
+   "type": "word",
+   "start": 23.716,
+   "end": 23.981
+  },
+  {
+   "text": "Ça",
+   "type": "word",
+   "start": 24.48,
+   "end": 24.569
+  },
+  {
+   "text": "fait",
+   "type": "word",
+   "start": 24.579,
+   "end": 24.727
+  },
+  {
+   "text": "pas",
+   "type": "word",
+   "start": 24.744,
+   "end": 24.862
+  },
+  {
+   "text": "mal.",
+   "type": "word",
+   "start": 24.875,
+   "end": 25.024
+  },
+  {
+   "text": "C'est",
+   "type": "word",
+   "start": 25.33,
+   "end": 25.622
+  },
+  {
+   "text": "juste…",
+   "type": "word",
+   "start": 25.654,
+   "end": 25.994
+  },
+  {
+   "text": "froid.",
+   "type": "word",
+   "start": 26.032,
+   "end": 26.372
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 27.67,
+   "end": 27.779
+  },
+  {
+   "text": "là,",
+   "type": "word",
+   "start": 27.791,
+   "end": 27.937
+  },
+  {
+   "text": "tu",
+   "type": "word",
+   "start": 27.953,
+   "end": 28.062
+  },
+  {
+   "text": "vois",
+   "type": "word",
+   "start": 28.074,
+   "end": 28.256
+  },
+  {
+   "text": "un",
+   "type": "word",
+   "start": 28.277,
+   "end": 28.386
+  },
+  {
+   "text": "fil",
+   "type": "word",
+   "start": 28.398,
+   "end": 28.543
+  },
+  {
+   "text": "bleu",
+   "type": "word",
+   "start": 28.56,
+   "end": 28.742
+  },
+  {
+   "text": "sortir",
+   "type": "word",
+   "start": 28.762,
+   "end": 29.016
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 29.045,
+   "end": 29.154
+  },
+  {
+   "text": "ta",
+   "type": "word",
+   "start": 29.166,
+   "end": 29.275
+  },
+  {
+   "text": "peau.",
+   "type": "word",
+   "start": 29.287,
+   "end": 29.506
+  },
+  {
+   "text": "Ton",
+   "type": "word",
+   "start": 30.52,
+   "end": 30.68
+  },
+  {
+   "text": "wakfu.",
+   "type": "word",
+   "start": 30.698,
+   "end": 30.979
+  },
+  {
+   "text": "Ta",
+   "type": "word",
+   "start": 31.58,
+   "end": 31.693
+  },
+  {
+   "text": "vie.",
+   "type": "word",
+   "start": 31.706,
+   "end": 31.894
+  },
+  {
+   "text": "Il",
+   "type": "word",
+   "start": 31.915,
+   "end": 32.028
+  },
+  {
+   "text": "s'envole.",
+   "type": "word",
+   "start": 32.041,
+   "end": 32.418
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 32.98,
+   "end": 33.064
+  },
+  {
+   "text": "il",
+   "type": "word",
+   "start": 33.074,
+   "end": 33.158
+  },
+  {
+   "text": "est",
+   "type": "word",
+   "start": 33.167,
+   "end": 33.28
+  },
+  {
+   "text": "pas",
+   "type": "word",
+   "start": 33.292,
+   "end": 33.404
+  },
+  {
+   "text": "tout",
+   "type": "word",
+   "start": 33.417,
+   "end": 33.557
+  },
+  {
+   "text": "seul.",
+   "type": "word",
+   "start": 33.573,
+   "end": 33.741
+  },
+  {
+   "text": "Y",
+   "type": "word",
+   "start": 34.02,
+   "end": 34.077
+  },
+  {
+   "text": "en",
+   "type": "word",
+   "start": 34.084,
+   "end": 34.17
+  },
+  {
+   "text": "a",
+   "type": "word",
+   "start": 34.18,
+   "end": 34.237
+  },
+  {
+   "text": "des",
+   "type": "word",
+   "start": 34.243,
+   "end": 34.358
+  },
+  {
+   "text": "milliers.",
+   "type": "word",
+   "start": 34.371,
+   "end": 34.658
+  },
+  {
+   "text": "Ils",
+   "type": "word",
+   "start": 34.96,
+   "end": 35.152
+  },
+  {
+   "text": "sortent",
+   "type": "word",
+   "start": 35.174,
+   "end": 35.559
+  },
+  {
+   "text": "des",
+   "type": "word",
+   "start": 35.602,
+   "end": 35.794
+  },
+  {
+   "text": "feuilles,",
+   "type": "word",
+   "start": 35.815,
+   "end": 36.297
+  },
+  {
+   "text": "des",
+   "type": "word",
+   "start": 36.35,
+   "end": 36.542
+  },
+  {
+   "text": "bêtes,",
+   "type": "word",
+   "start": 36.564,
+   "end": 36.901
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 36.938,
+   "end": 37.082
+  },
+  {
+   "text": "ta",
+   "type": "word",
+   "start": 37.098,
+   "end": 37.243
+  },
+  {
+   "text": "famille.",
+   "type": "word",
+   "start": 37.259,
+   "end": 37.692
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 38.23,
+   "end": 38.338
+  },
+  {
+   "text": "ils",
+   "type": "word",
+   "start": 38.35,
+   "end": 38.495
+  },
+  {
+   "text": "montent",
+   "type": "word",
+   "start": 38.511,
+   "end": 38.8
+  },
+  {
+   "text": "tous",
+   "type": "word",
+   "start": 38.832,
+   "end": 39.013
+  },
+  {
+   "text": "au",
+   "type": "word",
+   "start": 39.033,
+   "end": 39.141
+  },
+  {
+   "text": "même",
+   "type": "word",
+   "start": 39.154,
+   "end": 39.334
+  },
+  {
+   "text": "endroit",
+   "type": "word",
+   "start": 39.354,
+   "end": 39.643
+  },
+  {
+   "text": ":",
+   "type": "word",
+   "start": 39.676,
+   "end": 39.748
+  },
+  {
+   "text": "en",
+   "type": "word",
+   "start": 39.756,
+   "end": 39.864
+  },
+  {
+   "text": "haut",
+   "type": "word",
+   "start": 39.876,
+   "end": 40.057
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 40.077,
+   "end": 40.185
+  },
+  {
+   "text": "l'Arbre",
+   "type": "word",
+   "start": 40.198,
+   "end": 40.487
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 40.519,
+   "end": 40.627
+  },
+  {
+   "text": "Vie.",
+   "type": "word",
+   "start": 40.639,
+   "end": 40.82
+  },
+  {
+   "text": "Là-haut,",
+   "type": "word",
+   "start": 42.67,
+   "end": 43.136
+  },
+  {
+   "text": "y",
+   "type": "word",
+   "start": 43.188,
+   "end": 43.292
+  },
+  {
+   "text": "a",
+   "type": "word",
+   "start": 43.303,
+   "end": 43.407
+  },
+  {
+   "text": "un",
+   "type": "word",
+   "start": 43.419,
+   "end": 43.574
+  },
+  {
+   "text": "vieux",
+   "type": "word",
+   "start": 43.591,
+   "end": 43.902
+  },
+  {
+   "text": "Xélor.",
+   "type": "word",
+   "start": 43.937,
+   "end": 44.3
+  },
+  {
+   "text": "Nox.",
+   "type": "word",
+   "start": 44.64,
+   "end": 45.162
+  },
+  {
+   "text": "Derrière",
+   "type": "word",
+   "start": 46.52,
+   "end": 46.905
+  },
+  {
+   "text": "lui,",
+   "type": "word",
+   "start": 46.947,
+   "end": 47.161
+  },
+  {
+   "text": "une",
+   "type": "word",
+   "start": 47.185,
+   "end": 47.356
+  },
+  {
+   "text": "horloge",
+   "type": "word",
+   "start": 47.375,
+   "end": 47.717
+  },
+  {
+   "text": "grande",
+   "type": "word",
+   "start": 47.755,
+   "end": 48.054
+  },
+  {
+   "text": "comme",
+   "type": "word",
+   "start": 48.087,
+   "end": 48.344
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 48.373,
+   "end": 48.501
+  },
+  {
+   "text": "ciel.",
+   "type": "word",
+   "start": 48.515,
+   "end": 48.772
+  },
+  {
+   "text": "Tu",
+   "type": "word",
+   "start": 49.18,
+   "end": 49.292
+  },
+  {
+   "text": "sais",
+   "type": "word",
+   "start": 49.304,
+   "end": 49.49
+  },
+  {
+   "text": "ce",
+   "type": "word",
+   "start": 49.511,
+   "end": 49.623
+  },
+  {
+   "text": "qu'il",
+   "type": "word",
+   "start": 49.635,
+   "end": 49.859
+  },
+  {
+   "text": "veut,",
+   "type": "word",
+   "start": 49.883,
+   "end": 50.107
+  },
+  {
+   "text": "Nox",
+   "type": "word",
+   "start": 50.132,
+   "end": 50.281
+  },
+  {
+   "text": "?",
+   "type": "word",
+   "start": 50.297,
+   "end": 50.372
+  },
+  {
+   "text": "Remonter",
+   "type": "word",
+   "start": 50.7,
+   "end": 50.994
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 51.027,
+   "end": 51.125
+  },
+  {
+   "text": "temps.",
+   "type": "word",
+   "start": 51.136,
+   "end": 51.365
+  },
+  {
+   "text": "Deux",
+   "type": "word",
+   "start": 52.01,
+   "end": 52.183
+  },
+  {
+   "text": "cents",
+   "type": "word",
+   "start": 52.203,
+   "end": 52.411
+  },
+  {
+   "text": "ans",
+   "type": "word",
+   "start": 52.434,
+   "end": 52.572
+  },
+  {
+   "text": "en",
+   "type": "word",
+   "start": 52.588,
+   "end": 52.692
+  },
+  {
+   "text": "arrière.",
+   "type": "word",
+   "start": 52.703,
+   "end": 53.015
+  },
+  {
+   "text": "Revoir",
+   "type": "word",
+   "start": 53.36,
+   "end": 53.632
+  },
+  {
+   "text": "sa",
+   "type": "word",
+   "start": 53.663,
+   "end": 53.779
+  },
+  {
+   "text": "femme",
+   "type": "word",
+   "start": 53.792,
+   "end": 54.026
+  },
+  {
+   "text": "et",
+   "type": "word",
+   "start": 54.052,
+   "end": 54.168
+  },
+  {
+   "text": "ses",
+   "type": "word",
+   "start": 54.181,
+   "end": 54.337
+  },
+  {
+   "text": "gosses.",
+   "type": "word",
+   "start": 54.354,
+   "end": 54.665
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 54.8,
+   "end": 54.921
+  },
+  {
+   "text": "pour",
+   "type": "word",
+   "start": 54.935,
+   "end": 55.137
+  },
+  {
+   "text": "ça,",
+   "type": "word",
+   "start": 55.16,
+   "end": 55.322
+  },
+  {
+   "text": "il",
+   "type": "word",
+   "start": 55.34,
+   "end": 55.461
+  },
+  {
+   "text": "lui",
+   "type": "word",
+   "start": 55.475,
+   "end": 55.637
+  },
+  {
+   "text": "faut",
+   "type": "word",
+   "start": 55.655,
+   "end": 55.857
+  },
+  {
+   "text": "du",
+   "type": "word",
+   "start": 55.88,
+   "end": 56.001
+  },
+  {
+   "text": "wakfu.",
+   "type": "word",
+   "start": 56.015,
+   "end": 56.298
+  },
+  {
+   "text": "Pas",
+   "type": "word",
+   "start": 56.69,
+   "end": 56.804
+  },
+  {
+   "text": "un",
+   "type": "word",
+   "start": 56.817,
+   "end": 56.902
+  },
+  {
+   "text": "peu.",
+   "type": "word",
+   "start": 56.912,
+   "end": 57.054
+  },
+  {
+   "text": "TOUT.",
+   "type": "word",
+   "start": 57.59,
+   "end": 57.959
+  },
+  {
+   "text": "Autour",
+   "type": "word",
+   "start": 60.34,
+   "end": 60.623
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 60.654,
+   "end": 60.775
+  },
+  {
+   "text": "toi,",
+   "type": "word",
+   "start": 60.789,
+   "end": 60.991
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 61.013,
+   "end": 61.175
+  },
+  {
+   "text": "arbres",
+   "type": "word",
+   "start": 61.193,
+   "end": 61.476
+  },
+  {
+   "text": "deviennent",
+   "type": "word",
+   "start": 61.507,
+   "end": 61.951
+  },
+  {
+   "text": "gris.",
+   "type": "word",
+   "start": 62.001,
+   "end": 62.243
+  },
+  {
+   "text": "Ils",
+   "type": "word",
+   "start": 62.73,
+   "end": 62.871
+  },
+  {
+   "text": "craquent.",
+   "type": "word",
+   "start": 62.887,
+   "end": 63.241
+  },
+  {
+   "text": "Ils",
+   "type": "word",
+   "start": 63.46,
+   "end": 63.575
+  },
+  {
+   "text": "tombent",
+   "type": "word",
+   "start": 63.588,
+   "end": 63.818
+  },
+  {
+   "text": "en",
+   "type": "word",
+   "start": 63.843,
+   "end": 63.929
+  },
+  {
+   "text": "poussière.",
+   "type": "word",
+   "start": 63.939,
+   "end": 64.255
+  },
+  {
+   "text": "Ta",
+   "type": "word",
+   "start": 64.55,
+   "end": 64.699
+  },
+  {
+   "text": "main",
+   "type": "word",
+   "start": 64.716,
+   "end": 64.964
+  },
+  {
+   "text": "aussi",
+   "type": "word",
+   "start": 64.991,
+   "end": 65.289
+  },
+  {
+   "text": "devient",
+   "type": "word",
+   "start": 65.322,
+   "end": 65.72
+  },
+  {
+   "text": "grise.",
+   "type": "word",
+   "start": 65.764,
+   "end": 66.111
+  },
+  {
+   "text": "Tic…",
+   "type": "word",
+   "start": 66.72,
+   "end": 66.859
+  },
+  {
+   "text": "Tac…",
+   "type": "word",
+   "start": 66.875,
+   "end": 67.014
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 68.04,
+   "end": 68.131
+  },
+  {
+   "text": "puis",
+   "type": "word",
+   "start": 68.141,
+   "end": 68.293
+  },
+  {
+   "text": "l'horloge",
+   "type": "word",
+   "start": 68.31,
+   "end": 68.613
+  },
+  {
+   "text": "géante",
+   "type": "word",
+   "start": 68.647,
+   "end": 68.859
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 68.883,
+   "end": 68.974
+  },
+  {
+   "text": "met",
+   "type": "word",
+   "start": 68.984,
+   "end": 69.106
+  },
+  {
+   "text": "à",
+   "type": "word",
+   "start": 69.119,
+   "end": 69.18
+  },
+  {
+   "text": "tourner.",
+   "type": "word",
+   "start": 69.187,
+   "end": 69.46
+  },
+  {
+   "text": "À",
+   "type": "word",
+   "start": 69.97,
+   "end": 70.045
+  },
+  {
+   "text": "l'envers.",
+   "type": "word",
+   "start": 70.053,
+   "end": 70.428
+  },
+  {
+   "text": "Une",
+   "type": "word",
+   "start": 72.43,
+   "end": 72.597
+  },
+  {
+   "text": "forêt",
+   "type": "word",
+   "start": 72.615,
+   "end": 72.865
+  },
+  {
+   "text": "entière.",
+   "type": "word",
+   "start": 72.893,
+   "end": 73.268
+  },
+  {
+   "text": "Un",
+   "type": "word",
+   "start": 73.46,
+   "end": 73.576
+  },
+  {
+   "text": "peuple",
+   "type": "word",
+   "start": 73.588,
+   "end": 73.858
+  },
+  {
+   "text": "entier.",
+   "type": "word",
+   "start": 73.888,
+   "end": 74.196
+  },
+  {
+   "text": "Toi.",
+   "type": "word",
+   "start": 74.62,
+   "end": 74.755
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 76.17,
+   "end": 76.279
+  },
+  {
+   "text": "tout",
+   "type": "word",
+   "start": 76.291,
+   "end": 76.472
+  },
+  {
+   "text": "ce",
+   "type": "word",
+   "start": 76.492,
+   "end": 76.601
+  },
+  {
+   "text": "wakfu…",
+   "type": "word",
+   "start": 76.613,
+   "end": 76.867
+  },
+  {
+   "text": "ça",
+   "type": "word",
+   "start": 76.895,
+   "end": 77.004
+  },
+  {
+   "text": "lui",
+   "type": "word",
+   "start": 77.016,
+   "end": 77.161
+  },
+  {
+   "text": "a",
+   "type": "word",
+   "start": 77.177,
+   "end": 77.25
+  },
+  {
+   "text": "offert…",
+   "type": "word",
+   "start": 77.258,
+   "end": 77.548
+  }
+ ]
+}

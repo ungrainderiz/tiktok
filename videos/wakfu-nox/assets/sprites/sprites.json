@@ -1,0 +1,44 @@
+{
+ "aiguille-heure.png": {
+  "w": 120,
+  "h": 400,
+  "px": 60,
+  "py": 270
+ },
+ "aiguille-minute.png": {
+  "w": 110,
+  "h": 540,
+  "px": 55,
+  "py": 410
+ },
+ "aiguille-seconde.png": {
+  "w": 85,
+  "h": 570,
+  "px": 42,
+  "py": 440
+ },
+ "arbre-sadida.png": {
+  "w": 440,
+  "h": 800,
+  "frames": 3,
+  "ms": 0
+ },
+ "noxine.png": {
+  "w": 432,
+  "h": 336,
+  "frames": 4,
+  "ms": 90
+ },
+ "nox.png": {
+  "w": 480,
+  "h": 620,
+  "frames": 2,
+  "ms": 420
+ },
+ "tofu.png": {
+  "w": 150,
+  "h": 150,
+  "frames": 2,
+  "ms": 220
+ }
+}

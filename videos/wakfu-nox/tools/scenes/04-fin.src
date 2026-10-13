@@ -1,0 +1,128 @@
+@@@ s14
+@bg #2c5a30
+<style>
+#s14-all{position:absolute;inset:0}
+#s14-hand{left:210px;top:1180px;width:660px}
+#s14-cracks{position:absolute;inset:0;opacity:0}
+#s14-cracks path{fill:none;stroke:#141414;stroke-width:7;stroke-linejoin:bevel}
+</style>
+<div id="s14-all">
+<div class="sky" id="s14-sky"></div>
+<div class="stage" id="s14-stage"><div class="world" id="s14-world"><div class="ground" id="s14-ground"></div>
+  <div class="spr bb" id="s14-t1"></div><div class="spr bb" id="s14-t2"></div>
+</div></div>
+<svg id="s14-cracks" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<div id="s14-dust"></div>
+</div>
+<img class="px" id="s14-hand" src="assets/sprites/main.png" alt="ta main">
+<div class="vignette"></div>
+@@@js
+// Autour de toi, les arbres deviennent gris.
+const T = ["s14-t1", "s14-t2"].map((id) => document.getElementById(id));
+T.forEach((el) => still(el, "arbre-sadida", 1)(2, 0));
+const trees = [{ el: T[0], x: -340, z: -900 }, { el: T[1], x: 360, z: -1250 }];
+const fr = forest("s14-world", 16, 14, -200, 300, 420, 460, 420);
+const props = fr.concat(trees);
+const up = world("#s14-ground", props);
+const fall = gsap.parseEase("power2.in");
+drive(0, 6.3, (t) => {
+  // Ils tombent en poussière : chaque arbre s'efface à son tour (de près vers le loin)
+  props.forEach((p, i) => { p.alpha = 1 - Math.min(1, Math.max(0, (t - W(63.46) - (i % 7) * 0.12) / 0.5)); });
+  up(300 + 60 * t / 6.3);
+});
+const grey = (sel, t, d) => tl.fromTo(sel, { filter: "grayscale(0) brightness(1)" }, { filter: "grayscale(1) brightness(0.8)", duration: d, ease: "power1.inOut" }, t);
+grey("#s14-all", W(60.6), 1.6);
+// Ils craquent. : fissures + secousse
+const cr = document.getElementById("s14-cracks");
+[[[180, 300], [220, 520], [170, 700], [240, 900]], [[880, 260], [840, 480], [900, 640], [850, 860]], [[520, 120], [560, 300], [500, 420]]].forEach((pts, i) => {
+  const p = document.createElementNS(NS, "path");
+  p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
+  cr.appendChild(p);
+});
+tl.fromTo("#s14-cracks", { opacity: 0 }, { opacity: 0.85, duration: 0.08 }, W(62.73));
+shake("#s14-stage", W(62.73), 0.4, 18, 12);
+tl.to("#s14-cracks", { opacity: 0, duration: 0.3 }, W(63.6));
+// poussière qui monte quand les arbres s'effritent
+const dust = motes(document.getElementById("s14-dust"), 60, 17, [0, 300, 1080, 900], "dust");
+dust.forEach((d, i) => tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.9, y: -200 - hash(i) * 300, duration: 1.4, ease: "power1.out" }, W(63.46) + hash(i * 3) * 0.6));
+tl.to("#s14-sky", { filter: "brightness(1.15)", duration: 0.8 }, W(63.6));
+// Ta main aussi devient grise.
+tl.fromTo("#s14-hand", { y: 760 }, { y: 0, duration: 0.45, ease: "power3.out" }, W(64.4));
+grey("#s14-hand", W(65.0), 1.2);
+
+@@@ s15
+@bg radial-gradient(circle at 50% 900px,#3a3f4a,#15171c 75%)
+<style>
+#s15-cam{position:absolute;inset:0}
+#s15-clockwrap{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#s15-ground{position:absolute;left:-200px;right:-200px;top:1420px;height:700px;background:linear-gradient(#55585e,#2a2c31)}
+#s15-trees img{position:absolute;filter:grayscale(1) brightness(.55)}
+#s15-swirl{position:absolute;left:-460px;top:-40px;width:2000px;height:2000px;opacity:0;background:repeating-conic-gradient(from 0deg at 50% 50%,#7fe8ff22 0 8deg,transparent 8deg 24deg)}
+</style>
+<div class="cam" id="s15-cam">
+  <div id="s15-swirl"></div>
+  <div id="s15-clockwrap"><div class="clock" id="s15-clock"><img class="face" src="assets/sprites/horloge.png" alt=""><img class="hand h-heure" src="assets/sprites/aiguille-heure.png" alt=""><img class="hand h-minute" src="assets/sprites/aiguille-minute.png" alt=""><img class="hand h-seconde" src="assets/sprites/aiguille-seconde.png" alt=""></div></div>
+  <div id="s15-ground"></div>
+  <div id="s15-trees"><img class="px" src="assets/sprites/arbre-0.png" style="left:-120px;top:820px;width:360px" alt=""><img class="px" src="assets/sprites/arbre-2.png" style="left:820px;top:860px;width:340px" alt=""><img class="px" src="assets/sprites/arbre-1.png" style="left:180px;top:1100px;width:240px" alt=""><img class="px" src="assets/sprites/arbre-0.png" style="left:680px;top:1120px;width:230px" alt=""></div>
+</div>
+<div class="flash" id="s15-flash" style="background:#dff8ff"></div>
+<div class="vignette"></div>
+@@@js
+// Tic… Tac… : gros plan sur l'aiguille, puis l'horloge géante au-dessus de la forêt morte
+const setClock = clockSet(document.getElementById("s15-clock"));
+gsap.set("#s15-clockwrap", { scale: 3.4, y: 980, transformOrigin: "540px 960px" });
+gsap.set("#s15-ground", { opacity: 0 }); gsap.set("#s15-trees", { opacity: 0 });
+const spin = gsap.parseEase("power3.in");
+drive(0, 5.8, (t) => {
+  // avant « tourner » : tic-tac ; ensuite les aiguilles repartent… à l'envers, de plus en plus vite
+  const tick = t < W(68.04) ? Math.floor(t * 2) / 120 : 0.1;
+  const back = t < W(69.9) ? 0 : spin(Math.min(1, (t - W(69.9)) / 2.4)) * 900 + Math.max(0, t - W(69.9) - 2.4) * 900;
+  setClock(-20 + 5 + tick - back);
+});
+tl.set("#s15-clockwrap", { scale: 1, y: -260 }, W(68.0));
+tl.set(["#s15-ground", "#s15-trees"], { opacity: 1 }, W(68.0));
+tl.fromTo("#s15-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.3 }, W(68.0));
+// À l'envers. : la forêt tourbillonne, du wakfu revient en spirale dans l'horloge
+tl.fromTo("#s15-swirl", { opacity: 0, rotation: 0 }, { opacity: 1, rotation: -540, duration: 5.8 - W(69.9), ease: "power2.in" }, W(69.9));
+tl.fromTo("#s15-cam", { rotation: 0, scale: 1 }, { rotation: -10, scale: 1.18, duration: 5.8 - W(69.9), ease: "power2.in", transformOrigin: "540px 700px" }, W(69.9));
+shake("#s15-clockwrap", W(70.0), 2.0, 6, 13);
+
+@@@ s16
+@bg #15171c
+<style>
+.s16-shot{position:absolute;inset:0;opacity:0}
+#s16-a{background:linear-gradient(#9a9ea6 0%,#c7c9cc 36%,#55585e 37%,#2a2c31 100%)}
+#s16-a img{position:absolute;filter:grayscale(1) brightness(.6)}
+#s16-b{background:radial-gradient(circle at 50% 60%,#5a5d63,#1d1f24 75%)}
+#s16-b img{position:absolute;filter:grayscale(1) brightness(.75)}
+#s16-c{background:radial-gradient(circle at 50% 60%,#3a3d42,#121317 75%)}
+#s16-hand{left:150px;top:820px;width:780px;filter:grayscale(1) brightness(.75)}
+#s16-loop{background:radial-gradient(circle at 50% 960px,#8a1c26 0,#3e0a12 45%,#0d0306 100%)}
+#s16-stars{position:absolute;inset:0}
+#s16-cam{position:absolute;inset:0}
+</style>
+<div class="s16-shot" id="s16-a"><img class="px" src="assets/sprites/arbre-0.png" style="left:-60px;top:330px;width:330px" alt=""><img class="px" src="assets/sprites/arbre-1.png" style="left:330px;top:420px;width:260px" alt=""><img class="px" src="assets/sprites/arbre-2.png" style="left:600px;top:300px;width:340px" alt=""><img class="px" src="assets/sprites/arbre-0.png" style="left:860px;top:400px;width:280px" alt=""></div>
+<div class="s16-shot" id="s16-b"><img class="px" src="assets/sprites/sadida-0.png" style="left:120px;top:760px;width:180px" alt=""><img class="px" src="assets/sprites/sadida-1.png" style="left:340px;top:700px;width:200px" alt=""><img class="px" src="assets/sprites/sadida-2.png" style="left:580px;top:760px;width:170px" alt=""><img class="px" src="assets/sprites/sadida-3.png" style="left:790px;top:740px;width:190px" alt=""></div>
+<div class="s16-shot" id="s16-c"><img class="px" id="s16-hand" src="assets/sprites/main.png" alt="ta main"></div>
+<div class="s16-shot" id="s16-loop">
+  <div id="s16-stars"></div>
+  <div id="s16-cam"><div class="clock" id="s16-clock"><img class="face" src="assets/sprites/horloge.png" alt=""><img class="hand h-heure" src="assets/sprites/aiguille-heure.png" alt=""><img class="hand h-minute" src="assets/sprites/aiguille-minute.png" alt=""><img class="hand h-seconde" src="assets/sprites/aiguille-seconde.png" alt=""></div></div>
+</div>
+<div class="vignette"></div>
+@@@js
+// Une forêt entière. Un peuple entier. Toi.
+[["#s16-a", W(72.43)], ["#s16-b", W(73.46)], ["#s16-c", W(74.62)]].forEach(([sel, t], i, arr) => {
+  tl.set(sel, { opacity: 1 }, i === 0 ? 0 : t);
+  tl.fromTo(sel, { scale: 1.08 }, { scale: 1, duration: 0.6, ease: "power2.out" }, i === 0 ? 0 : t);
+  if (i < 2) tl.set(sel, { opacity: 0 }, arr[i + 1][1]);
+});
+// … ça lui a offert… : l'horloge recule encore, ralentit et s'arrête pile sur 11 h 40 — l'image du début
+motes(document.getElementById("s16-stars"), 40, 3, [0, 0, 1080, 1920], "star");
+gsap.utils.toArray("#s16-stars .star").forEach((el, i) => gsap.set(el, { position: "absolute", width: 6, height: 6, background: "#ffb8a8", opacity: 0.3 + hash(i) * 0.6 }));
+const setClock = clockSet(document.getElementById("s16-clock"));
+const T0 = W(75.95), D = 5.26 - T0;
+tl.set("#s16-c", { opacity: 0 }, T0);
+tl.set("#s16-loop", { opacity: 1 }, T0);
+const slow = gsap.parseEase("power3.out");
+drive(T0, D, (t) => setClock(-20 + 240 * (1 - slow(Math.min(1, t / D)))));
+tl.fromTo("#s16-cam", { scale: 0.62 }, { scale: 1, duration: D, ease: "power1.out", transformOrigin: "540px 960px" }, T0);

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s16-template">
+<style>
+
+@font-face{font-family:"Pixel";src:url(assets/fonts/sous-titres.ttf) format("truetype")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.pix{position:absolute;font-family:"Pixel";line-height:1.3;color:#e8f3ff;text-transform:uppercase}
+.cam{position:absolute;inset:0}
+/* monde 3D façon Noir/Blanc : sol en perspective + panneaux posés en profondeur */
+.stage{position:absolute;inset:0;perspective:700px;perspective-origin:50% 36%;overflow:hidden}
+.world{position:absolute;left:540px;top:691px;transform-style:preserve-3d}
+.ground{position:absolute;left:-2500px;top:260px;width:5000px;height:9000px;transform-origin:50% 0;
+  transform:translateZ(650px) rotateX(-90deg);image-rendering:pixelated;
+  background:url(assets/sprites/chemin.png) 50% 0/512px 256px repeat-y,url(assets/sprites/sol.png) 0 0/256px 256px repeat}
+.bb{position:absolute;left:0;top:0;image-rendering:pixelated;image-rendering:crisp-edges}
+.spr{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges;background-repeat:repeat-x}
+.sky{position:absolute;inset:0;background:linear-gradient(#7fd3e8 0%,#b9ecd0 26%,#e8f6c8 36%,#4f8f4a 37%,#2c5a30 100%)}
+.canopy{position:absolute;left:-40px;right:-40px;top:-60px;height:520px;background:
+  radial-gradient(circle at 10% 60%,#2f7d3c 0 120px,transparent 122px),radial-gradient(circle at 32% 30%,#3a8f44 0 150px,transparent 152px),
+  radial-gradient(circle at 58% 55%,#2c7438 0 140px,transparent 142px),radial-gradient(circle at 84% 35%,#3a8f44 0 160px,transparent 162px),
+  radial-gradient(circle at 100% 70%,#2f7d3c 0 120px,transparent 122px),linear-gradient(#245f30,#2f7d3c 60%,transparent)}
+.rays{position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 120px,#fff8c81a 120px 180px,transparent 180px 300px);mix-blend-mode:screen}
+.mote{position:absolute;width:12px;height:12px;background:#9ff7d8;box-shadow:0 0 14px 4px #5fe3c088}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,#000000b0 100%)}
+.frost{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 40%,#bfe9ff66 72%,#effbffdd 100%)}
+.clock{position:absolute;left:-10px;top:410px;width:1100px;height:1100px}
+.clock .face{position:absolute;inset:0;image-rendering:pixelated}
+.clock .hand{position:absolute;image-rendering:pixelated}
+.card{position:absolute;background:#1b2238ee;border:8px solid #e0b04a;border-radius:18px;box-shadow:0 10px 0 #00000088,inset 0 0 0 4px #6b4a1a;padding:24px 32px}
+.flash{position:absolute;inset:0;background:#fff;opacity:0}
+[id$="-all"]{position:absolute;inset:0}
+.tsvg{position:absolute;left:0;top:0;overflow:visible;filter:drop-shadow(0 0 8px #39c8ff) drop-shadow(0 0 22px #8a6cff)}
+.thread{fill:none;stroke:#c8f4ff;stroke-linecap:round}
+.pulse{fill:none;stroke:#ffffff;stroke-linecap:round}
+.dust{position:absolute;width:14px;height:14px;background:#a7a7a7}
+
+#s16{position:absolute;inset:0;overflow:hidden;background:#15171c}
+</style>
+<div id="s16" data-composition-id="s16" data-width="1080" data-height="1920">
+<style>
+.s16-shot{position:absolute;inset:0;opacity:0}
+#s16-a{background:linear-gradient(#9a9ea6 0%,#c7c9cc 36%,#55585e 37%,#2a2c31 100%)}
+#s16-a img{position:absolute;filter:grayscale(1) brightness(.6)}
+#s16-b{background:radial-gradient(circle at 50% 60%,#5a5d63,#1d1f24 75%)}
+#s16-b img{position:absolute;filter:grayscale(1) brightness(.75)}
+#s16-c{background:radial-gradient(circle at 50% 60%,#3a3d42,#121317 75%)}
+#s16-hand{left:150px;top:820px;width:780px;filter:grayscale(1) brightness(.75)}
+#s16-loop{background:radial-gradient(circle at 50% 960px,#8a1c26 0,#3e0a12 45%,#0d0306 100%)}
+#s16-stars{position:absolute;inset:0}
+#s16-cam{position:absolute;inset:0}
+</style>
+<div class="s16-shot" id="s16-a"><img class="px" src="assets/sprites/arbre-0.png" style="left:-60px;top:330px;width:330px" alt=""><img class="px" src="assets/sprites/arbre-1.png" style="left:330px;top:420px;width:260px" alt=""><img class="px" src="assets/sprites/arbre-2.png" style="left:600px;top:300px;width:340px" alt=""><img class="px" src="assets/sprites/arbre-0.png" style="left:860px;top:400px;width:280px" alt=""></div>
+<div class="s16-shot" id="s16-b"><img class="px" src="assets/sprites/sadida-0.png" style="left:120px;top:760px;width:180px" alt=""><img class="px" src="assets/sprites/sadida-1.png" style="left:340px;top:700px;width:200px" alt=""><img class="px" src="assets/sprites/sadida-2.png" style="left:580px;top:760px;width:170px" alt=""><img class="px" src="assets/sprites/sadida-3.png" style="left:790px;top:740px;width:190px" alt=""></div>
+<div class="s16-shot" id="s16-c"><img class="px" id="s16-hand" src="assets/sprites/main.png" alt="ta main"></div>
+<div class="s16-shot" id="s16-loop">
+  <div id="s16-stars"></div>
+  <div id="s16-cam"><div class="clock" id="s16-clock"><img class="face" src="assets/sprites/horloge.png" alt=""><img class="hand h-heure" src="assets/sprites/aiguille-heure.png" alt=""><img class="hand h-minute" src="assets/sprites/aiguille-minute.png" alt=""><img class="hand h-seconde" src="assets/sprites/aiguille-seconde.png" alt=""></div></div>
+</div>
+<div class="vignette"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 72.35;
+const W = (t) => +(t + 0.0 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const SPR = {"aiguille-heure.png": {"w": 120, "h": 400, "px": 60, "py": 270}, "aiguille-minute.png": {"w": 110, "h": 540, "px": 55, "py": 410}, "aiguille-seconde.png": {"w": 85, "h": 570, "px": 42, "py": 440}, "arbre-sadida.png": {"w": 440, "h": 800, "frames": 3, "ms": 0}, "noxine.png": {"w": 432, "h": 336, "frames": 4, "ms": 90}, "nox.png": {"w": 480, "h": 620, "frames": 2, "ms": 420}, "tofu.png": {"w": 150, "h": 150, "frames": 2, "ms": 220}};
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+// anime une planche de sprites (GIF officiel découpé) image par image, de façon déterministe
+const sheet = (el, name, scale, start, dur) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px` });
+  const cyc = (m.frames * m.ms) / 1000; const n = Math.max(1, Math.ceil(dur / cyc));
+  tl.fromTo(el, { backgroundPositionX: "0px" }, { backgroundPositionX: `${-m.frames * w}px`, duration: cyc, ease: `steps(${m.frames})`, repeat: n - 1 }, start);
+};
+// caméra subjective : props = [{ el, x, z, dy }] ; camZ > 0 = on avance ; le sol défile en même temps
+const world = (groundSel, props) => {
+  const ground = document.querySelector(groundSel);
+  return (camZ, camX = 0) => {
+    if (ground) gsap.set(ground, { backgroundPosition: `${50}% ${camZ}px, ${-camX}px ${camZ}px` });
+    props.forEach((p) => {
+      const zz = p.z + camZ;
+      const fog = Math.min(1, Math.max(0, 1 - (-zz - 1500) / 4500));
+      const near = zz > 200 ? Math.max(0, 1 - (zz - 200) / 200) : 1;
+      gsap.set(p.el, { x: p.x - camX, y: 260 + (p.dy || 0), z: zz, xPercent: -50, yPercent: -100, opacity: fog * near * (p.alpha ?? 1) });
+    });
+  };
+};
+const walk = (update, start, dur, z0, z1, ease = "none", x0 = 0, x1 = 0) => {
+  const cam = { z: z0, x: x0 };
+  update(z0, x0);
+  tl.fromTo(cam, { z: z0, x: x0 }, { z: z1, x: x1, duration: dur, ease, immediateRender: false, onUpdate: () => update(cam.z, cam.x) }, start);
+};
+// une seule mise à jour par image, calculée à partir du temps local (caméra + apparitions sans décalage d'ordre)
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const drive = (start, dur, fn) => { const o = { t: 0 }; fn(0); tl.fromTo(o, { t: 0 }, { t: dur, duration: dur, ease: "none", immediateRender: false, onUpdate: () => fn(o.t) }, start); };
+const bob = (el, start, dur, amp = 10, step = 0.55) => tl.fromTo(el, { y: 0 }, { y: amp, duration: step / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (step / 2)) - 1), immediateRender: false }, start);
+const flicker = (el, start, dur, lo = 0.7, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.09));
+  for (let i = 0; i < n; i++) tl.to(el, { opacity: lo + (1 - lo) * hash(seed * 13 + i * 7), duration: dur / n, ease: "none" }, start + (i * dur) / n);
+};
+// rangées de sapins de chaque côté du chemin (positions pseudo-aléatoires mais fixes)
+const forest = (worldId, n, seed = 1, z0 = -200, gap = 420, xMin = 420, xRange = 520, w = 300) => {
+  const Wd = document.getElementById(worldId); const out = [];
+  for (let i = 0; i < n; i++) {
+    [-1, 1].forEach((side) => {
+      const img = document.createElement("img"); img.className = "bb"; img.src = `assets/sprites/arbre-${i % 3}.png`; img.alt = "";
+      img.style.width = Math.round(w * (0.8 + hash(seed * 7 + i * 3 + side) * 0.7)) + "px";
+      Wd.appendChild(img);
+      out.push({ el: img, x: side * (xMin + hash(seed * 11 + i * 5 + side * 3) * xRange), z: z0 - i * gap - hash(seed + i) * gap * 0.5 });
+    });
+  }
+  return out;
+};
+const rain = (el, start, dur) => tl.fromTo(el, { backgroundPosition: "0px 0px" }, { backgroundPosition: `${-Math.round(dur * 160)}px ${Math.round(dur * 1400)}px`, duration: dur, ease: "none" }, start);
+// image fixe d'une planche : f(frame, t) pose la case voulue au temps t
+const still = (el, name, scale = 1) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px`, backgroundPositionX: "0px" });
+  return (frame, t) => tl.set(el, { backgroundPositionX: `${-frame * w}px` }, t);
+};
+// fils de wakfu (SVG) : tracé progressif + impulsions qui remontent le long du fil
+const NS = "http://www.w3.org/2000/svg";
+const threadSvg = (parent, w = 1080, h = 1920, id = "") => {
+  const s = document.createElementNS(NS, "svg");
+  s.setAttribute("width", w); s.setAttribute("height", h); s.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  s.setAttribute("class", "tsvg"); if (id) s.id = id;
+  parent.appendChild(s); return s;
+};
+const thread = (svg, d, w, start, dur, ease = "power1.inOut") => {
+  const p = document.createElementNS(NS, "path");
+  p.setAttribute("d", d); p.setAttribute("class", "thread"); p.setAttribute("stroke-width", w);
+  svg.appendChild(p);
+  const L = Math.ceil(p.getTotalLength());
+  gsap.set(p, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L });
+  tl.to(p, { strokeDashoffset: 0, duration: dur, ease }, start);
+  return p;
+};
+const pulse = (svg, d, w, start, dur, speed = 520, seed = 1) => {
+  const p = document.createElementNS(NS, "path");
+  p.setAttribute("d", d); p.setAttribute("class", "pulse"); p.setAttribute("stroke-width", w);
+  svg.appendChild(p);
+  const off = Math.round(hash(seed) * 90);
+  gsap.set(p, { strokeDasharray: "22 90", strokeDashoffset: off });
+  tl.fromTo(p, { strokeDashoffset: off }, { strokeDashoffset: off - Math.round(dur * speed), duration: dur, ease: "none" }, start);
+  return p;
+};
+// courbe d'un fil qui monte en ondulant de (x0,y0) vers (x1,y1)
+const wavy = (x0, y0, x1, y1, amp = 60, seed = 1) => {
+  const n = 5; let d = `M${x0} ${y0}`;
+  for (let i = 1; i <= n; i++) {
+    const t = i / n; const x = x0 + (x1 - x0) * t; const y = y0 + (y1 - y0) * t;
+    const s = (hash(seed * 7 + i) * 2 - 1) * amp * (1 - t * 0.6);
+    const tp = (i - 0.5) / n; const cx = x0 + (x1 - x0) * tp + s; const cy = y0 + (y1 - y0) * tp;
+    d += ` Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  return d;
+};
+// texte qui s'écrit lettre par lettre entre a et b
+const typeText = (el, str, a, b, cls = "") => {
+  const chars = [...str];
+  chars.forEach((ch, i) => {
+    const sp = document.createElement("span"); sp.textContent = ch; sp.style.opacity = 0; if (cls) sp.className = cls;
+    el.appendChild(sp); tl.set(sp, { opacity: 1 }, a + ((b - a) * i) / chars.length);
+  });
+};
+// particules carrées (poussière, wakfu) posées au hasard mais de façon fixe
+const motes = (parent, n, seed, box, cls = "mote") => {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const m = document.createElement("div"); m.className = cls;
+    m.style.left = Math.round(box[0] + hash(seed * 13 + i * 3) * box[2]) + "px";
+    m.style.top = Math.round(box[1] + hash(seed * 29 + i * 5) * box[3]) + "px";
+    parent.appendChild(m); out.push(m);
+  }
+  return out;
+};
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+
+const clockSet = (root) => {
+  const H = {};
+  [["heure", ".h-heure", "aiguille-heure.png"], ["minute", ".h-minute", "aiguille-minute.png"], ["seconde", ".h-seconde", "aiguille-seconde.png"]].forEach(([k, sel, file]) => {
+    const m = SPR[file]; const el = root.querySelector(sel);
+    gsap.set(el, { width: m.w, height: m.h, left: 550 - m.px, top: 550 - m.py, transformOrigin: `${m.px}px ${m.py}px` });
+    H[k] = el;
+  });
+  // t = minutes depuis midi (négatif = avant midi) → angles des aiguilles
+  return (min) => {
+    gsap.set(H.minute, { rotation: (min * 6) % 360 });
+    gsap.set(H.heure, { rotation: (min * 0.5) % 360 });
+    gsap.set(H.seconde, { rotation: (min * 360) % 360 });
+  };
+};
+
+// Une forêt entière. Un peuple entier. Toi.
+[["#s16-a", W(72.43)], ["#s16-b", W(73.46)], ["#s16-c", W(74.62)]].forEach(([sel, t], i, arr) => {
+  tl.set(sel, { opacity: 1 }, i === 0 ? 0 : t);
+  tl.fromTo(sel, { scale: 1.08 }, { scale: 1, duration: 0.6, ease: "power2.out" }, i === 0 ? 0 : t);
+  if (i < 2) tl.set(sel, { opacity: 0 }, arr[i + 1][1]);
+});
+// … ça lui a offert… : l'horloge recule encore, ralentit et s'arrête pile sur 11 h 40 — l'image du début
+motes(document.getElementById("s16-stars"), 40, 3, [0, 0, 1080, 1920], "star");
+gsap.utils.toArray("#s16-stars .star").forEach((el, i) => gsap.set(el, { position: "absolute", width: 6, height: 6, background: "#ffb8a8", opacity: 0.3 + hash(i) * 0.6 }));
+const setClock = clockSet(document.getElementById("s16-clock"));
+const T0 = W(75.95), D = 5.26 - T0;
+tl.set("#s16-c", { opacity: 0 }, T0);
+tl.set("#s16-loop", { opacity: 1 }, T0);
+const slow = gsap.parseEase("power3.out");
+drive(T0, D, (t) => setClock(-20 + 240 * (1 - slow(Math.min(1, t / D)))));
+tl.fromTo("#s16-cam", { scale: 0.62 }, { scale: 1, duration: D, ease: "power1.out", transformOrigin: "540px 960px" }, T0);
+window.__timelines["s16"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

@@ -1,0 +1,158 @@
+@@@ s10
+@bg linear-gradient(#1a0510 0%,#5a1420 30%,#b8402e 55%,#3a0c14 78%,#0d0306 100%)
+<style>
+#s10-cam{position:absolute;inset:0}
+#s10-tree{left:-10px;top:520px;width:1100px}
+#s10-banner{left:190px;top:170px;width:700px;height:130px;opacity:0;font-size:64px;text-align:center;color:#ffe9b8;background:#2a1d4ae6;border:8px solid #e0b04a;border-radius:20px;box-shadow:0 8px 0 #00000088;padding:26px 20px}
+#s10-glow{left:290px;top:290px;width:500px;height:500px;border-radius:50%;background:radial-gradient(#bff6ffcc,#39c8ff55 35%,transparent 70%)}
+</style>
+<div class="cam" id="s10-cam">
+  <div class="abs" id="s10-glow"></div>
+  <img class="px" id="s10-tree" src="assets/sprites/arbre-de-vie.png" alt="l'Arbre de Vie">
+</div>
+<div class="pix" id="s10-banner">Arbre de Vie</div>
+<div class="vignette"></div>
+@@@js
+// Et ils montent tous au même endroit : en haut de l'Arbre de Vie.
+const cam = document.getElementById("s10-cam");
+const svg = threadSvg(cam);
+for (let i = 0; i < 34; i++) {
+  const side = i % 4;
+  const a = hash(i * 7 + 2);
+  const [x0, y0] = side === 0 ? [-60, 500 + a * 1500] : side === 1 ? [1140, 500 + a * 1500] : [a * 1080, 2100 + a * 200];
+  const d = wavy(x0, y0, 540 + (hash(i) - 0.5) * 30, 545, 90, i + 40);
+  thread(svg, d, 3 + Math.round(hash(i * 3) * 5), hash(i * 11) * 1.4, 1.1, "power1.inOut");
+  if (i % 2 === 0) pulse(svg, d, 4, 1.0, 4.35 - 1.0, 650, i);
+}
+tl.fromTo(cam, { y: -760 }, { y: 0, duration: W(40.2) - 0.1, ease: "power2.inOut" }, 0.1);
+tl.fromTo("#s10-glow", { scale: 0.6, opacity: 0.5 }, { scale: 1.2, opacity: 1, duration: 1.2, yoyo: true, repeat: 2, ease: "sine.inOut" }, 0.8);
+tl.fromTo("#s10-banner", { y: -260, opacity: 1 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, W(40.2));
+tl.to("#s10-banner", { y: -260, duration: 0.3, ease: "power3.in" }, 3.95);
+
+@@@ s11
+@bg radial-gradient(circle at 50% 40%,#a8242c 0,#4a0c14 50%,#12040a 100%)
+<style>
+#s11-cam{position:absolute;inset:0}
+#s11-clockwrap{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#s11-clock{transform:none}
+#s11-plat{left:-420px;top:1270px;width:1920px}
+#s11-nox{left:300px;top:745px}
+.gear{position:absolute;image-rendering:pixelated;opacity:.55;filter:brightness(.5)}
+#s11-eyes{left:470px;top:780px;width:140px;height:110px;opacity:0;background:radial-gradient(ellipse at 50% 50%,#bff6ff,#39c8ff99 30%,transparent 65%)}
+#s11-name{left:0;right:0;top:220px;text-align:center;font-size:200px;color:#7fe8ff;opacity:0;text-shadow:0 0 30px #39c8ff,10px 10px 0 #0b1020}
+</style>
+<div class="cam" id="s11-cam">
+  <img class="gear" id="s11-g1" src="assets/sprites/engrenage.png" style="left:-200px;top:180px;width:520px" alt=""><img class="gear" id="s11-g2" src="assets/sprites/engrenage.png" style="left:760px;top:520px;width:420px" alt="">
+  <div id="s11-clockwrap"><div class="clock" id="s11-clock"><img class="face" src="assets/sprites/horloge.png" alt=""><img class="hand h-heure" src="assets/sprites/aiguille-heure.png" alt=""><img class="hand h-minute" src="assets/sprites/aiguille-minute.png" alt=""><img class="hand h-seconde" src="assets/sprites/aiguille-seconde.png" alt=""></div></div>
+  <img class="px" id="s11-plat" src="assets/sprites/arbre-de-vie.png" alt="">
+  <div class="spr" id="s11-nox"></div>
+  <div class="abs" id="s11-eyes"></div>
+</div>
+<div class="pix" id="s11-name">Nox</div>
+<div class="vignette"></div>
+@@@js
+// Là-haut, y a un vieux Xélor. Nox.
+const cam = document.getElementById("s11-cam");
+sheet(document.getElementById("s11-nox"), "nox", 1, 0, 6.55);
+tl.fromTo("#s11-g1", { rotation: 0 }, { rotation: 90, duration: 6.55, ease: "none" }, 0);
+tl.fromTo("#s11-g2", { rotation: 0 }, { rotation: -120, duration: 6.55, ease: "none" }, 0);
+const svg = threadSvg(cam);
+for (let i = 0; i < 18; i++) {
+  const a = hash(i * 5 + 9);
+  const [x0, y0] = i % 2 ? [-60, 900 + a * 1000] : [1140, 900 + a * 1000];
+  const d = wavy(x0, y0, 540, 970, 70, i + 60);
+  thread(svg, d, 3 + Math.round(hash(i) * 4), hash(i * 13) * 0.6, 0.6, "power1.out");
+  pulse(svg, d, 4, 0.5, 6.0, 700, i);
+}
+tl.fromTo(cam, { scale: 0.85 }, { scale: 1.25, duration: 2.0, ease: "power2.inOut", transformOrigin: "540px 900px" }, 0);
+// Nox. : les yeux s'allument, son nom claque
+tl.fromTo("#s11-eyes", { opacity: 0 }, { opacity: 1, duration: 0.12, yoyo: true, repeat: 3 }, W(44.64));
+tl.to("#s11-eyes", { opacity: 0.8, duration: 0.2 }, W(44.64) + 0.5);
+slam("#s11-name", W(44.7), 2.4);
+shake("#s11-cam", W(44.95), 0.3, 12, 7);
+tl.to("#s11-name", { opacity: 0, duration: 0.3 }, W(46.3));
+// Derrière lui, une horloge grande comme le ciel : elle se lève derrière Nox
+const setClock = clockSet(document.getElementById("s11-clock"));
+drive(0, 6.55, (t) => setClock(-20 + t * 2));
+gsap.set("#s11-clockwrap", { y: 1500, scale: 1.7, transformOrigin: "540px 960px" });
+tl.to("#s11-clockwrap", { y: -60, duration: 1.8, ease: "power2.out" }, W(46.6));
+tl.to(cam, { scale: 0.9, duration: 1.8, ease: "power2.inOut" }, W(46.6));
+
+@@@ s12
+@bg radial-gradient(circle at 50% 40%,#a8242c 0,#4a0c14 50%,#12040a 100%)
+<style>
+#s12-clockwrap{position:absolute;left:0;top:0;width:1080px;height:1920px;filter:blur(3px) brightness(.8)}
+#s12-nox{left:-180px;top:430px}
+#s12-count{left:0;right:0;top:170px;text-align:center;font-size:150px;color:#e0b04a;opacity:0;text-shadow:10px 10px 0 #0b1020}
+#s12-mem{left:190px;top:330px;width:700px;height:640px;border-radius:50%;overflow:hidden;opacity:0;background:radial-gradient(#e9d3a8,#a4825a 70%,#5a4430);box-shadow:0 0 80px #e9d3a8aa}
+#s12-mem img{position:absolute;left:125px;top:150px;width:450px;filter:sepia(1) brightness(.75) contrast(1.2)}
+#s12-scan{position:absolute;inset:0;opacity:0;background:repeating-linear-gradient(0deg,#ffffff14 0 4px,transparent 4px 12px)}
+</style>
+<div id="s12-clockwrap"><div class="clock" id="s12-clock"><img class="face" src="assets/sprites/horloge.png" alt=""><img class="hand h-heure" src="assets/sprites/aiguille-heure.png" alt=""><img class="hand h-minute" src="assets/sprites/aiguille-minute.png" alt=""><img class="hand h-seconde" src="assets/sprites/aiguille-seconde.png" alt=""></div></div>
+<div class="spr" id="s12-nox"></div>
+<div class="abs" id="s12-mem"><img class="px" src="assets/sprites/famille.png" alt="sa famille"></div>
+<div class="pix" id="s12-count">-0 ans</div>
+<div id="s12-scan"></div>
+<div class="vignette"></div>
+@@@js
+// Tu sais ce qu'il veut, Nox ? Remonter le temps.
+sheet(document.getElementById("s12-nox"), "nox", 3, 0, 5.65);
+gsap.set("#s12-clockwrap", { scale: 1.7, y: -60, transformOrigin: "540px 960px" });
+const setClock = clockSet(document.getElementById("s12-clock"));
+const rew = gsap.parseEase("power2.in");
+drive(0, 5.65, (t) => {
+  const r = t < W(50.7) ? 0 : t < W(51.9) ? rew((t - W(50.7)) / 1.2) * 300 : 300 + (t - W(51.9)) * 600;
+  setClock(-6 + t * 2 - r);
+});
+tl.fromTo("#s12-nox", { scale: 1 }, { scale: 1.08, duration: 5.65, ease: "none", transformOrigin: "720px 270px" }, 0);
+tl.fromTo("#s12-scan", { opacity: 0 }, { opacity: 1, duration: 0.2 }, W(50.7));
+tl.to("#s12-scan", { y: 40, duration: 0.1, repeat: 11, yoyo: true, ease: "none" }, W(50.7));
+tl.to("#s12-scan", { opacity: 0, duration: 0.3 }, W(52.0));
+// Deux cents ans en arrière.
+tl.fromTo("#s12-count", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, W(52.0));
+const cnt = document.getElementById("s12-count");
+drive(W(52.0), 1.3, (t) => { cnt.textContent = `-${Math.round(200 * Math.min(1, t / 0.7))} ans`; });
+tl.to("#s12-count", { opacity: 0, duration: 0.25 }, W(53.3));
+// Revoir sa femme et ses gosses. : souvenir sépia qui tremble
+tl.fromTo("#s12-mem", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power1.out" }, W(53.36));
+flicker("#s12-mem", W(53.36) + 0.6, 5.65 - W(53.36) - 0.6, 0.75, 6);
+tl.to("#s12-nox", { filter: "brightness(0.5)", duration: 0.6 }, W(53.36));
+
+@@@ s13
+@bg linear-gradient(#1a0510 0%,#5a1420 30%,#b8402e 55%,#3a0c14 78%,#0d0306 100%)
+<style>
+#s13-all{position:absolute;inset:0}
+#s13-tree{left:-10px;top:520px;width:1100px}
+#s13-glow{left:190px;top:190px;width:700px;height:700px;border-radius:50%;background:radial-gradient(#ffffff,#bff6ffcc 15%,#39c8ff66 40%,transparent 70%)}
+#s13-word{left:0;right:0;top:560px;text-align:center;font-size:260px;color:#ffffff;opacity:0;text-shadow:0 0 40px #39c8ff,14px 14px 0 #0b1020}
+</style>
+<div id="s13-all">
+  <div class="abs" id="s13-glow"></div>
+  <img class="px" id="s13-tree" src="assets/sprites/arbre-de-vie.png" alt="l'Arbre de Vie">
+</div>
+<div class="flash" id="s13-flash" style="background:#dff8ff"></div>
+<div class="pix" id="s13-word">Tout</div>
+<div class="vignette"></div>
+@@@js
+// Et pour ça, il lui faut du wakfu. Pas un peu. TOUT.
+const all = document.getElementById("s13-all");
+const svg = threadSvg(all);
+const paths = [];
+for (let i = 0; i < 46; i++) {
+  const side = i % 4; const a = hash(i * 9 + 4);
+  const [x0, y0] = side === 0 ? [-60, 400 + a * 1600] : side === 1 ? [1140, 400 + a * 1600] : [a * 1080, 2050];
+  const d = wavy(x0, y0, 540 + (hash(i) - 0.5) * 30, 545, 90, i + 90);
+  paths.push(thread(svg, d, 3 + Math.round(hash(i * 3) * 4), hash(i * 7) * 1.6, 0.9, "power1.out"));
+  pulse(svg, d, 4, 0.6, 5.55 - 0.6, i % 2 ? 900 : 650, i);
+}
+tl.fromTo("#s13-glow", { scale: 0.7, opacity: 0.6 }, { scale: 1.1, opacity: 1, duration: W(57.59), ease: "power1.in" }, 0);
+tl.fromTo(all, { scale: 1 }, { scale: 1.12, duration: W(57.59), ease: "power1.in", transformOrigin: "540px 600px" }, 0);
+// TOUT. : flash, le mot claque, tout est aspiré vers le haut
+tl.fromTo("#s13-flash", { opacity: 0 }, { opacity: 0.9, duration: 0.06, yoyo: true, repeat: 1 }, W(57.59));
+slam("#s13-word", W(57.6), 3);
+shake("#s13-word", W(57.84), 0.35, 20, 9);
+tl.to("#s13-word", { opacity: 0, scale: 1.4, duration: 0.5, ease: "power2.in" }, W(58.8));
+tl.to(paths, { attr: { "stroke-width": 16 }, duration: 0.4, ease: "power2.out" }, W(57.6));
+tl.to("#s13-glow", { scale: 1.8, duration: 2.4, ease: "power2.in" }, W(57.7));
+tl.to(all, { filter: "saturate(0.15) brightness(0.8)", duration: 2.4, ease: "power1.in" }, W(57.8));
+shake(all, W(57.8), 2.4, 10, 11);

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="captions-template">
+<style>
+
+@font-face{font-family:"Pixel";src:url(assets/fonts/sous-titres.ttf) format("truetype")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.pix{position:absolute;font-family:"Pixel";line-height:1.3;color:#e8f3ff;text-transform:uppercase}
+.cam{position:absolute;inset:0}
+/* monde 3D façon Noir/Blanc : sol en perspective + panneaux posés en profondeur */
+.stage{position:absolute;inset:0;perspective:700px;perspective-origin:50% 36%;overflow:hidden}
+.world{position:absolute;left:540px;top:691px;transform-style:preserve-3d}
+.ground{position:absolute;left:-2500px;top:260px;width:5000px;height:9000px;transform-origin:50% 0;
+  transform:translateZ(650px) rotateX(-90deg);image-rendering:pixelated;
+  background:url(assets/sprites/chemin.png) 50% 0/512px 256px repeat-y,url(assets/sprites/sol.png) 0 0/256px 256px repeat}
+.bb{position:absolute;left:0;top:0;image-rendering:pixelated;image-rendering:crisp-edges}
+.spr{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges;background-repeat:repeat-x}
+.sky{position:absolute;inset:0;background:linear-gradient(#7fd3e8 0%,#b9ecd0 26%,#e8f6c8 36%,#4f8f4a 37%,#2c5a30 100%)}
+.canopy{position:absolute;left:-40px;right:-40px;top:-60px;height:520px;background:
+  radial-gradient(circle at 10% 60%,#2f7d3c 0 120px,transparent 122px),radial-gradient(circle at 32% 30%,#3a8f44 0 150px,transparent 152px),
+  radial-gradient(circle at 58% 55%,#2c7438 0 140px,transparent 142px),radial-gradient(circle at 84% 35%,#3a8f44 0 160px,transparent 162px),
+  radial-gradient(circle at 100% 70%,#2f7d3c 0 120px,transparent 122px),linear-gradient(#245f30,#2f7d3c 60%,transparent)}
+.rays{position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 120px,#fff8c81a 120px 180px,transparent 180px 300px);mix-blend-mode:screen}
+.mote{position:absolute;width:12px;height:12px;background:#9ff7d8;box-shadow:0 0 14px 4px #5fe3c088}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,#000000b0 100%)}
+.frost{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 40%,#bfe9ff66 72%,#effbffdd 100%)}
+.clock{position:absolute;left:-10px;top:410px;width:1100px;height:1100px}
+.clock .face{position:absolute;inset:0;image-rendering:pixelated}
+.clock .hand{position:absolute;image-rendering:pixelated}
+.card{position:absolute;background:#1b2238ee;border:8px solid #e0b04a;border-radius:18px;box-shadow:0 10px 0 #00000088,inset 0 0 0 4px #6b4a1a;padding:24px 32px}
+.flash{position:absolute;inset:0;background:#fff;opacity:0}
+[id$="-all"]{position:absolute;inset:0}
+.tsvg{position:absolute;left:0;top:0;overflow:visible;filter:drop-shadow(0 0 8px #39c8ff) drop-shadow(0 0 22px #8a6cff)}
+.thread{fill:none;stroke:#c8f4ff;stroke-linecap:round}
+.pulse{fill:none;stroke:#ffffff;stroke-linecap:round}
+.dust{position:absolute;width:14px;height:14px;background:#a7a7a7}
+
+#captions{position:absolute;inset:0;overflow:hidden;background:transparent}
+</style>
+<div id="captions" data-composition-id="captions" data-width="1080" data-height="1920">
+<style>
+#cap-wrap{position:absolute;left:60px;top:1290px;width:860px;height:240px}
+#cap-wrap{--cap-font:"Pixel";--cap-size:72px;--cap-case:uppercase;--cap-gap:.55em;--cap-fill:#dfe9f5;--cap-stroke:0px transparent;--cap-shadow:none;--cap-tshadow:-9px -9px 0 #0b1020,-9px 0px 0 #0b1020,-9px 9px 0 #0b1020,0px -9px 0 #0b1020,0px 9px 0 #0b1020,9px -9px 0 #0b1020,9px 0px 0 #0b1020,9px 9px 0 #0b1020,0 18px 0 #05070d}
+.cc{position:absolute;left:0;right:0;top:0;text-align:center;font-family:var(--cap-font);font-size:var(--cap-size);line-height:1.08;text-transform:var(--cap-case);color:var(--cap-fill);-webkit-text-stroke:var(--cap-stroke);paint-order:stroke fill;filter:var(--cap-shadow);text-shadow:var(--cap-tshadow);line-height:1.3;opacity:0}
+.cw{display:inline-block}
+.cw + .cw{margin-left:var(--cap-gap)}
+</style>
+<div id="cap-wrap"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 0;
+const W = (t) => +(t + 0.0 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const SPR = {"aiguille-heure.png": {"w": 120, "h": 400, "px": 60, "py": 270}, "aiguille-minute.png": {"w": 110, "h": 540, "px": 55, "py": 410}, "aiguille-seconde.png": {"w": 85, "h": 570, "px": 42, "py": 440}, "arbre-sadida.png": {"w": 440, "h": 800, "frames": 3, "ms": 0}, "noxine.png": {"w": 432, "h": 336, "frames": 4, "ms": 90}, "nox.png": {"w": 480, "h": 620, "frames": 2, "ms": 420}, "tofu.png": {"w": 150, "h": 150, "frames": 2, "ms": 220}};
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+// anime une planche de sprites (GIF officiel découpé) image par image, de façon déterministe
+const sheet = (el, name, scale, start, dur) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px` });
+  const cyc = (m.frames * m.ms) / 1000; const n = Math.max(1, Math.ceil(dur / cyc));
+  tl.fromTo(el, { backgroundPositionX: "0px" }, { backgroundPositionX: `${-m.frames * w}px`, duration: cyc, ease: `steps(${m.frames})`, repeat: n - 1 }, start);
+};
+// caméra subjective : props = [{ el, x, z, dy }] ; camZ > 0 = on avance ; le sol défile en même temps
+const world = (groundSel, props) => {
+  const ground = document.querySelector(groundSel);
+  return (camZ, camX = 0) => {
+    if (ground) gsap.set(ground, { backgroundPosition: `${50}% ${camZ}px, ${-camX}px ${camZ}px` });
+    props.forEach((p) => {
+      const zz = p.z + camZ;
+      const fog = Math.min(1, Math.max(0, 1 - (-zz - 1500) / 4500));
+      const near = zz > 200 ? Math.max(0, 1 - (zz - 200) / 200) : 1;
+      gsap.set(p.el, { x: p.x - camX, y: 260 + (p.dy || 0), z: zz, xPercent: -50, yPercent: -100, opacity: fog * near * (p.alpha ?? 1) });
+    });
+  };
+};
+const walk = (update, start, dur, z0, z1, ease = "none", x0 = 0, x1 = 0) => {
+  const cam = { z: z0, x: x0 };
+  update(z0, x0);
+  tl.fromTo(cam, { z: z0, x: x0 }, { z: z1, x: x1, duration: dur, ease, immediateRender: false, onUpdate: () => update(cam.z, cam.x) }, start);
+};
+// une seule mise à jour par image, calculée à partir du temps local (caméra + apparitions sans décalage d'ordre)
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const drive = (start, dur, fn) => { const o = { t: 0 }; fn(0); tl.fromTo(o, { t: 0 }, { t: dur, duration: dur, ease: "none", immediateRender: false, onUpdate: () => fn(o.t) }, start); };
+const bob = (el, start, dur, amp = 10, step = 0.55) => tl.fromTo(el, { y: 0 }, { y: amp, duration: step / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (step / 2)) - 1), immediateRender: false }, start);
+const flicker = (el, start, dur, lo = 0.7, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.09));
+  for (let i = 0; i < n; i++) tl.to(el, { opacity: lo + (1 - lo) * hash(seed * 13 + i * 7), duration: dur / n, ease: "none" }, start + (i * dur) / n);
+};
+// rangées de sapins de chaque côté du chemin (positions pseudo-aléatoires mais fixes)
+const forest = (worldId, n, seed = 1, z0 = -200, gap = 420, xMin = 420, xRange = 520, w = 300) => {
+  const Wd = document.getElementById(worldId); const out = [];
+  for (let i = 0; i < n; i++) {
+    [-1, 1].forEach((side) => {
+      const img = document.createElement("img"); img.className = "bb"; img.src = `assets/sprites/arbre-${i % 3}.png`; img.alt = "";
+      img.style.width = Math.round(w * (0.8 + hash(seed * 7 + i * 3 + side) * 0.7)) + "px";
+      Wd.appendChild(img);
+      out.push({ el: img, x: side * (xMin + hash(seed * 11 + i * 5 + side * 3) * xRange), z: z0 - i * gap - hash(seed + i) * gap * 0.5 });
+    });
+  }
+  return out;
+};
+const rain = (el, start, dur) => tl.fromTo(el, { backgroundPosition: "0px 0px" }, { backgroundPosition: `${-Math.round(dur * 160)}px ${Math.round(dur * 1400)}px`, duration: dur, ease: "none" }, start);
+// image fixe d'une planche : f(frame, t) pose la case voulue au temps t
+const still = (el, name, scale = 1) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px`, backgroundPositionX: "0px" });
+  return (frame, t) => tl.set(el, { backgroundPositionX: `${-frame * w}px` }, t);
+};
+// fils de wakfu (SVG) : tracé progressif + impulsions qui remontent le long du fil
+const NS = "http://www.w3.org/2000/svg";
+const threadSvg = (parent, w = 1080, h = 1920, id = "") => {
+  const s = document.createElementNS(NS, "svg");
+  s.setAttribute("width", w); s.setAttribute("height", h); s.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  s.setAttribute("class", "tsvg"); if (id) s.id = id;
+  parent.appendChild(s); return s;
+};
+const thread = (svg, d, w, start, dur, ease = "power1.inOut") => {
+  const p = document.createElementNS(NS, "path");
+  p.setAttribute("d", d); p.setAttribute("class", "thread"); p.setAttribute("stroke-width", w);
+  svg.appendChild(p);
+  const L = Math.ceil(p.getTotalLength());
+  gsap.set(p, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L });
+  tl.to(p, { strokeDashoffset: 0, duration: dur, ease }, start);
+  return p;
+};
+const pulse = (svg, d, w, start, dur, speed = 520, seed = 1) => {
+  const p = document.createElementNS(NS, "path");
+  p.setAttribute("d", d); p.setAttribute("class", "pulse"); p.setAttribute("stroke-width", w);
+  svg.appendChild(p);
+  const off = Math.round(hash(seed) * 90);
+  gsap.set(p, { strokeDasharray: "22 90", strokeDashoffset: off });
+  tl.fromTo(p, { strokeDashoffset: off }, { strokeDashoffset: off - Math.round(dur * speed), duration: dur, ease: "none" }, start);
+  return p;
+};
+// courbe d'un fil qui monte en ondulant de (x0,y0) vers (x1,y1)
+const wavy = (x0, y0, x1, y1, amp = 60, seed = 1) => {
+  const n = 5; let d = `M${x0} ${y0}`;
+  for (let i = 1; i <= n; i++) {
+    const t = i / n; const x = x0 + (x1 - x0) * t; const y = y0 + (y1 - y0) * t;
+    const s = (hash(seed * 7 + i) * 2 - 1) * amp * (1 - t * 0.6);
+    const tp = (i - 0.5) / n; const cx = x0 + (x1 - x0) * tp + s; const cy = y0 + (y1 - y0) * tp;
+    d += ` Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  return d;
+};
+// texte qui s'écrit lettre par lettre entre a et b
+const typeText = (el, str, a, b, cls = "") => {
+  const chars = [...str];
+  chars.forEach((ch, i) => {
+    const sp = document.createElement("span"); sp.textContent = ch; sp.style.opacity = 0; if (cls) sp.className = cls;
+    el.appendChild(sp); tl.set(sp, { opacity: 1 }, a + ((b - a) * i) / chars.length);
+  });
+};
+// particules carrées (poussière, wakfu) posées au hasard mais de façon fixe
+const motes = (parent, n, seed, box, cls = "mote") => {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const m = document.createElement("div"); m.className = cls;
+    m.style.left = Math.round(box[0] + hash(seed * 13 + i * 3) * box[2]) + "px";
+    m.style.top = Math.round(box[1] + hash(seed * 29 + i * 5) * box[3]) + "px";
+    parent.appendChild(m); out.push(m);
+  }
+  return out;
+};
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+
+const clockSet = (root) => {
+  const H = {};
+  [["heure", ".h-heure", "aiguille-heure.png"], ["minute", ".h-minute", "aiguille-minute.png"], ["seconde", ".h-seconde", "aiguille-seconde.png"]].forEach(([k, sel, file]) => {
+    const m = SPR[file]; const el = root.querySelector(sel);
+    gsap.set(el, { width: m.w, height: m.h, left: 550 - m.px, top: 550 - m.py, transformOrigin: `${m.px}px ${m.py}px` });
+    H[k] = el;
+  });
+  // t = minutes depuis midi (négatif = avant midi) → angles des aiguilles
+  return (min) => {
+    gsap.set(H.minute, { rotation: (min * 6) % 360 });
+    gsap.set(H.heure, { rotation: (min * 0.5) % 360 });
+    gsap.set(H.seconde, { rotation: (min * 360) % 360 });
+  };
+};
+
+const WORDS = [{"t": "Vingt", "s": 0.07, "e": 0.318}, {"t": "minutes.", "s": 0.346, "e": 0.719}, {"t": "C'est", "s": 1.18, "e": 1.624}, {"t": "le", "s": 1.674, "e": 1.896}, {"t": "temps", "s": 1.92, "e": 2.365}, {"t": "qu'il", "s": 2.414, "e": 2.858}, {"t": "te", "s": 2.907, "e": 3.13}, {"t": "reste.", "s": 3.154, "e": 3.672}, {"t": "Tic.", "s": 4.08, "e": 4.395}, {"t": "Tac.", "s": 4.99, "e": 5.224}, {"t": "T'es", "s": 5.3, "e": 5.477}, {"t": "un", "s": 5.497, "e": 5.603}, {"t": "petit", "s": 5.614, "e": 5.827}, {"t": "Sadida,", "s": 5.85, "e": 6.133}, {"t": "au", "s": 6.165, "e": 6.271}, {"t": "fond", "s": 6.283, "e": 6.459}, {"t": "de", "s": 6.479, "e": 6.585}, {"t": "la", "s": 6.597, "e": 6.703}, {"t": "forêt.", "s": 6.715, "e": 6.962}, {"t": "Ici,", "s": 7.47, "e": 7.643}, {"t": "les", "s": 7.662, "e": 7.8}, {"t": "arbres", "s": 7.816, "e": 8.058}, {"t": "parlent.", "s": 8.084, "e": 8.395}, {"t": "Ils", "s": 8.79, "e": 8.97}, {"t": "chantent,", "s": 8.99, "e": 9.44}, {"t": "ils", "s": 9.98, "e": 10.115}, {"t": "rigolent,", "s": 10.13, "e": 10.466}, {"t": "ils", "s": 10.503, "e": 10.638}, {"t": "te", "s": 10.653, "e": 10.754}, {"t": "racontent", "s": 10.765, "e": 11.102}, {"t": "des", "s": 11.139, "e": 11.274}, {"t": "histoires.", "s": 11.289, "e": 11.659}, {"t": "Sauf", "s": 12.62, "e": 12.778}, {"t": "qu'aujourd'hui…", "s": 12.796, "e": 13.302}, {"t": "ils", "s": 13.358, "e": 13.484}, {"t": "se", "s": 13.498, "e": 13.593}, {"t": "taisent.", "s": 13.604, "e": 13.888}, {"t": "Tic.", "s": 14.19, "e": 14.496}, {"t": "Tac.", "s": 14.9, "e": 15.17}, {"t": "Un", "s": 15.68, "e": 15.787}, {"t": "truc", "s": 15.799, "e": 15.977}, {"t": "se", "s": 15.997, "e": 16.104}, {"t": "pose", "s": 16.116, "e": 16.295}, {"t": "sur", "s": 16.314, "e": 16.457}, {"t": "ta", "s": 16.473, "e": 16.58}, {"t": "main.", "s": 16.592, "e": 16.806}, {"t": "Un", "s": 17.21, "e": 17.291}, {"t": "insecte.", "s": 17.3, "e": 17.543}, {"t": "Sauf", "s": 17.86, "e": 18.044}, {"t": "qu'il", "s": 18.064, "e": 18.284}, {"t": "est", "s": 18.309, "e": 18.456}, {"t": "en", "s": 18.472, "e": 18.582}, {"t": "métal,", "s": 18.594, "e": 18.851}, {"t": "avec", "s": 19.2, "e": 19.396}, {"t": "une", "s": 19.417, "e": 19.574}, {"t": "petite", "s": 19.591, "e": 19.865}, {"t": "horloge", "s": 19.896, "e": 20.209}, {"t": "à", "s": 20.243, "e": 20.322}, {"t": "la", "s": 20.33, "e": 20.448}, {"t": "place", "s": 20.461, "e": 20.696}, {"t": "du", "s": 20.722, "e": 20.839}, {"t": "ventre.", "s": 20.852, "e": 21.165}, {"t": "Une", "s": 21.63, "e": 21.807}, {"t": "Noxine.", "s": 21.827, "e": 22.181}, {"t": "Elle", "s": 23.38, "e": 23.569}, {"t": "te", "s": 23.59, "e": 23.703}, {"t": "pique.", "s": 23.716, "e": 23.981}, {"t": "Ça", "s": 24.48, "e": 24.569}, {"t": "fait", "s": 24.579, "e": 24.727}, {"t": "pas", "s": 24.744, "e": 24.862}, {"t": "mal.", "s": 24.875, "e": 25.024}, {"t": "C'est", "s": 25.33, "e": 25.622}, {"t": "juste…", "s": 25.654, "e": 25.994}, {"t": "froid.", "s": 26.032, "e": 26.372}, {"t": "Et", "s": 27.67, "e": 27.779}, {"t": "là,", "s": 27.791, "e": 27.937}, {"t": "tu", "s": 27.953, "e": 28.062}, {"t": "vois", "s": 28.074, "e": 28.256}, {"t": "un", "s": 28.277, "e": 28.386}, {"t": "fil", "s": 28.398, "e": 28.543}, {"t": "bleu", "s": 28.56, "e": 28.742}, {"t": "sortir", "s": 28.762, "e": 29.016}, {"t": "de", "s": 29.045, "e": 29.154}, {"t": "ta", "s": 29.166, "e": 29.275}, {"t": "peau.", "s": 29.287, "e": 29.506}, {"t": "Ton", "s": 30.52, "e": 30.68}, {"t": "wakfu.", "s": 30.698, "e": 30.979}, {"t": "Ta", "s": 31.58, "e": 31.693}, {"t": "vie.", "s": 31.706, "e": 31.894}, {"t": "Il", "s": 31.915, "e": 32.028}, {"t": "s'envole.", "s": 32.041, "e": 32.418}, {"t": "Et", "s": 32.98, "e": 33.064}, {"t": "il", "s": 33.074, "e": 33.158}, {"t": "est", "s": 33.167, "e": 33.28}, {"t": "pas", "s": 33.292, "e": 33.404}, {"t": "tout", "s": 33.417, "e": 33.557}, {"t": "seul.", "s": 33.573, "e": 33.741}, {"t": "Y", "s": 34.02, "e": 34.077}, {"t": "en", "s": 34.084, "e": 34.17}, {"t": "a", "s": 34.18, "e": 34.237}, {"t": "des", "s": 34.243, "e": 34.358}, {"t": "milliers.", "s": 34.371, "e": 34.658}, {"t": "Ils", "s": 34.96, "e": 35.152}, {"t": "sortent", "s": 35.174, "e": 35.559}, {"t": "des", "s": 35.602, "e": 35.794}, {"t": "feuilles,", "s": 35.815, "e": 36.297}, {"t": "des", "s": 36.35, "e": 36.542}, {"t": "bêtes,", "s": 36.564, "e": 36.901}, {"t": "de", "s": 36.938, "e": 37.082}, {"t": "ta", "s": 37.098, "e": 37.243}, {"t": "famille.", "s": 37.259, "e": 37.692}, {"t": "Et", "s": 38.23, "e": 38.338}, {"t": "ils", "s": 38.35, "e": 38.495}, {"t": "montent", "s": 38.511, "e": 38.8}, {"t": "tous", "s": 38.832, "e": 39.013}, {"t": "au", "s": 39.033, "e": 39.141}, {"t": "même", "s": 39.154, "e": 39.334}, {"t": "endroit :", "s": 39.354, "e": 39.748}, {"t": "en", "s": 39.756, "e": 39.864}, {"t": "haut", "s": 39.876, "e": 40.057}, {"t": "de", "s": 40.077, "e": 40.185}, {"t": "l'Arbre", "s": 40.198, "e": 40.487}, {"t": "de", "s": 40.519, "e": 40.627}, {"t": "Vie.", "s": 40.639, "e": 40.82}, {"t": "Là-haut,", "s": 42.67, "e": 43.136}, {"t": "y", "s": 43.188, "e": 43.292}, {"t": "a", "s": 43.303, "e": 43.407}, {"t": "un", "s": 43.419, "e": 43.574}, {"t": "vieux", "s": 43.591, "e": 43.902}, {"t": "Xélor.", "s": 43.937, "e": 44.3}, {"t": "Nox.", "s": 44.64, "e": 45.162}, {"t": "Derrière", "s": 46.52, "e": 46.905}, {"t": "lui,", "s": 46.947, "e": 47.161}, {"t": "une", "s": 47.185, "e": 47.356}, {"t": "horloge", "s": 47.375, "e": 47.717}, {"t": "grande", "s": 47.755, "e": 48.054}, {"t": "comme", "s": 48.087, "e": 48.344}, {"t": "le", "s": 48.373, "e": 48.501}, {"t": "ciel.", "s": 48.515, "e": 48.772}, {"t": "Tu", "s": 49.18, "e": 49.292}, {"t": "sais", "s": 49.304, "e": 49.49}, {"t": "ce", "s": 49.511, "e": 49.623}, {"t": "qu'il", "s": 49.635, "e": 49.859}, {"t": "veut,", "s": 49.883, "e": 50.107}, {"t": "Nox ?", "s": 50.132, "e": 50.372}, {"t": "Remonter", "s": 50.7, "e": 50.994}, {"t": "le", "s": 51.027, "e": 51.125}, {"t": "temps.", "s": 51.136, "e": 51.365}, {"t": "Deux", "s": 52.01, "e": 52.183}, {"t": "cents", "s": 52.203, "e": 52.411}, {"t": "ans", "s": 52.434, "e": 52.572}, {"t": "en", "s": 52.588, "e": 52.692}, {"t": "arrière.", "s": 52.703, "e": 53.015}, {"t": "Revoir", "s": 53.36, "e": 53.632}, {"t": "sa", "s": 53.663, "e": 53.779}, {"t": "femme", "s": 53.792, "e": 54.026}, {"t": "et", "s": 54.052, "e": 54.168}, {"t": "ses", "s": 54.181, "e": 54.337}, {"t": "gosses.", "s": 54.354, "e": 54.665}, {"t": "Et", "s": 54.8, "e": 54.921}, {"t": "pour", "s": 54.935, "e": 55.137}, {"t": "ça,", "s": 55.16, "e": 55.322}, {"t": "il", "s": 55.34, "e": 55.461}, {"t": "lui", "s": 55.475, "e": 55.637}, {"t": "faut", "s": 55.655, "e": 55.857}, {"t": "du", "s": 55.88, "e": 56.001}, {"t": "wakfu.", "s": 56.015, "e": 56.298}, {"t": "Pas", "s": 56.69, "e": 56.804}, {"t": "un", "s": 56.817, "e": 56.902}, {"t": "peu.", "s": 56.912, "e": 57.054}, {"t": "TOUT.", "s": 57.59, "e": 57.959}, {"t": "Autour", "s": 60.34, "e": 60.623}, {"t": "de", "s": 60.654, "e": 60.775}, {"t": "toi,", "s": 60.789, "e": 60.991}, {"t": "les", "s": 61.013, "e": 61.175}, {"t": "arbres", "s": 61.193, "e": 61.476}, {"t": "deviennent", "s": 61.507, "e": 61.951}, {"t": "gris.", "s": 62.001, "e": 62.243}, {"t": "Ils", "s": 62.73, "e": 62.871}, {"t": "craquent.", "s": 62.887, "e": 63.241}, {"t": "Ils", "s": 63.46, "e": 63.575}, {"t": "tombent", "s": 63.588, "e": 63.818}, {"t": "en", "s": 63.843, "e": 63.929}, {"t": "poussière.", "s": 63.939, "e": 64.255}, {"t": "Ta", "s": 64.55, "e": 64.699}, {"t": "main", "s": 64.716, "e": 64.964}, {"t": "aussi", "s": 64.991, "e": 65.289}, {"t": "devient", "s": 65.322, "e": 65.72}, {"t": "grise.", "s": 65.764, "e": 66.111}, {"t": "Tic…", "s": 66.72, "e": 66.859}, {"t": "Tac…", "s": 66.875, "e": 67.014}, {"t": "Et", "s": 68.04, "e": 68.131}, {"t": "puis", "s": 68.141, "e": 68.293}, {"t": "l'horloge", "s": 68.31, "e": 68.613}, {"t": "géante", "s": 68.647, "e": 68.859}, {"t": "se", "s": 68.883, "e": 68.974}, {"t": "met", "s": 68.984, "e": 69.106}, {"t": "à", "s": 69.119, "e": 69.18}, {"t": "tourner.", "s": 69.187, "e": 69.46}, {"t": "À", "s": 69.97, "e": 70.045}, {"t": "l'envers.", "s": 70.053, "e": 70.428}, {"t": "Une", "s": 72.43, "e": 72.597}, {"t": "forêt", "s": 72.615, "e": 72.865}, {"t": "entière.", "s": 72.893, "e": 73.268}, {"t": "Un", "s": 73.46, "e": 73.576}, {"t": "peuple", "s": 73.588, "e": 73.858}, {"t": "entier.", "s": 73.888, "e": 74.196}, {"t": "Toi.", "s": 74.62, "e": 74.755}, {"t": "Et", "s": 76.17, "e": 76.279}, {"t": "tout", "s": 76.291, "e": 76.472}, {"t": "ce", "s": 76.492, "e": 76.601}, {"t": "wakfu…", "s": 76.613, "e": 76.867}, {"t": "ça", "s": 76.895, "e": 77.004}, {"t": "lui", "s": 77.016, "e": 77.161}, {"t": "a", "s": 77.177, "e": 77.25}, {"t": "offert…", "s": 77.258, "e": 77.548}];
+const CAP_FILL = "#eef6ff";
+const CAP_HL = "#7fe8ff";
+const wrapEl = document.getElementById("cap-wrap");
+const chunks = [];
+let cur = null;
+WORDS.forEach((w, i) => {
+  const p = WORDS[i - 1];
+  const len = cur ? cur.w.map((x) => x.t).join(" ").length : 0;
+  const brk = !cur || cur.w.length >= 3 || /[.,?!…:]$/.test(p.t) || w.s - p.e > 0.35 || len + w.t.length > 19;
+  if (brk) { cur = { w: [] }; chunks.push(cur); }
+  cur.w.push(w);
+});
+chunks.forEach((c, ci) => {
+  const div = document.createElement("div");
+  div.className = "cc";
+  div.id = "cc-" + ci;
+  c.w.forEach((w, wi) => {
+    const sp = document.createElement("span");
+    sp.className = "cw";
+    sp.id = `cw-${ci}-${wi}`;
+    sp.textContent = w.t.replace(/[.,…]+$/, "");
+    if (wi) div.appendChild(document.createTextNode(" "));
+    div.appendChild(sp);
+  });
+  wrapEl.appendChild(div);
+  const start = c.w[0].s - 0.04;
+  const next = chunks[ci + 1];
+  // le dernier groupe s'efface juste avant la fin : sous-titres masqués des deux côtés du raccord de boucle
+  const end = next ? next.w[0].s - 0.04 : c.w[c.w.length - 1].e - 0.12;
+  tl.fromTo(div, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.5)" }, start);
+  if (next) tl.set(div, { opacity: 0 }, end);
+  else tl.to(div, { opacity: 0, duration: 0.1, ease: "none" }, end - 0.1);
+  c.w.forEach((w, wi) => {
+    const sp = document.getElementById(`cw-${ci}-${wi}`);
+    tl.fromTo(sp, { color: CAP_FILL, scale: 1 }, { color: CAP_HL, scale: 1.12, duration: 0.08, ease: "power2.out" }, w.s);
+    tl.to(sp, { scale: 1, duration: 0.1 }, Math.max(w.e, w.s + 0.1));
+  });
+});
+window.__timelines["captions"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

@@ -1,0 +1,192 @@
+@@@ s05
+@bg #2c5a30
+<style>
+.backdrop{position:absolute;inset:0;overflow:hidden}
+.backdrop img{position:absolute;image-rendering:pixelated}
+#s05-bg{filter:blur(6px) saturate(.6) brightness(.75)}
+#s05-hand{left:210px;top:1180px;width:660px}
+#s05-nox{left:330px;top:1312px}
+</style>
+<div class="backdrop" id="s05-bg"><div class="sky"></div>
+  <img src="assets/sprites/arbre-1.png" style="left:-120px;top:120px;width:420px" alt=""><img src="assets/sprites/arbre-0.png" style="left:740px;top:80px;width:420px" alt="">
+  <img src="assets/sprites/arbre-2.png" style="left:330px;top:300px;width:260px" alt=""><div class="canopy"></div></div>
+<div class="cam" id="s05-cam">
+  <img class="px" id="s05-hand" src="assets/sprites/main.png" alt="ta main">
+  <div class="spr" id="s05-nox"></div>
+</div>
+<div class="vignette"></div>
+@@@js
+// ta main entre dans le champ, un insecte vient s'y poser
+tl.fromTo("#s05-hand", { y: 700 }, { y: 0, duration: 0.5, ease: "power3.out" }, 0);
+sheet(document.getElementById("s05-nox"), "noxine", 1, 0, 6.0);
+const fly = { p: 0 };
+tl.fromTo(fly, { p: 0 }, { p: 1, duration: W(16.6) - W(15.7), ease: "power2.out", immediateRender: false, onUpdate: () => {
+  const q = fly.p; gsap.set("#s05-nox", { x: (1 - q) * 520 + Math.sin(q * 9) * 40 * (1 - q), y: -(1 - q) * 1100, rotation: (1 - q) * 25 });
+} }, W(15.7));
+gsap.set("#s05-nox", { x: 520, y: -1100 });
+tl.fromTo("#s05-cam", { scale: 1, y: 0 }, { scale: 1.35, y: -260, duration: 0.5, ease: "power2.out", transformOrigin: "546px 1540px" }, W(17.21));
+// … en métal : reflet qui balaie la carapace
+tl.fromTo("#s05-nox", { filter: "brightness(2.2)" }, { filter: "brightness(1)", duration: 0.45, ease: "power2.out" }, W(17.9));
+// … une petite horloge à la place du ventre
+tl.to("#s05-cam", { scale: 3.4, y: -720, duration: 0.9, ease: "power2.inOut" }, W(19.3));
+
+@@@ s06
+@bg radial-gradient(circle at 50% 40%,#22304f,#070a14 75%)
+<style>
+#s06-card{left:70px;top:330px;width:940px;height:620px}
+#s06-nox{left:30px;top:120px}
+#s06-info{position:absolute;left:470px;top:110px;width:440px;font-family:"Pixel";color:#eef6ff;text-transform:uppercase}
+#s06-info .nm{font-size:76px;color:#e0b04a}
+#s06-info .l{font-size:36px;margin-top:22px;color:#b9c7e6}
+#s06-info .l b{font-weight:400;color:#7fe8ff}
+#s06-head{position:absolute;left:30px;top:-44px;font-family:"Pixel";font-size:40px;color:#1b2238;background:#e0b04a;padding:6px 20px;border-radius:10px;text-transform:uppercase}
+</style>
+<div class="card" id="s06-card">
+  <div id="s06-head">Bestiaire</div>
+  <div class="spr" id="s06-nox"></div>
+  <div id="s06-info"><div class="nm">Noxine</div><div class="l">Niveau <b>??</b></div><div class="l">Famille <b>Mécanique</b></div><div class="l">Se nourrit de <b>???</b></div></div>
+</div>
+<div class="vignette"></div>
+@@@js
+// Une Noxine. : fiche de bestiaire façon Wakfu
+tl.fromTo("#s06-card", { scale: 0.6, opacity: 0, rotation: -4 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.3, ease: "back.out(2)" }, 0.05);
+sheet(document.getElementById("s06-nox"), "noxine", 1, 0, 1.7);
+breathe("#s06-nox", 0, 1.7, 12, 0.8);
+shake("#s06-card", W(22.6), 0.15, 6, 2);
+shake("#s06-card", W(23.0), 0.15, 6, 3);
+
+@@@ s07
+@bg #2c5a30
+<style>
+#s07-bg{filter:blur(6px) saturate(.6) brightness(.75)}
+#s07-hand{left:210px;top:1180px;width:660px}
+#s07-nox{left:330px;top:1312px}
+#s07-dot{left:536px;top:1590px;width:20px;height:20px;background:#ff3b3b;opacity:0;box-shadow:0 0 18px #ff3b3b}
+#s07-red{position:absolute;inset:0;background:radial-gradient(circle at 546px 1600px,#ff2a2a88,transparent 60%);opacity:0}
+#s07-frost{opacity:0}
+</style>
+<div id="s07-all">
+<div class="backdrop" id="s07-bg"><div class="sky"></div>
+  <img src="assets/sprites/arbre-1.png" style="left:-120px;top:120px;width:420px" alt=""><img src="assets/sprites/arbre-2.png" style="left:330px;top:300px;width:260px" alt=""><img src="assets/sprites/arbre-0.png" style="left:760px;top:60px;width:420px" alt=""><div class="canopy"></div></div>
+<div class="cam" id="s07-cam">
+  <img class="px" id="s07-hand" src="assets/sprites/main.png" alt="ta main">
+  <div class="abs" id="s07-dot"></div>
+  <div class="spr" id="s07-nox"></div>
+</div>
+</div>
+<div id="s07-red"></div>
+<div class="frost" id="s07-frost"></div>
+<div class="vignette"></div>
+@@@js
+// Elle te pique.
+gsap.set("#s07-cam", { scale: 1.6, y: -380, transformOrigin: "546px 1540px" });
+sheet(document.getElementById("s07-nox"), "noxine", 1, 0, 4.3);
+tl.fromTo("#s07-nox", { y: 0 }, { y: 30, duration: 0.08, ease: "power4.in", yoyo: true, repeat: 1 }, W(23.72));
+tl.fromTo("#s07-red", { opacity: 0 }, { opacity: 1, duration: 0.06, yoyo: true, repeat: 1 }, W(23.78));
+tl.fromTo("#s07-dot", { opacity: 0 }, { opacity: 1, duration: 0.05 }, W(23.8));
+shake("#s07-cam", W(23.78), 0.25, 14, 5);
+// Ça fait pas mal. → on respire, la caméra recule un peu
+tl.to("#s07-cam", { scale: 1.3, y: -240, duration: 1.2, ease: "sine.inOut" }, W(24.5));
+// C'est juste… froid.
+tl.fromTo("#s07-frost", { opacity: 0 }, { opacity: 1, duration: 1.4, ease: "power1.in" }, W(25.4));
+tl.fromTo("#s07-all", { filter: "saturate(1) brightness(1)" }, { filter: "saturate(0.45) brightness(0.85)", duration: 1.4 }, W(25.4));
+tl.to("#s07-dot", { background: "#7fe8ff", boxShadow: "0 0 24px #39c8ff", duration: 0.8 }, W(25.6));
+
+@@@ s08
+@bg #2c5a30
+<style>
+#s08-tall{position:absolute;left:0;top:0;width:1080px;height:3840px}
+#s08-top{position:absolute;left:0;top:0;width:1080px;height:1920px;background:linear-gradient(#8fd8ee 0%,#c9f0d6 45%,#3f8f48 70%,#2c5a30 100%);overflow:hidden}
+#s08-low{position:absolute;left:0;top:1920px;width:1080px;height:1920px;overflow:hidden}
+#s08-bg{filter:blur(6px) saturate(.45) brightness(.8)}
+#s08-hand{left:210px;top:1180px;width:660px}
+#s08-nox{left:330px;top:1312px}
+#s08-sun{left:640px;top:180px;width:260px;height:260px;border-radius:50%;background:radial-gradient(#fffbe0,#fff3b0 40%,transparent 70%)}
+#s08-frost{opacity:.6}
+</style>
+<div id="s08-tall">
+  <div id="s08-top"><div class="abs" id="s08-sun"></div>
+    <img class="px" src="assets/sprites/arbre-0.png" style="left:-140px;top:1040px;width:420px" alt=""><img class="px" src="assets/sprites/arbre-1.png" style="left:760px;top:980px;width:440px" alt="">
+    <img class="px" src="assets/sprites/arbre-2.png" style="left:250px;top:1240px;width:320px" alt=""><img class="px" src="assets/sprites/arbre-1.png" style="left:560px;top:1300px;width:300px" alt=""></div>
+  <div id="s08-low">
+    <div class="backdrop" id="s08-bg"><div class="sky"></div><img src="assets/sprites/arbre-1.png" style="left:-120px;top:120px;width:420px" alt=""><img src="assets/sprites/arbre-0.png" style="left:760px;top:60px;width:420px" alt=""><div class="canopy"></div></div>
+    <img class="px" id="s08-hand" src="assets/sprites/main.png" alt="ta main">
+    <div class="spr" id="s08-nox"></div>
+    <div class="frost" id="s08-frost"></div>
+  </div>
+</div>
+<div class="vignette"></div>
+@@@js
+// la Noxine s'envole, un fil bleu sort de ta peau et monte vers le ciel
+const tall = document.getElementById("s08-tall");
+sheet(document.getElementById("s08-nox"), "noxine", 1, 0, 1.2);
+tl.fromTo("#s08-nox", { x: 0, y: 0 }, { x: 600, y: -900, duration: 0.7, ease: "power2.in" }, 0.15);
+gsap.set(tall, { y: -1920 });
+const svg = threadSvg(tall, 1080, 3840);
+const main = wavy(546, 3510, 600, -100, 110, 3);
+thread(svg, main, 10, W(28.4), W(32.7) - W(28.4), "power1.in");
+pulse(svg, main, 10, W(30.5), 6.35 - W(30.5), 700, 2);
+// Ton wakfu. Ta vie. : la main pâlit
+tl.to("#s08-hand", { filter: "saturate(0.4) brightness(0.85)", duration: 1.2 }, W(31.58));
+// Il s'envole. : la caméra suit le fil vers le haut
+tl.to(tall, { y: 0, duration: 1.5, ease: "power2.inOut" }, W(32.04));
+// Et il est pas tout seul. : d'autres fils montent des arbres
+[[80, 1500], [980, 1450], [400, 1600], [760, 1650], [180, 1250], [880, 1200]].forEach(([x, y], i) => {
+  const d = wavy(x, y, 420 + i * 60, -100, 70, 10 + i);
+  thread(svg, d, 6, W(32.98) + i * 0.08, 0.9, "power1.out");
+});
+
+@@@ s09
+@bg linear-gradient(#5aa9d6 0%,#a8e3e0 30%,#d8f3c8 38%,#3f8f48 39%,#1f4a28 100%)
+<style>
+#s09-aerial,.s09-pan{position:absolute;inset:0}
+.s09-pan{opacity:0}
+#s09-leaf{background:radial-gradient(circle at 50% 50%,#5cb84a,#245f30 75%)}
+#s09-beasts{background:radial-gradient(circle at 50% 60%,#9fd06a,#2c5a30 75%)}
+#s09-fam{background:radial-gradient(circle at 50% 60%,#7aa86a,#1f3a26 75%)}
+#s09-leafimg{left:400px;top:700px;width:280px}
+#s09-tofu{left:220px;top:860px}
+#s09-bouf{left:600px;top:880px;width:330px}
+#s09-fam img{position:absolute;width:150px;filter:saturate(.7)}
+</style>
+<div id="s09-aerial"></div>
+<div class="s09-pan" id="s09-leaf"><img class="px" id="s09-leafimg" src="assets/sprites/feuille.png" alt="feuille"></div>
+<div class="s09-pan" id="s09-beasts"><div class="spr" id="s09-tofu"></div><img class="px" id="s09-bouf" src="assets/sprites/bouftou.png" alt="bouftou"></div>
+<div class="s09-pan" id="s09-fam"><img class="px" src="assets/sprites/sadida-0.png" style="left:220px;top:760px" alt=""><img class="px" src="assets/sprites/sadida-1.png" style="left:460px;top:700px;width:170px" alt=""><img class="px" src="assets/sprites/sadida-2.png" style="left:720px;top:800px;width:130px" alt=""></div>
+<div class="vignette"></div>
+@@@js
+// Y en a des milliers. : vue au-dessus de la forêt, des fils partout qui convergent au même endroit
+const A = document.getElementById("s09-aerial");
+const rows = [[720, 0.28, 18], [800, 0.36, 15], [900, 0.46, 12], [1030, 0.6, 9], [1200, 0.8, 7], [1420, 1.05, 5]];
+const roots = [];
+rows.forEach(([y, s, n], r) => {
+  for (let i = 0; i < n; i++) {
+    const img = document.createElement("img"); img.className = "px"; img.alt = "";
+    img.src = `assets/sprites/arbre-${(i + r) % 3}.png`;
+    const w = Math.round(320 * s);
+    const x = Math.round(-w / 2 + (i + 0.5 + (hash(r * 31 + i) - 0.5) * 0.6) * (1080 + w) / n);
+    img.style.width = w + "px"; img.style.left = x + "px"; img.style.top = Math.round(y - w * 0.9) + "px";
+    A.appendChild(img);
+    roots.push([x + w / 2, y - w * 0.6, s]);
+  }
+});
+const svg = threadSvg(A);
+roots.forEach(([x, y, s], i) => {
+  if (hash(i * 3 + 1) > 0.62) return;
+  const d = wavy(x, y, 880 + (hash(i) - 0.5) * 60, -120, 50 * s, i + 20);
+  thread(svg, d, Math.max(2, Math.round(7 * s)), W(34.0) + hash(i * 5) * 1.2, 0.8, "power1.out");
+  if (i % 3 === 0) pulse(svg, d, Math.max(2, Math.round(6 * s)), W(34.6), 38.15 - 33.9 - W(34.6), 600, i);
+});
+tl.fromTo(A, { scale: 1 }, { scale: 1.08, duration: 2, ease: "none", transformOrigin: "540px 900px" }, 0);
+// des feuilles, des bêtes, de ta famille : trois plans rapides
+const pans = [["#s09-leaf", W(35.81), [[540, 840, 560, -80]]], ["#s09-beasts", W(36.35), [[360, 960, 420, -80], [760, 960, 700, -80]]],
+  ["#s09-fam", W(36.94), [[300, 800, 360, -80], [545, 740, 560, -80], [785, 830, 760, -80]]]];
+sheet(document.getElementById("s09-tofu"), "tofu", 2, W(36.35), 0.7);
+pans.forEach(([sel, t, th], k) => {
+  tl.set(sel, { opacity: 1 }, t);
+  tl.fromTo(sel, { scale: 1.15 }, { scale: 1, duration: 0.5, ease: "power2.out" }, t);
+  const ps = threadSvg(document.querySelector(sel));
+  th.forEach(([x0, y0, x1, y1], j) => thread(ps, wavy(x0, y0, x1, y1, 40, k * 5 + j), 8, t + 0.05, 0.45, "power2.out"));
+  if (k < 2) tl.set(sel, { opacity: 0 }, pans[k + 1][1]);
+});
+tl.to("#s09-fam img", { filter: "saturate(0.2) brightness(0.8)", duration: 0.8 }, W(37.2));
