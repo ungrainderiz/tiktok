@@ -1,0 +1,212 @@
+@@@ s01
+@bg #0a0e17
+<style>
+#s01-light{width:150px;height:150px}
+#s01-core{position:absolute;left:62px;top:62px;width:26px;height:26px;border-radius:50%;background:#fff1c9;box-shadow:0 0 30px 12px #ffb347}
+#s01-c1{left:-200px;top:560px;width:900px;height:300px}
+#s01-c2{left:500px;top:640px;width:800px;height:260px}
+</style>
+<div class="sky"></div>
+<div class="stage"><div class="world" id="s01-world">
+  <div class="ground" id="s01-ground"></div>
+  <div class="bb glow" id="s01-light"><div id="s01-core"></div></div>
+</div></div>
+<div class="fogband"></div>
+<div class="fogcloud" id="s01-c1"></div><div class="fogcloud" id="s01-c2"></div>
+<div class="rain" id="s01-rain"></div>
+<div class="vignette"></div>
+<div class="loopcard" id="s01-loop"></div>
+@@@js
+// BOUCLE : on part exactement de l'image de fin (brouillard + petite lumière au centre)
+tl.fromTo("#s01-loop", { opacity: 1 }, { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 0.05);
+const props = forest("s01-world", 9, 1).concat([{ el: document.getElementById("s01-light"), x: 0, z: -4200, dy: -40, alpha: 1.6 }]);
+const up = world("#s01-ground", props);
+walk(up, 0, 2.2, 0, 120, "none");
+flicker("#s01-light", 0.3, 1.9, 0.55, 3);
+tl.fromTo("#s01-c1", { x: 0 }, { x: 160, duration: 2.2, ease: "none" }, 0);
+tl.fromTo("#s01-c2", { x: 0 }, { x: -140, duration: 2.2, ease: "none" }, 0);
+rain("#s01-rain", 0, 2.2);
+
+@@@ s02
+@bg #0a0e17
+<style>
+#s02-banner{left:40px;top:150px;width:470px;height:120px;background:#20283c;border:8px solid #e8f3ff;border-radius:18px;box-shadow:0 8px 0 #00000088;padding:26px 30px;font-size:56px;opacity:0}
+#s02-net{left:820px;top:170px;width:200px;height:90px;opacity:0}
+#s02-net i{position:absolute;bottom:0;width:26px;background:#5b6577}
+#s02-net b{position:absolute;left:120px;top:-8px;font-family:"Pixel";font-size:84px;color:#ff5a5a;font-weight:400}
+#s02-beam{position:absolute;left:140px;top:820px;width:800px;height:1100px;background:radial-gradient(ellipse at 50% 85%,#fff3c8aa 0,#ffe39a44 30%,transparent 62%);mix-blend-mode:screen}
+#s02-dog{left:30px;top:1050px}
+</style>
+<div class="sky"></div>
+<div class="stage"><div class="world" id="s02-world"><div class="ground" id="s02-ground"></div>
+  <div class="bb glow" id="s02-light" style="width:140px;height:140px"></div>
+</div></div>
+<div class="fogband"></div>
+<div id="s02-beam"></div>
+<div class="rain" id="s02-rain"></div>
+<div class="vignette"></div>
+<div class="spr" id="s02-dog"></div>
+<div class="pix" id="s02-banner">Route 7</div>
+<div class="abs" id="s02-net"><i style="left:0;height:24px"></i><i style="left:34px;height:44px"></i><i style="left:68px;height:64px"></i><b>×</b></div>
+@@@js
+const props = forest("s02-world", 12, 2).concat([{ el: document.getElementById("s02-light"), x: 0, z: -4200, dy: -40, alpha: 1.6 }]);
+const up = world("#s02-ground", props);
+walk(up, 0, 6.0, 120, 1500, "none");
+bob("#s02-world", 0, 6.0, 12, 0.62);
+rain("#s02-rain", 0, 6.0);
+flicker("#s02-light", 0, 6.0, 0.5, 5);
+// panneau de lieu façon Noir/Blanc
+tl.fromTo("#s02-banner", { x: -560, opacity: 1 }, { x: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, W(2.3));
+tl.to("#s02-banner", { x: -560, duration: 0.3, ease: "power3.in" }, W(4.1));
+// plus de réseau
+tl.fromTo("#s02-net", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(3)" }, W(4.4));
+tl.to("#s02-net", { opacity: 0, duration: 0.2 }, W(5.3));
+// la lampe meurt
+flicker("#s02-beam", 0, W(5.4), 0.75, 2);
+tl.to("#s02-beam", { opacity: 0.15, duration: 0.06, yoyo: true, repeat: 5 }, W(5.4));
+tl.to("#s02-beam", { opacity: 0, duration: 0.12 }, W(6.0));
+// Caninos tremble contre ta jambe (sprite de dos officiel Noir/Blanc)
+sheet(document.getElementById("s02-dog"), "caninos-dos", 6, 0, 6.0);
+tl.fromTo("#s02-dog", { y: 900 }, { y: 0, duration: 0.45, ease: "power3.out" }, W(6.2));
+shake("#s02-dog", W(6.9), 1.2, 8, 4);
+
+@@@ s03
+@bg #0a0e17
+<style>
+#s03-bars{position:absolute;inset:0}
+#s03-bars i{position:absolute;left:0;width:1080px;height:200px;background:#05070d}
+#s03-flash{position:absolute;inset:0;background:#fff;opacity:0}
+#s03-battle{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at 50% 55%,#334058 0,#1a2131 55%,#090c14 100%)}
+#s03-base{left:190px;top:1010px;width:700px;height:150px;border-radius:50%;background:radial-gradient(#5c6a5a 0,#3d4a3c 60%,#26302a 100%);box-shadow:0 0 0 10px #1c241e}
+#s03-mon{left:540px;top:1040px}
+#s03-mglow{left:240px;top:420px;width:600px;height:600px}
+#s03-hp{left:40px;top:160px;width:640px;height:150px;background:#f4f1e6;border:8px solid #2d3a4a;border-radius:20px 20px 20px 0;box-shadow:10px 10px 0 #00000077;padding:18px 28px;opacity:0}
+#s03-hp .n{font-family:"Pixel";font-size:50px;color:#2d3a4a;display:flex;justify-content:space-between}
+#s03-hp .b{margin-top:20px;height:22px;border:5px solid #2d3a4a;border-radius:12px;background:#58d080}
+#s03-eye{position:absolute;inset:0}
+</style>
+<div class="sky"></div>
+<div class="stage"><div class="world" id="s03-world"><div class="ground" id="s03-ground"></div>
+  <div class="bb glow" id="s03-light" style="width:160px;height:160px"></div>
+</div></div>
+<div class="fogband"></div>
+<div class="vignette"></div>
+<div id="s03-battle"><div id="s03-eye">
+  <div class="glow" id="s03-mglow"></div>
+  <div class="abs" id="s03-base"></div>
+  <div class="spr" id="s03-mon"></div>
+</div></div>
+<div class="abs" id="s03-hp"><div class="n"><span>FUNÉCIRE</span><span>N.??</span></div><div class="b"></div></div>
+<div id="s03-bars"><i style="top:0"></i><i style="top:200px"></i><i style="top:400px"></i><i style="top:600px"></i><i style="top:800px"></i><i style="top:1000px"></i><i style="top:1200px"></i><i style="top:1400px"></i><i style="top:1600px"></i><i style="top:1800px"></i></div>
+<div id="s03-flash"></div>
+@@@js
+// tu suis la lumière : on accélère vers elle
+const light = { el: document.getElementById("s03-light"), x: 0, z: -4200, dy: -40, alpha: 1.6 };
+const props = forest("s03-world", 12, 3).concat([light]);
+const up = world("#s03-ground", props);
+walk(up, 0, W(10.0), 1500, 3700, "power1.in");
+bob("#s03-world", 0, W(10.0), 14, 0.5);
+flicker("#s03-light", 0, W(10.0), 0.6, 7);
+// transition de rencontre sauvage façon Noir/Blanc : bandes noires puis flash
+const bars = gsap.utils.toArray("#s03-bars i");
+bars.forEach((b, i) => tl.fromTo(b, { scaleX: 0, transformOrigin: i % 2 ? "100% 50%" : "0% 50%" }, { scaleX: 1, duration: 0.22, ease: "power2.in" }, W(10.0) + i * 0.02));
+tl.set("#s03-battle", { opacity: 1 }, W(10.5));
+tl.to(bars, { scaleX: 0, duration: 0.2, ease: "power2.out", stagger: 0.015 }, W(10.55));
+tl.fromTo("#s03-flash", { opacity: 0 }, { opacity: 1, duration: 0.05, yoyo: true, repeat: 3 }, W(10.5));
+// le Funécire sur sa plateforme (sprite animé officiel)
+const mon = document.getElementById("s03-mon");
+sheet(mon, "funecire", 11, 0, 5.3);
+tl.fromTo(mon, { xPercent: -50, yPercent: -100, x: 700 }, { xPercent: -50, yPercent: -100, x: 0, duration: 0.5, ease: "power3.out" }, W(10.55));
+tl.fromTo("#s03-hp", { x: -700, opacity: 1 }, { x: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, W(10.8));
+tl.fromTo("#s03-mglow", { scale: 0.8, opacity: 0.6 }, { scale: 1.1, opacity: 1, duration: 0.5, yoyo: true, repeat: 4, ease: "sine.inOut" }, W(10.6));
+// … un œil qui te fixe : zoom lent puis brusque sur l'œil
+tl.to("#s03-hp", { opacity: 0, duration: 0.2 }, W(12.1));
+tl.fromTo("#s03-eye", { scale: 1, transformOrigin: "540px 760px" }, { scale: 1.5, duration: 0.6, ease: "power1.in" }, W(12.1));
+tl.to("#s03-eye", { scale: 3.6, duration: 0.25, ease: "power4.in" }, W(12.75));
+
+@@@ s04
+@bg #0a0e17
+<style>
+#s04-mon{left:0;top:0}
+#s04-mglow{width:520px;height:520px}
+</style>
+<div class="sky"></div>
+<div class="stage"><div class="world" id="s04-world"><div class="ground" id="s04-ground"></div>
+  <div class="bb glow" id="s04-mglow"></div>
+  <div class="spr bb" id="s04-mon"></div>
+</div></div>
+<div class="fogband"></div>
+<div class="rain" id="s04-rain"></div>
+<div class="vignette"></div>
+@@@js
+// il recule doucement dans le brouillard, comme un guide
+const mon = document.getElementById("s04-mon");
+sheet(mon, "funecire", 9, 0, 2.4);
+const g = { el: mon, x: 0, z: -300, dy: -120 };
+const gl = { el: document.getElementById("s04-mglow"), x: 0, z: -300, dy: 30 };
+const props = forest("s04-world", 12, 4, -150).concat([gl, g]);
+const up = world("#s04-ground", props);
+const ein = gsap.parseEase("power1.in");
+drive(0, 2.35, (t) => {
+  const bz = -300 - 1900 * ein(t / 2.35);
+  g.z = gl.z = bz; g.dy = -120 - 30 * Math.sin(bz / 140);
+  up(500 * t / 2.35);
+});
+rain("#s04-rain", 0, 2.35);
+flicker("#s04-mglow", 0, 2.35, 0.6, 9);
+
+@@@ s05
+@bg #0a0e17
+<style>
+#s05-dog{left:540px;top:1640px}
+#s05-bang{left:690px;top:830px;width:120px;height:150px;background:#f4f1e6;border:8px solid #2d3a4a;border-radius:24px;font-family:"Pixel";font-size:110px;color:#e23b3b;text-align:center;line-height:130px;opacity:0}
+#s05-ball{left:780px;top:1380px;width:240px}
+#s05-beam{position:absolute;left:0;top:0;width:12px;height:900px;background:linear-gradient(#ff5a5a,#ff2a2a00);transform-origin:50% 0;opacity:0}
+#s05-red{position:absolute;inset:0;background:#ff2a2a;mix-blend-mode:multiply;opacity:0}
+</style>
+<div class="sky"></div>
+<div class="stage"><div class="world" id="s05-world"><div class="ground" id="s05-ground"></div>
+  <div class="bb glow" id="s05-light" style="width:300px;height:300px"></div>
+</div></div>
+<div class="fogband"></div>
+<div class="rain" id="s05-rain"></div>
+<div class="vignette"></div>
+<div class="cam" id="s05-cam">
+  <div class="spr" id="s05-dog"></div>
+  <div class="abs" id="s05-bang">!</div>
+  <img class="px" id="s05-ball" src="assets/sprites/poke-ball.png" alt="Poké Ball">
+</div>
+<div id="s05-red"></div>
+@@@js
+const props = forest("s05-world", 10, 5, -150).concat([{ el: document.getElementById("s05-light"), x: 0, z: -2200, dy: -120, alpha: 1.4 }]);
+const up = world("#s05-ground", props);
+walk(up, 0, 5.05, 500, 700, "none");
+rain("#s05-rain", 0, 5.05);
+flicker("#s05-light", 0, 5.05, 0.6, 11);
+// Caninos refuse d'avancer (de dos, plein cadre en bas)
+const dog = document.getElementById("s05-dog");
+sheet(dog, "caninos-dos", 10, 0, 5.05);
+tl.fromTo(dog, { xPercent: -50, yPercent: -100, y: 400 }, { xPercent: -50, yPercent: -100, y: 0, duration: 0.4, ease: "power3.out" }, 0);
+// il aboie : bulle « ! » façon Noir/Blanc
+tl.fromTo("#s05-bang", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(3)" }, W(18.1));
+shake("#s05-cam", W(18.1), 0.4, 16, 2);
+tl.to("#s05-bang", { opacity: 0, duration: 0.15 }, W(19.4));
+// il te tire par la manche : la caméra est tirée en arrière
+shake("#s05-world", W(18.7), 0.6, 26, 5);
+// tu le rappelles dans sa Poké Ball : rayon rouge, silhouette rouge qui rétrécit vers la Poké Ball
+tl.fromTo("#s05-ball", { y: 500, rotation: -20 }, { y: 0, rotation: 0, duration: 0.3, ease: "power3.out" }, W(19.4));
+tl.to(dog, { filter: "brightness(0.6) sepia(1) saturate(9) hue-rotate(-30deg)", duration: 0.15 }, W(20.0));
+tl.to(dog, { scale: 0.05, x: 360, y: -180, opacity: 0.2, duration: 0.4, ease: "power2.in", transformOrigin: "50% 100%" }, W(20.15));
+tl.fromTo("#s05-red", { opacity: 0 }, { opacity: 0.35, duration: 0.08, yoyo: true, repeat: 1 }, W(20.1));
+tl.to("#s05-ball", { rotation: -12, duration: 0.08, yoyo: true, repeat: 3, ease: "sine.inOut" }, W(20.55));
+
+@@@ s06
+@bg #000
+<style>
+#s06-ball{left:450px;top:780px;width:180px}
+</style>
+<img class="px" id="s06-ball" src="assets/sprites/poke-ball.png" alt="Poké Ball">
+@@@js
+// « Grosse erreur. » : noir, plus rien ne bouge… sauf la Poké Ball qui tremble une fois
+tl.fromTo("#s06-ball", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 0.05);
+tl.to("#s06-ball", { rotation: 14, duration: 0.07, yoyo: true, repeat: 3, ease: "sine.inOut" }, W(21.3));

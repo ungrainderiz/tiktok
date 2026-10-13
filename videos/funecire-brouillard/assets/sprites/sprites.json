@@ -1,0 +1,32 @@
+{
+ "caninos-sheet.png": {
+  "w": 56,
+  "h": 49,
+  "frames": 72,
+  "ms": 100
+ },
+ "caninos-dos-sheet.png": {
+  "w": 58,
+  "h": 60,
+  "frames": 119,
+  "ms": 100
+ },
+ "funecire-sheet.png": {
+  "w": 32,
+  "h": 44,
+  "frames": 116,
+  "ms": 60
+ },
+ "lamperoie-sheet.png": {
+  "w": 67,
+  "h": 64,
+  "frames": 99,
+  "ms": 60
+ },
+ "lugulabre-sheet.png": {
+  "w": 92,
+  "h": 90,
+  "frames": 125,
+  "ms": 60
+ }
+}

@@ -1,0 +1,264 @@
+@@@ s07
+@bg #0a0e17
+<style>
+#s07-glow{width:420px;height:420px}
+#s07-gin{position:absolute;inset:0;border-radius:50%;background:radial-gradient(#fff1c9 0,#ffb347cc 12%,#ff8a2a55 35%,transparent 68%)}
+#s07-mon{left:0;top:0}
+#s07-frost{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 38%,#bfe3ff55 70%,#e8f6ffcc 100%);opacity:0}
+#s07-warm{position:absolute;inset:0;background:radial-gradient(circle at 50% 600px,#ffcf8a 0,#ff9a3c88 30%,transparent 75%);mix-blend-mode:screen;opacity:0}
+</style>
+<div class="sky"></div>
+<div class="stage" id="s07-stage"><div class="world" id="s07-world"><div class="ground" id="s07-ground"></div>
+  <div class="bb" id="s07-glow"><div id="s07-gin"></div></div>
+  <div class="spr bb" id="s07-mon"></div>
+</div></div>
+<div class="fogband"></div>
+<div class="rain" id="s07-rain"></div>
+<div class="vignette"></div>
+<div id="s07-frost"></div>
+<div id="s07-warm"></div>
+@@@js
+// plus tu marches, plus t'as froid ; plus t'as froid, plus sa flamme grandit
+const mon = document.getElementById("s07-mon");
+sheet(mon, "funecire", 9, 0, 7.15);
+const props = forest("s07-world", 14, 7, -150).concat([
+  { el: document.getElementById("s07-glow"), x: 0, z: -2300, dy: 120 },
+  { el: mon, x: 0, z: -2300, dy: -40 },
+]);
+const up = world("#s07-ground", props);
+walk(up, 0, 7.15, 0, 1500, "power1.out");
+bob("#s07-world", 0, W(24.4), 12, 0.55);
+bob("#s07-world", W(24.4), 28.75 - 24.4, 18, 1.0);
+rain("#s07-rain", 0, 7.15);
+tl.fromTo("#s07-gin", { scale: 0.6 }, { scale: 2.6, duration: 6.8, ease: "power2.in" }, 0.2);
+tl.fromTo("#s07-frost", { opacity: 0 }, { opacity: 0.9, duration: 4.5, ease: "power1.in" }, W(21.7));
+// ta vue se brouille
+tl.fromTo("#s07-stage", { filter: "blur(0px)" }, { filter: "blur(7px)", duration: 0.7, ease: "power2.in" }, W(25.9));
+tl.to("#s07-stage", { filter: "blur(3px)", duration: 0.5 }, W(26.8));
+tl.fromTo("#s07-stage", { scale: 1 }, { scale: 1.04, duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut", transformOrigin: "50% 40%" }, W(25.9));
+// mais la lumière est si chaude…
+tl.fromTo("#s07-warm", { opacity: 0 }, { opacity: 0.9, duration: 1.6, ease: "power1.inOut" }, W(26.8));
+tl.to("#s07-frost", { opacity: 0.35, duration: 1.2 }, W(26.8));
+
+@@@ s08
+@bg radial-gradient(circle at 50% 40%,#1b2235,#07090f 75%)
+<style>
+#s08-dex{left:60px;top:250px;width:960px;height:990px;background:#1d2333;border:12px solid #c63b3b;border-radius:36px;box-shadow:0 14px 0 #00000099,inset 0 0 0 6px #7a1f22;overflow:hidden}
+#s08-head{position:absolute;left:0;top:0;right:0;height:110px;background:#c63b3b;font-family:"Pixel";font-size:58px;color:#fff;padding:22px 40px;text-transform:uppercase}
+#s08-dot{position:absolute;right:40px;top:30px;width:50px;height:50px;border-radius:50%;background:#7fe3ff;box-shadow:0 0 22px #7fe3ff}
+#s08-win{position:absolute;left:40px;top:150px;width:400px;height:420px;border:8px solid #3b4560;border-radius:20px;background:radial-gradient(circle at 50% 70%,#3b2a4a,#141826 75%)}
+#s08-mon{left:240px;top:560px}
+#s08-info{position:absolute;left:480px;top:160px;width:440px;font-family:"Pixel";color:#e8f3ff;text-transform:uppercase}
+#s08-info .no{font-size:46px;color:#9fb0c8}
+#s08-info .nm{font-size:66px;margin-top:14px}
+#s08-info .ct{font-size:34px;color:#9fb0c8;margin-top:10px}
+#s08-info .ty{margin-top:26px;display:flex;gap:16px}
+#s08-info .ty b{font-weight:400;font-size:32px;padding:8px 16px;border-radius:10px;color:#fff}
+#s08-txt{position:absolute;left:40px;top:610px;width:880px;height:330px;border-top:6px solid #3b4560;padding-top:26px;font-family:"Pixel";font-size:44px;line-height:1.45;color:#e8f3ff;text-transform:uppercase}
+#s08-txt .c{opacity:0}
+#s08-txt .r{color:#ff5a5a}
+#s08-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,#ffffff08 0 3px,transparent 3px 7px);pointer-events:none}
+</style>
+<div class="abs" id="s08-dex">
+  <div id="s08-head">Pokédex<div id="s08-dot"></div></div>
+  <div id="s08-win"></div>
+  <div class="spr" id="s08-mon"></div>
+  <div id="s08-info"><div class="no">N° 607</div><div class="nm">Funécire</div><div class="ct">Pokémon Bougie</div>
+    <div class="ty"><b style="background:#6b4fa0">Spectre</b><b style="background:#e07a2f">Feu</b></div></div>
+  <div id="s08-txt"></div>
+  <div id="s08-scan"></div>
+</div>
+@@@js
+// le Pokédex s'ouvre
+tl.fromTo("#s08-dex", { y: 1400, rotation: 6 }, { y: 0, rotation: 0, duration: 0.45, ease: "power3.out" }, 0);
+const mon = document.getElementById("s08-mon");
+sheet(mon, "funecire", 8, 0, 5.75);
+gsap.set(mon, { xPercent: -50, yPercent: -100 });
+tl.fromTo("#s08-dot", { opacity: 0.4 }, { opacity: 1, duration: 0.25, yoyo: true, repeat: 21, ease: "none" }, 0.3);
+// texte tapé au rythme de la voix
+const txt = document.getElementById("s08-txt");
+const parts = [
+  ["Il fait semblant de guider les voyageurs perdus… ", W(30.9), W(33.0), ""],
+  ["pour aspirer leur ", W(33.15), W(33.7), ""],
+  ["énergie vitale.", W(33.75), W(34.3), "r"],
+];
+let k = 0;
+parts.forEach(([str, a, b, cls]) => {
+  const chars = [...str];
+  chars.forEach((ch, i) => {
+    const sp = document.createElement("span");
+    sp.className = "c " + cls;
+    sp.id = "s08-c" + k++;
+    sp.textContent = ch;
+    txt.appendChild(sp);
+    tl.set(sp, { opacity: 1 }, a + ((b - a) * i) / chars.length);
+  });
+});
+shake("#s08-dex", W(33.8), 0.4, 14, 6);
+tl.fromTo("#s08-win", { boxShadow: "inset 0 0 0 0 #ff2a2a" }, { boxShadow: "inset 0 0 120px 20px #ff2a2a", duration: 0.3, yoyo: true, repeat: 1 }, W(33.8));
+
+@@@ s09
+@bg #0a0e17
+<style>
+#s09-tilt{position:absolute;inset:0}
+</style>
+<div class="sky"></div>
+<div id="s09-tilt"><div class="stage"><div class="world" id="s09-world"><div class="ground" id="s09-ground"></div></div></div></div>
+<div class="fogband"></div>
+<div class="rain" id="s09-rain"></div>
+<div class="vignette"></div>
+@@@js
+// tu tombes à genoux : la caméra descend d'un coup
+const Wd = document.getElementById("s09-world");
+const props = forest("s09-world", 8, 9, -2400, 420, 900, 400);
+// rangées de tombes, chacune avec un Funécire allumé dessus
+const rows = [];
+[-450, -800, -1150, -1500, -1850, -2200].forEach((z, r) => {
+  const row = [];
+  [-640, -320, 320, 640, 0].forEach((x, c) => {
+    if (x === 0 && r < 2) return;
+    const tomb = document.createElement("img");
+    tomb.className = "bb"; tomb.alt = ""; tomb.src = (r + c) % 3 === 0 ? "assets/decor/tombe-croix.png" : "assets/decor/tombe.png";
+    tomb.style.width = "170px";
+    const fl = document.createElement("div"); fl.className = "spr bb";
+    Wd.appendChild(tomb); Wd.appendChild(fl);
+    sheet(fl, "funecire", 4, 0, 5.85);
+    const pt = { el: tomb, x, z, alpha: 0 }, pf = { el: fl, x, z: z + 1, dy: -228, alpha: 0 };
+    props.push(pt, pf); row.push(pt, pf);
+  });
+  rows.push(row);
+});
+const up = world("#s09-ground", props);
+const eo = gsap.parseEase("power1.out"), es = gsap.parseEase("sine.inOut");
+const D9 = 5.85, P0 = W(38.0);
+drive(0, D9, (t) => {
+  // devant toi, y a plus une bougie… y en a des dizaines (elles s'allument rangée par rangée)
+  rows.forEach((row, r) => row.forEach((p, i) => { p.alpha = clamp01((t - (W(35.7) + r * 0.32 + (i % 5) * 0.04)) / 0.35); }));
+  // toute une rangée de petites flammes : la tête tourne lentement
+  up(260 * eo(t / D9), -220 * es(clamp01((t - P0) / 2.2)));
+});
+tl.fromTo("#s09-world", { y: 0 }, { y: -170, duration: 0.35, ease: "bounce.out" }, W(34.75));
+tl.fromTo("#s09-tilt", { rotation: 0 }, { rotation: -4, duration: 0.35, ease: "power2.out", transformOrigin: "50% 40%" }, W(34.75));
+shake("#s09-tilt", W(35.05), 0.3, 18, 3);
+rain("#s09-rain", 0, D9);
+
+@@@ s10
+@bg #07090f
+<style>
+#s10-zoom{position:absolute;inset:0}
+#s10-mon{left:540px;top:1560px}
+#s10-face{left:420px;top:660px;width:240px;opacity:0;mix-blend-mode:screen}
+#s10-glow{left:140px;top:300px;width:800px;height:800px}
+</style>
+<div id="s10-zoom">
+  <div class="glow" id="s10-glow"></div>
+  <div class="spr" id="s10-mon"></div>
+  <img class="px" id="s10-face" src="assets/decor/visage.png" alt="">
+</div>
+<div class="vignette"></div>
+@@@js
+// et dans chaque flamme… un visage
+const mon = document.getElementById("s10-mon");
+sheet(mon, "funecire", 22, 0, 1.6);
+gsap.set(mon, { xPercent: -50, yPercent: -100 });
+tl.fromTo("#s10-zoom", { scale: 1, transformOrigin: "540px 760px" }, { scale: 1.9, duration: 1.5, ease: "power2.in" }, 0);
+tl.fromTo("#s10-face", { opacity: 0, scale: 0.7 }, { opacity: 0.85, scale: 1, duration: 0.25, ease: "power2.out" }, W(41.45));
+flicker("#s10-face", W(41.7), 0.25, 0.3, 4);
+flicker("#s10-glow", 0, 1.6, 0.6, 8);
+
+@@@ s11
+@bg radial-gradient(circle at 50% 55%,#3a1e10,#0d0806 75%)
+<style>
+.s11-b{position:absolute;border-radius:50%;background:radial-gradient(#ffcf8acc,#ff9a3c33 55%,transparent 72%)}
+#s11-core{left:90px;top:460px;width:900px;height:900px;border-radius:50%;background:radial-gradient(#fff3d6 0,#ffcf8a 18%,#ff9a3c66 45%,transparent 70%)}
+#s11-white{position:absolute;inset:0;background:#ffe7c2;opacity:0}
+</style>
+<div class="abs" id="s11-core"></div>
+<div id="s11-bokeh"></div>
+<div id="s11-white"></div>
+<div class="vignette" id="s11-vig"></div>
+@@@js
+// tu sens plus ton corps. Juste la chaleur.
+const bk = document.getElementById("s11-bokeh");
+for (let i = 0; i < 16; i++) {
+  const b = document.createElement("div"); b.className = "s11-b";
+  const s = 80 + hash(i * 3) * 220;
+  b.style.width = s + "px"; b.style.height = s + "px";
+  b.style.left = Math.round(hash(i * 7 + 1) * 1000) + "px"; b.style.top = Math.round(300 + hash(i * 5 + 2) * 1300) + "px";
+  bk.appendChild(b);
+  tl.fromTo(b, { y: 0, opacity: 0 }, { y: -260 - hash(i) * 200, opacity: 0.4 + hash(i + 9) * 0.6, duration: 4.35, ease: "sine.out" }, hash(i * 11) * 0.8);
+}
+tl.fromTo("#s11-core", { scale: 0.7 }, { scale: 1.35, duration: 4.35, ease: "sine.inOut" }, 0);
+tl.fromTo("#s11-vig", { opacity: 1 }, { opacity: 0.25, duration: 3, ease: "power1.inOut" }, W(43.4));
+tl.fromTo("#s11-white", { opacity: 0 }, { opacity: 0.35, duration: 0.8, ease: "power1.inOut" }, W(45.4));
+
+@@@ s12
+@bg #0a0e17
+<style>
+#s12-new{left:0;top:0}
+#s12-newglow{width:520px;height:520px}
+#s12-flash{position:absolute;inset:0;background:#ffe2b0;opacity:0}
+</style>
+<div class="sky"></div>
+<div class="stage"><div class="world" id="s12-world"><div class="ground" id="s12-ground"></div>
+  <div class="bb glow" id="s12-newglow"></div>
+  <div class="spr bb" id="s12-new"></div>
+</div></div>
+<div class="fogband"></div>
+<div class="vignette"></div>
+<div class="flamebox" id="s12-box"></div>
+<div id="s12-flash"></div>
+@@@js
+// parce que maintenant, toi aussi, tu brilles : une nouvelle flamme s'allume dans la rangée
+const Wd = document.getElementById("s12-world");
+const props = [];
+[-500, -850, -1200, -1550].forEach((z, r) => {
+  [-640, -320, 320, 640].forEach((x, c) => {
+    const tomb = document.createElement("img"); tomb.className = "bb"; tomb.alt = "";
+    tomb.src = (r + c) % 3 === 0 ? "assets/decor/tombe-croix.png" : "assets/decor/tombe.png"; tomb.style.width = "170px";
+    const fl = document.createElement("div"); fl.className = "spr bb";
+    Wd.appendChild(tomb); Wd.appendChild(fl);
+    sheet(fl, "funecire", 4, 0, 1.85);
+    props.push({ el: tomb, x, z }, { el: fl, x, z: z + 1, dy: -228 });
+  });
+});
+const nw = document.getElementById("s12-new");
+sheet(nw, "funecire", 6, 0, 1.85);
+const pn = { el: nw, x: 0, z: -260, dy: -20, alpha: 0 }, pg = { el: document.getElementById("s12-newglow"), x: 0, z: -261, dy: 120, alpha: 0 };
+props.push(pg, pn);
+const up = world("#s12-ground", props);
+drive(0, 1.85, (t) => { pn.alpha = pg.alpha = clamp01((t - W(47.5)) / 0.2); up(120 * t / 1.85); });
+tl.fromTo("#s12-flash", { opacity: 0 }, { opacity: 0.8, duration: 0.06, yoyo: true, repeat: 1 }, W(47.5));
+tl.fromTo("#s12-box", { opacity: 0 }, { opacity: 1, duration: 0.4 }, W(47.55));
+
+@@@ s13
+@bg #0a0e17
+<style>
+#s13-stage .ground{top:820px}
+#s13-man{left:0;top:0;width:96px}
+#s13-our{position:absolute;left:140px;top:1500px;width:800px;height:800px;border-radius:50%;background:radial-gradient(#ffd27acc,#ff9a3c55 35%,transparent 68%)}
+</style>
+<div class="sky"></div>
+<div class="stage" id="s13-stage"><div class="world" id="s13-world"><div class="ground" id="s13-ground"></div>
+  <img class="bb" id="s13-man" src="assets/decor/dresseur.png" alt="dresseur">
+</div></div>
+<div class="fogband" style="top:420px"></div>
+<div class="rain" id="s13-rain"></div>
+<div class="vignette"></div>
+<div id="s13-our"></div>
+<div class="flamebox" id="s13-box"></div>
+<div class="loopcard" id="s13-loop"></div>
+@@@js
+// en bas du chemin, un dresseur perdu… vu d'en haut, depuis ta flamme
+const man = document.getElementById("s13-man");
+const props = forest("s13-world", 10, 13, -100, 380, 520, 420).map((p) => ({ ...p, dy: 560 }));
+const pm = { el: man, x: 40, z: -900, dy: 560 };
+props.push(pm);
+const up = world("#s13-ground", props);
+// trempé, épuisé : il titube
+drive(0, 3.59, (t) => { pm.x = 40 + Math.sin(t * 4.3) * 18; up(180 * t / 3.59); });
+rain("#s13-rain", 0, 3.59);
+flicker("#s13-our", 0, 3.59, 0.55, 12);
+// … lève les yeux : on bascule dans SON regard → la petite lumière au loin = le début de la vidéo
+tl.to("#s13-stage", { scale: 1.35, duration: 0.35, ease: "power2.in", transformOrigin: "540px 1120px" }, W(51.0));
+tl.fromTo("#s13-loop", { opacity: 0 }, { opacity: 1, duration: 0.42, ease: "power1.inOut" }, W(51.2));

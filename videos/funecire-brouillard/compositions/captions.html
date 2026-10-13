@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="captions-template">
+<style>
+
+@font-face{font-family:"Pixel";src:url(assets/fonts/sous-titres.ttf) format("truetype")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.pix{position:absolute;font-family:"Pixel";line-height:1.3;color:#e8f3ff;text-transform:uppercase}
+.cam{position:absolute;inset:0}
+/* monde 3D façon Noir/Blanc : sol en perspective + panneaux posés en profondeur */
+.stage{position:absolute;inset:0;perspective:700px;perspective-origin:50% 36%;overflow:hidden}
+.world{position:absolute;left:540px;top:691px;transform-style:preserve-3d}
+.ground{position:absolute;left:-2500px;top:260px;width:5000px;height:9000px;transform-origin:50% 0;
+  transform:translateZ(650px) rotateX(-90deg);image-rendering:pixelated;
+  background:url(assets/decor/chemin.png) 50% 0/512px 256px repeat-y,url(assets/decor/herbe.png) 0 0/256px 256px repeat}
+.bb{position:absolute;left:0;top:0;image-rendering:pixelated;image-rendering:crisp-edges}
+.spr{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges;background-repeat:repeat-x}
+.sky{position:absolute;inset:0;background:linear-gradient(#070b16 0%,#141c30 26%,#2a3448 36%,#151b28 60%,#0a0e17 100%)}
+.fogband{position:absolute;left:0;right:0;top:520px;height:420px;background:linear-gradient(transparent,#3a465ccc 45%,#2a3346aa 60%,transparent)}
+.fogcloud{position:absolute;border-radius:50%;background:radial-gradient(#8fa0b866,transparent 70%)}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,#000000d0 100%)}
+.rain{position:absolute;inset:-200px;background:repeating-linear-gradient(100deg,transparent 0 46px,#b9c9e026 46px 49px),repeating-linear-gradient(100deg,transparent 0 83px,#b9c9e01a 83px 85px);pointer-events:none}
+.loopcard{position:absolute;inset:0;background:radial-gradient(circle at 50% 700px,#ffd27a 0,#ff9a3c88 9px,#ffb34722 26px,transparent 60px),radial-gradient(ellipse at 50% 690px,#3a465c 0,#202839 45%,#0a0e17 100%)}
+.flamebox{position:absolute;inset:0;box-shadow:inset 0 0 160px 40px #ff8a2a88;pointer-events:none}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(#ffd27acc 0,#ff9a3c66 25%,transparent 65%)}
+
+#captions{position:absolute;inset:0;overflow:hidden;background:transparent}
+</style>
+<div id="captions" data-composition-id="captions" data-width="1080" data-height="1920">
+<style>
+#cap-wrap{position:absolute;left:60px;top:1290px;width:860px;height:240px}
+#cap-wrap{--cap-font:"Pixel";--cap-size:72px;--cap-case:uppercase;--cap-gap:.55em;--cap-fill:#dfe9f5;--cap-stroke:0px transparent;--cap-shadow:none;--cap-tshadow:-9px -9px 0 #0b1020,-9px 0px 0 #0b1020,-9px 9px 0 #0b1020,0px -9px 0 #0b1020,0px 9px 0 #0b1020,9px -9px 0 #0b1020,9px 0px 0 #0b1020,9px 9px 0 #0b1020,0 18px 0 #05070d}
+.cc{position:absolute;left:0;right:0;top:0;text-align:center;font-family:var(--cap-font);font-size:var(--cap-size);line-height:1.08;text-transform:var(--cap-case);color:var(--cap-fill);-webkit-text-stroke:var(--cap-stroke);paint-order:stroke fill;filter:var(--cap-shadow);text-shadow:var(--cap-tshadow);line-height:1.3;opacity:0}
+.cw{display:inline-block}
+.cw + .cw{margin-left:var(--cap-gap)}
+</style>
+<div id="cap-wrap"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 0;
+const W = (t) => +(t + 0.0 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const SPR = {"caninos-sheet.png": {"w": 56, "h": 49, "frames": 72, "ms": 100}, "caninos-dos-sheet.png": {"w": 58, "h": 60, "frames": 119, "ms": 100}, "funecire-sheet.png": {"w": 32, "h": 44, "frames": 116, "ms": 60}, "lamperoie-sheet.png": {"w": 67, "h": 64, "frames": 99, "ms": 60}, "lugulabre-sheet.png": {"w": 92, "h": 90, "frames": 125, "ms": 60}};
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+// anime une planche de sprites (GIF officiel découpé) image par image, de façon déterministe
+const sheet = (el, name, scale, start, dur) => {
+  const m = SPR[name + "-sheet.png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}-sheet.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px` });
+  const cyc = (m.frames * m.ms) / 1000; const n = Math.max(1, Math.ceil(dur / cyc));
+  tl.fromTo(el, { backgroundPositionX: "0px" }, { backgroundPositionX: `${-m.frames * w}px`, duration: cyc, ease: `steps(${m.frames})`, repeat: n - 1 }, start);
+};
+// caméra subjective : props = [{ el, x, z, dy }] ; camZ > 0 = on avance ; le sol défile en même temps
+const world = (groundSel, props) => {
+  const ground = document.querySelector(groundSel);
+  return (camZ, camX = 0) => {
+    if (ground) gsap.set(ground, { backgroundPosition: `${50}% ${camZ}px, ${-camX}px ${camZ}px` });
+    props.forEach((p) => {
+      const zz = p.z + camZ;
+      const fog = Math.min(1, Math.max(0, 1 - (-zz - 1500) / 4500));
+      const near = zz > 420 ? Math.max(0, 1 - (zz - 420) / 160) : 1;
+      gsap.set(p.el, { x: p.x - camX, y: 260 + (p.dy || 0), z: zz, xPercent: -50, yPercent: -100, opacity: fog * near * (p.alpha ?? 1) });
+    });
+  };
+};
+const walk = (update, start, dur, z0, z1, ease = "none", x0 = 0, x1 = 0) => {
+  const cam = { z: z0, x: x0 };
+  update(z0, x0);
+  tl.fromTo(cam, { z: z0, x: x0 }, { z: z1, x: x1, duration: dur, ease, immediateRender: false, onUpdate: () => update(cam.z, cam.x) }, start);
+};
+// une seule mise à jour par image, calculée à partir du temps local (caméra + apparitions sans décalage d'ordre)
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const drive = (start, dur, fn) => { const o = { t: 0 }; fn(0); tl.fromTo(o, { t: 0 }, { t: dur, duration: dur, ease: "none", immediateRender: false, onUpdate: () => fn(o.t) }, start); };
+const bob = (el, start, dur, amp = 10, step = 0.55) => tl.fromTo(el, { y: 0 }, { y: amp, duration: step / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (step / 2)) - 1), immediateRender: false }, start);
+const flicker = (el, start, dur, lo = 0.7, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.09));
+  for (let i = 0; i < n; i++) tl.to(el, { opacity: lo + (1 - lo) * hash(seed * 13 + i * 7), duration: dur / n, ease: "none" }, start + (i * dur) / n);
+};
+// rangées de sapins de chaque côté du chemin (positions pseudo-aléatoires mais fixes)
+const forest = (worldId, n, seed = 1, z0 = -200, gap = 420, xMin = 420, xRange = 520, w = 300) => {
+  const Wd = document.getElementById(worldId); const out = [];
+  for (let i = 0; i < n; i++) {
+    [-1, 1].forEach((side) => {
+      const img = document.createElement("img"); img.className = "bb"; img.src = "assets/decor/sapin.png"; img.alt = "";
+      img.style.width = Math.round(w * (0.8 + hash(seed * 7 + i * 3 + side) * 0.7)) + "px";
+      Wd.appendChild(img);
+      out.push({ el: img, x: side * (xMin + hash(seed * 11 + i * 5 + side * 3) * xRange), z: z0 - i * gap - hash(seed + i) * gap * 0.5 });
+    });
+  }
+  return out;
+};
+const rain = (el, start, dur) => tl.fromTo(el, { backgroundPosition: "0px 0px" }, { backgroundPosition: `${-Math.round(dur * 160)}px ${Math.round(dur * 1400)}px`, duration: dur, ease: "none" }, start);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+const WORDS = [{"t": "Au", "s": 0.1, "e": 0.32}, {"t": "loin,", "s": 0.32, "e": 0.38}, {"t": "dans", "s": 0.38, "e": 0.6}, {"t": "le", "s": 0.6, "e": 0.65}, {"t": "brouillard,", "s": 0.6, "e": 1.068}, {"t": "y", "s": 1.12, "e": 1.17}, {"t": "a", "s": 1.12, "e": 1.17}, {"t": "une", "s": 1.12, "e": 1.18}, {"t": "petite", "s": 1.18, "e": 1.44}, {"t": "lumière.", "s": 1.44, "e": 1.96}, {"t": "Ça", "s": 2.34, "e": 2.39}, {"t": "fait", "s": 2.36, "e": 2.46}, {"t": "trois", "s": 2.46, "e": 2.593}, {"t": "heures", "s": 2.608, "e": 2.763}, {"t": "que", "s": 2.78, "e": 2.86}, {"t": "t'es", "s": 2.86, "e": 3.004}, {"t": "perdu", "s": 3.02, "e": 3.24}, {"t": "sur", "s": 3.24, "e": 3.44}, {"t": "le", "s": 3.44, "e": 3.49}, {"t": "chemin", "s": 3.46, "e": 3.62}, {"t": "de", "s": 3.62, "e": 3.74}, {"t": "la", "s": 3.74, "e": 3.8}, {"t": "Tour", "s": 3.8, "e": 3.999}, {"t": "Céleste.", "s": 4.021, "e": 4.379}, {"t": "T'as", "s": 4.419, "e": 4.618}, {"t": "plus", "s": 4.64, "e": 4.72}, {"t": "de", "s": 4.72, "e": 4.82}, {"t": "réseau.", "s": 4.82, "e": 5.209}, {"t": "Ta", "s": 5.252, "e": 5.398}, {"t": "lampe", "s": 5.414, "e": 5.706}, {"t": "est", "s": 5.738, "e": 5.932}, {"t": "morte.", "s": 5.954, "e": 6.294}, {"t": "Ton", "s": 6.332, "e": 6.526}, {"t": "Caninos", "s": 6.548, "e": 6.937}, {"t": "tremble", "s": 6.98, "e": 7.3}, {"t": "contre", "s": 7.3, "e": 7.6}, {"t": "ta", "s": 7.6, "e": 7.78}, {"t": "jambe.", "s": 7.78, "e": 8.14}, {"t": "Alors", "s": 8.42, "e": 8.62}, {"t": "cette", "s": 8.62, "e": 8.8}, {"t": "lumière…", "s": 8.8, "e": 9.12}, {"t": "tu", "s": 9.26, "e": 9.36}, {"t": "la", "s": 9.36, "e": 9.5}, {"t": "suis.", "s": 9.5, "e": 9.8}, {"t": "De", "s": 9.8, "e": 9.944}, {"t": "près,", "s": 9.96, "e": 10.248}, {"t": "c'est", "s": 10.28, "e": 10.568}, {"t": "un", "s": 10.6, "e": 10.74}, {"t": "Funécire.", "s": 10.74, "e": 11.22}, {"t": "Une", "s": 11.273, "e": 11.465}, {"t": "petite", "s": 11.487, "e": 11.823}, {"t": "bougie,", "s": 11.86, "e": 12.22}, {"t": "avec", "s": 12.22, "e": 12.56}, {"t": "un", "s": 12.56, "e": 12.74}, {"t": "œil", "s": 12.74, "e": 12.851}, {"t": "qui", "s": 12.864, "e": 12.975}, {"t": "te", "s": 12.987, "e": 13.071}, {"t": "fixe.", "s": 13.08, "e": 13.5}, {"t": "Il", "s": 13.58, "e": 13.7}, {"t": "recule", "s": 13.7, "e": 13.898}, {"t": "doucement.", "s": 13.92, "e": 14.46}, {"t": "Comme", "s": 14.54, "e": 14.84}, {"t": "s'il", "s": 14.84, "e": 15.11}, {"t": "te", "s": 15.14, "e": 15.19}, {"t": "montrait", "s": 15.14, "e": 15.212}, {"t": "le", "s": 15.22, "e": 15.48}, {"t": "chemin.", "s": 15.48, "e": 15.9}, {"t": "Ton", "s": 15.9, "e": 16.122}, {"t": "Caninos,", "s": 16.147, "e": 16.646}, {"t": "lui,", "s": 16.702, "e": 16.979}, {"t": "refuse", "s": 17.01, "e": 17.399}, {"t": "d'avancer.", "s": 17.442, "e": 18.052}, {"t": "Il", "s": 18.12, "e": 18.17}, {"t": "aboie.", "s": 18.12, "e": 18.606}, {"t": "Il", "s": 18.66, "e": 18.71}, {"t": "te", "s": 18.68, "e": 18.82}, {"t": "tire", "s": 18.82, "e": 18.962}, {"t": "par", "s": 18.978, "e": 19.092}, {"t": "la", "s": 19.105, "e": 19.191}, {"t": "manche.", "s": 19.2, "e": 19.428}, {"t": "Tu", "s": 19.453, "e": 19.539}, {"t": "le", "s": 19.548, "e": 19.634}, {"t": "rappelles", "s": 19.643, "e": 19.928}, {"t": "dans", "s": 19.96, "e": 20.14}, {"t": "sa", "s": 20.14, "e": 20.36}, {"t": "Poké", "s": 20.36, "e": 20.595}, {"t": "Ball.", "s": 20.622, "e": 20.904}, {"t": "Grosse", "s": 20.935, "e": 21.265}, {"t": "erreur.", "s": 21.302, "e": 21.678}, {"t": "Plus", "s": 21.72, "e": 21.9}, {"t": "tu", "s": 21.9, "e": 22.02}, {"t": "marches,", "s": 22.02, "e": 22.22}, {"t": "plus", "s": 22.22, "e": 22.42}, {"t": "t'as", "s": 22.42, "e": 22.652}, {"t": "froid.", "s": 22.678, "e": 23.004}, {"t": "Plus", "s": 23.04, "e": 23.36}, {"t": "t'as", "s": 23.36, "e": 23.488}, {"t": "froid,", "s": 23.502, "e": 23.68}, {"t": "plus", "s": 23.7, "e": 23.75}, {"t": "sa", "s": 23.7, "e": 23.808}, {"t": "flamme", "s": 23.82, "e": 24.04}, {"t": "grandit.", "s": 24.04, "e": 24.407}, {"t": "Tes", "s": 24.448, "e": 24.611}, {"t": "jambes", "s": 24.63, "e": 24.915}, {"t": "deviennent", "s": 24.947, "e": 25.396}, {"t": "lourdes.", "s": 25.446, "e": 25.813}, {"t": "Ta", "s": 25.854, "e": 25.976}, {"t": "vue", "s": 25.99, "e": 26.07}, {"t": "se", "s": 26.07, "e": 26.25}, {"t": "brouille.", "s": 26.25, "e": 26.718}, {"t": "Mais", "s": 26.77, "e": 26.87}, {"t": "la", "s": 26.87, "e": 26.99}, {"t": "lumière", "s": 26.99, "e": 27.19}, {"t": "est", "s": 27.19, "e": 27.406}, {"t": "si", "s": 27.43, "e": 27.48}, {"t": "chaude…", "s": 27.47, "e": 27.92}, {"t": "alors", "s": 27.97, "e": 28.19}, {"t": "tu", "s": 28.19, "e": 28.41}, {"t": "continues.", "s": 28.41, "e": 28.878}, {"t": "Tu", "s": 28.93, "e": 29.21}, {"t": "sais", "s": 29.21, "e": 29.26}, {"t": "ce", "s": 29.21, "e": 29.35}, {"t": "que", "s": 29.35, "e": 29.41}, {"t": "dit", "s": 29.41, "e": 29.57}, {"t": "le", "s": 29.57, "e": 29.77}, {"t": "Pokédex", "s": 29.77, "e": 30.132}, {"t": "sur", "s": 30.173, "e": 30.354}, {"t": "Funécire ?", "s": 30.374, "e": 30.918}, {"t": "Qu'il", "s": 30.928, "e": 31.2}, {"t": "fait", "s": 31.23, "e": 31.35}, {"t": "semblant", "s": 31.35, "e": 31.67}, {"t": "de", "s": 31.67, "e": 31.83}, {"t": "guider", "s": 31.83, "e": 31.99}, {"t": "les", "s": 31.99, "e": 32.29}, {"t": "voyageurs", "s": 32.29, "e": 32.73}, {"t": "perdus…", "s": 32.779, "e": 33.131}, {"t": "pour", "s": 33.17, "e": 33.29}, {"t": "aspirer", "s": 33.29, "e": 33.56}, {"t": "leur", "s": 33.59, "e": 33.79}, {"t": "énergie", "s": 33.79, "e": 34.03}, {"t": "vitale.", "s": 34.03, "e": 34.66}, {"t": "Tu", "s": 34.73, "e": 34.91}, {"t": "tombes", "s": 34.91, "e": 35.177}, {"t": "à", "s": 35.206, "e": 35.283}, {"t": "genoux.", "s": 35.291, "e": 35.596}, {"t": "Devant", "s": 35.63, "e": 35.97}, {"t": "toi,", "s": 35.97, "e": 36.21}, {"t": "y", "s": 36.35, "e": 36.4}, {"t": "a", "s": 36.35, "e": 36.4}, {"t": "plus", "s": 36.35, "e": 36.49}, {"t": "une", "s": 36.49, "e": 36.65}, {"t": "bougie.", "s": 36.65, "e": 37.03}, {"t": "Y", "s": 37.03, "e": 37.16}, {"t": "en", "s": 37.174, "e": 37.368}, {"t": "a", "s": 37.39, "e": 37.45}, {"t": "des", "s": 37.45, "e": 37.65}, {"t": "dizaines.", "s": 37.65, "e": 38.01}, {"t": "Toute", "s": 38.03, "e": 38.31}, {"t": "une", "s": 38.31, "e": 38.47}, {"t": "rangée", "s": 38.47, "e": 38.65}, {"t": "de", "s": 38.67, "e": 38.87}, {"t": "petites", "s": 38.87, "e": 39.09}, {"t": "flammes,", "s": 39.09, "e": 39.51}, {"t": "posées", "s": 39.51, "e": 39.726}, {"t": "sur", "s": 39.75, "e": 39.97}, {"t": "des", "s": 39.97, "e": 40.11}, {"t": "tombes.", "s": 40.11, "e": 40.47}, {"t": "Et", "s": 40.51, "e": 40.61}, {"t": "dans", "s": 40.61, "e": 40.79}, {"t": "chaque", "s": 40.79, "e": 40.95}, {"t": "flamme…", "s": 40.95, "e": 41.418}, {"t": "un", "s": 41.47, "e": 41.61}, {"t": "visage.", "s": 41.61, "e": 41.95}, {"t": "Tu", "s": 42.14, "e": 42.232}, {"t": "sens", "s": 42.242, "e": 42.396}, {"t": "plus", "s": 42.413, "e": 42.567}, {"t": "ton", "s": 42.584, "e": 42.707}, {"t": "corps.", "s": 42.721, "e": 42.936}, {"t": "Juste", "s": 43.4, "e": 43.584}, {"t": "la", "s": 43.605, "e": 43.697}, {"t": "chaleur.", "s": 43.707, "e": 43.983}, {"t": "Et", "s": 44.014, "e": 44.106}, {"t": "pour", "s": 44.116, "e": 44.27}, {"t": "la", "s": 44.287, "e": 44.379}, {"t": "première", "s": 44.389, "e": 44.665}, {"t": "fois", "s": 44.696, "e": 44.849}, {"t": "depuis", "s": 44.866, "e": 45.081}, {"t": "des", "s": 45.105, "e": 45.228}, {"t": "heures,", "s": 45.242, "e": 45.487}, {"t": "t'as", "s": 45.514, "e": 45.668}, {"t": "plus", "s": 45.685, "e": 45.838}, {"t": "peur.", "s": 45.855, "e": 46.04}, {"t": "Parce", "s": 46.49, "e": 46.654}, {"t": "que", "s": 46.673, "e": 46.782}, {"t": "maintenant,", "s": 46.794, "e": 47.123}, {"t": "toi", "s": 47.16, "e": 47.269}, {"t": "aussi,", "s": 47.282, "e": 47.473}, {"t": "tu", "s": 47.495, "e": 47.577}, {"t": "brilles.", "s": 47.586, "e": 47.833}, {"t": "Et", "s": 48.34, "e": 48.451}, {"t": "en", "s": 48.464, "e": 48.575}, {"t": "bas", "s": 48.587, "e": 48.736}, {"t": "du", "s": 48.752, "e": 48.864}, {"t": "chemin,", "s": 48.876, "e": 49.173}, {"t": "un", "s": 49.206, "e": 49.318}, {"t": "dresseur", "s": 49.33, "e": 49.664}, {"t": "perdu,", "s": 49.701, "e": 49.961}, {"t": "trempé,", "s": 49.99, "e": 50.287}, {"t": "épuisé…", "s": 50.32, "e": 50.617}, {"t": "lève", "s": 51.14, "e": 51.32}, {"t": "les", "s": 51.34, "e": 51.484}, {"t": "yeux.", "s": 51.5, "e": 51.716}];
+const CAP_FILL = "#dfe9f5";
+const CAP_HL = "#ffb347";
+const wrapEl = document.getElementById("cap-wrap");
+const chunks = [];
+let cur = null;
+WORDS.forEach((w, i) => {
+  const p = WORDS[i - 1];
+  const len = cur ? cur.w.map((x) => x.t).join(" ").length : 0;
+  const brk = !cur || cur.w.length >= 3 || /[.,?!…:]$/.test(p.t) || w.s - p.e > 0.35 || len + w.t.length > 19;
+  if (brk) { cur = { w: [] }; chunks.push(cur); }
+  cur.w.push(w);
+});
+chunks.forEach((c, ci) => {
+  const div = document.createElement("div");
+  div.className = "cc";
+  div.id = "cc-" + ci;
+  c.w.forEach((w, wi) => {
+    const sp = document.createElement("span");
+    sp.className = "cw";
+    sp.id = `cw-${ci}-${wi}`;
+    sp.textContent = w.t.replace(/[.,…]+$/, "");
+    if (wi) div.appendChild(document.createTextNode(" "));
+    div.appendChild(sp);
+  });
+  wrapEl.appendChild(div);
+  const start = c.w[0].s - 0.04;
+  const next = chunks[ci + 1];
+  const end = next ? next.w[0].s - 0.04 : c.w[c.w.length - 1].e + 0.35;
+  tl.fromTo(div, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.5)" }, start);
+  tl.set(div, { opacity: 0 }, end);
+  c.w.forEach((w, wi) => {
+    const sp = document.getElementById(`cw-${ci}-${wi}`);
+    tl.fromTo(sp, { color: CAP_FILL, scale: 1 }, { color: CAP_HL, scale: 1.12, duration: 0.08, ease: "power2.out" }, w.s);
+    tl.to(sp, { scale: 1, duration: 0.1 }, Math.max(w.e, w.s + 0.1));
+  });
+});
+window.__timelines["captions"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>
