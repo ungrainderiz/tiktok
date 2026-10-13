@@ -147,9 +147,11 @@ chunks.forEach((c, ci) => {
   wrapEl.appendChild(div);
   const start = c.w[0].s - 0.04;
   const next = chunks[ci + 1];
-  const end = next ? next.w[0].s - 0.04 : c.w[c.w.length - 1].e + 0.35;
+  // le dernier groupe s'efface juste avant la fin : sous-titres masqués des deux côtés du raccord de boucle
+  const end = next ? next.w[0].s - 0.04 : c.w[c.w.length - 1].e - 0.12;
   tl.fromTo(div, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.5)" }, start);
-  tl.set(div, { opacity: 0 }, end);
+  if (next) tl.set(div, { opacity: 0 }, end);
+  else tl.to(div, { opacity: 0, duration: 0.1, ease: "none" }, end - 0.1);
   c.w.forEach((w, wi) => {
     const sp = document.getElementById(`cw-${ci}-${wi}`);
     tl.fromTo(sp, { color: CAP_FILL, scale: 1 }, { color: CAP_HL, scale: 1.12, duration: 0.08, ease: "power2.out" }, w.s);
