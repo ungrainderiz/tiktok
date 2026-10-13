@@ -7,4 +7,6 @@ Jusqu'à ce que… bam. La fille que t'aimes, celle qui est morte, réapparaisse
 Sauf que si, tout a changé. Elle est un fantôme, et elle dit un truc bizarre : « J'ai un vœu à exaucer, mais je sais plus c'est quoi. »
 Toi, tu penses que tu deviens fou. Mais elle est là. Elle te parle. Elle te touche. Ton cœur d'ado, fracassé.
 Et pour l'aider à partir en paix, tu vas devoir affronter le passé, recontacter tes anciens potes, et rouvrir des blessures que t'as jamais refermées.
-Premier épisode, et déjà t'as la gorge nouée. C'est doux, c'est triste, c'est puissant. Et tu sais que t'es pas prêt pour ce qui arrive.
+Premier épisode, et déjà t'as la gorge nouée. C'est doux, c'est triste, c'est puissant. Et si tu comprends toujours pas pourquoi tout le monde pleure devant AnoHana…
+
+> Boucle : la dernière phrase est volontairement en suspens. Elle se complète avec la première (« Imagine, t'es le boss de la récréation en primaire. ») quand la vidéo repart au début.

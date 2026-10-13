@@ -41,6 +41,19 @@ Références : `videos/rayquaza-fraude/BRIEF.md` (script « Rayquaza la fraude �
 - Une petite image concrète et absurde pour résumer (« il bouge que si tu lui construis un autel
   et que tu lui fais une ola »).
 
+**Boucle (obligatoire)** — la fin ne doit pas se remarquer : la vidéo repart au début comme si c'était la suite.
+- **Texte** : la dernière phrase reste en suspens et se complète avec la 1re phrase du script.
+  Ex. AnoHana : « …Et si tu comprends toujours pas pourquoi tout le monde pleure devant AnoHana… »
+  → (retour au début) « Imagine, t'es le boss de la récréation en primaire. »
+  Ex. Rayquaza : « …Ceux qu'il était venu exterminer. Et c'est pour ça que j'te le dis : » →
+  « Ce ptit con de Rayquaza est la plus grosse fraude des légendaires… »
+- **Pas d'outro** : pas de carton de fin, pas de fondu au noir, pas de silence. La voix démarre dès 0 s
+  et la dernière syllabe tombe sur la toute dernière image.
+- **Image** : la dernière image rejoint la première (même plan, même cadrage ou même flash/zoom),
+  pour que la coupe du retour ressemble à une coupe du montage.
+- **Son** : la musique ne fait ni fade-in ni fade-out ; la vidéo se termine sur un temps fort du morceau
+  et le début de la musique repart sur un temps fort, pour que le raccord tombe en rythme.
+
 **Format**
 - 60 à 90 s de voix (≈ 200–260 mots), TikTok vertical 1080×1920.
 - Ne pas lisser le texte en français écrit : garder les élisions et le parlé.
