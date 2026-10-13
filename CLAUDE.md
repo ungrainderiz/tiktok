@@ -85,4 +85,5 @@ Références : `videos/rayquaza-fraude/BRIEF.md` (script « Rayquaza la fraude �
     `python3 bruitages/tools/importer.py <video> <coupes.json>`. Compléter avec des sons synthétisés si besoin.
   - Voix clonée souvent basse : la remonter vers -20 LUFS par gain linéaire (pas de loudnorm, qui raccourcit
     la piste et casse la boucle).
-- **Livraison** : envoyer une copie compressée (< 30 Mo) ; les rendus restent hors de git.
+- **Livraison** : envoyer une copie compressée (< 30 Mo) + un test de boucle ×2 ; les rendus restent hors de git.
+  `python3 tools/livrer.py renders/x.mp4 renders/x-tiktok.mp4 renders/test-boucle-x2.mp4` (son -14 LUFS, < 28 Mo).

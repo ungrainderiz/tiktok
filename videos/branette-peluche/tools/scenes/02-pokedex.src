@@ -1,0 +1,243 @@
+@@@ s09
+@bg #000
+<style>
+#s09-dev{left:80px;top:100px;width:920px;height:1320px}
+#s09-body{position:absolute;inset:0;image-rendering:pixelated}
+#s09-scr{position:absolute;left:128px;top:320px;width:664px;height:640px;background:#03060a;overflow:hidden;box-shadow:0 0 60px #4ab8ff55}
+#s09-bra{left:22px;top:24px}
+#s09-no{left:270px;top:40px;font-size:40px;color:#7fa8c8}
+#s09-name{left:262px;top:104px;font-size:60px;color:#e8f6ff;opacity:0}
+#s09-desc{left:28px;top:270px;width:610px;font-size:36px}
+#s09-scan{position:absolute;left:0;right:0;top:0;height:10px;background:#ff3b3b;box-shadow:0 0 30px #ff2a2a;opacity:0}
+#s09-light{position:absolute;left:-200px;top:-200px;width:1480px;height:1600px;background:radial-gradient(circle at 540px 900px,#4ab8ff26,transparent 60%);pointer-events:none}
+.red{color:#ff4a4a}
+</style>
+<div class="abs" id="s09-dev">
+  <img id="s09-body" src="assets/decor/pokedex.png" alt="le Pokédex">
+  <div id="s09-scr">
+    <div class="spr" id="s09-bra"></div>
+    <div class="dex" id="s09-no"></div>
+    <div class="dex" id="s09-name">Branette</div>
+    <div class="dex" id="s09-desc"></div>
+    <div id="s09-scan"></div>
+  </div>
+</div>
+<div id="s09-light"></div>
+<div class="vignette"></div>
+@@@js
+// Alors tu sors ton Pokédex. — seule source de lumière : l'écran
+tl.fromTo("#s09-dev", { y: 1500 }, { y: 0, duration: 0.6, ease: "power3.out" }, 0.05);
+flicker("#s09-light", 0, 9.65, 0.7, 9);
+// Tu la scannes. : rayon rouge qui balaie l'écran
+sheet(document.getElementById("s09-bra"), "branette-sheet", 4, 0, 9.65);
+gsap.set("#s09-bra", { opacity: 0 });
+tl.set("#s09-bra", { opacity: 1 }, W(41.57));
+tl.fromTo("#s09-scan", { opacity: 1, y: 0 }, { opacity: 1, y: 630, duration: 0.45, ease: "none", repeat: 1 }, W(41.6));
+tl.set("#s09-scan", { opacity: 0 }, W(41.6) + 0.95);
+// Et l'écran affiche un nom : Branette.
+typeText(document.getElementById("s09-no"), "N° 354", W(42.7), W(43.4));
+tl.fromTo("#s09-name", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power3.out", transformOrigin: "0% 50%" }, W(44.22));
+shake("#s09-dev", W(44.3), 0.25, 10, 3);
+// Une peluche abandonnée, rongée par la rancune. Elle cherche l'enfant qui l'a jetée.
+const desc = document.getElementById("s09-desc");
+typeText(desc, "Une peluche abandonnée, rongée par la rancune. ", W(45.31), W(47.11));
+typeText(desc, "Elle cherche l'enfant qui l'a jetée.", W(48.01), W(49.13), "red");
+tl.fromTo("#s09-dev", { scale: 1 }, { scale: 1.06, duration: 9.6 - W(45.3), ease: "none", transformOrigin: "540px 700px" }, W(45.3));
+
+@@@ s10
+@bg #000
+<style>
+#s10-dev{left:80px;top:100px;width:920px;height:1320px}
+#s10-body{position:absolute;inset:0;image-rendering:pixelated}
+#s10-scr{position:absolute;left:128px;top:320px;width:664px;height:640px;background:#03060a;overflow:hidden;box-shadow:0 0 60px #4ab8ff55}
+#s10-text{position:absolute;left:28px;top:30px;width:610px}
+#s10-old{font-size:36px;opacity:.55}
+#s10-hidden{margin-top:50px;font-size:44px;color:#ff4a4a;filter:blur(12px);opacity:0}
+#s10-red{position:absolute;inset:0;background:#ff1a2a;opacity:0;mix-blend-mode:screen}
+.red{color:#ff4a4a}
+</style>
+<div class="abs" id="s10-dev">
+  <img id="s10-body" src="assets/decor/pokedex.png" alt="le Pokédex">
+  <div id="s10-scr">
+    <div id="s10-text">
+      <div class="dex" id="s10-old" style="position:relative">Une peluche abandonnée, rongée par la rancune. <span class="red">Elle cherche l'enfant qui l'a jetée.</span></div>
+      <div class="dex" id="s10-hidden" style="position:relative"></div>
+    </div>
+    <div id="s10-red"></div>
+  </div>
+</div>
+<div class="vignette"></div>
+@@@js
+// Et en dessous, une ligne que t'aurais préféré pas lire :
+gsap.set("#s10-dev", { scale: 1.06, transformOrigin: "540px 700px" });
+tl.to("#s10-dev", { scale: 1.5, duration: 1.2, ease: "power2.inOut" }, W(49.7));
+tl.to("#s10-text", { y: -110, duration: 0.8, ease: "power2.inOut" }, W(49.9));
+const hid = document.getElementById("s10-hidden");
+hid.textContent = "Sa bouche retient une énergie maudite.";
+// la ligne est là, floue, illisible… puis elle devient nette pendant que tu la lis
+tl.fromTo(hid, { opacity: 0 }, { opacity: 1, duration: 0.6 }, W(50.56));
+tl.to(hid, { filter: "blur(0px)", duration: 1.6, ease: "power1.inOut" }, W(52.5));
+// énergie maudite : l'écran saigne et grésille
+tl.fromTo("#s10-red", { opacity: 0 }, { opacity: 0.45, duration: 0.06, yoyo: true, repeat: 5 }, W(53.68));
+shake("#s10-dev", W(53.68), 0.5, 14, 6);
+tl.to("#s10-dev", { scale: 1.7, duration: 0.8, ease: "power2.in" }, W(54.3));
+
+@@@ s11
+@bg #07040c
+<style>
+#s11-zip{left:0;top:680px;width:1080px;height:560px;background:url(assets/decor/fermeture.png) 0 0/10800px 560px;image-rendering:pixelated}
+#s11-red{position:absolute;inset:0;background:#5a0010;opacity:0;mix-blend-mode:screen}
+</style>
+<div class="cam" id="s11-cam"><div class="abs" id="s11-zip"></div><div id="s11-smoke"></div></div>
+<div id="s11-red"></div>
+<div class="black" id="s11-black"></div>
+<div class="vignette"></div>
+@@@js
+// Si la fermeture s'ouvre… — on imagine le pire : elle s'ouvre jusqu'au bout
+const zipEl = document.getElementById("s11-zip");
+[[4, 0], [5, W(55.5)], [6, W(55.75)], [7, W(56.0)], [8, W(56.25)], [9, W(56.5)]].forEach(([k, t]) => tl.set(zipEl, { backgroundPosition: `${-k * 1080}px 0px` }, t));
+tl.fromTo("#s11-cam", { scale: 1 }, { scale: 1.2, duration: 2.0, ease: "power1.in", transformOrigin: "900px 960px" }, 0);
+// … elle s'échappe. : fumée violette qui envahit tout
+const sm = motes(document.getElementById("s11-smoke"), 18, 13, [760, 860, 200, 200], "smoke");
+sm.forEach((el, i) => {
+  const s = 160 + hash(i) * 260; gsap.set(el, { width: s, height: s });
+  tl.fromTo(el, { opacity: 0, scale: 0.3, x: 0, y: 0 }, { opacity: 0.95, scale: 3 + hash(i * 3) * 3, x: -700 * hash(i * 7), y: (hash(i * 11) - 0.5) * 1400, duration: 1.0, ease: "power2.out" }, W(56.6) + hash(i * 5) * 0.4);
+});
+tl.fromTo("#s11-red", { opacity: 0 }, { opacity: 0.8, duration: 0.08, yoyo: true, repeat: 3 }, W(57.13));
+shake("#s11-cam", W(57.13), 0.6, 26, 8);
+tl.set("#s11-black", { opacity: 1 }, W(57.85));
+
+@@@ s12
+@bg #000
+<style>
+#s12-cam{position:absolute;inset:0}
+#s12-bra{left:368px;top:864px;filter:brightness(.62) contrast(1.15)}
+#s12-zipshot{position:absolute;inset:0;background:#07040c;opacity:0}
+#s12-zip{left:0;top:680px;width:1080px;height:560px;background:url(assets/decor/fermeture.png) -6480px 0/10800px 560px;image-rendering:pixelated}
+.s12-c{position:absolute;top:900px;width:84px;height:120px;border:8px solid #ff2a3a;box-shadow:0 0 30px #ff2a3a;opacity:0}
+</style>
+<div class="cam" id="s12-cam">
+  <img class="bg" src="assets/decor/chambre-fond.png" alt="ta chambre">
+  <div class="spr" id="s12-bra"></div>
+</div>
+<div id="s12-zipshot"><div class="abs" id="s12-zip"></div><div class="s12-c" id="s12-c1" style="left:208px"></div><div class="s12-c" id="s12-c2" style="left:296px"></div><div class="s12-c" id="s12-c3" style="left:384px"></div></div>
+<div class="black" id="s12-black" style="opacity:1"></div>
+<div class="vignette"></div>
+@@@js
+// Tu regardes la poupée.
+tl.to("#s12-black", { opacity: 0, duration: 0.4 }, 0);
+sheet(document.getElementById("s12-bra"), "branette-sheet", 8, 0, 3.0);
+tl.fromTo("#s12-cam", { scale: 1 }, { scale: 1.15, duration: 1.7, ease: "sine.inOut", transformOrigin: "520px 1040px" }, 0);
+// Il reste trois crans. : les trois derniers crans clignotent un par un
+tl.set("#s12-zipshot", { opacity: 1 }, W(60.32));
+["#s12-c1", "#s12-c2", "#s12-c3"].forEach((c, i) => tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.05 }, W(60.43) + i * 0.22));
+
+@@@ s13
+@bg #000
+<style>
+#s13-cam{position:absolute;inset:0}
+#s13-bra{left:450px;top:1114px;filter:brightness(.5) contrast(1.2)}
+#s13-clock{left:30px;top:1146px;font-size:40px;color:#ff2a2a;text-shadow:0 0 14px #ff0000}
+#s13-moon{position:absolute;inset:0;background:#000;opacity:0}
+</style>
+<div class="cam" id="s13-cam">
+  <img class="bg" src="assets/decor/chambre-fond.png" alt="ta chambre la nuit">
+  <div class="spr" id="s13-bra"></div>
+  <div class="pix" id="s13-clock">3:33</div>
+</div>
+<div id="s13-moon"></div>
+<div class="vignette"></div>
+@@@js
+// Cette nuit, tu dors pas. Tu la fixes. Elle bouge pas. Toi non plus.
+const b = still(document.getElementById("s13-bra"), "branette-sheet", 6);
+b(0, 0);
+tl.fromTo("#s13-cam", { scale: 1 }, { scale: 1.12, duration: 4.6, ease: "none", transformOrigin: "615px 1270px" }, 0);
+tl.fromTo("#s13-moon", { opacity: 0 }, { opacity: 0.35, duration: 1.2, yoyo: true, repeat: 1, ease: "sine.inOut" }, 1.0);
+flicker("#s13-clock", 0, 4.6, 0.6, 3);
+
+@@@ s14
+@bg #000
+<style>
+#s14-cam{position:absolute;inset:0}
+#s14-bra{left:450px;top:1114px;filter:brightness(.5) contrast(1.2)}
+#s14-clock{left:30px;top:1146px;font-size:40px;color:#ff2a2a;text-shadow:0 0 14px #ff0000}
+#s14-top{top:0}
+#s14-bot{bottom:0}
+</style>
+<div class="cam" id="s14-cam">
+  <img class="bg" src="assets/decor/chambre-fond.png" alt="">
+  <div class="spr" id="s14-bra"></div>
+  <div class="pix" id="s14-clock">3:33</div>
+</div>
+<div class="lid" id="s14-top"></div>
+<div class="lid" id="s14-bot"></div>
+<div class="vignette"></div>
+@@@js
+// Et à un moment… tes yeux se ferment.
+const b = still(document.getElementById("s14-bra"), "branette-sheet", 6);
+b(0, 0);
+gsap.set("#s14-cam", { scale: 1.12, transformOrigin: "615px 1270px" });
+tl.fromTo("#s14-top", { y: -1100 }, { y: -140, duration: 1.4, ease: "power2.in" }, W(66.6));
+tl.fromTo("#s14-bot", { y: 1100 }, { y: 140, duration: 1.4, ease: "power2.in" }, W(66.6));
+tl.to("#s14-cam", { filter: "blur(6px)", duration: 1.4, ease: "power1.in" }, W(66.6));
+tl.to("#s14-top", { y: 0, duration: 0.25 }, W(67.81));
+tl.to("#s14-bot", { y: 0, duration: 0.25 }, W(67.81));
+
+@@@ s15
+@bg #000
+<style>
+#s15-cam{position:absolute;inset:0}
+#s15-clock{left:30px;top:1146px;font-size:40px;color:#ff2a2a;text-shadow:0 0 14px #ff0000}
+#s15-top{top:0}
+#s15-bot{bottom:0}
+#s15-warm{position:absolute;inset:0;background:radial-gradient(circle at 300px 600px,#6a7aa833,transparent 70%);opacity:0}
+</style>
+<div class="cam" id="s15-cam">
+  <img class="bg" src="assets/decor/chambre-fond.png" alt="ta chambre, vide">
+  <div class="pix" id="s15-clock">4:12</div>
+</div>
+<div id="s15-warm"></div>
+<div class="lid" id="s15-top"></div>
+<div class="lid" id="s15-bot"></div>
+<div class="vignette"></div>
+@@@js
+// Quand tu te réveilles, elle est plus là. — même cadrage, la place est vide
+gsap.set("#s15-cam", { scale: 1.12, transformOrigin: "615px 1270px" });
+tl.fromTo("#s15-top", { y: 0 }, { y: -1100, duration: 0.7, ease: "power2.out" }, W(68.5));
+tl.fromTo("#s15-bot", { y: 0 }, { y: 1100, duration: 0.7, ease: "power2.out" }, W(68.5));
+// Plus sur le lit. (gros plan sur le lit vide) Plus dans la chambre. (plan large) Nulle part.
+tl.set("#s15-cam", { scale: 1.9, transformOrigin: "590px 1240px", x: 0 }, W(70.17));
+tl.set("#s15-cam", { scale: 1, transformOrigin: "540px 960px" }, W(70.99));
+tl.to("#s15-cam", { x: 70, duration: 0.25, ease: "power2.out" }, W(72.96));
+tl.to("#s15-cam", { x: -70, duration: 0.3, ease: "power2.inOut" }, W(72.96) + 0.25);
+tl.to("#s15-cam", { x: 0, duration: 0.25, ease: "power2.out" }, W(72.96) + 0.55);
+// Tu souffles. C'est fini.
+tl.to("#s15-warm", { opacity: 1, duration: 0.8, ease: "sine.out" }, W(73.81));
+
+@@@ s16
+@bg #000
+<style>
+#s16-cam{position:absolute;inset:0}
+#s16-rain{left:240px;top:240px;width:600px;height:1640px;right:auto;bottom:auto}
+#s16-stage{position:absolute;inset:0;perspective:1600px;perspective-origin:840px 1060px}
+#s16-door{position:absolute;left:240px;top:240px;width:600px;height:1640px;background:url(assets/decor/porte-battant.png) 0 0/600px 1640px;image-rendering:pixelated;transform-origin:100% 50%}
+#s16-bra{left:430px;top:1606px;filter:brightness(.55) contrast(1.15)}
+#s16-dark{position:absolute;inset:0;background:#000}
+</style>
+<div class="cam" id="s16-cam">
+  <img class="bg" src="assets/decor/porte-fond.png" alt="ta porte d'entrée">
+  <div class="rain" id="s16-rain"></div>
+  <div class="spr" id="s16-bra"></div>
+  <div id="s16-stage"><div id="s16-door"></div></div>
+</div>
+<div id="s16-dark"></div>
+<div class="vignette"></div>
+@@@js
+// Alors tu ouvres ta porte pour aller prendre l'air… → la porte s'ouvre sur le paillasson : retour au début
+const b = still(document.getElementById("s16-bra"), "branette-sheet", 4);
+b(0, 0);
+tl.fromTo("#s16-dark", { opacity: 0.45 }, { opacity: 0, duration: 3.16 - W(75.6), ease: "sine.in" }, W(75.6));
+tl.fromTo("#s16-door", { rotationY: 0 }, { rotationY: 100, duration: 3.16 - W(75.6), ease: "sine.inOut" }, W(75.6));
+gsap.set("#s16-door", { rotationY: 0 });
+tl.fromTo("#s16-rain", { backgroundPosition: "0px -2304px" }, { backgroundPosition: "0px 0px", duration: 3.16, ease: "none" }, 0);
+tl.fromTo("#s16-cam", { scale: 0.97 }, { scale: 1, duration: 3.16, ease: "sine.out", transformOrigin: "540px 1700px" }, 0);

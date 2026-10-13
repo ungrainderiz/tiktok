@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s10-template">
+<style>
+
+@font-face{font-family:"Pixel";src:url(assets/fonts/sous-titres.ttf) format("truetype")}
+
+.px{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.abs{position:absolute}
+.pix{position:absolute;font-family:"Pixel";line-height:1.3;color:#e8f3ff;text-transform:uppercase}
+.cam{position:absolute;inset:0}
+/* plans fixes en pixel art sombre */
+.bg{position:absolute;left:0;top:0;width:1080px;height:1920px;image-rendering:pixelated}
+.spr{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges;background-repeat:repeat-x}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 38%,#000000e6 100%)}
+.flash{position:absolute;inset:0;background:#fff;opacity:0}
+.black{position:absolute;inset:0;background:#000;opacity:0}
+.rain{position:absolute;inset:0;background:url(assets/decor/pluie.png) 0 0/256px 256px repeat;image-rendering:pixelated}
+.sepia{filter:sepia(1) brightness(.75) contrast(1.15)}
+.film{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 160px,#00000014 160px 163px,transparent 163px 410px);mix-blend-mode:multiply}
+.lid{position:absolute;background:#000;left:0;right:0;height:1100px}
+.dex{position:absolute;font-family:"Pixel";color:#bfe8ff;text-transform:uppercase;line-height:1.35}
+.drop{position:absolute;width:8px;height:16px;background:#7f9cc8;opacity:0}
+.ember{position:absolute;width:10px;height:10px;background:#ff9a3c;box-shadow:0 0 12px #ff6a1a;opacity:0}
+.smoke{position:absolute;border-radius:50%;background:radial-gradient(#3a0a4acc,#1a0524 55%,transparent 72%);opacity:0}
+[id$="-all"]{position:absolute;inset:0}
+
+#s10{position:absolute;inset:0;overflow:hidden;background:#000}
+</style>
+<div id="s10" data-composition-id="s10" data-width="1080" data-height="1920">
+<style>
+#s10-dev{left:80px;top:100px;width:920px;height:1320px}
+#s10-body{position:absolute;inset:0;image-rendering:pixelated}
+#s10-scr{position:absolute;left:128px;top:320px;width:664px;height:640px;background:#03060a;overflow:hidden;box-shadow:0 0 60px #4ab8ff55}
+#s10-text{position:absolute;left:28px;top:30px;width:610px}
+#s10-old{font-size:36px;opacity:.55}
+#s10-hidden{margin-top:50px;font-size:44px;color:#ff4a4a;filter:blur(12px);opacity:0}
+#s10-red{position:absolute;inset:0;background:#ff1a2a;opacity:0;mix-blend-mode:screen}
+.red{color:#ff4a4a}
+</style>
+<div class="abs" id="s10-dev">
+  <img id="s10-body" src="assets/decor/pokedex.png" alt="le Pokédex">
+  <div id="s10-scr">
+    <div id="s10-text">
+      <div class="dex" id="s10-old" style="position:relative">Une peluche abandonnée, rongée par la rancune. <span class="red">Elle cherche l'enfant qui l'a jetée.</span></div>
+      <div class="dex" id="s10-hidden" style="position:relative"></div>
+    </div>
+    <div id="s10-red"></div>
+  </div>
+</div>
+<div class="vignette"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 49.5;
+const W = (t) => +(t + 0.0 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const SPR = {"branette-sheet.png": {"w": 55, "h": 51, "frames": 95, "ms": 61}, "branette-dos-sheet.png": {"w": 55, "h": 52, "frames": 98, "ms": 100}, "polichombr-sheet.png": {"w": 39, "h": 58, "frames": 65, "ms": 62}};
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+// anime une planche de sprites (GIF officiel découpé) image par image, de façon déterministe
+const sheet = (el, name, scale, start, dur) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px` });
+  const cyc = (m.frames * m.ms) / 1000; const n = Math.max(1, Math.ceil(dur / cyc));
+  tl.fromTo(el, { backgroundPositionX: "0px" }, { backgroundPositionX: `${-m.frames * w}px`, duration: cyc, ease: `steps(${m.frames})`, repeat: n - 1 }, start);
+};
+// une seule mise à jour par image, calculée à partir du temps local
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const drive = (start, dur, fn) => { const o = { t: 0 }; fn(0); tl.fromTo(o, { t: 0 }, { t: dur, duration: dur, ease: "none", immediateRender: false, onUpdate: () => fn(o.t) }, start); };
+const bob = (el, start, dur, amp = 10, step = 0.55) => tl.fromTo(el, { y: 0 }, { y: amp, duration: step / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (step / 2)) - 1), immediateRender: false }, start);
+const flicker = (el, start, dur, lo = 0.7, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.09));
+  for (let i = 0; i < n; i++) tl.to(el, { opacity: lo + (1 - lo) * hash(seed * 13 + i * 7), duration: dur / n, ease: "none" }, start + (i * dur) / n);
+};
+// image fixe d'une planche : f(frame, t) pose la case voulue au temps t
+const still = (el, name, scale = 1) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px`, backgroundPositionX: "0px" });
+  return (frame, t) => tl.set(el, { backgroundPositionX: `${-frame * w}px` }, t);
+};
+// texte qui s'écrit lettre par lettre entre a et b
+const typeText = (el, str, a, b, cls = "") => {
+  const chars = [...str];
+  chars.forEach((ch, i) => {
+    const sp = document.createElement("span"); sp.textContent = ch; sp.style.opacity = 0; if (cls) sp.className = cls;
+    el.appendChild(sp); tl.set(sp, { opacity: 1 }, a + ((b - a) * i) / chars.length);
+  });
+};
+// particules carrées (gouttes, braises, fumée) posées au hasard mais de façon fixe
+const motes = (parent, n, seed, box, cls = "mote") => {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const m = document.createElement("div"); m.className = cls;
+    m.style.left = Math.round(box[0] + hash(seed * 13 + i * 3) * box[2]) + "px";
+    m.style.top = Math.round(box[1] + hash(seed * 29 + i * 5) * box[3]) + "px";
+    parent.appendChild(m); out.push(m);
+  }
+  return out;
+};
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+// Et en dessous, une ligne que t'aurais préféré pas lire :
+gsap.set("#s10-dev", { scale: 1.06, transformOrigin: "540px 700px" });
+tl.to("#s10-dev", { scale: 1.5, duration: 1.2, ease: "power2.inOut" }, W(49.7));
+tl.to("#s10-text", { y: -110, duration: 0.8, ease: "power2.inOut" }, W(49.9));
+const hid = document.getElementById("s10-hidden");
+hid.textContent = "Sa bouche retient une énergie maudite.";
+// la ligne est là, floue, illisible… puis elle devient nette pendant que tu la lis
+tl.fromTo(hid, { opacity: 0 }, { opacity: 1, duration: 0.6 }, W(50.56));
+tl.to(hid, { filter: "blur(0px)", duration: 1.6, ease: "power1.inOut" }, W(52.5));
+// énergie maudite : l'écran saigne et grésille
+tl.fromTo("#s10-red", { opacity: 0 }, { opacity: 0.45, duration: 0.06, yoyo: true, repeat: 5 }, W(53.68));
+shake("#s10-dev", W(53.68), 0.5, 14, 6);
+tl.to("#s10-dev", { scale: 1.7, duration: 0.8, ease: "power2.in" }, W(54.3));
+window.__timelines["s10"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

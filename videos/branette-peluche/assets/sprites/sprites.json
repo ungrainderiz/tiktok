@@ -1,0 +1,20 @@
+{
+ "branette-sheet.png": {
+  "w": 55,
+  "h": 51,
+  "frames": 95,
+  "ms": 61
+ },
+ "branette-dos-sheet.png": {
+  "w": 55,
+  "h": 52,
+  "frames": 98,
+  "ms": 100
+ },
+ "polichombr-sheet.png": {
+  "w": 39,
+  "h": 58,
+  "frames": 65,
+  "ms": 62
+ }
+}
