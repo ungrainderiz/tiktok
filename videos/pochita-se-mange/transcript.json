@@ -1,0 +1,1390 @@
+{
+ "words": [
+  {
+   "text": "Pochita",
+   "type": "word",
+   "start": 0.02,
+   "end": 0.334
+  },
+  {
+   "text": "s'est",
+   "type": "word",
+   "start": 0.369,
+   "end": 0.605
+  },
+  {
+   "text": "mangé",
+   "type": "word",
+   "start": 0.631,
+   "end": 0.867
+  },
+  {
+   "text": "lui-même.",
+   "type": "word",
+   "start": 0.893,
+   "end": 1.286
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 1.71,
+   "end": 1.81
+  },
+  {
+   "text": "ça",
+   "type": "word",
+   "start": 1.821,
+   "end": 1.921
+  },
+  {
+   "text": "prouve",
+   "type": "word",
+   "start": 1.932,
+   "end": 2.166
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 2.192,
+   "end": 2.325
+  },
+  {
+   "text": "tout",
+   "type": "word",
+   "start": 2.34,
+   "end": 2.507
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 2.525,
+   "end": 2.625
+  },
+  {
+   "text": "monde",
+   "type": "word",
+   "start": 2.636,
+   "end": 2.837
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 2.859,
+   "end": 2.959
+  },
+  {
+   "text": "trompait",
+   "type": "word",
+   "start": 2.97,
+   "end": 3.27
+  },
+  {
+   "text": "sur",
+   "type": "word",
+   "start": 3.304,
+   "end": 3.437
+  },
+  {
+   "text": "lui",
+   "type": "word",
+   "start": 3.452,
+   "end": 3.585
+  },
+  {
+   "text": "depuis",
+   "type": "word",
+   "start": 3.6,
+   "end": 3.833
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 3.859,
+   "end": 3.959
+  },
+  {
+   "text": "début.",
+   "type": "word",
+   "start": 3.971,
+   "end": 4.204
+  },
+  {
+   "text": "Petit",
+   "type": "word",
+   "start": 4.67,
+   "end": 4.882
+  },
+  {
+   "text": "rappel.",
+   "type": "word",
+   "start": 4.906,
+   "end": 5.189
+  },
+  {
+   "text": "Quand",
+   "type": "word",
+   "start": 5.56,
+   "end": 5.813
+  },
+  {
+   "text": "Pochita",
+   "type": "word",
+   "start": 5.841,
+   "end": 6.179
+  },
+  {
+   "text": "mange",
+   "type": "word",
+   "start": 6.217,
+   "end": 6.47
+  },
+  {
+   "text": "un",
+   "type": "word",
+   "start": 6.498,
+   "end": 6.625
+  },
+  {
+   "text": "démon,",
+   "type": "word",
+   "start": 6.639,
+   "end": 6.935
+  },
+  {
+   "text": "ce",
+   "type": "word",
+   "start": 6.967,
+   "end": 7.094
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 7.108,
+   "end": 7.277
+  },
+  {
+   "text": "ce",
+   "type": "word",
+   "start": 7.296,
+   "end": 7.422
+  },
+  {
+   "text": "démon",
+   "type": "word",
+   "start": 7.436,
+   "end": 7.69
+  },
+  {
+   "text": "représente",
+   "type": "word",
+   "start": 7.718,
+   "end": 8.182
+  },
+  {
+   "text": "disparaît.",
+   "type": "word",
+   "start": 8.234,
+   "end": 8.698
+  },
+  {
+   "text": "Du",
+   "type": "word",
+   "start": 9.01,
+   "end": 9.172
+  },
+  {
+   "text": "monde.",
+   "type": "word",
+   "start": 9.19,
+   "end": 9.568
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 10.07,
+   "end": 10.168
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 10.179,
+   "end": 10.277
+  },
+  {
+   "text": "toutes",
+   "type": "word",
+   "start": 10.288,
+   "end": 10.516
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 10.542,
+   "end": 10.673
+  },
+  {
+   "text": "mémoires.",
+   "type": "word",
+   "start": 10.687,
+   "end": 11.014
+  },
+  {
+   "text": "Alors",
+   "type": "word",
+   "start": 11.43,
+   "end": 11.632
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 11.655,
+   "end": 11.756
+  },
+  {
+   "text": "vraie",
+   "type": "word",
+   "start": 11.767,
+   "end": 11.969
+  },
+  {
+   "text": "question,",
+   "type": "word",
+   "start": 11.992,
+   "end": 12.329
+  },
+  {
+   "text": "c'est",
+   "type": "word",
+   "start": 12.367,
+   "end": 12.569
+  },
+  {
+   "text": ":",
+   "type": "word",
+   "start": 12.591,
+   "end": 12.659
+  },
+  {
+   "text": "Pochita,",
+   "type": "word",
+   "start": 12.666,
+   "end": 12.97
+  },
+  {
+   "text": "c'est",
+   "type": "word",
+   "start": 13.003,
+   "end": 13.206
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 13.228,
+   "end": 13.329
+  },
+  {
+   "text": "démon",
+   "type": "word",
+   "start": 13.341,
+   "end": 13.543
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 13.565,
+   "end": 13.667
+  },
+  {
+   "text": "QUOI",
+   "type": "word",
+   "start": 13.678,
+   "end": 13.846
+  },
+  {
+   "text": "?",
+   "type": "word",
+   "start": 13.865,
+   "end": 13.933
+  },
+  {
+   "text": "La",
+   "type": "word",
+   "start": 14.23,
+   "end": 14.371
+  },
+  {
+   "text": "réponse",
+   "type": "word",
+   "start": 14.387,
+   "end": 14.764
+  },
+  {
+   "text": "évidente",
+   "type": "word",
+   "start": 14.805,
+   "end": 15.229
+  },
+  {
+   "text": ":",
+   "type": "word",
+   "start": 15.276,
+   "end": 15.37
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 15.381,
+   "end": 15.522
+  },
+  {
+   "text": "tronçonneuse.",
+   "type": "word",
+   "start": 15.538,
+   "end": 16.197
+  },
+  {
+   "text": "Sauf",
+   "type": "word",
+   "start": 17.28,
+   "end": 17.487
+  },
+  {
+   "text": "que…",
+   "type": "word",
+   "start": 17.51,
+   "end": 17.717
+  },
+  {
+   "text": "Ok.",
+   "type": "word",
+   "start": 18.16,
+   "end": 18.493
+  },
+  {
+   "text": "Maintenant",
+   "type": "word",
+   "start": 19.03,
+   "end": 19.432
+  },
+  {
+   "text": "on",
+   "type": "word",
+   "start": 19.476,
+   "end": 19.586
+  },
+  {
+   "text": "regarde",
+   "type": "word",
+   "start": 19.598,
+   "end": 19.89
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 19.923,
+   "end": 20.069
+  },
+  {
+   "text": "preuves.",
+   "type": "word",
+   "start": 20.085,
+   "end": 20.413
+  },
+  {
+   "text": "Pochita",
+   "type": "word",
+   "start": 20.48,
+   "end": 20.809
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 20.846,
+   "end": 20.969
+  },
+  {
+   "text": "dévore",
+   "type": "word",
+   "start": 20.983,
+   "end": 21.271
+  },
+  {
+   "text": "lui-même.",
+   "type": "word",
+   "start": 21.303,
+   "end": 21.714
+  },
+  {
+   "text": "Bam.",
+   "type": "word",
+   "start": 22.57,
+   "end": 22.708
+  },
+  {
+   "text": "Le",
+   "type": "word",
+   "start": 22.724,
+   "end": 22.807
+  },
+  {
+   "text": "monde",
+   "type": "word",
+   "start": 22.816,
+   "end": 22.982
+  },
+  {
+   "text": "est",
+   "type": "word",
+   "start": 23.0,
+   "end": 23.111
+  },
+  {
+   "text": "réécrit.",
+   "type": "word",
+   "start": 23.123,
+   "end": 23.372
+  },
+  {
+   "text": "Première",
+   "type": "word",
+   "start": 23.45,
+   "end": 23.767
+  },
+  {
+   "text": "preuve",
+   "type": "word",
+   "start": 23.803,
+   "end": 24.05
+  },
+  {
+   "text": ":",
+   "type": "word",
+   "start": 24.077,
+   "end": 24.148
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 24.155,
+   "end": 24.296
+  },
+  {
+   "text": "tronçonneuses.",
+   "type": "word",
+   "start": 24.312,
+   "end": 24.841
+  },
+  {
+   "text": "Dans",
+   "type": "word",
+   "start": 25.16,
+   "end": 25.303
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 25.319,
+   "end": 25.405
+  },
+  {
+   "text": "nouveau",
+   "type": "word",
+   "start": 25.415,
+   "end": 25.644
+  },
+  {
+   "text": "monde,",
+   "type": "word",
+   "start": 25.67,
+   "end": 25.871
+  },
+  {
+   "text": "elles",
+   "type": "word",
+   "start": 25.893,
+   "end": 26.065
+  },
+  {
+   "text": "existent",
+   "type": "word",
+   "start": 26.084,
+   "end": 26.343
+  },
+  {
+   "text": "toujours.",
+   "type": "word",
+   "start": 26.371,
+   "end": 26.658
+  },
+  {
+   "text": "Partout.",
+   "type": "word",
+   "start": 26.93,
+   "end": 27.164
+  },
+  {
+   "text": "Comme",
+   "type": "word",
+   "start": 27.52,
+   "end": 27.703
+  },
+  {
+   "text": "si",
+   "type": "word",
+   "start": 27.723,
+   "end": 27.814
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 27.825,
+   "end": 27.916
+  },
+  {
+   "text": "rien",
+   "type": "word",
+   "start": 27.926,
+   "end": 28.078
+  },
+  {
+   "text": "n'était.",
+   "type": "word",
+   "start": 28.095,
+   "end": 28.37
+  },
+  {
+   "text": "Donc",
+   "type": "word",
+   "start": 28.68,
+   "end": 28.883
+  },
+  {
+   "text": "c'était",
+   "type": "word",
+   "start": 28.905,
+   "end": 29.229
+  },
+  {
+   "text": "PAS",
+   "type": "word",
+   "start": 29.265,
+   "end": 29.427
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 29.445,
+   "end": 29.567
+  },
+  {
+   "text": "peur",
+   "type": "word",
+   "start": 29.58,
+   "end": 29.783
+  },
+  {
+   "text": "des",
+   "type": "word",
+   "start": 29.805,
+   "end": 29.967
+  },
+  {
+   "text": "tronçonneuses.",
+   "type": "word",
+   "start": 29.985,
+   "end": 30.593
+  },
+  {
+   "text": "Deuxième",
+   "type": "word",
+   "start": 30.98,
+   "end": 31.309
+  },
+  {
+   "text": "preuve",
+   "type": "word",
+   "start": 31.345,
+   "end": 31.601
+  },
+  {
+   "text": ":",
+   "type": "word",
+   "start": 31.629,
+   "end": 31.702
+  },
+  {
+   "text": "l'oubli.",
+   "type": "word",
+   "start": 32.06,
+   "end": 32.42
+  },
+  {
+   "text": "Certains",
+   "type": "word",
+   "start": 32.86,
+   "end": 33.222
+  },
+  {
+   "text": "disaient",
+   "type": "word",
+   "start": 33.262,
+   "end": 33.624
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 33.664,
+   "end": 33.825
+  },
+  {
+   "text": "Pochita,",
+   "type": "word",
+   "start": 33.843,
+   "end": 34.204
+  },
+  {
+   "text": "c'était",
+   "type": "word",
+   "start": 34.245,
+   "end": 34.566
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 34.602,
+   "end": 34.723
+  },
+  {
+   "text": "démon",
+   "type": "word",
+   "start": 34.736,
+   "end": 34.977
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 35.004,
+   "end": 35.125
+  },
+  {
+   "text": "l'Oubli.",
+   "type": "word",
+   "start": 35.138,
+   "end": 35.5
+  },
+  {
+   "text": "Sauf",
+   "type": "word",
+   "start": 35.94,
+   "end": 36.143
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 36.166,
+   "end": 36.328
+  },
+  {
+   "text": "s'il",
+   "type": "word",
+   "start": 36.346,
+   "end": 36.549
+  },
+  {
+   "text": "avait",
+   "type": "word",
+   "start": 36.572,
+   "end": 36.816
+  },
+  {
+   "text": "mangé",
+   "type": "word",
+   "start": 36.843,
+   "end": 37.087
+  },
+  {
+   "text": "l'oubli,",
+   "type": "word",
+   "start": 37.114,
+   "end": 37.479
+  },
+  {
+   "text": "plus",
+   "type": "word",
+   "start": 37.85,
+   "end": 37.998
+  },
+  {
+   "text": "personne",
+   "type": "word",
+   "start": 38.014,
+   "end": 38.28
+  },
+  {
+   "text": "pourrait",
+   "type": "word",
+   "start": 38.31,
+   "end": 38.576
+  },
+  {
+   "text": "oublier",
+   "type": "word",
+   "start": 38.606,
+   "end": 38.842
+  },
+  {
+   "text": "quoi",
+   "type": "word",
+   "start": 38.869,
+   "end": 39.016
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 39.033,
+   "end": 39.151
+  },
+  {
+   "text": "ce",
+   "type": "word",
+   "start": 39.164,
+   "end": 39.253
+  },
+  {
+   "text": "soit.",
+   "type": "word",
+   "start": 39.263,
+   "end": 39.44
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 39.74,
+   "end": 39.826
+  },
+  {
+   "text": "dans",
+   "type": "word",
+   "start": 39.836,
+   "end": 39.979
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 39.995,
+   "end": 40.081
+  },
+  {
+   "text": "nouveau",
+   "type": "word",
+   "start": 40.09,
+   "end": 40.32
+  },
+  {
+   "text": "monde",
+   "type": "word",
+   "start": 40.345,
+   "end": 40.517
+  },
+  {
+   "text": "?",
+   "type": "word",
+   "start": 40.536,
+   "end": 40.594
+  },
+  {
+   "text": "Tout",
+   "type": "word",
+   "start": 41.14,
+   "end": 41.301
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 41.319,
+   "end": 41.415
+  },
+  {
+   "text": "monde",
+   "type": "word",
+   "start": 41.426,
+   "end": 41.619
+  },
+  {
+   "text": "a",
+   "type": "word",
+   "start": 41.641,
+   "end": 41.705
+  },
+  {
+   "text": "oublié",
+   "type": "word",
+   "start": 41.712,
+   "end": 41.937
+  },
+  {
+   "text": "l'ancien.",
+   "type": "word",
+   "start": 41.962,
+   "end": 42.284
+  },
+  {
+   "text": "Donc",
+   "type": "word",
+   "start": 42.64,
+   "end": 42.809
+  },
+  {
+   "text": "c'est",
+   "type": "word",
+   "start": 42.828,
+   "end": 43.031
+  },
+  {
+   "text": "pas",
+   "type": "word",
+   "start": 43.053,
+   "end": 43.189
+  },
+  {
+   "text": "l'oubli",
+   "type": "word",
+   "start": 43.204,
+   "end": 43.474
+  },
+  {
+   "text": "non",
+   "type": "word",
+   "start": 43.504,
+   "end": 43.64
+  },
+  {
+   "text": "plus.",
+   "type": "word",
+   "start": 43.655,
+   "end": 43.857
+  },
+  {
+   "text": "Alors",
+   "type": "word",
+   "start": 44.893,
+   "end": 45.085
+  },
+  {
+   "text": "qu'est-ce",
+   "type": "word",
+   "start": 45.107,
+   "end": 45.427
+  },
+  {
+   "text": "qui",
+   "type": "word",
+   "start": 45.463,
+   "end": 45.591
+  },
+  {
+   "text": "a",
+   "type": "word",
+   "start": 45.606,
+   "end": 45.67
+  },
+  {
+   "text": "disparu",
+   "type": "word",
+   "start": 45.677,
+   "end": 45.933
+  },
+  {
+   "text": "?",
+   "type": "word",
+   "start": 45.962,
+   "end": 46.026
+  },
+  {
+   "text": "Une",
+   "type": "word",
+   "start": 46.263,
+   "end": 46.432
+  },
+  {
+   "text": "seule",
+   "type": "word",
+   "start": 46.451,
+   "end": 46.705
+  },
+  {
+   "text": "chose.",
+   "type": "word",
+   "start": 46.734,
+   "end": 47.03
+  },
+  {
+   "text": "Chainsaw",
+   "type": "word",
+   "start": 47.603,
+   "end": 48.158
+  },
+  {
+   "text": "Man.",
+   "type": "word",
+   "start": 48.22,
+   "end": 48.529
+  },
+  {
+   "text": "Le",
+   "type": "word",
+   "start": 48.953,
+   "end": 49.073
+  },
+  {
+   "text": "Héros",
+   "type": "word",
+   "start": 49.087,
+   "end": 49.327
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 49.354,
+   "end": 49.474
+  },
+  {
+   "text": "l'Enfer.",
+   "type": "word",
+   "start": 49.487,
+   "end": 49.848
+  },
+  {
+   "text": "Celui",
+   "type": "word",
+   "start": 49.888,
+   "end": 50.129
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 50.155,
+   "end": 50.316
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 50.334,
+   "end": 50.494
+  },
+  {
+   "text": "démons",
+   "type": "word",
+   "start": 50.512,
+   "end": 50.792
+  },
+  {
+   "text": "appellent",
+   "type": "word",
+   "start": 50.823,
+   "end": 51.224
+  },
+  {
+   "text": "quand",
+   "type": "word",
+   "start": 51.269,
+   "end": 51.509
+  },
+  {
+   "text": "ils",
+   "type": "word",
+   "start": 51.536,
+   "end": 51.696
+  },
+  {
+   "text": "vont",
+   "type": "word",
+   "start": 51.714,
+   "end": 51.914
+  },
+  {
+   "text": "mourir…",
+   "type": "word",
+   "start": 51.937,
+   "end": 52.257
+  },
+  {
+   "text": "et",
+   "type": "word",
+   "start": 52.653,
+   "end": 52.741
+  },
+  {
+   "text": "qui",
+   "type": "word",
+   "start": 52.751,
+   "end": 52.869
+  },
+  {
+   "text": "vient",
+   "type": "word",
+   "start": 52.882,
+   "end": 53.059
+  },
+  {
+   "text": "tous",
+   "type": "word",
+   "start": 53.078,
+   "end": 53.226
+  },
+  {
+   "text": "les",
+   "type": "word",
+   "start": 53.242,
+   "end": 53.36
+  },
+  {
+   "text": "massacrer.",
+   "type": "word",
+   "start": 53.373,
+   "end": 53.697
+  },
+  {
+   "text": "Pochita,",
+   "type": "word",
+   "start": 54.533,
+   "end": 54.795
+  },
+  {
+   "text": "c'est",
+   "type": "word",
+   "start": 54.825,
+   "end": 54.999
+  },
+  {
+   "text": "pas",
+   "type": "word",
+   "start": 55.019,
+   "end": 55.135
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 55.148,
+   "end": 55.236
+  },
+  {
+   "text": "peur",
+   "type": "word",
+   "start": 55.246,
+   "end": 55.391
+  },
+  {
+   "text": "des",
+   "type": "word",
+   "start": 55.408,
+   "end": 55.524
+  },
+  {
+   "text": "tronçonneuses.",
+   "type": "word",
+   "start": 55.537,
+   "end": 55.974
+  },
+  {
+   "text": "C'est",
+   "type": "word",
+   "start": 56.093,
+   "end": 56.328
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 56.354,
+   "end": 56.472
+  },
+  {
+   "text": "peur",
+   "type": "word",
+   "start": 56.485,
+   "end": 56.681
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 56.703,
+   "end": 56.82
+  },
+  {
+   "text": "CHAINSAW",
+   "type": "word",
+   "start": 56.833,
+   "end": 57.186
+  },
+  {
+   "text": "MAN.",
+   "type": "word",
+   "start": 57.225,
+   "end": 57.421
+  },
+  {
+   "text": "Les",
+   "type": "word",
+   "start": 58.403,
+   "end": 58.518
+  },
+  {
+   "text": "démons",
+   "type": "word",
+   "start": 58.531,
+   "end": 58.732
+  },
+  {
+   "text": "avaient",
+   "type": "word",
+   "start": 58.754,
+   "end": 58.984
+  },
+  {
+   "text": "tellement",
+   "type": "word",
+   "start": 59.009,
+   "end": 59.296
+  },
+  {
+   "text": "peur",
+   "type": "word",
+   "start": 59.328,
+   "end": 59.472
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 59.488,
+   "end": 59.574
+  },
+  {
+   "text": "lui…",
+   "type": "word",
+   "start": 59.583,
+   "end": 59.727
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 60.033,
+   "end": 60.18
+  },
+  {
+   "text": "leur",
+   "type": "word",
+   "start": 60.197,
+   "end": 60.381
+  },
+  {
+   "text": "peur",
+   "type": "word",
+   "start": 60.401,
+   "end": 60.586
+  },
+  {
+   "text": "l'a",
+   "type": "word",
+   "start": 60.606,
+   "end": 60.754
+  },
+  {
+   "text": "fait",
+   "type": "word",
+   "start": 60.77,
+   "end": 60.954
+  },
+  {
+   "text": "exister.",
+   "type": "word",
+   "start": 60.975,
+   "end": 61.306
+  },
+  {
+   "text": "Un",
+   "type": "word",
+   "start": 61.753,
+   "end": 61.871
+  },
+  {
+   "text": "démon",
+   "type": "word",
+   "start": 61.884,
+   "end": 62.12
+  },
+  {
+   "text": "né",
+   "type": "word",
+   "start": 62.146,
+   "end": 62.264
+  },
+  {
+   "text": "de",
+   "type": "word",
+   "start": 62.277,
+   "end": 62.395
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 62.408,
+   "end": 62.526
+  },
+  {
+   "text": "peur",
+   "type": "word",
+   "start": 62.539,
+   "end": 62.736
+  },
+  {
+   "text": "qu'il",
+   "type": "word",
+   "start": 62.758,
+   "end": 62.994
+  },
+  {
+   "text": "inspire.",
+   "type": "word",
+   "start": 63.02,
+   "end": 63.374
+  },
+  {
+   "text": "Qui",
+   "type": "word",
+   "start": 63.843,
+   "end": 64.001
+  },
+  {
+   "text": "disparaît",
+   "type": "word",
+   "start": 64.018,
+   "end": 64.413
+  },
+  {
+   "text": "en",
+   "type": "word",
+   "start": 64.457,
+   "end": 64.575
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 64.588,
+   "end": 64.707
+  },
+  {
+   "text": "dévorant",
+   "type": "word",
+   "start": 64.72,
+   "end": 65.075
+  },
+  {
+   "text": "lui-même.",
+   "type": "word",
+   "start": 65.115,
+   "end": 65.509
+  },
+  {
+   "text": "Comme",
+   "type": "word",
+   "start": 66.063,
+   "end": 66.25
+  },
+  {
+   "text": "un",
+   "type": "word",
+   "start": 66.271,
+   "end": 66.364
+  },
+  {
+   "text": "serpent",
+   "type": "word",
+   "start": 66.375,
+   "end": 66.624
+  },
+  {
+   "text": "qui",
+   "type": "word",
+   "start": 66.651,
+   "end": 66.776
+  },
+  {
+   "text": "se",
+   "type": "word",
+   "start": 66.79,
+   "end": 66.883
+  },
+  {
+   "text": "mord",
+   "type": "word",
+   "start": 66.894,
+   "end": 67.05
+  },
+  {
+   "text": "la",
+   "type": "word",
+   "start": 67.067,
+   "end": 67.16
+  },
+  {
+   "text": "queue.",
+   "type": "word",
+   "start": 67.171,
+   "end": 67.389
+  },
+  {
+   "text": "Et",
+   "type": "word",
+   "start": 67.873,
+   "end": 67.947
+  },
+  {
+   "text": "c'est",
+   "type": "word",
+   "start": 67.955,
+   "end": 68.103
+  },
+  {
+   "text": "pour",
+   "type": "word",
+   "start": 68.12,
+   "end": 68.243
+  },
+  {
+   "text": "ça",
+   "type": "word",
+   "start": 68.257,
+   "end": 68.331
+  },
+  {
+   "text": "que",
+   "type": "word",
+   "start": 68.339,
+   "end": 68.438
+  },
+  {
+   "text": "j'te",
+   "type": "word",
+   "start": 68.449,
+   "end": 68.572
+  },
+  {
+   "text": "le",
+   "type": "word",
+   "start": 68.586,
+   "end": 68.66
+  },
+  {
+   "text": "dis",
+   "type": "word",
+   "start": 68.668,
+   "end": 68.767
+  },
+  {
+   "text": ":",
+   "type": "word",
+   "start": 68.778,
+   "end": 68.828
+  }
+ ]
+}

@@ -1,0 +1,461 @@
+@@@ s01
+@bg #050506
+<style>
+#s01-cam{position:absolute;inset:0}
+#s01-l1{left:0;right:0;top:170px;text-align:center;font-size:190px}
+#s01-l2{left:0;right:0;top:370px;text-align:center;font-size:104px}
+#s01-l3{left:0;right:0;top:480px;text-align:center;font-size:150px}
+#s01-m1{left:0;right:0;top:220px;text-align:center;font-size:120px}
+#s01-m2{left:0;right:0;top:360px;text-align:center;font-size:160px}
+#s01-card{left:250px;top:660px;background:url(assets/images/posters/pochita-fin.jpg) center/cover;width:580px;height:326px}
+</style>
+<div class="bgfx"></div>
+<div class="cam" id="s01-cam">
+  <div class="persp" id="s01-persp"></div>
+  <div class="persp"><div class="card" id="s01-card"><video class="clip" src="assets/clips/pochita.mp4" data-start="1.0" data-duration="3.03" muted playsinline></video><div class="shine"></div></div></div>
+</div>
+<div class="t" id="s01-l1">Pochita</div>
+<div class="t" id="s01-l2">s'est mangé</div>
+<div class="t red" id="s01-l3">lui-même</div>
+<div class="t" id="s01-m1">tout le monde</div>
+<div class="t red" id="s01-m2">se trompait</div>
+<div class="vig"></div>
+@@@js
+// raccord de boucle : la vidéo s'ouvre sur l'anneau seul, exactement comme elle se termine
+const R = ringBuild(document.getElementById("s01-persp"), "s01-ring");
+gsap.set(R.tilt, { rotationX: 68 });
+drive(0, 4.6, (t) => R.at(t));
+tl.fromTo("#s01-cam", { scale: 1 }, { scale: 1.065, duration: 4.25, ease: "none", transformOrigin: "540px 820px" }, 0);
+// Pochita s'est mangé lui-même.
+flipIn("#s01-l1", W(0.08));
+flipIn("#s01-l2", W(0.55));
+slamIn("#s01-l3", W(0.85));
+// sa carte sort du centre de l'anneau
+tl.fromTo("#s01-card", { y: 260, z: -500, rotationX: 70, opacity: 0, transformPerspective: 1600 }, { y: 0, z: 0, rotationX: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 1.0);
+// Et ça prouve que tout le monde se trompait sur lui depuis le début.
+["#s01-l1", "#s01-l2", "#s01-l3"].forEach((e, i) => flipOut(e, W(1.7) + i * 0.05));
+flipIn("#s01-m1", W(2.3));
+slamIn("#s01-m2", W(3.0));
+shake("#s01-card", W(3.0), 0.3, 10, 2);
+// sortie : on plonge dans la carte
+tl.to("#s01-cam", { scale: 1.6, opacity: 0, duration: 0.35, ease: "power2.in", immediateRender: false }, 4.25);
+flipOut("#s01-m1", 4.2); flipOut("#s01-m2", 4.25);
+
+@@@ s02
+@bg #050506
+<style>
+#s02-chip{left:400px;top:230px}
+#s02-card{left:80px;top:420px;width:920px;height:518px}
+#s02-lab{left:0;right:0;top:990px;text-align:center;font-size:96px}
+#s02-globe{left:540px;top:700px}
+.gring{position:absolute;left:-260px;top:-260px;width:520px;height:520px;border-radius:50%;border:3px solid #f4f1ee55}
+#s02-monde{left:0;right:0;top:250px;text-align:center;font-size:170px}
+#s02-mem{left:0;right:0;top:1060px;text-align:center;font-size:120px}
+#s02-mem span{display:inline-block}
+</style>
+<div class="bgfx"></div>
+<div class="chip" id="s02-chip">Rappel</div>
+<div class="persp"><div class="card" id="s02-card"><video class="clip" src="assets/clips/devore.mp4" data-start="0.95" data-duration="3.2" muted playsinline></video><div class="shine"></div></div></div>
+<div class="t red" id="s02-lab">disparaît</div>
+<div class="persp"><div class="p3" id="s02-globe"></div></div>
+<div class="t" id="s02-monde">du monde</div>
+<div class="t red" id="s02-mem"></div>
+<div class="vig"></div>
+@@@js
+// Petit rappel.
+fadeIn("#s02-chip", W(4.7), 0.25);
+tl.fromTo("#s02-chip", { scale: 0.6 }, { scale: 1, duration: 0.35, ease: "back.out(2)" }, W(4.7));
+// Quand Pochita mange un démon…
+cardIn("#s02-card", W(5.5));
+drift("#s02-card", W(6.2), 2.0);
+// … ce que ce démon représente disparaît. (la carte se désagrège)
+flipIn("#s02-lab", W(8.15), 0.3);
+tl.to("#s02-card", { scale: 0.2, z: -800, opacity: 0, filter: "blur(18px)", duration: 0.55, ease: "power3.in" }, W(8.35));
+fadeOut("#s02-lab", W(8.85), 0.2);
+fadeOut("#s02-chip", W(8.85), 0.2);
+// Du monde. (globe filaire en 3D)
+const gl = document.getElementById("s02-globe");
+for (let i = 0; i < 9; i++) { const r = document.createElement("div"); r.className = "gring"; r.style.transform = `rotateY(${i * 20}deg)`; gl.appendChild(r); }
+const eq = document.createElement("div"); eq.className = "gring"; eq.style.transform = "rotateX(90deg)"; eq.style.borderColor = "#ff2e2e"; gl.appendChild(eq);
+fadeIn(gl, W(8.95), 0.3);
+tl.fromTo(gl, { rotationY: 0, rotationX: -18, scale: 0.6 }, { rotationY: 140, rotationX: -18, scale: 1, duration: 2.35, ease: "power1.out" }, W(8.95));
+flipIn("#s02-monde", W(9.0));
+// Et de toutes les mémoires. (les lettres s'effacent une à une)
+const mem = document.getElementById("s02-mem");
+[..."Mémoires"].forEach((ch, i) => { const sp = document.createElement("span"); sp.textContent = ch; mem.appendChild(sp); });
+flipIn(mem, W(10.1), 0.3);
+gsap.utils.toArray("#s02-mem span").forEach((sp, i) => tl.to(sp, { opacity: 0, y: -40, filter: "blur(8px)", duration: 0.2 }, W(10.75) + i * 0.05));
+tl.to(gl, { opacity: 0, scale: 0.7, duration: 0.3, ease: "power2.in" }, 6.4);
+flipOut("#s02-monde", 6.4);
+
+@@@ s03
+@bg #050506
+<style>
+#s03-q{left:0;right:0;top:330px;text-align:center;font-size:760px;line-height:1}
+#s03-dem{left:0;right:0;top:170px;text-align:center;font-size:110px}
+#s03-quoi{left:0;right:0;top:1090px;text-align:center;font-size:190px}
+#s03-card{left:80px;top:440px;width:920px;height:518px;background:url(assets/images/posters/lame-fin.jpg) center/cover}
+#s03-lab{left:0;right:0;top:1010px;text-align:center;font-size:120px}
+#s03-mark{left:0;right:0;top:230px;text-align:center;font-size:120px}
+#s03-glitch{position:absolute;left:0;right:0;top:0;height:10px;background:#ff2e2e;opacity:0}
+</style>
+<div class="bgfx" id="s03-bg"></div>
+<div class="t red" id="s03-q">?</div>
+<div class="t" id="s03-dem">le démon de</div>
+<div class="t red" id="s03-quoi">quoi ?</div>
+<div class="persp"><div class="card" id="s03-card"><video class="clip" src="assets/clips/lame.mp4" data-start="2.85" data-duration="3.03" muted playsinline></video><div class="shine"></div></div></div>
+<div class="t" id="s03-mark">évident…</div>
+<div class="t" id="s03-lab">tronçonneuse</div>
+<div id="s03-glitch"></div>
+<div class="vig"></div>
+@@@js
+// Alors la vraie question… Pochita, c'est le démon de QUOI ?
+tl.fromTo("#s03-q", { rotationY: -90, opacity: 0, scale: 0.6, transformPerspective: 1400 }, { rotationY: 0, opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.3)" }, W(11.4));
+tl.to("#s03-q", { rotationY: 25, duration: 1.8, ease: "sine.inOut", transformPerspective: 1400 }, W(12.0));
+flipIn("#s03-dem", W(12.7));
+slamIn("#s03-quoi", W(13.7));
+shake("#s03-q", W(13.75), 0.3, 18, 3);
+// La réponse évidente : la tronçonneuse.
+tl.to("#s03-q", { rotationY: 90, opacity: 0, duration: 0.3, ease: "power2.in", transformPerspective: 1400 }, W(14.2));
+flipOut("#s03-dem", W(14.2)); flipOut("#s03-quoi", W(14.2));
+flipIn("#s03-mark", W(14.4));
+cardIn("#s03-card", W(14.35), 10, 30);
+slamIn("#s03-lab", W(15.5));
+// Sauf que… : tout se fige, ligne de glitch rouge
+tl.to(["#s03-card", "#s03-lab", "#s03-mark"], { filter: "grayscale(1) brightness(0.55)", duration: 0.15 }, W(17.25));
+tl.fromTo("#s03-glitch", { y: 300, opacity: 1 }, { y: 1500, opacity: 1, duration: 0.25, ease: "none", immediateRender: false }, W(17.25));
+tl.set("#s03-glitch", { opacity: 0 }, W(17.25) + 0.26);
+shake("#s03-card", W(17.3), 0.25, 14, 5);
+
+@@@ s04
+@bg #050506
+<style>
+.doss{position:absolute;left:340px;top:540px;width:400px;height:560px;border-radius:26px;background:linear-gradient(160deg,#1d1b20,#0e0d10);box-shadow:0 40px 80px #000000d0,0 0 0 2px #ffffff18}
+.doss b{position:absolute;left:36px;top:36px;font-family:"Inter";font-weight:800;font-size:30px;letter-spacing:6px;color:#ff2e2e}
+.doss i{position:absolute;left:36px;bottom:40px;font-family:"Anton";font-style:normal;font-size:74px;color:#f4f1ee;line-height:1}
+#s04-title{left:0;right:0;top:220px;text-align:center;font-size:120px}
+#s04-card{left:330px;top:640px;width:420px;height:236px}
+#s04-bam{left:0;right:0;top:300px;text-align:center;font-size:250px}
+#s04-new{left:0;right:0;top:620px;text-align:center;font-size:110px}
+#s04-flash{background:#fff}
+</style>
+<div class="bgfx"></div>
+<div class="persp" id="s04-floorwrap"><div class="floor" id="s04-floor"></div></div>
+<div class="t" id="s04-title">les preuves</div>
+<div class="persp" id="s04-deck">
+  <div class="doss" id="s04-d1"><b>Preuve 01</b><i>Tronçon&shy;neuses</i></div>
+  <div class="doss" id="s04-d2"><b>Preuve 02</b><i>L'oubli</i></div>
+  <div class="doss" id="s04-d3"><b>Verdict</b><i>???</i></div>
+</div>
+<div class="persp" id="s04-persp"></div>
+<div class="persp"><div class="card" id="s04-card"><video class="clip" src="assets/clips/pochita.mp4" data-start="2.5" data-duration="2.2" data-media-start="0.6" muted playsinline></video></div></div>
+<div class="t red" id="s04-bam">Bam.</div>
+<div class="t" id="s04-new">le monde est réécrit</div>
+<div class="flash" id="s04-flash"></div>
+<div class="vig"></div>
+@@@js
+// Ok. Maintenant on regarde les preuves. — trois dossiers s'ouvrent en éventail
+flipIn("#s04-title", W(19.0));
+[["#s04-d1", -26, -330], ["#s04-d2", 0, 0], ["#s04-d3", 26, 330]].forEach(([d, ry, x], i) => {
+  tl.fromTo(d, { x: 0, rotationY: 0, z: -900, opacity: 0 }, { x, rotationY: ry, z: i === 1 ? 80 : -60, opacity: 1, duration: 0.6, ease: "power3.out" }, W(19.2) + i * 0.12);
+});
+// Pochita se dévore lui-même. — les dossiers s'envolent, l'anneau revient et se referme sur lui
+["#s04-d1", "#s04-d2", "#s04-d3"].forEach((d, i) => tl.to(d, { z: -1600, opacity: 0, duration: 0.4, ease: "power2.in" }, W(20.4) + i * 0.05));
+flipOut("#s04-title", W(20.4));
+const R = ringBuild(document.getElementById("s04-persp"), "s04-ring");
+gsap.set(R.tilt, { rotationX: 68, scale: 0.6 });
+const sp = { a: 0 };
+drive(0, 5.4, (t) => gsap.set(R.spin, { rotationZ: ((S0 + t) * RING_W + sp.a) % 360 }));
+tl.fromTo(R.tilt, { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 0.6, duration: 0.5, ease: "power3.out" }, W(20.5));
+tl.to(sp, { a: 540, duration: 1.4, ease: "power2.in" }, W(20.6));
+tl.fromTo("#s04-card", { opacity: 0, scale: 1 }, { opacity: 1, scale: 1, duration: 0.2 }, W(20.6));
+tl.to("#s04-card", { scale: 0.05, opacity: 0, rotationZ: 180, duration: 0.9, ease: "power3.in" }, W(21.2));
+// Bam. Le monde est réécrit. — flash blanc, la grille du nouveau monde se dessine
+tl.fromTo("#s04-flash", { opacity: 0 }, { opacity: 1, duration: 0.05, yoyo: true, repeat: 1 }, W(22.55));
+tl.to(R.tilt, { opacity: 0, duration: 0.1 }, W(22.6));
+slamIn("#s04-bam", W(22.6));
+tl.fromTo("#s04-floor", { opacity: 0, backgroundSize: "40px 40px" }, { opacity: 1, backgroundSize: "120px 120px", duration: 0.7, ease: "power3.out" }, W(22.65));
+flipIn("#s04-new", W(22.75));
+
+@@@ s05
+@bg #050506
+<style>
+#s05-chip{left:390px;top:230px}
+#s05-title{left:0;right:0;top:320px;text-align:center;font-size:118px}
+#s05-card{left:70px;top:520px;width:940px;height:531px;background:#fff}
+#s05-card img{object-fit:contain}
+#s05-ring{position:absolute;left:430px;top:90px;width:380px;height:380px;border-radius:50%;border:10px solid #ff2e2e;box-shadow:0 0 30px #ff2e2e99}
+.mini{position:absolute;width:300px;height:169px;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 20px 40px #000c}
+.mini img{width:100%;height:100%;object-fit:contain}
+#s05-pas{left:0;right:0;top:1100px;text-align:center;font-size:88px}
+#s05-strike{left:120px;top:1150px;width:840px}
+#s05-x{left:0;right:0;top:520px;text-align:center;font-size:520px;line-height:1}
+</style>
+<div class="bgfx"></div>
+<div class="persp"><div class="floor" id="s05-floor"></div></div>
+<div class="chip" id="s05-chip">Preuve 01</div>
+<div class="t" id="s05-title">les tronçonneuses</div>
+<div class="persp" id="s05-grid"></div>
+<div class="persp"><div class="card" id="s05-card"><img src="assets/images/denji-tronconneuse.png" alt="Denji avec une tronçonneuse dans le nouveau monde"><div id="s05-ring"></div></div></div>
+<div class="t" id="s05-pas">peur des tronçonneuses</div>
+<div class="strike" id="s05-strike"></div>
+<div class="t red" id="s05-x">✕</div>
+<div class="vig"></div>
+@@@js
+// Première preuve : les tronçonneuses.
+gsap.set("#s05-floor", { opacity: 1 });
+fadeIn("#s05-chip", W(23.4), 0.25);
+flipIn("#s05-title", W(24.2));
+// Dans le nouveau monde, elles existent toujours. — la case de Denji, tronçonneuse cerclée de rouge
+cardIn("#s05-card", W(25.1), 12, -28);
+tl.fromTo("#s05-ring", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" }, W(26.1));
+// Partout. — la case se démultiplie en profondeur
+const grid = document.getElementById("s05-grid");
+const minis = [];
+for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) {
+  const m = document.createElement("div"); m.className = "mini";
+  m.innerHTML = '<img src="assets/images/denji-tronconneuse.png" alt="">';
+  m.style.left = (30 + c * 350) + "px"; m.style.top = (440 + r * 200) + "px";
+  grid.appendChild(m); minis.push(m);
+}
+minis.forEach((m, i) => tl.fromTo(m, { z: -1400, opacity: 0, rotationY: 30 }, { z: -300 - (i % 3) * 120, opacity: 0.85, rotationY: 0, duration: 0.45, ease: "power3.out" }, W(26.85) + i * 0.03));
+tl.to("#s05-card", { scale: 0.86, duration: 0.4, ease: "power2.out" }, W(26.85));
+// Comme si de rien n'était.
+minis.forEach((m, i) => tl.to(m, { opacity: 0, z: -1600, duration: 0.4, ease: "power2.in" }, W(27.6) + i * 0.02));
+tl.to("#s05-card", { scale: 1, duration: 0.4, ease: "power2.out" }, W(27.6));
+// Donc c'était PAS la peur des tronçonneuses. — barré
+fadeOut("#s05-chip", W(28.6), 0.2); flipOut("#s05-title", W(28.6));
+tl.to("#s05-card", { y: -120, scale: 0.8, filter: "brightness(0.5)", duration: 0.4, ease: "power2.inOut" }, W(28.6));
+flipIn("#s05-pas", W(28.75));
+strike("#s05-strike", W(29.3));
+slamIn("#s05-x", W(29.35));
+tl.to("#s05-x", { opacity: 0, duration: 0.25 }, W(30.1));
+
+@@@ s06
+@bg #050506
+<style>
+#s06-chip{left:390px;top:230px}
+#s06-title{left:0;right:0;top:330px;text-align:center;font-size:220px}
+#s06-eq{left:0;right:0;top:560px;height:520px}
+#s06-pc{left:60px;top:60px;width:440px;height:248px}
+#s06-equal{left:520px;top:100px;font-size:160px}
+#s06-ob{left:630px;top:120px;font-size:128px}
+#s06-ring2{left:820px;top:200px}
+#s06-logic1{left:0;right:0;top:260px;text-align:center;font-size:96px}
+#s06-logic2{left:0;right:0;top:1000px;text-align:center;font-size:96px}
+#s06-card{left:80px;top:470px;width:920px;height:518px}
+#s06-card2{left:80px;top:470px;width:920px;height:518px}
+#s06-q{left:0;right:0;top:260px;text-align:center;font-size:84px}
+#s06-final{left:0;right:0;top:1020px;text-align:center;font-size:200px}
+#s06-strike{left:300px;top:1100px;width:480px}
+</style>
+<div class="bgfx"></div>
+<div class="chip" id="s06-chip">Preuve 02</div>
+<div class="t red" id="s06-title">l'oubli</div>
+<div class="abs" id="s06-eq">
+  <div class="persp"><div class="card" id="s06-pc"><video class="clip" src="assets/clips/pochita.mp4" data-start="2.1" data-duration="3.03" muted playsinline></video></div></div>
+  <div class="t" id="s06-equal">=</div>
+  <div class="t red" id="s06-ob">oubli ?</div>
+</div>
+<div class="t" id="s06-logic1">s'il mange l'oubli…</div>
+<div class="t red" id="s06-logic2">personne n'oublie</div>
+<div class="t" id="s06-q">et dans le nouveau monde ?</div>
+<div class="persp"><div class="card" id="s06-card"><video class="clip" src="assets/clips/denji-neige.mp4" data-start="8.85" data-duration="2.2" muted playsinline></video><div class="shine"></div></div></div>
+<div class="persp"><div class="card" id="s06-card2"><video class="clip" src="assets/clips/denji-baton.mp4" data-start="10.25" data-duration="3.6" muted playsinline></video><div class="shine"></div></div></div>
+<div class="t" id="s06-final">l'oubli</div>
+<div class="strike" id="s06-strike"></div>
+<div class="vig"></div>
+@@@js
+// Deuxième preuve : l'oubli.
+fadeIn("#s06-chip", W(31.0), 0.25);
+slamIn("#s06-title", W(32.05));
+// Certains disaient que Pochita, c'était le démon de l'Oubli. — équation Pochita = oubli ?
+flipOut("#s06-title", W(32.85));
+cardIn("#s06-pc", W(32.9), 8, -30, 0.6);
+flipIn("#s06-equal", W(34.2), 0.3);
+slamIn("#s06-ob", W(35.0));
+// Sauf que s'il avait mangé l'oubli, plus personne pourrait oublier quoi que ce soit.
+fadeOut("#s06-chip", W(35.8), 0.2);
+tl.to("#s06-eq", { y: 200, scale: 0.7, opacity: 0, duration: 0.4, ease: "power2.in" }, W(35.85));
+flipIn("#s06-logic1", W(35.9));
+slamIn("#s06-logic2", W(37.9));
+// Et dans le nouveau monde ? — Denji, seul dans la neige
+flipOut("#s06-logic1", W(39.35));
+fadeOut("#s06-logic2", W(39.4), 0.2);
+flipIn("#s06-q", W(39.7));
+cardIn("#s06-card", W(39.65), 10, 30);
+// Tout le monde a oublié l'ancien.
+cardOut("#s06-card", W(40.95), -30);
+cardIn("#s06-card2", W(41.0), 10, -30);
+tl.to("#s06-card2", { filter: "grayscale(1) brightness(0.7)", duration: 1.0 }, W(41.7));
+// Donc c'est pas l'oubli non plus. — barré
+flipOut("#s06-q", W(42.5));
+tl.to("#s06-card2", { y: -120, scale: 0.85, duration: 0.4, ease: "power2.inOut" }, W(42.5));
+flipIn("#s06-final", W(42.6));
+strike("#s06-strike", W(43.1));
+tl.to(["#s06-final", "#s06-strike", "#s06-card2"], { opacity: 0, duration: 0.3 }, 13.55);
+
+@@@ s07
+@bg #050506
+<style>
+#s07-q1{left:0;right:0;top:250px;text-align:center;font-size:110px}
+#s07-q2{left:0;right:0;top:380px;text-align:center;font-size:190px}
+#s07-one{left:0;right:0;top:470px;text-align:center;font-size:900px;line-height:1}
+#s07-one-lab{left:0;right:0;top:300px;text-align:center;font-size:96px}
+#s07-car{left:540px;top:770px}
+.face{position:absolute;left:-460px;top:-259px;width:920px;height:518px}
+#s07-name{left:0;right:0;top:220px;text-align:center;font-size:165px}
+#s07-sub{left:0;right:0;top:1080px;text-align:center;font-size:96px}
+#s07-sub2{left:0;right:0;top:1080px;text-align:center;font-size:96px}
+#s07-sub3{left:0;right:0;top:1060px;text-align:center;font-size:150px}
+#s07-flash{background:#fff}
+</style>
+<div class="bgfx"></div>
+<div class="t" id="s07-q1">qu'est-ce qui a</div>
+<div class="t red" id="s07-q2">disparu ?</div>
+<div class="t red" id="s07-one">1</div>
+<div class="t" id="s07-one-lab">une seule chose</div>
+<div class="persp" id="s07-stage"><div class="p3" id="s07-car">
+  <div class="card face" id="s07-f0"><video class="clip" src="assets/clips/geant.mp4" data-start="2.7" data-duration="2.6" muted playsinline></video><div class="shine"></div></div>
+  <div class="card face" id="s07-f1"><video class="clip" src="assets/clips/rugit.mp4" data-start="3.95" data-duration="2.6" muted playsinline></video><div class="shine"></div></div>
+  <div class="card face" id="s07-f2"><video class="clip" src="assets/clips/espace.mp4" data-start="5.6" data-duration="2.6" muted playsinline></video><div class="shine"></div></div>
+  <div class="card face" id="s07-f3"><video class="clip" src="assets/clips/chainsaw-blanc.mp4" data-start="7.3" data-duration="1.95" data-media-start="1.2" muted playsinline></video><div class="shine"></div></div>
+</div></div>
+<div class="t red" id="s07-name">chainsaw man</div>
+<div class="t" id="s07-sub">le héros de l'enfer</div>
+<div class="t" id="s07-sub2">quand ils vont mourir…</div>
+<div class="t red" id="s07-sub3">massacre</div>
+<div class="flash" id="s07-flash"></div>
+<div class="vig"></div>
+@@@js
+// Alors qu'est-ce qui a disparu ?
+flipIn("#s07-q1", W(44.9));
+slamIn("#s07-q2", W(45.5));
+// Une seule chose. — un « 1 » géant qui pivote en 3D
+flipOut("#s07-q1", W(46.25)); flipOut("#s07-q2", W(46.25));
+tl.fromTo("#s07-one", { rotationY: -120, opacity: 0, scale: 0.5, transformPerspective: 1400 }, { rotationY: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, W(46.3));
+flipIn("#s07-one-lab", W(46.4), 0.35);
+tl.to("#s07-one", { rotationY: 90, opacity: 0, duration: 0.25, ease: "power2.in", transformPerspective: 1400 }, W(47.35));
+fadeOut("#s07-one-lab", W(47.35), 0.2);
+// Chainsaw Man. — carrousel 3D : quatre faces, une par phrase
+const R = 560;
+["#s07-f0", "#s07-f1", "#s07-f2", "#s07-f3"].forEach((f, i) => { document.querySelector(f).style.transform = `rotateY(${i * 90}deg) translateZ(${R}px)`; });
+gsap.set("#s07-car", { z: -R });
+tl.fromTo("#s07-car", { z: -R - 1600, rotationY: 40, opacity: 0 }, { z: -R, rotationY: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, W(47.45));
+tl.fromTo("#s07-flash", { opacity: 0 }, { opacity: 0.85, duration: 0.05, yoyo: true, repeat: 1 }, W(47.6));
+slamIn("#s07-name", W(47.6));
+shake("#s07-stage", W(47.65), 0.35, 16, 7);
+// Le Héros de l'Enfer.
+tl.to("#s07-car", { rotationY: -90, duration: 0.6, ease: "power3.inOut" }, W(48.75));
+flipIn("#s07-sub", W(49.0));
+// Celui que les démons appellent quand ils vont mourir…
+flipOut("#s07-sub", W(50.4));
+tl.to("#s07-car", { rotationY: -180, duration: 0.6, ease: "power3.inOut" }, W(50.4));
+flipIn("#s07-sub2", W(51.0));
+// … et qui vient tous les massacrer.
+flipOut("#s07-sub2", W(52.1));
+tl.to("#s07-car", { rotationY: -270, duration: 0.5, ease: "power3.inOut" }, W(52.1));
+slamIn("#s07-sub3", W(52.7));
+shake("#s07-stage", W(52.75), 0.4, 22, 9);
+tl.to(["#s07-name", "#s07-sub3"], { opacity: 0, duration: 0.25 }, 8.95);
+tl.to("#s07-car", { z: -R - 1400, opacity: 0, duration: 0.3, ease: "power2.in" }, 8.95);
+
+@@@ s08
+@bg #050506
+<style>
+#s08-a1{left:0;right:0;top:250px;text-align:center;font-size:96px}
+#s08-strike{left:120px;top:300px;width:840px}
+#s08-b1{left:0;right:0;top:480px;text-align:center;font-size:120px}
+#s08-b2{left:0;right:0;top:620px;text-align:center;font-size:175px}
+#s08-flash{background:#fff}
+#s08-orb{left:540px;top:800px}
+.peur{position:absolute;left:-150px;top:-50px;width:300px;height:100px;text-align:center;font-size:84px;backface-visibility:hidden}
+#s08-card{left:300px;top:665px;width:480px;height:270px}
+#s08-l1{left:0;right:0;top:250px;text-align:center;font-size:110px}
+#s08-ex{left:0;right:0;top:1060px;text-align:center;font-size:200px}
+</style>
+<div class="bgfx"></div>
+<div class="t" id="s08-a1">peur des tronçonneuses</div>
+<div class="strike" id="s08-strike"></div>
+<div class="t" id="s08-b1">c'est la peur de</div>
+<div class="t red" id="s08-b2">chainsaw man</div>
+<div class="persp" id="s08-stage"><div class="p3" id="s08-orb" data-layout-allow-overlap></div></div>
+<div class="persp"><div class="card" id="s08-card"><video class="clip" src="assets/clips/pochita.mp4" data-start="5.9" data-duration="1.75" data-media-start="0.8" muted playsinline></video><div class="shine"></div></div></div>
+<div class="t" id="s08-l1">leur peur</div>
+<div class="t red" id="s08-ex">exister</div>
+<div class="flash" id="s08-flash"></div>
+<div class="vig"></div>
+@@@js
+// Pochita, c'est pas la peur des tronçonneuses.
+flipIn("#s08-a1", W(54.5));
+strike("#s08-strike", W(55.4));
+tl.to(["#s08-a1", "#s08-strike"], { opacity: 0.35, duration: 0.3 }, W(55.9));
+// C'est la peur de CHAINSAW MAN.
+flipIn("#s08-b1", W(56.1));
+tl.fromTo("#s08-flash", { opacity: 0 }, { opacity: 0.9, duration: 0.05, yoyo: true, repeat: 1 }, W(56.6));
+slamIn("#s08-b2", W(56.6), 3);
+shake("#s08-b2", W(56.65), 0.4, 20, 4);
+// Les démons avaient tellement peur de lui… — une orbite de « PEUR » qui tourne en 3D
+["#s08-a1", "#s08-strike", "#s08-b1", "#s08-b2"].forEach((e) => tl.to(e, { opacity: 0, y: -60, duration: 0.3, ease: "power2.in" }, W(58.2)));
+const orb = document.getElementById("s08-orb");
+for (let i = 0; i < 12; i++) {
+  const w = document.createElement("div"); w.className = "t peur" + (i % 3 === 0 ? " red" : ""); w.textContent = "peur"; w.setAttribute("data-layout-allow-overlap", "");
+  w.style.transform = `rotateY(${i * 30}deg) translateZ(400px) translateY(${(i % 2 ? 1 : -1) * 70}px)`; orb.appendChild(w);
+}
+gsap.set(orb, { rotationX: -12 });
+tl.fromTo(orb, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" }, W(58.4));
+tl.fromTo(orb, { rotationY: 0 }, { rotationY: 300, duration: 3.0, ease: "none" }, W(58.4));
+// … que leur peur l'a fait exister. — les « PEUR » convergent et font naître Pochita
+flipIn("#s08-l1", W(60.0));
+tl.to(orb, { scale: 0.05, opacity: 0, duration: 0.6, ease: "power3.in" }, W(60.4));
+tl.fromTo("#s08-card", { scale: 0, opacity: 0, rotationY: -180 }, { scale: 1, opacity: 1, rotationY: 0, duration: 0.6, ease: "back.out(1.3)" }, W(60.85));
+slamIn("#s08-ex", W(61.0));
+tl.to(["#s08-l1", "#s08-ex", "#s08-card"], { opacity: 0, duration: 0.2 }, 7.45);
+
+@@@ s09
+@bg #050506
+<style>
+#s09-cam{position:absolute;inset:0}
+#s09-card{left:250px;top:660px;background:url(assets/images/posters/pochita-fin.jpg) center/cover;width:580px;height:326px}
+#s09-a{left:0;right:0;top:250px;text-align:center;font-size:110px}
+#s09-a2{left:0;right:0;top:380px;text-align:center;font-size:160px}
+#s09-b{left:0;right:0;top:300px;text-align:center;font-size:130px}
+#s09-c1{left:0;right:0;top:230px;text-align:center;font-size:110px}
+#s09-c2{left:0;right:0;top:360px;text-align:center;font-size:150px}
+</style>
+<div class="bgfx"></div>
+<div class="cam" id="s09-cam">
+  <div class="persp" id="s09-persp"></div>
+  <div class="persp"><div class="card" id="s09-card"><video class="clip" src="assets/clips/pochita.mp4" data-start="0.57" data-duration="3.03" muted playsinline></video><div class="shine"></div></div></div>
+</div>
+<div class="t" id="s09-a">un démon né</div>
+<div class="t red" id="s09-a2">de la peur</div>
+<div class="t" id="s09-b">qui se dévore</div>
+<div class="t" id="s09-c1">un serpent qui se</div>
+<div class="t red" id="s09-c2">mord la queue</div>
+<div class="vig"></div>
+@@@js
+// l'anneau-chaîne revient : il finit seul, exactement comme la vidéo commence
+const R = ringBuild(document.getElementById("s09-persp"), "s09-ring");
+gsap.set(R.tilt, { rotationX: 68 });
+const sp = { a: 0 };
+// un tour complet en plus pendant « qui se dévore » ; l'angle final retombe sur le temps global → boucle
+drive(0, 7.273, (t) => gsap.set(R.spin, { rotationZ: ((S0 + t) * RING_W + sp.a) % 360 }));
+tl.fromTo(R.tilt, { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+// caméra : même vitesse de poussée que l'ouverture (1,0 → 1,07 en 4,6 s), elle arrive pile à 1,0
+tl.fromTo("#s09-cam", { scale: 0.89 }, { scale: 1, duration: 7.273, ease: "none", transformOrigin: "540px 820px" }, 0);
+// Un démon né de la peur qu'il inspire.
+tl.fromTo("#s09-card", { y: 260, z: -500, rotationX: 70, opacity: 0, transformPerspective: 1600 }, { y: 0, z: 0, rotationX: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, W(61.75));
+flipIn("#s09-a", W(61.8));
+slamIn("#s09-a2", W(62.6));
+// Qui disparaît en se dévorant lui-même. — la carte est aspirée au centre de l'anneau
+flipOut("#s09-a", W(63.7)); flipOut("#s09-a2", W(63.75));
+flipIn("#s09-b", W(64.0));
+tl.to(sp, { a: 360, duration: 1.6, ease: "power2.inOut" }, W(64.0));
+tl.to("#s09-card", { y: 240, scale: 0.08, rotationZ: -360, opacity: 0, duration: 1.1, ease: "power3.in" }, W(64.1));
+flipOut("#s09-b", W(65.4));
+// Comme un serpent qui se mord la queue.
+flipIn("#s09-c1", W(66.1));
+slamIn("#s09-c2", W(66.9));
+// … puis l'anneau reste seul : « Et c'est pour ça que j'te le dis : » → retour au début
+flipOut("#s09-c1", W(67.55)); flipOut("#s09-c2", W(67.6));
