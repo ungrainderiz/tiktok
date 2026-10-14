@@ -7,52 +7,53 @@ Dans le dernier chapitre, on reparle du concept de la mort : il n'est plus oubli
 
 ## Écriture
 
-Familière, liaisons orales écrites (« y'a », « c'qu'il », « d'la », « j'pense »), pas de mot répété :
-bouffer / avaler / dévorer / croquer, gosses / mômes / gamins, disparaître / s'effacer / rayé d'la carte.
+Familière mais naturelle : quelques élisions courantes (« t'as », « y a », « t'y passes »), pas de caricature.
+Les théories sur les 3 peurs sont présentées comme des hypothèses (« on pourrait imaginer », « peut-être », « imagine »).
+Rappel court : la liste de Makima à Kishibe (case jointe), pas d'explication détaillée des pouvoirs.
 
 ## Texte
 
-Trois choses qu'avaient disparu de Chainsaw Man viennent de revenir. Et personne en parle.
+Trois peurs qui avaient disparu de Chainsaw Man viennent de revenir. Et personne en parle.
 
-P'tit rappel.
-Quand Pochita bouffe un démon, c'qu'il représente s'efface. Du monde, et d'la tête des gens.
-Les bombes nucléaires ? Avalées. Mais y'a encore plus chelou.
-Les humains avaient un sixième sens.
-Y'avait une étoile dont la lumière pétait l'esprit des gosses.
-Et quand ta vie s'arrêtait, t'avais quatre autres sorties que la mort.
-Tout ça ? Rayé d'la carte.
+Rappel express. Makima l'a dit à Kishibe : Chainsaw Man a dévoré les nazis. La Deuxième Guerre mondiale. Le sida. La SOA. Le syndrome d'Arnolone. L'éruption du mont Hio. Les armes nucléaires.
+Effacés du monde. Elle est la seule à s'en souvenir.
+Et dans le lot, y a trois trucs que personne arrive à expliquer.
+Un sixième sens que les humains avaient.
+Une étoile dont la lumière brisait l'esprit des enfants.
+Et quatre autres voies que la mort, quand une vie se termine.
 
-Sauf que… Pochita s'est dévoré lui-même.
-« Un univers où j'aurai jamais existé. » C'est lui qui l'dit.
-Sans Chainsaw Man, personne les a jamais croqués. Résultat : ils refont surface.
+Sauf que… Pochita s'est mangé lui-même.
+« Un univers où je n'aurai jamais existé. »
+Pas de Héros de l'Enfer, donc personne pour les avaler. Tout revient.
 
-La preuve ? Dans l'dernier chapitre, ça reparle d'la mort.
-Si les gens l'ont en tête, c'est qu'ils l'ont pas oubliée. Donc elle existe à nouveau.
-Et si elle est d'retour… les autres aussi.
+La preuve ? Dans le dernier chapitre, on reparle de la mort.
+Si les gens y pensent, c'est qu'ils l'ont pas oubliée. Elle existe à nouveau.
+Et si elle est revenue… les autres aussi.
 
-Ok. Maintenant la vraie question : c'est quoi, ces trucs ?
+Ok. Maintenant la vraie question : c'est quoi, ces trois peurs ?
 
-Le sixième sens, j'pense que c'est sentir les démons. Pas les voir, hein. Les SENTIR arriver. Un radar à peur.
+Le sixième sens. On pourrait imaginer un sens pour sentir les démons. Pas les voir, hein. Les SENTIR arriver. Un radar à peur.
 
 Les quatre voies, c'est plus vicieux. Aujourd'hui, quand t'y passes, t'y passes. Point.
-Avant, t'avais le choix. Renaître. Te transformer. Finir en Enfer.
+Peut-être qu'avant, t'avais le choix. Renaître. Te transformer. Finir en Enfer.
 La quatrième ? Mystère total.
 
-Et l'étoile… une lumière qui casse la tête des mômes.
-Vu qu'ici, c'est la peur qui fait naître les monstres, imagine c'qu'une étoile qui terrifie TOUS les gamins d'la planète peut fabriquer.
+Et l'étoile… Une lumière qui casse la tête des gosses.
+Vu que c'est la peur qui fait naître les démons, imagine ce qu'une étoile qui terrifie TOUS les gamins de la planète pourrait créer.
 Un cauchemar sur pattes.
 Et Chainsaw Man est plus là pour le bouffer.
-Tu sais c'que ça veut dire ?
+Tu sais ce que ça veut dire ?
 
 ## Boucle
 
-« …Et Chainsaw Man est plus là pour le bouffer. Tu sais c'que ça veut dire ? » → retour au début (la réponse) :
-« Trois choses qu'avaient disparu de Chainsaw Man viennent de revenir. »
+« …Et Chainsaw Man est plus là pour le bouffer. Tu sais ce que ça veut dire ? » → retour au début (la réponse) :
+« Trois peurs qui avaient disparu de Chainsaw Man viennent de revenir. »
 Image : raccord sur la case des trois bulles (le « ciel » vert entre les immeubles) : on finit en zoomant dessus,
 on recommence dessus, même cadrage.
 
 ## Assets reçus
 
+- `assets/images/case-makima-liste.jpg` : Makima à Kishibe, la liste de tout ce que Chainsaw Man a dévoré.
 - `assets/images/case-trois-concepts.jpg` : les trois bulles (sixième sens, étoile, quatre voies hormis la mort).
 - `assets/images/case-demon-cerveau.jpg` et `case-denji-a-terre.jpg` : plus utilisées par le texte (ancienne chute).
 
@@ -63,4 +64,5 @@ on recommence dessus, même cadrage.
 - Les théories (sixième sens = sentir les démons ; voies = renaître / se transformer / finir en Enfer ;
   étoile = peur de tous les enfants → démon monstrueux) sont des spéculations, à remplacer par celles de Matt s'il préfère.
 - Pas de bilan / conclusion : la dernière phrase est une question dont la réponse est la 1re phrase.
-- Les bombes nucléaires mangées par Chainsaw Man : partie 1 (Makima).
+- Liste des démons dévorés : d'après la case de Makima envoyée par Matt (nazis, 2e Guerre mondiale, sida, SOA,
+  syndrome d'Arnolone, éruption du mont Hio, armes nucléaires + les trois mystérieux).
