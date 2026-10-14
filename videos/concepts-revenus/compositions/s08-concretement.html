@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s08-template">
+<style>
+
+@font-face{font-family:"Anton";src:url(assets/fonts/anton.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:800;src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:900;src:url(assets/fonts/inter-latin-900-normal.woff2) format("woff2")}
+
+.abs{position:absolute}
+.cam{position:absolute;inset:0}
+.persp{position:absolute;inset:0;perspective:1600px;perspective-origin:50% 42%}
+.p3{position:absolute;transform-style:preserve-3d}
+.bgfx{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#1c0d10 0,#0d0b0e 45%,#050506 100%)}
+.floor{position:absolute;left:-1200px;top:1180px;width:3480px;height:2400px;transform-origin:50% 0;transform:rotateX(78deg);
+  background-image:linear-gradient(#ffffff10 2px,transparent 2px),linear-gradient(90deg,#ffffff10 2px,transparent 2px);background-size:120px 120px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0,#000 0,transparent 70%);mask-image:radial-gradient(ellipse at 50% 0,#000 0,transparent 70%)}
+.t{position:absolute;font-family:"Anton";color:#f4f1ee;text-transform:uppercase;letter-spacing:2px;line-height:.95;white-space:nowrap;
+  text-shadow:1px 1px 0 #b9b4ae,2px 2px 0 #a39e98,3px 3px 0 #8c8781,4px 4px 0 #75716b,5px 5px 0 #5f5b56,6px 6px 0 #4a4642,0 18px 40px #000000cc}
+.t.red{color:#ff2e2e;text-shadow:1px 1px 0 #d81f1f,2px 2px 0 #c01a1a,3px 3px 0 #a71515,4px 4px 0 #8e1111,5px 5px 0 #750d0d,6px 6px 0 #5c0909,0 18px 40px #000000cc}
+.chip{position:absolute;font-family:"Inter";font-weight:800;font-size:34px;letter-spacing:6px;color:#ff2e2e;text-transform:uppercase;
+  padding:12px 24px;border:3px solid #ff2e2e;border-radius:999px;background:#ff2e2e14;white-space:nowrap}
+.card{position:absolute;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 50px 90px #000000e0,0 0 0 2px #ffffff1c;backface-visibility:hidden}
+.card video,.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .shine{position:absolute;inset:0;background:linear-gradient(115deg,#ffffff1f 0,transparent 35%);pointer-events:none}
+.strike{position:absolute;height:16px;background:#ff2e2e;border-radius:8px;box-shadow:0 0 30px #ff2e2e88;transform-origin:0 50%}
+.flash{position:absolute;inset:0;background:#fff;opacity:0}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,#000000d8 100%);pointer-events:none}
+.ring{position:absolute;left:540px;top:820px;transform-style:preserve-3d}
+.tooth{position:absolute;left:-26px;top:-470px;width:52px;height:70px;clip-path:polygon(0 100%,18% 22%,62% 0,100% 100%);
+  background:linear-gradient(180deg,#ffffff 0,#cfc9c3 45%,#6f6a65 100%)}
+.link{position:absolute;left:-20px;top:-408px;width:40px;height:46px;border-radius:10px;background:linear-gradient(180deg,#3a3a40,#16161a);box-shadow:inset 0 0 0 3px #ff2e2e55}
+[id$="-all"]{position:absolute;inset:0}
+
+#s08{position:absolute;inset:0;overflow:hidden;background:#050506}
+</style>
+<div id="s08" data-composition-id="s08" data-width="1080" data-height="1920">
+<style>
+#s08-chip{left:368px;top:220px}
+#s08-card{left:80px;top:420px;width:920px;height:656px}
+#s08-eye{left:540px;top:800px}
+.wave{position:absolute;left:-90px;top:-90px;width:180px;height:180px;border-radius:50%;border:4px solid #ff2e2e;opacity:0}
+#s08-iris{position:absolute;left:-150px;top:-80px;width:300px;height:160px;border-radius:50%;background:#f4f1ee;clip-path:ellipse(50% 50% at 50% 50%);box-shadow:0 0 60px #ff2e2e88}
+#s08-pupil{position:absolute;left:-55px;top:-55px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#050506 0 30%,#ff2e2e 31% 60%,#7a0b0b 61%)}
+#s08-sens{left:0;right:0;top:250px;text-align:center;font-size:130px}
+#s08-starbox{left:540px;top:600px}
+#s08-rays{position:absolute;left:-500px;top:-500px;width:1000px;height:1000px;border-radius:50%;background:repeating-conic-gradient(#ff2e2e22 0 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 0,transparent 65%);mask-image:radial-gradient(circle,#000 0,transparent 65%)}
+#s08-glow{position:absolute;left:-260px;top:-260px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,#ffffffee 0,#ffd0d0aa 12%,#ff2e2e44 35%,transparent 70%)}
+#s08-star{position:absolute;left:-110px;top:-110px;width:220px;height:220px;background:#fff;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%)}
+#s08-ground{left:0;right:0;top:1150px;height:770px;background:linear-gradient(#0a0709,#050506)}
+#s08-st{left:0;right:0;top:1000px;text-align:center;font-size:110px}
+#s08-hall{left:540px;top:820px}
+.door{position:absolute;top:-230px;width:170px;height:330px;border-radius:12px 12px 0 0;background:linear-gradient(#1d1b20,#0b0a0d);box-shadow:0 0 0 3px #ffffff22,0 30px 60px #000c}
+.door b{position:absolute;left:0;right:0;top:110px;text-align:center;font-family:"Anton";font-weight:400;font-size:90px;color:#3a3a40}
+.door.m b{font-size:44px;top:140px;color:#f4f1ee}
+#s08-d0{left:-470px}#s08-d1{left:-275px}#s08-d2{left:-85px}#s08-d3{left:105px}#s08-d4{left:300px}
+#s08-portes{left:0;right:0;top:260px;text-align:center;font-size:110px}
+</style>
+<div class="bgfx"></div>
+<div class="chip" id="s08-chip">Nouveau monde</div>
+<div class="persp"><div class="card" id="s08-card"><img src="assets/images/cases/denji-nouveau-monde.jpg" alt="Denji devil hunter dans le nouveau monde"><div class="shine"></div></div></div>
+<div class="abs" id="s08-eye">
+  <div class="wave" id="s08-w0"></div><div class="wave" id="s08-w1"></div><div class="wave" id="s08-w2"></div><div class="wave" id="s08-w3"></div>
+  <div id="s08-iris"></div><div id="s08-pupil"></div>
+</div>
+<div class="t" id="s08-sens">un sens en plus</div>
+<div class="abs" id="s08-ground"></div>
+<div class="abs" id="s08-starbox"><div id="s08-rays"></div><div id="s08-glow"></div><div id="s08-star"></div></div>
+<div class="t red" id="s08-st">elle brille à nouveau</div>
+<div class="persp"><div class="p3" id="s08-hall">
+  <div class="door m" id="s08-d0"><b>MORT</b></div>
+  <div class="door" id="s08-d1"><b>?</b></div>
+  <div class="door" id="s08-d2"><b>?</b></div>
+  <div class="door" id="s08-d3"><b>?</b></div>
+  <div class="door" id="s08-d4"><b>?</b></div>
+</div></div>
+<div class="t" id="s08-portes">+4 sorties</div>
+<div class="vig"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 60.3;
+const W = (t) => +(t + 0.0 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const SPR = {};
+const TOTAL_ = 76.252;
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+// anime une planche de sprites (GIF officiel découpé) image par image, de façon déterministe
+const sheet = (el, name, scale, start, dur) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px` });
+  const cyc = (m.frames * m.ms) / 1000; const n = Math.max(1, Math.ceil(dur / cyc));
+  tl.fromTo(el, { backgroundPositionX: "0px" }, { backgroundPositionX: `${-m.frames * w}px`, duration: cyc, ease: `steps(${m.frames})`, repeat: n - 1 }, start);
+};
+// une seule mise à jour par image, calculée à partir du temps local
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const drive = (start, dur, fn) => { const o = { t: 0 }; fn(0); tl.fromTo(o, { t: 0 }, { t: dur, duration: dur, ease: "none", immediateRender: false, onUpdate: () => fn(o.t) }, start); };
+const bob = (el, start, dur, amp = 10, step = 0.55) => tl.fromTo(el, { y: 0 }, { y: amp, duration: step / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (step / 2)) - 1), immediateRender: false }, start);
+const flicker = (el, start, dur, lo = 0.7, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.09));
+  for (let i = 0; i < n; i++) tl.to(el, { opacity: lo + (1 - lo) * hash(seed * 13 + i * 7), duration: dur / n, ease: "none" }, start + (i * dur) / n);
+};
+// image fixe d'une planche : f(frame, t) pose la case voulue au temps t
+const still = (el, name, scale = 1) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px`, backgroundPositionX: "0px" });
+  return (frame, t) => tl.set(el, { backgroundPositionX: `${-frame * w}px` }, t);
+};
+// texte qui s'écrit lettre par lettre entre a et b
+const typeText = (el, str, a, b, cls = "") => {
+  const chars = [...str];
+  chars.forEach((ch, i) => {
+    const sp = document.createElement("span"); sp.textContent = ch; sp.style.opacity = 0; if (cls) sp.className = cls;
+    el.appendChild(sp); tl.set(sp, { opacity: 1 }, a + ((b - a) * i) / chars.length);
+  });
+};
+// particules carrées (gouttes, braises, fumée) posées au hasard mais de façon fixe
+const motes = (parent, n, seed, box, cls = "mote") => {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const m = document.createElement("div"); m.className = cls;
+    m.style.left = Math.round(box[0] + hash(seed * 13 + i * 3) * box[2]) + "px";
+    m.style.top = Math.round(box[1] + hash(seed * 29 + i * 5) * box[3]) + "px";
+    parent.appendChild(m); out.push(m);
+  }
+  return out;
+};
+// anneau de chaîne de tronçonneuse (ouroboros) : N dents sur un cercle, couché en perspective.
+// L'angle ne dépend que du temps GLOBAL et fait un nombre entier de crans sur toute la vidéo → boucle parfaite.
+const RING_N = 40, RING_W = (360 / RING_N) * 153 / TOTAL_;
+const ringBuild = (parent, id) => {
+  const tilt = document.createElement("div"); tilt.className = "ring"; tilt.id = id;
+  const spin = document.createElement("div"); spin.className = "p3"; spin.id = id + "-spin";
+  for (let i = 0; i < RING_N; i++) {
+    const l = document.createElement("div"); l.className = "link"; l.style.transform = `rotateZ(${i * 360 / RING_N + 4.5}deg)`; l.style.transformOrigin = "20px 408px"; spin.appendChild(l);
+    const d = document.createElement("div"); d.className = "tooth"; d.style.transform = `rotateZ(${i * 360 / RING_N}deg)`; d.style.transformOrigin = "26px 470px"; spin.appendChild(d);
+  }
+  tilt.appendChild(spin); parent.appendChild(tilt);
+  return { tilt, spin, at: (g) => gsap.set(spin, { rotationZ: (g * RING_W) % 360 }) };
+};
+// entrées / sorties 3D propres (perspective appliquée à chaque élément)
+const flipIn = (el, t, d = 0.45, from = -90) => tl.fromTo(el, { rotationX: from, opacity: 0, y: 30, transformPerspective: 1200 }, { rotationX: 0, opacity: 1, y: 0, duration: d, ease: "back.out(1.4)" }, t);
+const flipOut = (el, t, d = 0.3) => tl.to(el, { rotationX: 80, opacity: 0, y: -30, duration: d, ease: "power2.in", transformPerspective: 1200 }, t);
+const slamIn = (el, t, from = 2.2) => tl.fromTo(el, { scale: from, opacity: 0, z: 300 }, { scale: 1, opacity: 1, z: 0, duration: 0.22, ease: "power4.in" }, t);
+const cardIn = (el, t, rx = 18, ry = -35, d = 0.7) => tl.fromTo(el, { rotationX: rx, rotationY: ry, z: -700, opacity: 0 }, { rotationX: 0, rotationY: 0, z: 0, opacity: 1, duration: d, ease: "power3.out" }, t);
+const cardOut = (el, t, ry = 35, d = 0.45) => tl.to(el, { rotationY: ry, z: -900, opacity: 0, duration: d, ease: "power2.in" }, t);
+const strike = (el, t, d = 0.3) => tl.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: d, ease: "power3.out" }, t);
+const fadeIn = (el, t, d = 0.3) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t);
+const fadeOut = (el, t, d = 0.3) => tl.to(el, { opacity: 0, duration: d, ease: "power1.in" }, t);
+const drift = (el, t, d, ry = 6, rx = 3) => tl.fromTo(el, { rotationY: -ry, rotationX: rx }, { rotationY: ry, rotationX: -rx, duration: d, ease: "sine.inOut" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+// Concrètement, ça donne quoi ?
+fadeIn("#s08-chip", W(60.55), 0.2);
+cardIn("#s08-card", W(60.45), 10, -30, 0.7);
+drift("#s08-card", W(61.15), 1.2);
+// … y a des humains qui ont un sens en plus. — un œil, des ondes qui partent comme un radar
+cardOut("#s08-card", W(62.45), 35, 0.4);
+fadeOut("#s08-chip", W(62.45), 0.2);
+tl.fromTo("#s08-eye", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }, W(62.75));
+["#s08-w0", "#s08-w1", "#s08-w2", "#s08-w3"].forEach((w, i) => {
+  for (let k = 0; k < 3; k++) tl.fromTo(w, { scale: 1, opacity: 0.9 }, { scale: 4.5, opacity: 0, duration: 1.0, ease: "power1.out", immediateRender: false }, W(62.9) + k * 1.0 + i * 0.25);
+});
+tl.fromTo("#s08-pupil", { x: -40 }, { x: 40, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, W(63.0));
+slamIn("#s08-sens", W(65.2));
+// Une étoile qui brille à nouveau au-dessus des gosses.
+tl.to(["#s08-eye", "#s08-sens"], { opacity: 0, scale: 0.6, duration: 0.3, ease: "power2.in" }, W(65.85));
+fadeIn("#s08-ground", W(66.0), 0.3);
+tl.fromTo("#s08-starbox", { y: 520, opacity: 0, scale: 0.4 }, { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, W(66.1));
+tl.fromTo("#s08-rays", { rotation: 0 }, { rotation: 40, duration: 2.8, ease: "none" }, W(66.1));
+tl.fromTo("#s08-glow", { scale: 0.9 }, { scale: 1.15, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 3 }, W(66.6));
+flipIn("#s08-st", W(66.75));
+// Et des gens qui meurent… avec quatre autres portes de sortie. — un couloir de portes en 3D
+tl.to(["#s08-starbox", "#s08-st", "#s08-ground"], { opacity: 0, duration: 0.3 }, W(68.75));
+gsap.set("#s08-hall", { rotationX: -8 });
+tl.fromTo("#s08-hall", { z: -1400, rotationY: 25, opacity: 0 }, { z: 0, rotationY: -6, opacity: 1, duration: 0.7, ease: "power3.out" }, W(68.85));
+tl.to("#s08-hall", { rotationY: 6, duration: 2.6, ease: "sine.inOut" }, W(69.55));
+tl.fromTo("#s08-d0", { y: 0 }, { y: -20, duration: 0.25, yoyo: true, repeat: 1 }, W(69.7));
+["#s08-d1 b", "#s08-d2 b", "#s08-d3 b", "#s08-d4 b"].forEach((d, i) => tl.to(d, { color: "#ff2e2e", textShadow: "0 0 40px #ff2e2e", duration: 0.12 }, W(70.39) + i * 0.17));
+flipIn("#s08-portes", W(70.4));
+tl.to(["#s08-hall", "#s08-portes"], { opacity: 0, duration: 0.3 }, 11.7);
+window.__timelines["s08"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

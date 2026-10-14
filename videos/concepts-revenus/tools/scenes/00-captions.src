@@ -1,0 +1,55 @@
+@@@ captions
+@bg transparent
+<style>
+#cap-wrap{position:absolute;left:60px;top:1370px;width:860px;height:240px}
+__CAPFONT__
+.cc{position:absolute;left:0;right:0;top:0;text-align:center;font-family:var(--cap-font);font-weight:900;font-size:var(--cap-size);line-height:1.08;text-transform:var(--cap-case);color:var(--cap-fill);-webkit-text-stroke:var(--cap-stroke);paint-order:stroke fill;filter:var(--cap-shadow);text-shadow:var(--cap-tshadow);line-height:1.3;opacity:0}
+.cw{display:inline-block}
+.cw + .cw{margin-left:var(--cap-gap)}
+</style>
+<div id="cap-wrap"></div>
+@@@js
+const WORDS = __WORDS__;
+const CAP_FILL = __CAP_FILL__;
+const CAP_HL = __CAP_HL__;
+const wrapEl = document.getElementById("cap-wrap");
+const chunks = [];
+let cur = null;
+WORDS.forEach((w, i) => {
+  const p = WORDS[i - 1];
+  const len = cur ? cur.w.map((x) => x.t).join(" ").length : 0;
+  const brk = !cur || cur.w.length >= 3 || /[.,?!…:]$/.test(p.t) || w.s - p.e > 0.35 || len + w.t.length > 19;
+  if (brk) { cur = { w: [] }; chunks.push(cur); }
+  cur.w.push(w);
+});
+chunks.forEach((c, ci) => {
+  const div = document.createElement("div");
+  div.className = "cc";
+  div.id = "cc-" + ci;
+  c.w.forEach((w, wi) => {
+    const sp = document.createElement("span");
+    sp.className = "cw";
+    sp.id = `cw-${ci}-${wi}`;
+    sp.textContent = w.t.replace(/[.,…]+$/, "");
+    if (wi) div.appendChild(document.createTextNode(" "));
+    div.appendChild(sp);
+  });
+  // groupe trop long pour la largeur : on réduit la taille plutôt que de laisser les mots se chevaucher
+  const nch = c.w.map((w) => w.t).join(" ").length;
+  if (nch > 17) div.style.fontSize = Math.round(70 * 17 / nch) + "px";
+  wrapEl.appendChild(div);
+  const start = c.w[0].s - 0.04;
+  const next = chunks[ci + 1];
+  // le dernier groupe s'efface juste avant la fin : sous-titres masqués des deux côtés du raccord de boucle
+  const end = next ? next.w[0].s - 0.04 : c.w[c.w.length - 1].e - 0.12;
+  tl.fromTo(div, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2.5)" }, start);
+  if (next) tl.set(div, { opacity: 0 }, end);
+  else tl.to(div, { opacity: 0, duration: 0.1, ease: "none" }, end - 0.1);
+  c.w.forEach((w, wi) => {
+    const sp = document.getElementById(`cw-${ci}-${wi}`);
+    // mot long : grossissement plus léger, sinon il mange l'espace avec le mot voisin
+    const k = 1 + 0.12 * Math.min(1, 6 / Math.max(1, w.t.length));
+    tl.fromTo(sp, { color: CAP_FILL, scale: 1 }, { color: CAP_HL, scale: k, duration: 0.08, ease: "power2.out" }, w.s);
+    tl.to(sp, { scale: 1, duration: 0.1 }, Math.max(w.e, w.s + 0.1));
+  });
+});

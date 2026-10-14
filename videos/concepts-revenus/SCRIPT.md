@@ -48,9 +48,11 @@ on recommence dessus, même cadrage.
 
 ## Assets reçus
 
-- `assets/images/case-makima-liste.jpg` : Makima à Kishibe, la liste de tout ce que Chainsaw Man a dévoré.
-- `assets/images/case-trois-concepts.jpg` : les trois bulles (sixième sens, étoile, quatre voies hormis la mort).
-- `assets/images/case-demon-cerveau.jpg` et `case-denji-a-terre.jpg` : plus utilisées par le texte (ancienne chute).
+- Voix : `assets/audio/voix/partie-1.mp3` (jusqu'à « Tout revient. ») et `partie-2.mp3` (« La preuve ? » → fin).
+- Cases découpées dans `assets/images/cases/` : `trois-bulles` (raccord de boucle), `liste` et `makima-devores`
+  (Makima à Kishibe), `makima-kishibe`, `makima-combat`, `chainsaw-pile` (Chainsaw Man sur les démons dévorés),
+  `demon-cerveau`, `denji-a-terre`, `denji-nouveau-monde`, `denji-gros-plan`.
+- Musique et extraits d'anime repris de la vidéo Pochita (suite directe).
 
 ## À vérifier par Matt avant la voix
 
