@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8" /></head>
+<body>
+<template id="s03-template">
+<style>
+
+@font-face{font-family:"Anton";src:url(assets/fonts/anton.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:800;src:url(assets/fonts/inter-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:900;src:url(assets/fonts/inter-latin-900-normal.woff2) format("woff2")}
+
+.abs{position:absolute}
+.cam{position:absolute;inset:0}
+.persp{position:absolute;inset:0;perspective:1600px;perspective-origin:50% 42%}
+.p3{position:absolute;transform-style:preserve-3d}
+.bgfx{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#1c0d10 0,#0d0b0e 45%,#050506 100%)}
+.floor{position:absolute;left:-1200px;top:1180px;width:3480px;height:2400px;transform-origin:50% 0;transform:rotateX(78deg);
+  background-image:linear-gradient(#ffffff10 2px,transparent 2px),linear-gradient(90deg,#ffffff10 2px,transparent 2px);background-size:120px 120px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0,#000 0,transparent 70%);mask-image:radial-gradient(ellipse at 50% 0,#000 0,transparent 70%)}
+.t{position:absolute;font-family:"Anton";color:#f4f1ee;text-transform:uppercase;letter-spacing:2px;line-height:.95;white-space:nowrap;
+  text-shadow:1px 1px 0 #b9b4ae,2px 2px 0 #a39e98,3px 3px 0 #8c8781,4px 4px 0 #75716b,5px 5px 0 #5f5b56,6px 6px 0 #4a4642,0 18px 40px #000000cc}
+.t.red{color:#ff2e2e;text-shadow:1px 1px 0 #d81f1f,2px 2px 0 #c01a1a,3px 3px 0 #a71515,4px 4px 0 #8e1111,5px 5px 0 #750d0d,6px 6px 0 #5c0909,0 18px 40px #000000cc}
+.chip{position:absolute;font-family:"Inter";font-weight:800;font-size:34px;letter-spacing:6px;color:#ff2e2e;text-transform:uppercase;
+  padding:12px 24px;border:3px solid #ff2e2e;border-radius:999px;background:#ff2e2e14;white-space:nowrap}
+.card{position:absolute;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 50px 90px #000000e0,0 0 0 2px #ffffff1c;backface-visibility:hidden}
+.card video,.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .shine{position:absolute;inset:0;background:linear-gradient(115deg,#ffffff1f 0,transparent 35%);pointer-events:none}
+.strike{position:absolute;height:16px;background:#ff2e2e;border-radius:8px;box-shadow:0 0 30px #ff2e2e88;transform-origin:0 50%}
+.flash{position:absolute;inset:0;background:#fff;opacity:0}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,#000000d8 100%);pointer-events:none}
+.ring{position:absolute;left:540px;top:820px;transform-style:preserve-3d}
+.tooth{position:absolute;left:-26px;top:-470px;width:52px;height:70px;clip-path:polygon(0 100%,18% 22%,62% 0,100% 100%);
+  background:linear-gradient(180deg,#ffffff 0,#cfc9c3 45%,#6f6a65 100%)}
+.link{position:absolute;left:-20px;top:-408px;width:40px;height:46px;border-radius:10px;background:linear-gradient(180deg,#3a3a40,#16161a);box-shadow:inset 0 0 0 3px #ff2e2e55}
+[id$="-all"]{position:absolute;inset:0}
+.t.yel{color:#ffd400;text-shadow:1px 1px 0 #e0b800,2px 2px 0 #c9a400,3px 3px 0 #b08f00,4px 4px 0 #977a00,5px 5px 0 #7d6500,6px 6px 0 #635000,0 18px 40px #000000cc}
+.shot{position:absolute;inset:0;opacity:0}
+.bd{position:absolute;left:-80px;top:-80px;right:-80px;bottom:-80px;background-size:cover;background-position:center;filter:blur(34px) brightness(.33) saturate(1.4)}
+.shot .card{left:70px;top:520px;width:940px;height:780px;background-size:cover;background-position:center}
+.inner{position:absolute;inset:0}
+.slam{left:0;right:0;text-align:center}
+
+#s03{position:absolute;inset:0;overflow:hidden;background:#050506}
+</style>
+<div id="s03" data-composition-id="s03" data-width="1080" data-height="1920">
+<div class="shot" id="s03-p0"><div class="bd" id="s03-p0-bd" style="background-image:url(assets/images/plans/fan-comic.jpg)"></div><div class="persp"><div class="card" id="s03-p0-c" style="background-image:url(assets/images/plans/fan-comic.jpg)"><div class="inner" id="s03-p0-in"><img src="assets/images/plans/fan-comic.jpg" alt="" style="object-position:85% 50%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s03-p1"><div class="bd" id="s03-p1-bd" style="background-image:url(assets/images/plans/illus-duo.jpg)"></div><div class="persp"><div class="card" id="s03-p1-c" style="background-image:url(assets/images/plans/illus-duo.jpg)"><div class="inner" id="s03-p1-in"><img src="assets/images/plans/illus-duo.jpg" alt="" style="object-position:50% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s03-p2"><div class="bd" id="s03-p2-bd" style="background-image:url(assets/images/plans/manga-noir.jpg)"></div><div class="persp"><div class="card" id="s03-p2-c" style="background-image:url(assets/images/plans/manga-noir.jpg)"><div class="inner" id="s03-p2-in"><img src="assets/images/plans/manga-noir.jpg" alt="" style="object-position:50% 30%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s03-p3"><div class="bd" id="s03-p3-bd" style="background-image:url(assets/images/plans/manga-rayon.jpg)"></div><div class="persp"><div class="card" id="s03-p3-c" style="background-image:url(assets/images/plans/manga-rayon.jpg)"><div class="inner" id="s03-p3-in"><img src="assets/images/plans/manga-rayon.jpg" alt="" style="object-position:50% 60%"></div><div class="shine"></div></div></div></div>
+<div class="t red slam" id="s03-t0" style="top:230px;font-size:200px">sukuna</div>
+<div class="t slam" id="s03-t1" style="top:180px;font-size:110px">le roi des</div>
+<div class="t red slam" id="s03-t2" style="top:300px;font-size:170px">fléaux</div>
+<div class="t yel slam" id="s03-t3" style="top:260px;font-size:140px">sans trembler</div>
+<div class="t slam" id="s03-t4" style="top:240px;font-size:190px">un à un</div>
+<div class="t red slam" id="s03-t5" style="top:250px;font-size:160px">écrasante</div>
+<div class="flash" id="s03-fl"></div><div class="vig"></div>
+</div>
+<script>
+(() => {
+const tl = gsap.timeline({ paused: true });
+const S0 = 14.43;
+const W = (t) => +(t + 0.0 - S0).toFixed(3);
+const G = (g) => +(g - S0).toFixed(3);
+
+const SPR = {};
+const TOTAL_ = 67.81;
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const shake = (target, start, dur, amp, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.04));
+  for (let i = 0; i < n; i++) {
+    const k = 1 - i / n;
+    tl.to(target, { x: (hash(seed * 31 + i * 7) * 2 - 1) * amp * k, y: (hash(seed * 17 + i * 13) * 2 - 1) * amp * k, duration: dur / n, ease: "none" }, start + (i * dur) / n);
+  }
+  tl.to(target, { x: 0, y: 0, duration: 0.04, ease: "none" }, start + dur);
+};
+const glitch = (stackSel, start, dur, maxSplit) => {
+  const copies = gsap.utils.toArray(stackSel + " .gc");
+  const amp = { a: 0 };
+  tl.set(amp, { a: 1 }, start);
+  tl.set(copies, { opacity: 0.85 }, start);
+  tl.to(amp, { a: 0, duration: dur, ease: "power3.in", onUpdate: () => {
+    const step = Math.floor(tl.time() / 0.05);
+    copies.forEach((el, l) => gsap.set(el, { x: (hash(step * 13 + l * 7) * 2 - 1) * maxSplit * amp.a, y: (hash(step * 29 + l * 11) * 2 - 1) * maxSplit * 0.35 * amp.a }));
+  } }, start);
+  tl.set(copies, { x: 0, y: 0, opacity: 0 }, start + dur);
+};
+const pop = (el, t, d = 0.45, from = 0) => tl.fromTo(el, { scale: from, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: "back.out(2.2)" }, t);
+const slam = (el, t, from = 2.6, rot = 0) => tl.fromTo(el, { scale: from, opacity: 0, rotation: rot }, { scale: 1, opacity: 1, rotation: rot, duration: 0.24, ease: "power4.in" }, t);
+// anime une planche de sprites (GIF officiel découpé) image par image, de façon déterministe
+const sheet = (el, name, scale, start, dur) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px` });
+  const cyc = (m.frames * m.ms) / 1000; const n = Math.max(1, Math.ceil(dur / cyc));
+  tl.fromTo(el, { backgroundPositionX: "0px" }, { backgroundPositionX: `${-m.frames * w}px`, duration: cyc, ease: `steps(${m.frames})`, repeat: n - 1 }, start);
+};
+// une seule mise à jour par image, calculée à partir du temps local
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const drive = (start, dur, fn) => { const o = { t: 0 }; fn(0); tl.fromTo(o, { t: 0 }, { t: dur, duration: dur, ease: "none", immediateRender: false, onUpdate: () => fn(o.t) }, start); };
+const bob = (el, start, dur, amp = 10, step = 0.55) => tl.fromTo(el, { y: 0 }, { y: amp, duration: step / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (step / 2)) - 1), immediateRender: false }, start);
+const flicker = (el, start, dur, lo = 0.7, seed = 1) => {
+  const n = Math.max(2, Math.round(dur / 0.09));
+  for (let i = 0; i < n; i++) tl.to(el, { opacity: lo + (1 - lo) * hash(seed * 13 + i * 7), duration: dur / n, ease: "none" }, start + (i * dur) / n);
+};
+// image fixe d'une planche : f(frame, t) pose la case voulue au temps t
+const still = (el, name, scale = 1) => {
+  const m = SPR[name + ".png"]; const w = m.w * scale;
+  gsap.set(el, { width: w, height: m.h * scale, backgroundImage: `url(assets/sprites/${name}.png)`, backgroundSize: `${m.frames * w}px ${m.h * scale}px`, backgroundPositionX: "0px" });
+  return (frame, t) => tl.set(el, { backgroundPositionX: `${-frame * w}px` }, t);
+};
+// texte qui s'écrit lettre par lettre entre a et b
+const typeText = (el, str, a, b, cls = "") => {
+  const chars = [...str];
+  chars.forEach((ch, i) => {
+    const sp = document.createElement("span"); sp.textContent = ch; sp.style.opacity = 0; if (cls) sp.className = cls;
+    el.appendChild(sp); tl.set(sp, { opacity: 1 }, a + ((b - a) * i) / chars.length);
+  });
+};
+// particules carrées (gouttes, braises, fumée) posées au hasard mais de façon fixe
+const motes = (parent, n, seed, box, cls = "mote") => {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const m = document.createElement("div"); m.className = cls;
+    m.style.left = Math.round(box[0] + hash(seed * 13 + i * 3) * box[2]) + "px";
+    m.style.top = Math.round(box[1] + hash(seed * 29 + i * 5) * box[3]) + "px";
+    parent.appendChild(m); out.push(m);
+  }
+  return out;
+};
+// anneau de chaîne de tronçonneuse (ouroboros) : N dents sur un cercle, couché en perspective.
+// L'angle ne dépend que du temps GLOBAL et fait un nombre entier de crans sur toute la vidéo → boucle parfaite.
+const RING_N = 40, RING_W = (360 / RING_N) * 153 / TOTAL_;
+const ringBuild = (parent, id) => {
+  const tilt = document.createElement("div"); tilt.className = "ring"; tilt.id = id;
+  const spin = document.createElement("div"); spin.className = "p3"; spin.id = id + "-spin";
+  for (let i = 0; i < RING_N; i++) {
+    const l = document.createElement("div"); l.className = "link"; l.style.transform = `rotateZ(${i * 360 / RING_N + 4.5}deg)`; l.style.transformOrigin = "20px 408px"; spin.appendChild(l);
+    const d = document.createElement("div"); d.className = "tooth"; d.style.transform = `rotateZ(${i * 360 / RING_N}deg)`; d.style.transformOrigin = "26px 470px"; spin.appendChild(d);
+  }
+  tilt.appendChild(spin); parent.appendChild(tilt);
+  return { tilt, spin, at: (g) => gsap.set(spin, { rotationZ: (g * RING_W) % 360 }) };
+};
+// entrées / sorties 3D propres (perspective appliquée à chaque élément)
+const flipIn = (el, t, d = 0.45, from = -90) => tl.fromTo(el, { rotationX: from, opacity: 0, y: 30, transformPerspective: 1200 }, { rotationX: 0, opacity: 1, y: 0, duration: d, ease: "back.out(1.4)" }, t);
+const flipOut = (el, t, d = 0.3) => tl.to(el, { rotationX: 80, opacity: 0, y: -30, duration: d, ease: "power2.in", transformPerspective: 1200 }, t);
+const slamIn = (el, t, from = 2.2) => tl.fromTo(el, { scale: from, opacity: 0, z: 300 }, { scale: 1, opacity: 1, z: 0, duration: 0.22, ease: "power4.in" }, t);
+const cardIn = (el, t, rx = 18, ry = -35, d = 0.7) => tl.fromTo(el, { rotationX: rx, rotationY: ry, z: -700, opacity: 0 }, { rotationX: 0, rotationY: 0, z: 0, opacity: 1, duration: d, ease: "power3.out" }, t);
+const cardOut = (el, t, ry = 35, d = 0.45) => tl.to(el, { rotationY: ry, z: -900, opacity: 0, duration: d, ease: "power2.in" }, t);
+const strike = (el, t, d = 0.3) => tl.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: d, ease: "power3.out" }, t);
+const fadeIn = (el, t, d = 0.3) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d, ease: "power1.out" }, t);
+const fadeOut = (el, t, d = 0.3) => tl.to(el, { opacity: 0, duration: d, ease: "power1.in" }, t);
+const drift = (el, t, d, ry = 6, rx = 3) => tl.fromTo(el, { rotationY: -ry, rotationX: rx }, { rotationY: ry, rotationX: -rx, duration: d, ease: "sine.inOut" }, t);
+const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, { y: -amp, duration: period / 2, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor(dur / (period / 2)) - 1) }, t);
+
+const flash = (t, a) => tl.fromTo("#s03-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s03-fl", { opacity: 0 });
+tl.set("#s03-p0", { opacity: 1 }, 0.0);
+tl.set("#s03-p0", { opacity: 0 }, 1.4);
+tl.fromTo("#s03-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.4, ease: "none" }, 0.0);
+tl.fromTo("#s03-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.4, ease: "none" }, 0.0);
+tl.fromTo("#s03-p0-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s03-p0-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s03-p1", { opacity: 0 }, 0);
+tl.set("#s03-p1", { opacity: 1 }, 1.4);
+tl.set("#s03-p1", { opacity: 0 }, 3.2);
+tl.fromTo("#s03-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 1.8, ease: "none" }, 1.4);
+tl.fromTo("#s03-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.8, ease: "none" }, 1.4);
+tl.fromTo("#s03-p1-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 1.4);
+flash(1.5699999999999998, 0.6);
+shake("#s03-p1-c", 1.5799999999999998, 0.25, 16, 7);
+tl.set("#s03-p2", { opacity: 0 }, 0);
+tl.set("#s03-p2", { opacity: 1 }, 3.2);
+tl.set("#s03-p2", { opacity: 0 }, 5.2);
+tl.fromTo("#s03-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 2.0, ease: "none" }, 3.2);
+tl.fromTo("#s03-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.0, ease: "none" }, 3.2);
+tl.fromTo("#s03-p2-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.2);
+tl.fromTo("#s03-p2-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 3.2);
+tl.set("#s03-p3", { opacity: 0 }, 0);
+tl.set("#s03-p3", { opacity: 1 }, 5.2);
+tl.fromTo("#s03-p3-in", { scale: 1.0 }, { scale: 1.12, duration: 2.47, ease: "none" }, 5.2);
+tl.fromTo("#s03-p3-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.47, ease: "none" }, 5.2);
+tl.fromTo("#s03-p3-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 5.2);
+flash(5.37, 0.6);
+shake("#s03-p3-c", 5.38, 0.25, 16, 9);
+tl.fromTo("#s03-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.37);
+tl.to("#s03-t0", { scale: 1.06, duration: 0.185, ease: "none" }, 0.53);
+tl.to("#s03-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 0.72);
+shake("#s03-t0", 0.53, 0.22, 14, 3);
+flash(0.52, 0.35);
+tl.fromTo("#s03-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.87);
+tl.to("#s03-t1", { scale: 1.06, duration: 0.885, ease: "none" }, 1.03);
+tl.to("#s03-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.92);
+tl.fromTo("#s03-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.4);
+tl.to("#s03-t2", { scale: 1.06, duration: 0.355, ease: "none" }, 1.56);
+tl.to("#s03-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.92);
+shake("#s03-t2", 1.5599999999999998, 0.22, 14, 5);
+flash(1.5499999999999998, 0.35);
+tl.fromTo("#s03-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.1);
+tl.to("#s03-t3", { scale: 1.06, duration: 0.755, ease: "none" }, 2.26);
+tl.to("#s03-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.02);
+tl.fromTo("#s03-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.47);
+tl.to("#s03-t4", { scale: 1.06, duration: 0.435, ease: "none" }, 4.63);
+tl.to("#s03-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.07);
+shake("#s03-t4", 4.63, 0.22, 14, 7);
+flash(4.62, 0.35);
+tl.fromTo("#s03-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.3);
+tl.to("#s03-t5", { scale: 1.06, duration: 1.005, ease: "none" }, 6.46);
+tl.to("#s03-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.47);
+shake("#s03-t5", 6.46, 0.22, 14, 8);
+flash(6.45, 0.35);
+window.__timelines["s03"] = tl;
+})();
+</script>
+</template>
+</body>
+</html>

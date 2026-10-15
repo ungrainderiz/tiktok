@@ -1,0 +1,27 @@
+@@@ fx
+@bg transparent
+<style>
+#fx-dust{position:absolute;inset:0}
+.dust{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff}
+#fx-grain{position:absolute;inset:0;background:url(assets/images/grain.png) 0 0/512px 512px repeat;mix-blend-mode:overlay;opacity:.55}
+</style>
+<div id="fx-dust"></div>
+<div id="fx-grain"></div>
+@@@js
+// poussière en suspension + grain : tout est une fonction périodique du temps global (période = durée totale) → raccord invisible
+const dust = [];
+for (let i = 0; i < 46; i++) {
+  const d = document.createElement("div"); d.className = "dust";
+  const s = 2 + hash(i * 3) * 6; d.style.width = d.style.height = s + "px";
+  document.getElementById("fx-dust").appendChild(d);
+  dust.push({ el: d, x: hash(i * 7) * 1080, y: hash(i * 11) * 1920, k: 1 + Math.floor(hash(i * 5) * 3), a: 20 + hash(i * 13) * 60, o: 0.08 + hash(i * 17) * 0.35, ph: hash(i * 19) * 6.28 });
+}
+drive(0, TOTAL_, (t) => {
+  const u = t / TOTAL_;
+  dust.forEach((p) => {
+    const y = ((p.y - u * 1920 * p.k) % 1920 + 1920) % 1920;
+    gsap.set(p.el, { x: p.x + Math.sin(u * 6.2832 * p.k * 2 + p.ph) * p.a, y, opacity: p.o * (0.6 + 0.4 * Math.sin(u * 6.2832 * 7 + p.ph)) });
+  });
+  const f = Math.floor(t * 24);
+  gsap.set("#fx-grain", { backgroundPosition: `${Math.floor(hash(f) * 512)}px ${Math.floor(hash(f + 0.5) * 512)}px` });
+});

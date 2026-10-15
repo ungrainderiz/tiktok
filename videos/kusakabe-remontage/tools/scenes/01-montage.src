@@ -1,0 +1,635 @@
+@@@ s01
+@bg #050506
+<div class="shot" id="s01-p0"><div class="bd" id="s01-p0-bd" style="background-image:url(assets/images/plans/fan-a.jpg)"></div><div class="persp"><div class="card" id="s01-p0-c" style="background-image:url(assets/images/plans/fan-a.jpg)"><div class="inner" id="s01-p0-in"><img src="assets/images/plans/fan-a.jpg" alt="" style="object-position:50% 50%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s01-p1"><div class="bd" id="s01-p1-bd" style="background-image:url(assets/images/plans/anime-ville-poster.jpg)"></div><div class="persp"><div class="card" id="s01-p1-c" style="background-image:url(assets/images/plans/anime-ville-poster.jpg)"><div class="inner" id="s01-p1-in"><video class="clip" src="assets/clips/anime-ville.mp4" data-start="3.6" data-duration="1.4" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s01-p2"><div class="bd" id="s01-p2-bd" style="background-image:url(assets/images/plans/anime-glitch-poster.jpg)"></div><div class="persp"><div class="card" id="s01-p2-c" style="background-image:url(assets/images/plans/anime-glitch-poster.jpg)"><div class="inner" id="s01-p2-in"><video class="clip" src="assets/clips/anime-glitch.mp4" data-start="5.37" data-duration="1.76" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="t slam" id="s01-t0" style="top:180px;font-size:100px">le jour où</div>
+<div class="t yel slam" id="s01-t1" style="top:285px;font-size:190px">kusakabe</div>
+<div class="t slam" id="s01-t2" style="top:175px;font-size:120px">a choqué</div>
+<div class="t yel slam" id="s01-t3" style="top:310px;font-size:150px">tout le monde</div>
+<div class="t yel slam" id="s01-t4" style="top:250px;font-size:140px">jujutsu kaisen</div>
+<div class="t slam" id="s01-t5" style="top:230px;font-size:190px">kusakabe</div>
+<div class="flash" id="s01-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s01-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s01-fl", { opacity: 0 });
+tl.set("#s01-p0", { opacity: 1 }, 0.0);
+tl.set("#s01-p0", { opacity: 0 }, 3.6);
+tl.fromTo("#s01-p0-in", { scale: 1 }, { scale: 1.0601, duration: 3.6, ease: "none" }, 0.0);
+tl.set("#s01-p1", { opacity: 0 }, 0);
+tl.set("#s01-p1", { opacity: 1 }, 3.6);
+tl.set("#s01-p1", { opacity: 0 }, 5.37);
+tl.fromTo("#s01-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 1.77, ease: "none" }, 3.6);
+tl.fromTo("#s01-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.77, ease: "none" }, 3.6);
+tl.fromTo("#s01-p1-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.6);
+tl.fromTo("#s01-p1-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 3.6);
+tl.set("#s01-p2", { opacity: 0 }, 0);
+tl.set("#s01-p2", { opacity: 1 }, 5.37);
+tl.fromTo("#s01-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 1.76, ease: "none" }, 5.37);
+tl.fromTo("#s01-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.76, ease: "none" }, 5.37);
+tl.fromTo("#s01-p2-c", { scale: 1.5, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 5.37);
+flash(5.54, 0.6);
+shake("#s01-p2-c", 5.55, 0.25, 16, 2);
+tl.fromTo("#s01-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.05);
+tl.to("#s01-t0", { scale: 1.06, duration: 1.085, ease: "none" }, 0.21);
+tl.to("#s01-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.3);
+tl.fromTo("#s01-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.6);
+tl.to("#s01-t1", { scale: 1.06, duration: 0.535, ease: "none" }, 0.76);
+tl.to("#s01-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.3);
+shake("#s01-t1", 0.76, 0.22, 14, 4);
+flash(0.75, 0.35);
+tl.fromTo("#s01-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.46);
+tl.to("#s01-t2", { scale: 1.06, duration: 1.725, ease: "none" }, 1.62);
+tl.to("#s01-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.35);
+tl.fromTo("#s01-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.68);
+tl.to("#s01-t3", { scale: 1.06, duration: 1.505, ease: "none" }, 1.84);
+tl.to("#s01-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.35);
+shake("#s01-t3", 1.8399999999999999, 0.22, 14, 6);
+flash(1.8299999999999998, 0.35);
+tl.fromTo("#s01-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.37);
+tl.to("#s01-t4", { scale: 1.06, duration: 0.665, ease: "none" }, 4.53);
+tl.to("#s01-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.2);
+shake("#s01-t4", 4.53, 0.22, 14, 7);
+flash(4.5200000000000005, 0.35);
+tl.fromTo("#s01-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.33);
+tl.to("#s01-t5", { scale: 1.06, duration: 0.455, ease: "none" }, 6.49);
+tl.to("#s01-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 6.95);
+shake("#s01-t5", 6.49, 0.22, 14, 8);
+flash(6.48, 0.35);
+
+@@@ s02
+@bg #050506
+<div class="shot" id="s02-p0"><div class="bd" id="s02-p0-bd" style="background-image:url(assets/images/plans/manga-voiture.jpg)"></div><div class="persp"><div class="card" id="s02-p0-c" style="background-image:url(assets/images/plans/manga-voiture.jpg)"><div class="inner" id="s02-p0-in"><img src="assets/images/plans/manga-voiture.jpg" alt="" style="object-position:50% 30%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s02-p1"><div class="bd" id="s02-p1-bd" style="background-image:url(assets/images/plans/anime-face-poster.jpg)"></div><div class="persp"><div class="card" id="s02-p1-c" style="background-image:url(assets/images/plans/anime-face-poster.jpg)"><div class="inner" id="s02-p1-in"><video class="clip" src="assets/clips/anime-face.mp4" data-start="2.3" data-duration="2.45" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s02-p2"><div class="bd" id="s02-p2-bd" style="background-image:url(assets/images/plans/fan-comic.jpg)"></div><div class="persp"><div class="card" id="s02-p2-c" style="background-image:url(assets/images/plans/fan-comic.jpg)"><div class="inner" id="s02-p2-in"><img src="assets/images/plans/fan-comic.jpg" alt="" style="object-position:30% 50%"></div><div class="shine"></div></div></div></div>
+<div class="t yel slam" id="s02-t0" style="top:230px;font-size:200px">rang 1</div>
+<div class="t slam" id="s02-t1" style="top:240px;font-size:150px">respecté</div>
+<div class="t yel slam" id="s02-t2" style="top:240px;font-size:170px">légende</div>
+<div class="strike" id="s02-t2-x" style="top:316px;left:120px;width:840px"></div>
+<div class="t slam" id="s02-t3" style="top:260px;font-size:120px">il s'est dressé</div>
+<div class="flash" id="s02-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s02-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s02-fl", { opacity: 0 });
+tl.set("#s02-p0", { opacity: 1 }, 0.0);
+tl.set("#s02-p0", { opacity: 0 }, 2.3);
+tl.fromTo("#s02-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 2.3, ease: "none" }, 0.0);
+tl.fromTo("#s02-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.3, ease: "none" }, 0.0);
+tl.fromTo("#s02-p0-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s02-p0-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s02-p1", { opacity: 0 }, 0);
+tl.set("#s02-p1", { opacity: 1 }, 2.3);
+tl.set("#s02-p1", { opacity: 0 }, 5.4);
+tl.fromTo("#s02-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 3.1, ease: "none" }, 2.3);
+tl.fromTo("#s02-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 3.1, ease: "none" }, 2.3);
+tl.fromTo("#s02-p1-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.3);
+tl.set("#s02-p2", { opacity: 0 }, 0);
+tl.set("#s02-p2", { opacity: 1 }, 5.4);
+tl.fromTo("#s02-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 1.9, ease: "none" }, 5.4);
+tl.fromTo("#s02-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.9, ease: "none" }, 5.4);
+tl.fromTo("#s02-p2-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 5.4);
+flash(5.57, 0.6);
+shake("#s02-p2-c", 5.58, 0.25, 16, 5);
+tl.fromTo("#s02-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.8);
+tl.to("#s02-t0", { scale: 1.06, duration: 0.205, ease: "none" }, 1.96);
+tl.to("#s02-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 2.17);
+shake("#s02-t0", 1.96, 0.22, 14, 3);
+flash(1.95, 0.35);
+tl.fromTo("#s02-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 3.1);
+tl.to("#s02-t1", { scale: 1.06, duration: 0.805, ease: "none" }, 3.26);
+tl.to("#s02-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 4.07);
+tl.fromTo("#s02-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.64);
+tl.to("#s02-t2", { scale: 1.06, duration: 0.465, ease: "none" }, 4.8);
+tl.to("#s02-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.27);
+strike("#s02-t2-x", 5.02, 0.18);
+tl.to("#s02-t2", { opacity: 0.45, duration: 0.15 }, 5.02);
+tl.to("#s02-t2-x", { opacity: 0, duration: 0.1 }, 5.27);
+shake("#s02-t2", 5.02, 0.2, 12, 9);
+tl.fromTo("#s02-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.5);
+tl.to("#s02-t3", { scale: 1.06, duration: 0.505, ease: "none" }, 6.66);
+tl.to("#s02-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.17);
+shake("#s02-t3", 6.66, 0.22, 14, 6);
+flash(6.65, 0.35);
+
+@@@ s03
+@bg #050506
+<div class="shot" id="s03-p0"><div class="bd" id="s03-p0-bd" style="background-image:url(assets/images/plans/fan-comic.jpg)"></div><div class="persp"><div class="card" id="s03-p0-c" style="background-image:url(assets/images/plans/fan-comic.jpg)"><div class="inner" id="s03-p0-in"><img src="assets/images/plans/fan-comic.jpg" alt="" style="object-position:85% 50%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s03-p1"><div class="bd" id="s03-p1-bd" style="background-image:url(assets/images/plans/illus-duo.jpg)"></div><div class="persp"><div class="card" id="s03-p1-c" style="background-image:url(assets/images/plans/illus-duo.jpg)"><div class="inner" id="s03-p1-in"><img src="assets/images/plans/illus-duo.jpg" alt="" style="object-position:50% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s03-p2"><div class="bd" id="s03-p2-bd" style="background-image:url(assets/images/plans/manga-noir.jpg)"></div><div class="persp"><div class="card" id="s03-p2-c" style="background-image:url(assets/images/plans/manga-noir.jpg)"><div class="inner" id="s03-p2-in"><img src="assets/images/plans/manga-noir.jpg" alt="" style="object-position:50% 30%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s03-p3"><div class="bd" id="s03-p3-bd" style="background-image:url(assets/images/plans/manga-rayon.jpg)"></div><div class="persp"><div class="card" id="s03-p3-c" style="background-image:url(assets/images/plans/manga-rayon.jpg)"><div class="inner" id="s03-p3-in"><img src="assets/images/plans/manga-rayon.jpg" alt="" style="object-position:50% 60%"></div><div class="shine"></div></div></div></div>
+<div class="t red slam" id="s03-t0" style="top:230px;font-size:200px">sukuna</div>
+<div class="t slam" id="s03-t1" style="top:180px;font-size:110px">le roi des</div>
+<div class="t red slam" id="s03-t2" style="top:300px;font-size:170px">fléaux</div>
+<div class="t yel slam" id="s03-t3" style="top:260px;font-size:140px">sans trembler</div>
+<div class="t slam" id="s03-t4" style="top:240px;font-size:190px">un à un</div>
+<div class="t red slam" id="s03-t5" style="top:250px;font-size:160px">écrasante</div>
+<div class="flash" id="s03-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s03-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s03-fl", { opacity: 0 });
+tl.set("#s03-p0", { opacity: 1 }, 0.0);
+tl.set("#s03-p0", { opacity: 0 }, 1.4);
+tl.fromTo("#s03-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.4, ease: "none" }, 0.0);
+tl.fromTo("#s03-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.4, ease: "none" }, 0.0);
+tl.fromTo("#s03-p0-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s03-p0-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s03-p1", { opacity: 0 }, 0);
+tl.set("#s03-p1", { opacity: 1 }, 1.4);
+tl.set("#s03-p1", { opacity: 0 }, 3.2);
+tl.fromTo("#s03-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 1.8, ease: "none" }, 1.4);
+tl.fromTo("#s03-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.8, ease: "none" }, 1.4);
+tl.fromTo("#s03-p1-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 1.4);
+flash(1.5699999999999998, 0.6);
+shake("#s03-p1-c", 1.5799999999999998, 0.25, 16, 7);
+tl.set("#s03-p2", { opacity: 0 }, 0);
+tl.set("#s03-p2", { opacity: 1 }, 3.2);
+tl.set("#s03-p2", { opacity: 0 }, 5.2);
+tl.fromTo("#s03-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 2.0, ease: "none" }, 3.2);
+tl.fromTo("#s03-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.0, ease: "none" }, 3.2);
+tl.fromTo("#s03-p2-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.2);
+tl.fromTo("#s03-p2-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 3.2);
+tl.set("#s03-p3", { opacity: 0 }, 0);
+tl.set("#s03-p3", { opacity: 1 }, 5.2);
+tl.fromTo("#s03-p3-in", { scale: 1.0 }, { scale: 1.12, duration: 2.47, ease: "none" }, 5.2);
+tl.fromTo("#s03-p3-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.47, ease: "none" }, 5.2);
+tl.fromTo("#s03-p3-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 5.2);
+flash(5.37, 0.6);
+shake("#s03-p3-c", 5.38, 0.25, 16, 9);
+tl.fromTo("#s03-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.37);
+tl.to("#s03-t0", { scale: 1.06, duration: 0.185, ease: "none" }, 0.53);
+tl.to("#s03-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 0.72);
+shake("#s03-t0", 0.53, 0.22, 14, 3);
+flash(0.52, 0.35);
+tl.fromTo("#s03-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.87);
+tl.to("#s03-t1", { scale: 1.06, duration: 0.885, ease: "none" }, 1.03);
+tl.to("#s03-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.92);
+tl.fromTo("#s03-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.4);
+tl.to("#s03-t2", { scale: 1.06, duration: 0.355, ease: "none" }, 1.56);
+tl.to("#s03-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.92);
+shake("#s03-t2", 1.5599999999999998, 0.22, 14, 5);
+flash(1.5499999999999998, 0.35);
+tl.fromTo("#s03-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.1);
+tl.to("#s03-t3", { scale: 1.06, duration: 0.755, ease: "none" }, 2.26);
+tl.to("#s03-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.02);
+tl.fromTo("#s03-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.47);
+tl.to("#s03-t4", { scale: 1.06, duration: 0.435, ease: "none" }, 4.63);
+tl.to("#s03-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.07);
+shake("#s03-t4", 4.63, 0.22, 14, 7);
+flash(4.62, 0.35);
+tl.fromTo("#s03-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.3);
+tl.to("#s03-t5", { scale: 1.06, duration: 1.005, ease: "none" }, 6.46);
+tl.to("#s03-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.47);
+shake("#s03-t5", 6.46, 0.22, 14, 8);
+flash(6.45, 0.35);
+
+@@@ s04
+@bg #050506
+<div class="shot" id="s04-p0"><div class="bd" style="background:#050506"></div></div>
+<div class="shot" id="s04-p1"><div class="bd" id="s04-p1-bd" style="background-image:url(assets/images/plans/anime-rouge-poster.jpg)"></div><div class="persp"><div class="card" id="s04-p1-c" style="background-image:url(assets/images/plans/anime-rouge-poster.jpg)"><div class="inner" id="s04-p1-in"><video class="clip" src="assets/clips/anime-rouge.mp4" data-start="1.47" data-duration="0.7" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s04-p2"><div class="bd" id="s04-p2-bd" style="background-image:url(assets/images/plans/anime-bouche-poster.jpg)"></div><div class="persp"><div class="card" id="s04-p2-c" style="background-image:url(assets/images/plans/anime-bouche-poster.jpg)"><div class="inner" id="s04-p2-in"><video class="clip" src="assets/clips/anime-bouche.mp4" data-start="2.17" data-duration="0.75" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s04-p3"><div class="bd" id="s04-p3-bd" style="background-image:url(assets/images/plans/anime-feu-poster.jpg)"></div><div class="persp"><div class="card" id="s04-p3-c" style="background-image:url(assets/images/plans/anime-feu-poster.jpg)"><div class="inner" id="s04-p3-in"><video class="clip" src="assets/clips/anime-feu.mp4" data-start="3.23" data-duration="2.2" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s04-p4"><div class="bd" id="s04-p4-bd" style="background-image:url(assets/images/plans/manga-ecole.jpg)"></div><div class="persp"><div class="card" id="s04-p4-c" style="background-image:url(assets/images/plans/manga-ecole.jpg)"><div class="inner" id="s04-p4-in"><img src="assets/images/plans/manga-ecole.jpg" alt="" style="object-position:30% 30%"></div><div class="shine"></div></div></div></div>
+<div class="t yel slam" id="s04-t0" style="top:760px;font-size:230px">kusakabe</div>
+<div class="t slam" id="s04-t1" style="top:600px;font-size:120px">est entré</div>
+<div class="t slam" id="s04-t2" style="top:1000px;font-size:150px">en scène</div>
+<div class="t slam" id="s04-t3" style="top:250px;font-size:92px">extension de territoire</div>
+<div class="strike" id="s04-t3-x" style="top:291px;left:120px;width:840px"></div>
+<div class="t slam" id="s04-t4" style="top:250px;font-size:110px">technique occulte</div>
+<div class="strike" id="s04-t4-x" style="top:299px;left:120px;width:840px"></div>
+<div class="t red slam" id="s04-t5" style="top:210px;font-size:220px">non.</div>
+<div class="t yel slam" id="s04-t6" style="top:250px;font-size:110px">maîtrise parfaite</div>
+<div class="flash" id="s04-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s04-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s04-fl", { opacity: 0 });
+tl.set("#s04-p0", { opacity: 1 }, 0.0);
+tl.set("#s04-p0", { opacity: 0 }, 1.47);
+tl.set("#s04-p1", { opacity: 0 }, 0);
+tl.set("#s04-p1", { opacity: 1 }, 1.47);
+tl.set("#s04-p1", { opacity: 0 }, 2.17);
+tl.fromTo("#s04-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 0.7, ease: "none" }, 1.47);
+tl.fromTo("#s04-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.7, ease: "none" }, 1.47);
+tl.fromTo("#s04-p1-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 1.47);
+flash(1.64, 0.6);
+shake("#s04-p1-c", 1.65, 0.25, 16, 11);
+tl.set("#s04-p2", { opacity: 0 }, 0);
+tl.set("#s04-p2", { opacity: 1 }, 2.17);
+tl.set("#s04-p2", { opacity: 0 }, 3.23);
+tl.fromTo("#s04-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 1.06, ease: "none" }, 2.17);
+tl.fromTo("#s04-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.06, ease: "none" }, 2.17);
+tl.fromTo("#s04-p2-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 2.17);
+tl.fromTo("#s04-p2-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 2.17);
+tl.set("#s04-p3", { opacity: 0 }, 0);
+tl.set("#s04-p3", { opacity: 1 }, 3.23);
+tl.set("#s04-p3", { opacity: 0 }, 5.87);
+tl.fromTo("#s04-p3-in", { scale: 1.0 }, { scale: 1.12, duration: 2.64, ease: "none" }, 3.23);
+tl.fromTo("#s04-p3-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.64, ease: "none" }, 3.23);
+tl.fromTo("#s04-p3-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 3.23);
+flash(3.4, 0.6);
+shake("#s04-p3-c", 3.41, 0.25, 16, 13);
+tl.set("#s04-p4", { opacity: 0 }, 0);
+tl.set("#s04-p4", { opacity: 1 }, 5.87);
+tl.fromTo("#s04-p4-in", { scale: 1.0 }, { scale: 1.12, duration: 1.9, ease: "none" }, 5.87);
+tl.fromTo("#s04-p4-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.9, ease: "none" }, 5.87);
+tl.fromTo("#s04-p4-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 5.87);
+tl.fromTo("#s04-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.0);
+tl.to("#s04-t0", { scale: 1.06, duration: 1.135, ease: "none" }, 0.16);
+tl.to("#s04-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.3);
+shake("#s04-t0", 0.16, 0.22, 14, 3);
+tl.fromTo("#s04-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.6);
+tl.to("#s04-t1", { scale: 1.06, duration: 0.535, ease: "none" }, 0.76);
+tl.to("#s04-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.3);
+tl.fromTo("#s04-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.03);
+tl.to("#s04-t2", { scale: 1.06, duration: 0.105, ease: "none" }, 1.19);
+tl.to("#s04-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.3);
+shake("#s04-t2", 1.19, 0.22, 14, 5);
+tl.fromTo("#s04-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.17);
+tl.to("#s04-t3", { scale: 1.06, duration: 0.765, ease: "none" }, 2.33);
+tl.to("#s04-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.1);
+strike("#s04-t3-x", 2.75, 0.18);
+tl.to("#s04-t3", { opacity: 0.45, duration: 0.15 }, 2.75);
+tl.to("#s04-t3-x", { opacity: 0, duration: 0.1 }, 3.1);
+shake("#s04-t3", 2.75, 0.2, 12, 10);
+tl.fromTo("#s04-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 3.9);
+tl.to("#s04-t4", { scale: 1.06, duration: 1.635, ease: "none" }, 4.06);
+tl.to("#s04-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.7);
+strike("#s04-t4-x", 4.85, 0.18);
+tl.to("#s04-t4", { opacity: 0.45, duration: 0.15 }, 4.85);
+tl.to("#s04-t4-x", { opacity: 0, duration: 0.1 }, 5.7);
+shake("#s04-t4", 4.85, 0.2, 12, 11);
+tl.fromTo("#s04-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 5.87);
+tl.to("#s04-t5", { scale: 1.06, duration: 0.465, ease: "none" }, 6.03);
+tl.to("#s04-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 6.5);
+shake("#s04-t5", 6.03, 0.22, 14, 8);
+flash(6.0200000000000005, 0.35);
+tl.fromTo("#s04-t6", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 7.27);
+tl.to("#s04-t6", { scale: 1.06, duration: 0.215, ease: "none" }, 7.43);
+tl.to("#s04-t6", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.65);
+
+@@@ s05
+@bg #050506
+<div class="shot" id="s05-p0"><div class="bd" id="s05-p0-bd" style="background-image:url(assets/images/plans/manga-ecole.jpg)"></div><div class="persp"><div class="card" id="s05-p0-c" style="background-image:url(assets/images/plans/manga-ecole.jpg)"><div class="inner" id="s05-p0-in"><img src="assets/images/plans/manga-ecole.jpg" alt="" style="object-position:50% 90%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s05-p1"><div class="bd" id="s05-p1-bd" style="background-image:url(assets/images/plans/manga-tchac.jpg)"></div><div class="persp"><div class="card" id="s05-p1-c" style="background-image:url(assets/images/plans/manga-tchac.jpg)"><div class="inner" id="s05-p1-in"><img src="assets/images/plans/manga-tchac.jpg" alt="" style="object-position:50% 80%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s05-p2"><div class="bd" id="s05-p2-bd" style="background-image:url(assets/images/plans/manga-gang.jpg)"></div><div class="persp"><div class="card" id="s05-p2-c" style="background-image:url(assets/images/plans/manga-gang.jpg)"><div class="inner" id="s05-p2-in"><img src="assets/images/plans/manga-gang.jpg" alt="" style="object-position:50% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s05-p3"><div class="bd" id="s05-p3-bd" style="background-image:url(assets/images/plans/manga-gang2.jpg)"></div><div class="persp"><div class="card" id="s05-p3-c" style="background-image:url(assets/images/plans/manga-gang2.jpg)"><div class="inner" id="s05-p3-in"><img src="assets/images/plans/manga-gang2.jpg" alt="" style="object-position:50% 60%"></div><div class="shine"></div></div></div></div>
+<div class="t yel slam" id="s05-t0" style="top:240px;font-size:140px">domaine simple</div>
+<div class="t slam" id="s05-t1" style="top:240px;font-size:170px">sang-froid</div>
+<div class="t yel slam" id="s05-t2" style="top:250px;font-size:150px">inébranlable</div>
+<div class="t slam" id="s05-t3" style="top:250px;font-size:120px">tête à sukuna</div>
+<div class="t yel slam" id="s05-t4" style="top:260px;font-size:100px">bien plus longtemps</div>
+<div class="t slam" id="s05-t5" style="top:250px;font-size:120px">osé l'imaginer</div>
+<div class="flash" id="s05-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s05-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s05-fl", { opacity: 0 });
+tl.set("#s05-p0", { opacity: 1 }, 0.0);
+tl.set("#s05-p0", { opacity: 0 }, 0.76);
+tl.fromTo("#s05-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 0.76, ease: "none" }, 0.0);
+tl.fromTo("#s05-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.76, ease: "none" }, 0.0);
+tl.fromTo("#s05-p0-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s05-p0-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s05-p1", { opacity: 0 }, 0);
+tl.set("#s05-p1", { opacity: 1 }, 0.76);
+tl.set("#s05-p1", { opacity: 0 }, 3.36);
+tl.fromTo("#s05-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 2.6, ease: "none" }, 0.76);
+tl.fromTo("#s05-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.6, ease: "none" }, 0.76);
+tl.fromTo("#s05-p1-c", { scale: 1.5, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 0.76);
+flash(0.93, 0.6);
+shake("#s05-p1-c", 0.94, 0.25, 16, 16);
+tl.set("#s05-p2", { opacity: 0 }, 0);
+tl.set("#s05-p2", { opacity: 1 }, 3.36);
+tl.set("#s05-p2", { opacity: 0 }, 5.4);
+tl.fromTo("#s05-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 2.04, ease: "none" }, 3.36);
+tl.fromTo("#s05-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.04, ease: "none" }, 3.36);
+tl.fromTo("#s05-p2-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.36);
+tl.fromTo("#s05-p2-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 3.36);
+tl.set("#s05-p3", { opacity: 0 }, 0);
+tl.set("#s05-p3", { opacity: 1 }, 5.4);
+tl.fromTo("#s05-p3-in", { scale: 1.0 }, { scale: 1.12, duration: 2.03, ease: "none" }, 5.4);
+tl.fromTo("#s05-p3-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.03, ease: "none" }, 5.4);
+tl.fromTo("#s05-p3-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 5.4);
+tl.fromTo("#s05-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.46);
+tl.to("#s05-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 0.63);
+shake("#s05-t0", 0.62, 0.22, 14, 3);
+flash(0.61, 0.35);
+tl.fromTo("#s05-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.03);
+tl.to("#s05-t1", { scale: 1.06, duration: 0.335, ease: "none" }, 1.19);
+tl.to("#s05-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.53);
+tl.fromTo("#s05-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.63);
+tl.to("#s05-t2", { scale: 1.06, duration: 0.435, ease: "none" }, 2.79);
+tl.to("#s05-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.23);
+shake("#s05-t2", 2.79, 0.22, 14, 5);
+flash(2.78, 0.35);
+tl.fromTo("#s05-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 3.86);
+tl.to("#s05-t3", { scale: 1.06, duration: 0.405, ease: "none" }, 4.02);
+tl.to("#s05-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 4.43);
+tl.fromTo("#s05-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 5.0);
+tl.to("#s05-t4", { scale: 1.06, duration: 0.115, ease: "none" }, 5.16);
+tl.to("#s05-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.28);
+tl.fromTo("#s05-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.7);
+tl.to("#s05-t5", { scale: 1.06, duration: 0.415, ease: "none" }, 6.86);
+tl.to("#s05-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.28);
+
+@@@ s06
+@bg #050506
+<div class="shot" id="s06-p0"><div class="bd" id="s06-p0-bd" style="background-image:url(assets/images/plans/fan-b.jpg)"></div><div class="persp"><div class="card" id="s06-p0-c" style="background-image:url(assets/images/plans/fan-b.jpg)"><div class="inner" id="s06-p0-in"><img src="assets/images/plans/fan-b.jpg" alt="" style="object-position:50% 60%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s06-p1"><div class="bd" id="s06-p1-bd" style="background-image:url(assets/images/plans/contre-poster.jpg)"></div><div class="persp"><div class="card" id="s06-p1-c" style="background-image:url(assets/images/plans/contre-poster.jpg)"><div class="inner" id="s06-p1-in"><video class="clip" src="assets/clips/contre.mp4" data-start="0.9" data-duration="0.63" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s06-p2"><div class="bd" id="s06-p2-bd" style="background-image:url(assets/images/plans/sukuna-orange.jpg)"></div><div class="persp"><div class="card" id="s06-p2-c" style="background-image:url(assets/images/plans/sukuna-orange.jpg)"><div class="inner" id="s06-p2-in"><img src="assets/images/plans/sukuna-orange.jpg" alt="" style="object-position:50% 45%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s06-p3"><div class="bd" id="s06-p3-bd" style="background-image:url(assets/images/plans/illus-duo.jpg)"></div><div class="persp"><div class="card" id="s06-p3-c" style="background-image:url(assets/images/plans/illus-duo.jpg)"><div class="inner" id="s06-p3-in"><img src="assets/images/plans/illus-duo.jpg" alt="" style="object-position:90% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s06-p4"><div class="bd" id="s06-p4-bd" style="background-image:url(assets/images/plans/manga-haha.jpg)"></div><div class="persp"><div class="card" id="s06-p4-c" style="background-image:url(assets/images/plans/manga-haha.jpg)"><div class="inner" id="s06-p4-in"><img src="assets/images/plans/manga-haha.jpg" alt="" style="object-position:50% 30%"></div><div class="shine"></div></div></div></div>
+<div class="t yel slam" id="s06-t0" style="top:240px;font-size:190px">esquivé</div>
+<div class="t slam" id="s06-t1" style="top:240px;font-size:190px">contré</div>
+<div class="t red slam" id="s06-t2" style="top:240px;font-size:190px">frappé</div>
+<div class="t slam" id="s06-t3" style="top:250px;font-size:170px">vaincre</div>
+<div class="strike" id="s06-t3-x" style="top:326px;left:120px;width:840px"></div>
+<div class="t yel slam" id="s06-t4" style="top:250px;font-size:170px">protéger</div>
+<div class="t slam" id="s06-t5" style="top:250px;font-size:140px">l'inévitable</div>
+<div class="t red slam" id="s06-t6" style="top:250px;font-size:140px">même sukuna</div>
+<div class="flash" id="s06-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s06-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s06-fl", { opacity: 0 });
+tl.set("#s06-p0", { opacity: 1 }, 0.0);
+tl.set("#s06-p0", { opacity: 0 }, 0.9);
+tl.fromTo("#s06-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 0.9, ease: "none" }, 0.0);
+tl.fromTo("#s06-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.9, ease: "none" }, 0.0);
+tl.fromTo("#s06-p0-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s06-p0-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s06-p1", { opacity: 0 }, 0);
+tl.set("#s06-p1", { opacity: 1 }, 0.9);
+tl.set("#s06-p1", { opacity: 0 }, 1.53);
+tl.fromTo("#s06-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 0.63, ease: "none" }, 0.9);
+tl.fromTo("#s06-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.63, ease: "none" }, 0.9);
+tl.fromTo("#s06-p1-c", { scale: 1.5, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 0.9);
+flash(1.07, 0.6);
+shake("#s06-p1-c", 1.08, 0.25, 16, 20);
+tl.set("#s06-p2", { opacity: 0 }, 0);
+tl.set("#s06-p2", { opacity: 1 }, 1.53);
+tl.set("#s06-p2", { opacity: 0 }, 3.67);
+tl.fromTo("#s06-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 2.14, ease: "none" }, 1.53);
+tl.fromTo("#s06-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.14, ease: "none" }, 1.53);
+tl.fromTo("#s06-p2-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 1.53);
+flash(1.7, 0.6);
+shake("#s06-p2-c", 1.71, 0.25, 16, 21);
+tl.set("#s06-p3", { opacity: 0 }, 0);
+tl.set("#s06-p3", { opacity: 1 }, 3.67);
+tl.set("#s06-p3", { opacity: 0 }, 5.0);
+tl.fromTo("#s06-p3-in", { scale: 1.0 }, { scale: 1.12, duration: 1.33, ease: "none" }, 3.67);
+tl.fromTo("#s06-p3-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.33, ease: "none" }, 3.67);
+tl.fromTo("#s06-p3-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.67);
+tl.fromTo("#s06-p3-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 3.67);
+tl.set("#s06-p4", { opacity: 0 }, 0);
+tl.set("#s06-p4", { opacity: 1 }, 5.0);
+tl.fromTo("#s06-p4-in", { scale: 1.0 }, { scale: 1.12, duration: 2.03, ease: "none" }, 5.0);
+tl.fromTo("#s06-p4-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.03, ease: "none" }, 5.0);
+tl.fromTo("#s06-p4-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 5.0);
+tl.fromTo("#s06-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.37);
+tl.to("#s06-t0", { scale: 1.06, duration: 0.215, ease: "none" }, 0.53);
+tl.to("#s06-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 0.75);
+shake("#s06-t0", 0.53, 0.22, 14, 3);
+flash(0.52, 0.35);
+tl.fromTo("#s06-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 0.9);
+tl.to("#s06-t1", { scale: 1.06, duration: 0.335, ease: "none" }, 1.06);
+tl.to("#s06-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.4);
+shake("#s06-t1", 1.06, 0.22, 14, 4);
+flash(1.05, 0.35);
+tl.fromTo("#s06-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.53);
+tl.to("#s06-t2", { scale: 1.06, duration: 0.405, ease: "none" }, 1.69);
+tl.to("#s06-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 2.1);
+shake("#s06-t2", 1.69, 0.22, 14, 5);
+flash(1.68, 0.35);
+tl.fromTo("#s06-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.33);
+tl.to("#s06-t3", { scale: 1.06, duration: 0.405, ease: "none" }, 2.49);
+tl.to("#s06-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 2.9);
+strike("#s06-t3-x", 2.63, 0.18);
+tl.to("#s06-t3", { opacity: 0.45, duration: 0.15 }, 2.63);
+tl.to("#s06-t3-x", { opacity: 0, duration: 0.1 }, 2.9);
+shake("#s06-t3", 2.63, 0.2, 12, 10);
+tl.fromTo("#s06-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 3.07);
+tl.to("#s06-t4", { scale: 1.06, duration: 0.315, ease: "none" }, 3.23);
+tl.to("#s06-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.55);
+shake("#s06-t4", 3.23, 0.22, 14, 7);
+flash(3.2199999999999998, 0.35);
+tl.fromTo("#s06-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.37);
+tl.to("#s06-t5", { scale: 1.06, duration: 0.315, ease: "none" }, 4.53);
+tl.to("#s06-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 4.85);
+tl.fromTo("#s06-t6", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.3);
+tl.to("#s06-t6", { scale: 1.06, duration: 0.435, ease: "none" }, 6.46);
+tl.to("#s06-t6", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 6.9);
+shake("#s06-t6", 6.46, 0.22, 14, 9);
+flash(6.45, 0.35);
+
+@@@ s07
+@bg #050506
+<div class="shot" id="s07-p0"><div class="bd" id="s07-p0-bd" style="background-image:url(assets/images/plans/manga-close.jpg)"></div><div class="persp"><div class="card" id="s07-p0-c" style="background-image:url(assets/images/plans/manga-close.jpg)"><div class="inner" id="s07-p0-in"><img src="assets/images/plans/manga-close.jpg" alt="" style="object-position:60% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s07-p1"><div class="bd" id="s07-p1-bd" style="background-image:url(assets/images/plans/manga-action.jpg)"></div><div class="persp"><div class="card" id="s07-p1-c" style="background-image:url(assets/images/plans/manga-action.jpg)"><div class="inner" id="s07-p1-in"><img src="assets/images/plans/manga-action.jpg" alt="" style="object-position:50% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s07-p2"><div class="bd" id="s07-p2-bd" style="background-image:url(assets/images/plans/meme-poster.jpg)"></div><div class="persp"><div class="card" id="s07-p2-c" style="background-image:url(assets/images/plans/meme-poster.jpg)"><div class="inner" id="s07-p2-in"><video class="clip" src="assets/clips/meme.mp4" data-start="3.97" data-duration="2.7" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="t yel slam" id="s07-t0" style="top:250px;font-size:130px">qu'un instant</div>
+<div class="t slam" id="s07-t1" style="top:240px;font-size:160px">ordinaire</div>
+<div class="t yel slam" id="s07-t2" style="top:250px;font-size:150px">vrai sorcier</div>
+<div class="t slam" id="s07-t3" style="top:240px;font-size:140px">intéressant</div>
+<div class="t yel slam" id="s07-t4" style="top:250px;font-size:130px">affrontement</div>
+<div class="flash" id="s07-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s07-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s07-fl", { opacity: 0 });
+tl.set("#s07-p0", { opacity: 1 }, 0.0);
+tl.set("#s07-p0", { opacity: 0 }, 1.8);
+tl.fromTo("#s07-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.8, ease: "none" }, 0.0);
+tl.fromTo("#s07-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.8, ease: "none" }, 0.0);
+tl.fromTo("#s07-p0-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s07-p0-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s07-p1", { opacity: 0 }, 0);
+tl.set("#s07-p1", { opacity: 1 }, 1.8);
+tl.set("#s07-p1", { opacity: 0 }, 3.97);
+tl.fromTo("#s07-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 2.17, ease: "none" }, 1.8);
+tl.fromTo("#s07-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.17, ease: "none" }, 1.8);
+tl.fromTo("#s07-p1-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 1.8);
+flash(1.97, 0.6);
+shake("#s07-p1-c", 1.98, 0.25, 16, 25);
+tl.set("#s07-p2", { opacity: 0 }, 0);
+tl.set("#s07-p2", { opacity: 1 }, 3.97);
+tl.fromTo("#s07-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 2.8, ease: "none" }, 3.97);
+tl.fromTo("#s07-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.8, ease: "none" }, 3.97);
+tl.fromTo("#s07-p2-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 3.97);
+tl.fromTo("#s07-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.34);
+tl.to("#s07-t0", { scale: 1.06, duration: 0.165, ease: "none" }, 1.5);
+tl.to("#s07-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.67);
+tl.fromTo("#s07-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.8);
+tl.to("#s07-t1", { scale: 1.06, duration: 0.355, ease: "none" }, 2.96);
+tl.to("#s07-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.32);
+tl.fromTo("#s07-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 3.87);
+tl.to("#s07-t2", { scale: 1.06, duration: 0.485, ease: "none" }, 4.03);
+tl.to("#s07-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 4.52);
+shake("#s07-t2", 4.03, 0.22, 14, 5);
+flash(4.0200000000000005, 0.35);
+tl.fromTo("#s07-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.97);
+tl.to("#s07-t3", { scale: 1.06, duration: 0.585, ease: "none" }, 5.13);
+tl.to("#s07-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.72);
+tl.fromTo("#s07-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 5.87);
+tl.to("#s07-t4", { scale: 1.06, duration: 0.585, ease: "none" }, 6.03);
+tl.to("#s07-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 6.62);
+shake("#s07-t4", 6.03, 0.22, 14, 7);
+flash(6.0200000000000005, 0.35);
+
+@@@ s08
+@bg #050506
+<div class="shot" id="s08-p0"><div class="bd" id="s08-p0-bd" style="background-image:url(assets/images/plans/anime-sombre-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p0-c" style="background-image:url(assets/images/plans/anime-sombre-poster.jpg)"><div class="inner" id="s08-p0-in"><video class="clip" src="assets/clips/anime-sombre.mp4" data-start="0.0" data-duration="1.37" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s08-p1"><div class="bd" id="s08-p1-bd" style="background-image:url(assets/images/plans/anime-bleu-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p1-c" style="background-image:url(assets/images/plans/anime-bleu-poster.jpg)"><div class="inner" id="s08-p1-in"><video class="clip" src="assets/clips/anime-bleu.mp4" data-start="1.37" data-duration="2.0" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s08-p2"><div class="bd" id="s08-p2-bd" style="background-image:url(assets/images/plans/anime-main-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p2-c" style="background-image:url(assets/images/plans/anime-main-poster.jpg)"><div class="inner" id="s08-p2-in"><video class="clip" src="assets/clips/anime-main.mp4" data-start="3.53" data-duration="1.14" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s08-p3"><div class="bd" id="s08-p3-bd" style="background-image:url(assets/images/plans/anime-lumiere-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p3-c" style="background-image:url(assets/images/plans/anime-lumiere-poster.jpg)"><div class="inner" id="s08-p3-in"><video class="clip" src="assets/clips/anime-lumiere.mp4" data-start="4.67" data-duration="1.0" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s08-p4"><div class="bd" id="s08-p4-bd" style="background-image:url(assets/images/plans/anime-yeux-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p4-c" style="background-image:url(assets/images/plans/anime-yeux-poster.jpg)"><div class="inner" id="s08-p4-in"><video class="clip" src="assets/clips/anime-yeux.mp4" data-start="5.67" data-duration="0.72" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s08-p5"><div class="bd" id="s08-p5-bd" style="background-image:url(assets/images/plans/anime-oeil-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p5-c" style="background-image:url(assets/images/plans/anime-oeil-poster.jpg)"><div class="inner" id="s08-p5-in"><video class="clip" src="assets/clips/anime-oeil.mp4" data-start="6.63" data-duration="1.0" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s08-p6"><div class="bd" id="s08-p6-bd" style="background-image:url(assets/images/plans/anime-ombre-poster.jpg)"></div><div class="persp"><div class="card" id="s08-p6-c" style="background-image:url(assets/images/plans/anime-ombre-poster.jpg)"><div class="inner" id="s08-p6-in"><video class="clip" src="assets/clips/anime-ombre.mp4" data-start="7.63" data-duration="1.0" muted playsinline style="object-position:50% 50%"></video></div><div class="shine"></div></div></div></div>
+<div class="t slam" id="s08-t0" style="top:240px;font-size:140px">ce jour-là</div>
+<div class="t yel slam" id="s08-t1" style="top:240px;font-size:190px">kusakabe</div>
+<div class="t yel slam" id="s08-t2" style="top:240px;font-size:180px">prodige</div>
+<div class="strike" id="s08-t2-x" style="top:321px;left:120px;width:840px"></div>
+<div class="t red slam" id="s08-t3" style="top:250px;font-size:120px">énergie maudite</div>
+<div class="t red slam" id="s08-t4" style="top:240px;font-size:190px">monstre</div>
+<div class="t slam" id="s08-t5" style="top:220px;font-size:230px">gojo</div>
+<div class="flash" id="s08-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s08-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s08-fl", { opacity: 0 });
+tl.set("#s08-p0", { opacity: 1 }, 0.0);
+tl.set("#s08-p0", { opacity: 0 }, 1.37);
+tl.fromTo("#s08-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.37, ease: "none" }, 0.0);
+tl.fromTo("#s08-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.37, ease: "none" }, 0.0);
+tl.fromTo("#s08-p0-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s08-p0-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s08-p1", { opacity: 0 }, 0);
+tl.set("#s08-p1", { opacity: 1 }, 1.37);
+tl.set("#s08-p1", { opacity: 0 }, 3.53);
+tl.fromTo("#s08-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 2.16, ease: "none" }, 1.37);
+tl.fromTo("#s08-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.16, ease: "none" }, 1.37);
+tl.fromTo("#s08-p1-c", { scale: 1.5, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 1.37);
+flash(1.54, 0.6);
+shake("#s08-p1-c", 1.55, 0.25, 16, 28);
+tl.set("#s08-p2", { opacity: 0 }, 0);
+tl.set("#s08-p2", { opacity: 1 }, 3.53);
+tl.set("#s08-p2", { opacity: 0 }, 4.67);
+tl.fromTo("#s08-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 1.14, ease: "none" }, 3.53);
+tl.fromTo("#s08-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.14, ease: "none" }, 3.53);
+tl.fromTo("#s08-p2-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 3.53);
+tl.fromTo("#s08-p2-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 3.53);
+tl.set("#s08-p3", { opacity: 0 }, 0);
+tl.set("#s08-p3", { opacity: 1 }, 4.67);
+tl.set("#s08-p3", { opacity: 0 }, 5.67);
+tl.fromTo("#s08-p3-in", { scale: 1.0 }, { scale: 1.12, duration: 1.0, ease: "none" }, 4.67);
+tl.fromTo("#s08-p3-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.0, ease: "none" }, 4.67);
+tl.fromTo("#s08-p3-c", { scale: 1.5, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 4.67);
+flash(4.84, 0.6);
+shake("#s08-p3-c", 4.85, 0.25, 16, 30);
+tl.set("#s08-p4", { opacity: 0 }, 0);
+tl.set("#s08-p4", { opacity: 1 }, 5.67);
+tl.set("#s08-p4", { opacity: 0 }, 6.63);
+tl.fromTo("#s08-p4-in", { scale: 1.0 }, { scale: 1.12, duration: 0.96, ease: "none" }, 5.67);
+tl.fromTo("#s08-p4-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.96, ease: "none" }, 5.67);
+tl.fromTo("#s08-p4-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 5.67);
+tl.set("#s08-p5", { opacity: 0 }, 0);
+tl.set("#s08-p5", { opacity: 1 }, 6.63);
+tl.set("#s08-p5", { opacity: 0 }, 7.63);
+tl.fromTo("#s08-p5-in", { scale: 1.0 }, { scale: 1.12, duration: 1.0, ease: "none" }, 6.63);
+tl.fromTo("#s08-p5-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.0, ease: "none" }, 6.63);
+tl.fromTo("#s08-p5-c", { scale: 1.5, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 6.63);
+flash(6.8, 0.6);
+shake("#s08-p5-c", 6.81, 0.25, 16, 32);
+tl.set("#s08-p6", { opacity: 0 }, 0);
+tl.set("#s08-p6", { opacity: 1 }, 7.63);
+tl.fromTo("#s08-p6-in", { scale: 1.0 }, { scale: 1.12, duration: 1.0, ease: "none" }, 7.63);
+tl.fromTo("#s08-p6-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.0, ease: "none" }, 7.63);
+tl.fromTo("#s08-p6-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 7.63);
+tl.fromTo("#s08-p6-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 7.63);
+tl.fromTo("#s08-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.8);
+tl.to("#s08-t0", { scale: 1.06, duration: 0.435, ease: "none" }, 1.96);
+tl.to("#s08-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 2.4);
+tl.fromTo("#s08-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.87);
+tl.to("#s08-t1", { scale: 1.06, duration: 0.365, ease: "none" }, 3.03);
+tl.to("#s08-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 3.4);
+shake("#s08-t1", 3.0300000000000002, 0.22, 14, 4);
+flash(3.02, 0.35);
+tl.fromTo("#s08-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 5.13);
+tl.to("#s08-t2", { scale: 1.06, duration: 0.255, ease: "none" }, 5.29);
+tl.to("#s08-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 5.55);
+strike("#s08-t2-x", 5.4, 0.18);
+tl.to("#s08-t2", { opacity: 0.45, duration: 0.14 }, 5.4);
+tl.to("#s08-t2-x", { opacity: 0, duration: 0.1 }, 5.55);
+shake("#s08-t2", 5.4, 0.2, 12, 9);
+tl.fromTo("#s08-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.1);
+tl.to("#s08-t3", { scale: 1.06, duration: 0.235, ease: "none" }, 6.26);
+tl.to("#s08-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 6.5);
+tl.fromTo("#s08-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 7.07);
+tl.to("#s08-t4", { scale: 1.06, duration: 0.265, ease: "none" }, 7.23);
+tl.to("#s08-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.5);
+shake("#s08-t4", 7.23, 0.22, 14, 7);
+flash(7.220000000000001, 0.35);
+tl.fromTo("#s08-t5", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 8.27);
+tl.to("#s08-t5", { scale: 1.06, duration: 0.085, ease: "none" }, 8.43);
+tl.to("#s08-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 8.52);
+shake("#s08-t5", 8.43, 0.22, 14, 8);
+flash(8.42, 0.35);
+
+@@@ s09
+@bg #050506
+<div class="shot" id="s09-p0"><div class="bd" id="s09-p0-bd" style="background-image:url(assets/images/plans/manga-atsuya.jpg)"></div><div class="persp"><div class="card" id="s09-p0-c" style="background-image:url(assets/images/plans/manga-atsuya.jpg)"><div class="inner" id="s09-p0-in"><img src="assets/images/plans/manga-atsuya.jpg" alt="" style="object-position:50% 60%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s09-p1"><div class="bd" id="s09-p1-bd" style="background-image:url(assets/images/plans/manga-atsuya2.jpg)"></div><div class="persp"><div class="card" id="s09-p1-c" style="background-image:url(assets/images/plans/manga-atsuya2.jpg)"><div class="inner" id="s09-p1-in"><img src="assets/images/plans/manga-atsuya2.jpg" alt="" style="object-position:50% 70%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s09-p2"><div class="bd" id="s09-p2-bd" style="background-image:url(assets/images/plans/portraits.jpg)"></div><div class="persp"><div class="card" id="s09-p2-c" style="background-image:url(assets/images/plans/portraits.jpg)"><div class="inner" id="s09-p2-in"><img src="assets/images/plans/portraits.jpg" alt="" style="object-position:50% 40%"></div><div class="shine"></div></div></div></div>
+<div class="shot" id="s09-p3"><div class="bd" id="s09-p3-bd" style="background-image:url(assets/images/plans/fan-a.jpg)"></div><div class="persp"><div class="card" id="s09-p3-c" style="background-image:url(assets/images/plans/fan-a.jpg)"><div class="inner" id="s09-p3-in"><img src="assets/images/plans/fan-a.jpg" alt="" style="object-position:50% 50%"></div><div class="shine"></div></div></div></div>
+<div class="t yel slam" id="s09-t0" style="top:240px;font-size:200px">un homme</div>
+<div class="t red slam" id="s09-t1" style="top:240px;font-size:200px">l'enfer</div>
+<div class="t slam" id="s09-t2" style="top:240px;font-size:160px">parfois</div>
+<div class="t yel slam" id="s09-t3" style="top:190px;font-size:190px">changer</div>
+<div class="t slam" id="s09-t4" style="top:375px;font-size:150px">une bataille</div>
+<div class="flash" id="s09-fl"></div><div class="vig"></div>
+@@@js
+const flash = (t, a) => tl.fromTo("#s09-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
+gsap.set("#s09-fl", { opacity: 0 });
+tl.set("#s09-p0", { opacity: 1 }, 0.0);
+tl.set("#s09-p0", { opacity: 0 }, 2.2);
+tl.fromTo("#s09-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 2.2, ease: "none" }, 0.0);
+tl.fromTo("#s09-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.2, ease: "none" }, 0.0);
+tl.fromTo("#s09-p0-c", { x: -1000, rotationY: 35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0.0);
+tl.fromTo("#s09-p0-bd", { x: -300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 0.0);
+tl.set("#s09-p1", { opacity: 0 }, 0);
+tl.set("#s09-p1", { opacity: 1 }, 2.2);
+tl.set("#s09-p1", { opacity: 0 }, 3.9);
+tl.fromTo("#s09-p1-in", { scale: 1.0 }, { scale: 1.12, duration: 1.7, ease: "none" }, 2.2);
+tl.fromTo("#s09-p1-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.7, ease: "none" }, 2.2);
+tl.fromTo("#s09-p1-c", { scale: 1.5, rotation: 4 }, { scale: 1, rotation: 0, duration: 0.18, ease: "power4.in" }, 2.2);
+flash(2.37, 0.6);
+shake("#s09-p1-c", 2.3800000000000003, 0.25, 16, 35);
+tl.set("#s09-p2", { opacity: 0 }, 0);
+tl.set("#s09-p2", { opacity: 1 }, 3.9);
+tl.set("#s09-p2", { opacity: 0 }, 5.0);
+tl.fromTo("#s09-p2-in", { scale: 1.0 }, { scale: 1.12, duration: 1.1, ease: "none" }, 3.9);
+tl.fromTo("#s09-p2-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.1, ease: "none" }, 3.9);
+tl.fromTo("#s09-p2-c", { scale: 0.45, z: -500, rotationX: 25 }, { scale: 1, z: 0, rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 3.9);
+tl.set("#s09-p3", { opacity: 0 }, 0);
+tl.set("#s09-p3", { opacity: 1 }, 5.0);
+tl.fromTo("#s09-p3-in", { scale: 0.9486 }, { scale: 1, duration: 3.08, ease: "none" }, 5.0);
+tl.fromTo("#s09-p3-c", { x: 1000, rotationY: -35, filter: "blur(18px)" }, { x: 0, rotationY: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 5.0);
+tl.fromTo("#s09-p3-bd", { x: 300 }, { x: 0, duration: 0.3, ease: "power3.out" }, 5.0);
+tl.fromTo("#s09-t0", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 1.07);
+tl.to("#s09-t0", { scale: 1.06, duration: 0.385, ease: "none" }, 1.23);
+tl.to("#s09-t0", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 1.62);
+shake("#s09-t0", 1.23, 0.22, 14, 3);
+flash(1.22, 0.35);
+tl.fromTo("#s09-t1", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 2.2);
+tl.to("#s09-t1", { scale: 1.06, duration: 0.505, ease: "none" }, 2.36);
+tl.to("#s09-t1", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 2.87);
+shake("#s09-t1", 2.3600000000000003, 0.22, 14, 4);
+flash(2.35, 0.35);
+tl.fromTo("#s09-t2", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 4.24);
+tl.to("#s09-t2", { scale: 1.06, duration: 0.465, ease: "none" }, 4.4);
+tl.to("#s09-t2", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 4.87);
+tl.fromTo("#s09-t3", { scale: 2.4, opacity: 0, rotation: -3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 6.67);
+tl.to("#s09-t3", { scale: 1.06, duration: 0.685, ease: "none" }, 6.83);
+tl.to("#s09-t3", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.52);
+shake("#s09-t3", 6.83, 0.22, 14, 6);
+flash(6.82, 0.35);
+tl.fromTo("#s09-t4", { scale: 2.4, opacity: 0, rotation: 3 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.16, ease: "power4.in" }, 7.04);
+tl.to("#s09-t4", { scale: 1.06, duration: 0.315, ease: "none" }, 7.2);
+tl.to("#s09-t4", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 7.52);
+shake("#s09-t4", 7.2, 0.22, 14, 7);
+flash(7.19, 0.35);
