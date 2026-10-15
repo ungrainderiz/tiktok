@@ -157,7 +157,7 @@ const breathe = (el, t, dur, amp = 14, period = 1.6) => tl.fromTo(el, { y: 0 }, 
 
 const flash = (t, a) => tl.fromTo("#s06-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s06-fl", { opacity: 0 });
-tl.set("#s06-p0", { opacity: 1 }, 0.0);
+gsap.set("#s06-p0", { opacity: 1 });
 tl.set("#s06-p0", { opacity: 0 }, 0.9);
 tl.fromTo("#s06-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 0.9, ease: "none" }, 0.0);
 tl.fromTo("#s06-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.9, ease: "none" }, 0.0);

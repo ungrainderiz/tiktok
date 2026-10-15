@@ -13,7 +13,7 @@
 @@@js
 const flash = (t, a) => tl.fromTo("#s01-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s01-fl", { opacity: 0 });
-tl.set("#s01-p0", { opacity: 1 }, 0.0);
+gsap.set("#s01-p0", { opacity: 1 });
 tl.set("#s01-p0", { opacity: 0 }, 3.6);
 tl.fromTo("#s01-p0-in", { scale: 1 }, { scale: 1.0601, duration: 3.6, ease: "none" }, 0.0);
 tl.set("#s01-p1", { opacity: 0 }, 0);
@@ -71,7 +71,7 @@ flash(6.48, 0.35);
 @@@js
 const flash = (t, a) => tl.fromTo("#s02-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s02-fl", { opacity: 0 });
-tl.set("#s02-p0", { opacity: 1 }, 0.0);
+gsap.set("#s02-p0", { opacity: 1 });
 tl.set("#s02-p0", { opacity: 0 }, 2.3);
 tl.fromTo("#s02-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 2.3, ease: "none" }, 0.0);
 tl.fromTo("#s02-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.3, ease: "none" }, 0.0);
@@ -127,7 +127,7 @@ flash(6.65, 0.35);
 @@@js
 const flash = (t, a) => tl.fromTo("#s03-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s03-fl", { opacity: 0 });
-tl.set("#s03-p0", { opacity: 1 }, 0.0);
+gsap.set("#s03-p0", { opacity: 1 });
 tl.set("#s03-p0", { opacity: 0 }, 1.4);
 tl.fromTo("#s03-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.4, ease: "none" }, 0.0);
 tl.fromTo("#s03-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.4, ease: "none" }, 0.0);
@@ -202,7 +202,7 @@ flash(6.45, 0.35);
 @@@js
 const flash = (t, a) => tl.fromTo("#s04-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s04-fl", { opacity: 0 });
-tl.set("#s04-p0", { opacity: 1 }, 0.0);
+gsap.set("#s04-p0", { opacity: 1 });
 tl.set("#s04-p0", { opacity: 0 }, 1.47);
 tl.set("#s04-p1", { opacity: 0 }, 0);
 tl.set("#s04-p1", { opacity: 1 }, 1.47);
@@ -282,7 +282,7 @@ tl.to("#s04-t6", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 
 @@@js
 const flash = (t, a) => tl.fromTo("#s05-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s05-fl", { opacity: 0 });
-tl.set("#s05-p0", { opacity: 1 }, 0.0);
+gsap.set("#s05-p0", { opacity: 1 });
 tl.set("#s05-p0", { opacity: 0 }, 0.76);
 tl.fromTo("#s05-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 0.76, ease: "none" }, 0.0);
 tl.fromTo("#s05-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.76, ease: "none" }, 0.0);
@@ -349,7 +349,7 @@ tl.to("#s05-t5", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 
 @@@js
 const flash = (t, a) => tl.fromTo("#s06-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s06-fl", { opacity: 0 });
-tl.set("#s06-p0", { opacity: 1 }, 0.0);
+gsap.set("#s06-p0", { opacity: 1 });
 tl.set("#s06-p0", { opacity: 0 }, 0.9);
 tl.fromTo("#s06-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 0.9, ease: "none" }, 0.0);
 tl.fromTo("#s06-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 0.9, ease: "none" }, 0.0);
@@ -433,7 +433,7 @@ flash(6.45, 0.35);
 @@@js
 const flash = (t, a) => tl.fromTo("#s07-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s07-fl", { opacity: 0 });
-tl.set("#s07-p0", { opacity: 1 }, 0.0);
+gsap.set("#s07-p0", { opacity: 1 });
 tl.set("#s07-p0", { opacity: 0 }, 1.8);
 tl.fromTo("#s07-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.8, ease: "none" }, 0.0);
 tl.fromTo("#s07-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.8, ease: "none" }, 0.0);
@@ -492,7 +492,7 @@ flash(6.0200000000000005, 0.35);
 @@@js
 const flash = (t, a) => tl.fromTo("#s08-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s08-fl", { opacity: 0 });
-tl.set("#s08-p0", { opacity: 1 }, 0.0);
+gsap.set("#s08-p0", { opacity: 1 });
 tl.set("#s08-p0", { opacity: 0 }, 1.37);
 tl.fromTo("#s08-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 1.37, ease: "none" }, 0.0);
 tl.fromTo("#s08-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 1.37, ease: "none" }, 0.0);
@@ -585,7 +585,7 @@ flash(8.42, 0.35);
 @@@js
 const flash = (t, a) => tl.fromTo("#s09-fl", { opacity: a }, { opacity: 0, duration: 0.18, ease: "power1.out", immediateRender: false }, t);
 gsap.set("#s09-fl", { opacity: 0 });
-tl.set("#s09-p0", { opacity: 1 }, 0.0);
+gsap.set("#s09-p0", { opacity: 1 });
 tl.set("#s09-p0", { opacity: 0 }, 2.2);
 tl.fromTo("#s09-p0-in", { scale: 1.0 }, { scale: 1.12, duration: 2.2, ease: "none" }, 0.0);
 tl.fromTo("#s09-p0-bd", { scale: 1.25 }, { scale: 1.15, duration: 2.2, ease: "none" }, 0.0);

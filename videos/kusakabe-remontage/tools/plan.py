@@ -165,7 +165,8 @@ def build():
                     f'<div class="inner" id="{pid}-in">{inner}</div><div class="shine"></div></div></div></div>')
             # visibilité : coupe sèche au début et à la fin du plan
             js.append(f'tl.set("#{pid}", {{ opacity: 0 }}, 0);' if lt > 0 else "")
-            js.append(f'tl.set("#{pid}", {{ opacity: 1 }}, {lt});')
+            # plan visible dès l'image 0 : réglé immédiatement (un tl.set à 0 n'est pas appliqué sur la toute première image)
+            js.append(f'gsap.set("#{pid}", {{ opacity: 1 }});' if lt == 0 else f'tl.set("#{pid}", {{ opacity: 1 }}, {lt});')
             if le < s1 - s0 - 1e-3:
                 js.append(f'tl.set("#{pid}", {{ opacity: 0 }}, {le});')
             if media == "noir":
