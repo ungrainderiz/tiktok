@@ -22,15 +22,15 @@ shots = json.loads((ROOT / "shots.json").read_text())
 # (id, start, end, kind, {lang: lines})  kind: big = stacked slam words, kick = small caps line + big word.
 # The last line of every card takes the accent colour.
 COPY = [
-    ("t01", 0.06, 1.41, "kick", {"fr": ["UN NOUVEAU", "ROGUELIKE"], "en": ["A NEW", "ROGUELIKE"]}),
-    ("t02", 1.41, 3.15, "kick", {"fr": ["SUR", "ROBLOX"], "en": ["ON", "ROBLOX"]}),
-    ("t03", 4.92, 6.68, "big", {"fr": ["AFFRONTE", "LA HORDE"], "en": ["FIGHT", "THE SWARM"]}),
-    ("t04", 6.68, 8.45, "big", {"fr": ["MONTE DE", "NIVEAU"], "en": ["LEVEL", "UP"]}),
-    ("t05", 8.45, 10.21, "big", {"fr": ["DES VAGUES", "SANS FIN"], "en": ["ENDLESS", "WAVES"]}),
-    ("t06", 10.21, 11.95, "kick", {"fr": ["CHOISIS", "TON HÉROS"], "en": ["CHOOSE", "YOUR HERO"]}),
-    ("t07", 11.95, 13.72, "big", {"fr": ["JUSQU’OÙ", "VAS-TU", "SURVIVRE ?"], "en": ["HOW LONG", "CAN YOU", "SURVIVE?"]}),
-    ("t08", 13.72, 15.48, "big", {"fr": ["EN SOLO OU", "ENTRE AMIS"], "en": ["SOLO OR", "WITH FRIENDS"]}),
-    ("t09", 17.25, 19.01, "big", {"fr": ["DES BOSS", "GÉANTS"], "en": ["GIANT", "BOSSES"]}),
+    ("t01", 0.06, 1.41, "kick", {"fr": ["UN NOUVEAU", "ROGUELIKE"], "en": ["WELCOME TO", "THE SANCTUARY"]}),
+    ("t02", 1.41, 3.15, "kick", {"fr": ["SUR", "ROBLOX"], "en": ["BUT OUTSIDE", "IT’S CHAOS"]}),
+    ("t03", 4.92, 6.68, "big", {"fr": ["AFFRONTE", "LA HORDE"], "en": ["THOUSANDS", "OF MONSTERS"]}),
+    ("t04", 6.68, 8.45, "big", {"fr": ["MONTE DE", "NIVEAU"], "en": ["LEVEL UP", "DRAW YOUR CARDS"]}),
+    ("t05", 8.45, 10.21, "big", {"fr": ["DES VAGUES", "SANS FIN"], "en": ["STACK", "YOUR BUILD"]}),
+    ("t06", 10.21, 11.95, "kick", {"fr": ["CHOISIS", "TON HÉROS"], "en": ["PICK", "YOUR CLASS"]}),
+    ("t07", 11.95, 13.72, "big", {"fr": ["JUSQU’OÙ", "VAS-TU", "SURVIVRE ?"], "en": ["THE HORDE", "NEVER", "STOPS"]}),
+    ("t08", 13.72, 15.48, "big", {"fr": ["EN SOLO OU", "ENTRE AMIS"], "en": ["BRING", "YOUR SQUAD"]}),
+    ("t09", 17.25, 19.01, "big", {"fr": ["DES BOSS", "GÉANTS"], "en": ["FACE THE", "TITANS"]}),
 ]
 END_CARD = {"fr": ("JOUE MAINTENANT", "SUR ROBLOX"), "en": ("PLAY NOW", "ON ROBLOX")}
 LINE_BEATS = {
