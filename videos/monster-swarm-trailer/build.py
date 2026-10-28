@@ -48,6 +48,49 @@ SHAKES = [(4.18, 1.0), (7.15, 0.5), (8.41, 0.5), (12.21, 0.6), (12.63, 0.6), (16
 # shots that sit on the loop seam: no punch-in, so the last frame flows into the first
 SEAM = {"s01", "s25"}
 
+# sound effects: (file in assets/sfx, start, volume). Whooshes peak 0.15s in, so they start 0.15s
+# before the hit; the riser crests at the drop (4.18); the reversed whoosh dies out exactly on the
+# loop point so the restart stays seamless. Source: media-use bundled Pixabay library (CREDITS.md).
+SFX = [
+    ("whoosh.wav", 1.52, 1.26),  # ON ROBLOX
+    ("riser-build.wav", 1.18, 1.2),  # build into the drop
+    ("whoosh.wav", 3.22, 1.61),  # MONSTER
+    ("whoosh.wav", 3.64, 1.61),  # SWARM
+    ("impact.wav", 4.18, 1.0),  # drop / title hit
+    ("whoosh.wav", 4.91, 1.38),  # FIGHT THE SWARM
+    ("whoosh.wav", 6.61, 1.26),  # ENDLESS WAVES
+    ("sparkle.wav", 8.45, 1.52),  # LEVEL UP
+    ("whoosh.wav", 9.97, 1.26),  # PICK YOUR POWERS
+    ("pop.wav", 10.12, 1.08),
+    ("whoosh.wav", 13.36, 1.26),  # HOW LONG
+    ("whoosh.wav", 14.20, 1.03),  # CAN YOU
+    ("whoosh.wav", 15.06, 1.38),  # SURVIVE?
+    ("glitch.wav", 16.86, 1.21),  # CHOOSE YOUR HERO
+    ("sparkle.wav", 17.05, 0.95),
+    ("impact.wav", 18.58, 1.0),  # GIANT BOSSES
+    ("whoosh.wav", 18.84, 1.26),
+    ("whoosh.wav", 21.82, 1.26),  # EVERY RUN
+    ("whoosh.wav", 23.51, 1.15),
+    ("whoosh.wav", 25.21, 1.26),  # SOLO OR WITH FRIENDS
+    ("impact.wav", 27.03, 1.0),  # end card MONSTER
+    ("whoosh.wav", 27.30, 1.61),  # SWARM
+    ("pop.wav", 27.89, 1.26),  # PLAY NOW
+    ("whoosh-reverse.wav", 29.82, 1.68),  # exit, sucks back into frame 0
+]
+SFX_LEN = {"whoosh.wav": 0.57, "whoosh-reverse.wav": 0.57, "riser-build.wav": 3.0, "impact.wav": 1.4,
+           "sparkle.wav": 1.8, "pop.wav": 0.72, "glitch.wav": 0.65}
+
+
+def sfx_html(prefix):
+    rows = []
+    for i, (f, t, vol) in enumerate(SFX):
+        d = min(SFX_LEN[f], DUR - t)
+        rows.append(
+            f'      <audio id="sfx{i:02d}" class="clip" src="{prefix}assets/sfx/{f}" data-start="{t:.2f}" '
+            f'data-duration="{d:.2f}" data-volume="{vol}" data-track-index="{11 + i % 3}"></audio>'
+        )
+    return "\n".join(rows)
+
 
 def shot_html(sid, a, b):
     return (
@@ -212,6 +255,7 @@ def build(lang):
 
       <div id="flash" class="layer"></div>
       <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="{DUR}" data-track-index="10"></audio>
+{sfx_html("")}
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});
