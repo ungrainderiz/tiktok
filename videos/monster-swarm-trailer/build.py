@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Generates the Monster Swarm trailer compositions from shots.json + the copy below.
 
-  index.html     English
-  compositions/trailer-fr.html  French  (render with: npx hyperframes render -c compositions/trailer-fr.html ...)
+  index.html                         English, vertical 1080x1920 (TikTok)
+  compositions/trailer-fr.html       French,  vertical
+  compositions/trailer-en-16x9.html  English, horizontal 1920x1080
+  compositions/trailer-fr-16x9.html  French,  horizontal
+  (render a composition with: npx hyperframes render -c compositions/<name>.html ...)
 
 Times are seconds on the 30.4s cut (assets/bgm.wav = full-track 10.217s -> 40.617s, 18 bars),
 snapped to the audiomap beat grid. The cut is a seamless loop: it ends on the downbeat that
@@ -92,10 +95,21 @@ def sfx_html(prefix):
     return "\n".join(rows)
 
 
-def shot_html(sid, a, b):
+# canvas + type scale per format. 9x16 is the TikTok cut; 16x9 is the horizontal (YouTube / Roblox page) cut.
+FORMATS = {
+    "9x16": dict(w=1080, h=1920, shots="shots", card="left: 50px; right: 50px; top: 560px; height: 760px;",
+                 w_px=172, kick_px=74, small_px=140, t11_top=900, tw1=230, tw2=300, end_mt=-220,
+                 cta_px=(70, 60), sub_px=52),
+    "16x9": dict(w=1920, h=1080, shots="shots-h", card="left: 120px; right: 120px; top: 160px; height: 760px;",
+                 w_px=150, kick_px=62, small_px=124, t11_top=330, tw1=190, tw2=250, end_mt=-40,
+                 cta_px=(60, 54), sub_px=44),
+}
+
+
+def shot_html(sid, a, b, shots_dir):
     return (
         f'      <div class="shot" id="w-{sid}">\n'
-        f'        <video id="v-{sid}" class="clip" src="assets/shots/{sid}.mp4" muted playsinline '
+        f'        <video id="v-{sid}" class="clip" src="assets/{shots_dir}/{sid}.mp4" muted playsinline '
         f'data-start="{a:.2f}" data-duration="{b - a:.2f}" data-track-index="0"></video>\n'
         f"      </div>"
     )
@@ -175,15 +189,16 @@ tl.to("#dimEnd", {opacity: 0, duration: 0.42, ease: "power1.in"}, 29.98);
 """
 
 
-def build(lang):
+def build(lang, fmt):
+    F = FORMATS[fmt]
     cta, sub = END_CARD[lang]
     js = timeline_js()
     return f"""<!doctype html>
 <html lang="{lang}">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1080, height=1920" />
-    <title>Monster Swarm — Trailer ({lang.upper()})</title>
+    <meta name="viewport" content="width={F['w']}, height={F['h']}" />
+    <title>Monster Swarm — Trailer ({lang.upper()} {fmt})</title>
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
       @font-face {{ font-family: "Anton"; src: url("assets/fonts/anton-latin-400-normal.woff2") format("woff2"); font-weight: 400; }}
@@ -196,7 +211,7 @@ def build(lang):
         --cyan: #2ef2ff;
       }}
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-      html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); }}
+      html, body {{ width: {F['w']}px; height: {F['h']}px; overflow: hidden; background: var(--ink); }}
       #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ink); }}
       #cam {{ position: absolute; inset: 0; }}
       .shot {{ position: absolute; inset: 0; }}
@@ -206,35 +221,35 @@ def build(lang):
                  linear-gradient(180deg, rgba(10,0,25,0.35) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(10,0,25,0.5) 100%); }}
       #flash {{ background: #fff; opacity: 0; mix-blend-mode: screen; }}
       .dim {{ background: #07000f; opacity: 0; }}
-      .card {{ position: absolute; left: 50px; right: 50px; top: 560px; height: 760px;
+      .card {{ position: absolute; {F['card']}
                display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }}
       .ln {{ display: block; text-align: center; }}
-      .w {{ display: inline-block; font-family: "Anton", sans-serif; font-size: 172px; line-height: 0.98; color: var(--white);
+      .w {{ display: inline-block; font-family: "Anton", sans-serif; font-size: {F['w_px']}px; line-height: 0.98; color: var(--white);
             letter-spacing: 0.01em; -webkit-text-stroke: 10px var(--ink); paint-order: stroke fill;
             text-shadow: 10px 12px 0 var(--magenta), 0 0 40px rgba(0,0,0,0.5); white-space: nowrap; }}
       .accent .w {{ color: var(--yellow); }}
-      .kicker .w {{ font-family: "Inter", sans-serif; font-weight: 900; font-size: 74px; letter-spacing: 0.08em;
+      .kicker .w {{ font-family: "Inter", sans-serif; font-weight: 900; font-size: {F['kick_px']}px; letter-spacing: 0.08em;
                     text-shadow: 6px 7px 0 var(--magenta); -webkit-text-stroke: 7px var(--ink); }}
-      #t10 .w, #t11 .w {{ font-size: 140px; }}
-      #t11 {{ top: 900px; }}
+      #t10 .w, #t11 .w {{ font-size: {F['small_px']}px; }}
+      #t11 {{ top: {F['t11_top']}px; }}
       .title {{ position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }}
       .tbox {{ display: flex; flex-direction: column; align-items: center; }}
       .tw {{ display: block; font-family: "Anton", sans-serif; line-height: 0.9; color: var(--white);
              -webkit-text-stroke: 14px var(--ink); paint-order: stroke fill; text-shadow: 14px 16px 0 var(--magenta); }}
-      .tw1 {{ font-size: 230px; letter-spacing: 0.02em; }}
-      .tw2 {{ font-size: 300px; color: var(--yellow); letter-spacing: 0.04em; }}
-      #endcard .tbox {{ margin-top: -220px; }}
+      .tw1 {{ font-size: {F['tw1']}px; letter-spacing: 0.02em; }}
+      .tw2 {{ font-size: {F['tw2']}px; color: var(--yellow); letter-spacing: 0.04em; }}
+      #endcard .tbox {{ margin-top: {F['end_mt']}px; }}
       .cta {{ margin-top: 70px; padding: 26px 56px; background: var(--yellow); border: 8px solid var(--ink);
               box-shadow: 12px 14px 0 var(--magenta); font-family: "Inter", sans-serif; font-weight: 900;
-              font-size: {70 if len(cta) <= 10 else 60}px; letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }}
-      .sub {{ margin-top: 34px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 52px; letter-spacing: 0.18em;
+              font-size: {F['cta_px'][0] if len(cta) <= 10 else F['cta_px'][1]}px; letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }}
+      .sub {{ margin-top: 34px; font-family: "Inter", sans-serif; font-weight: 900; font-size: {F['sub_px']}px; letter-spacing: 0.18em;
               color: var(--white); -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; }}
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="{DUR}" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{DUR}" data-width="{F['w']}" data-height="{F['h']}">
       <div id="cam">
-{chr(10).join(shot_html(s[0], s[1], s[2]) for s in shots)}
+{chr(10).join(shot_html(s[0], s[1], s[2], F['shots']) for s in shots)}
       </div>
       <div id="grade" class="layer"></div>
       <div id="dim3" class="clip layer dim" data-start="3.37" data-duration="1.69" data-track-index="1"></div>
@@ -271,11 +286,12 @@ def build(lang):
 """
 
 
-(ROOT / "index.html").write_text(build("en"))
+# index.html is the English vertical cut; the other versions live in compositions/ (one root per
+# project folder), so their asset paths go up a level.
+(ROOT / "index.html").write_text(build("en", "9x16"))
 print("wrote index.html")
-# second language lives in compositions/ (one root per project folder), so its asset paths go up a level
 (ROOT / "compositions").mkdir(exist_ok=True)
-(ROOT / "compositions" / "trailer-fr.html").write_text(
-    build("fr").replace('"assets/', '"../assets/').replace("url(\"assets/", "url(\"../assets/")
-)
-print("wrote compositions/trailer-fr.html")
+for lang, fmt, name in (("fr", "9x16", "trailer-fr"), ("en", "16x9", "trailer-en-16x9"), ("fr", "16x9", "trailer-fr-16x9")):
+    html = build(lang, fmt).replace('"assets/', '"../assets/').replace("url(\"assets/", "url(\"../assets/")
+    (ROOT / "compositions" / f"{name}.html").write_text(html)
+    print(f"wrote compositions/{name}.html")
