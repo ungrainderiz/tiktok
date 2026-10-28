@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
-    <title>Monster Swarm — Trailer</title>
+    <title>Monster Swarm — Trailer (EN)</title>
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
       @font-face { font-family: "Anton"; src: url("assets/fonts/anton-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
@@ -25,9 +25,8 @@
       #grade { background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(8,0,20,0.55) 100%),
                  linear-gradient(180deg, rgba(10,0,25,0.35) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(10,0,25,0.5) 100%); }
       #flash { background: #fff; opacity: 0; mix-blend-mode: screen; }
-      #fade { background: #000; opacity: 0; }
       .dim { background: #07000f; opacity: 0; }
-      .card { position: absolute; left: 70px; right: 70px; top: 560px; height: 760px;
+      .card { position: absolute; left: 50px; right: 50px; top: 560px; height: 760px;
                display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
       .ln { display: block; text-align: center; }
       .w { display: inline-block; font-family: "Anton", sans-serif; font-size: 172px; line-height: 0.98; color: var(--white);
@@ -45,15 +44,15 @@
       .tw1 { font-size: 230px; letter-spacing: 0.02em; }
       .tw2 { font-size: 300px; color: var(--yellow); letter-spacing: 0.04em; }
       #endcard .tbox { margin-top: -220px; }
-      .cta { margin-top: 70px; padding: 26px 64px; background: var(--yellow); border: 8px solid var(--ink);
+      .cta { margin-top: 70px; padding: 26px 56px; background: var(--yellow); border: 8px solid var(--ink);
               box-shadow: 12px 14px 0 var(--magenta); font-family: "Inter", sans-serif; font-weight: 900;
-              font-size: 70px; letter-spacing: 0.04em; color: var(--ink); }
+              font-size: 70px; letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }
       .sub { margin-top: 34px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 52px; letter-spacing: 0.18em;
               color: var(--white); -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="31.58" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30.4" data-width="1080" data-height="1920">
       <div id="cam">
       <div class="shot" id="w-s01">
         <video id="v-s01" class="clip" src="assets/shots/s01.mp4" muted playsinline data-start="0.00" data-duration="1.67" data-track-index="0"></video>
@@ -128,12 +127,12 @@
         <video id="v-s24" class="clip" src="assets/shots/s24.mp4" muted playsinline data-start="27.03" data-duration="1.69" data-track-index="0"></video>
       </div>
       <div class="shot" id="w-s25">
-        <video id="v-s25" class="clip" src="assets/shots/s25.mp4" muted playsinline data-start="28.72" data-duration="2.86" data-track-index="0"></video>
+        <video id="v-s25" class="clip" src="assets/shots/s25.mp4" muted playsinline data-start="28.72" data-duration="1.68" data-track-index="0"></video>
       </div>
       </div>
       <div id="grade" class="layer"></div>
       <div id="dim3" class="clip layer dim" data-start="3.37" data-duration="1.69" data-track-index="1"></div>
-      <div id="dim25" class="clip layer dim" data-start="28.72" data-duration="2.86" data-track-index="1"></div>
+      <div id="dimEnd" class="clip layer dim" data-start="27.03" data-duration="3.37" data-track-index="1"></div>
 
       <div class="clip card" id="t01" data-start="0.07" data-duration="1.60" data-track-index="2">
         <div class="ln kicker"><span class="w">A NEW</span></div>
@@ -180,15 +179,11 @@
         <div class="ln"><span class="w">SOLO OR</span></div>
         <div class="ln accent"><span class="w">WITH FRIENDS</span></div>
       </div>
-      <div class="clip card" id="t12" data-start="27.03" data-duration="1.69" data-track-index="2">
-        <div class="ln kicker"><span class="w">ARE YOU</span></div>
-        <div class="ln accent"><span class="w">READY?</span></div>
-      </div>
 
       <div id="title1" class="clip title" data-start="3.37" data-duration="1.69" data-track-index="3">
         <div class="tbox"><span class="tw tw1">MONSTER</span><span class="tw tw2">SWARM</span></div>
       </div>
-      <div id="endcard" class="clip title" data-start="28.72" data-duration="2.86" data-track-index="3">
+      <div id="endcard" class="clip title" data-start="27.03" data-duration="3.37" data-track-index="3">
         <div class="tbox">
           <span class="tw tw1">MONSTER</span><span class="tw tw2">SWARM</span>
           <div class="cta">PLAY NOW</div>
@@ -197,15 +192,13 @@
       </div>
 
       <div id="flash" class="layer"></div>
-      <div id="fade" class="layer"></div>
-      <audio id="bgm" class="clip" src="assets/bgm.mp3" data-start="0" data-duration="31.58" data-track-index="10"></audio>
+      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="30.4" data-track-index="10"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
       tl.set("#flash", {opacity: 0}, 0);
       tl.set("#cam", {x: 0, y: 0, rotation: 0}, 0);
-      tl.fromTo("#w-s01", {scale: 1.14}, {scale: 1.0, duration: 0.32, ease: "expo.out"}, 0.00);
-      tl.to("#w-s01", {scale: 1.06, duration: 1.35, ease: "none"}, 0.32);
+      tl.fromTo("#w-s01", {scale: 1.0}, {scale: 1.05, duration: 1.67, ease: "none"}, 0.00);
       tl.fromTo("#w-s02", {scale: 1.14}, {scale: 1.0, duration: 0.32, ease: "expo.out"}, 1.67);
       tl.to("#w-s02", {scale: 1.06, duration: 1.38, ease: "none"}, 1.99);
       tl.fromTo("#w-s03", {scale: 1.14}, {scale: 1.0, duration: 0.32, ease: "expo.out"}, 3.37);
@@ -238,8 +231,6 @@
       tl.to("#w-s23", {scale: 1.06, duration: 1.35, ease: "none"}, 25.68);
       tl.fromTo("#w-s24", {scale: 1.14}, {scale: 1.0, duration: 0.32, ease: "expo.out"}, 27.03);
       tl.to("#w-s24", {scale: 1.06, duration: 1.37, ease: "none"}, 27.35);
-      tl.fromTo("#w-s25", {scale: 1.14}, {scale: 1.0, duration: 0.32, ease: "expo.out"}, 28.72);
-      tl.to("#w-s25", {scale: 1.06, duration: 2.54, ease: "none"}, 29.04);
       tl.fromTo("#t01 .ln:nth-child(1) .w", {opacity: 0, scale: 1.9, rotation: 3}, {opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "power4.out"}, 0.07);
       tl.fromTo("#t01 .ln:nth-child(2) .w", {opacity: 0, scale: 1.9, rotation: -4}, {opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "power4.out"}, 0.19);
       tl.to("#t01 .w", {opacity: 0, y: -40, duration: 0.12, ease: "power2.in"}, 1.55);
@@ -274,15 +265,13 @@
       tl.fromTo("#t11 .ln:nth-child(1) .w", {opacity: 0, scale: 1.9, rotation: 3}, {opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "power4.out"}, 25.36);
       tl.fromTo("#t11 .ln:nth-child(2) .w", {opacity: 0, scale: 1.9, rotation: -4}, {opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "power4.out"}, 25.77);
       tl.to("#t11 .w", {opacity: 0, y: -40, duration: 0.12, ease: "power2.in"}, 26.91);
-      tl.fromTo("#t12 .ln:nth-child(1) .w", {opacity: 0, scale: 1.9, rotation: 3}, {opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "power4.out"}, 27.03);
-      tl.fromTo("#t12 .ln:nth-child(2) .w", {opacity: 0, scale: 1.9, rotation: -4}, {opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "power4.out"}, 27.89);
-      tl.to("#t12 .w", {opacity: 0, y: -40, duration: 0.12, ease: "power2.in"}, 28.60);
       tl.fromTo("#flash", {opacity: 0.33}, {opacity: 0, duration: 0.35, ease: "power2.out", immediateRender: false}, 3.37);
       tl.fromTo("#flash", {opacity: 0.85}, {opacity: 0, duration: 0.52, ease: "power2.out", immediateRender: false}, 4.18);
       tl.fromTo("#flash", {opacity: 0.47}, {opacity: 0, duration: 0.40, ease: "power2.out", immediateRender: false}, 5.06);
       tl.fromTo("#flash", {opacity: 0.57}, {opacity: 0, duration: 0.43, ease: "power2.out", immediateRender: false}, 16.88);
       tl.fromTo("#flash", {opacity: 0.76}, {opacity: 0, duration: 0.49, ease: "power2.out", immediateRender: false}, 18.58);
-      tl.fromTo("#flash", {opacity: 0.95}, {opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false}, 28.72);
+      tl.fromTo("#flash", {opacity: 0.95}, {opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false}, 27.03);
+      tl.fromTo("#flash", {opacity: 0.38}, {opacity: 0, duration: 0.37, ease: "power2.out", immediateRender: false}, 28.72);
       tl.fromTo("#cam", {x: 26, y: -18, rotation: 0.80}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 4.18);
       tl.fromTo("#cam", {x: 13, y: -9, rotation: 0.40}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 7.15);
       tl.fromTo("#cam", {x: 13, y: -9, rotation: 0.40}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 8.41);
@@ -293,7 +282,8 @@
       tl.fromTo("#cam", {x: 18, y: -13, rotation: 0.56}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 18.97);
       tl.fromTo("#cam", {x: 16, y: -11, rotation: 0.48}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 25.31);
       tl.fromTo("#cam", {x: 16, y: -11, rotation: 0.48}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 25.73);
-      tl.fromTo("#cam", {x: 26, y: -18, rotation: 0.80}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 28.72);
+      tl.fromTo("#cam", {x: 26, y: -18, rotation: 0.80}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 27.03);
+      tl.fromTo("#cam", {x: 13, y: -9, rotation: 0.40}, {x: 0, y: 0, rotation: 0, duration: 0.35, ease: "elastic.out(1.2, 0.3)", immediateRender: false}, 28.72);
       // ---- title slam on the drop
       tl.fromTo("#title1 .tw1", {opacity: 0, scale: 3, y: -80}, {opacity: 1, scale: 1, y: 0, duration: 0.18, ease: "power4.out"}, 3.37);
       tl.fromTo("#title1 .tw2", {opacity: 0, scale: 3, y: 80}, {opacity: 1, scale: 1, y: 0, duration: 0.18, ease: "power4.out"}, 3.79);
@@ -302,16 +292,18 @@
       tl.to("#title1 .tbox", {scale: 0.2, opacity: 0, duration: 0.14, ease: "power3.in"}, 4.92);
       tl.fromTo("#dim3", {opacity: 0.25}, {opacity: 0.6, duration: 0.4, ease: "power2.out"}, 3.37);
       
-      // ---- end card
-      tl.fromTo("#endcard .tw1", {opacity: 0, scale: 3}, {opacity: 1, scale: 1, duration: 0.2, ease: "power4.out"}, 28.72);
-      tl.fromTo("#endcard .tw2", {opacity: 0, scale: 3}, {opacity: 1, scale: 1, duration: 0.2, ease: "power4.out"}, 29.14);
-      tl.fromTo("#endcard .tbox", {filter: "drop-shadow(0 0 0px #ff2bd6)"}, {filter: "drop-shadow(0 0 50px #ff2bd6)", duration: 1.2, ease: "power1.out"}, 29.14);
-      tl.fromTo("#endcard .cta", {opacity: 0, y: 60}, {opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)"}, 29.35);
-      tl.fromTo("#endcard .sub", {opacity: 0}, {opacity: 1, duration: 0.2, ease: "power1.out"}, 29.4);
-      tl.fromTo("#endcard .cta", {scale: 1}, {scale: 1.08, duration: 0.21, yoyo: true, repeat: 3, ease: "sine.inOut"}, 30.0);
-      tl.fromTo("#dim25", {opacity: 0}, {opacity: 0.55, duration: 0.5, ease: "power1.out"}, 28.72);
-      tl.fromTo("#fade", {opacity: 0}, {opacity: 1, duration: 0.5, ease: "power1.in"}, 31.08);
-      tl.set({}, {}, 31.58);
+      // ---- end card (27.03 -> loop point); exits before 30.4 so the loop back to frame 0 is clean
+      tl.fromTo("#endcard .tw1", {opacity: 0, scale: 3}, {opacity: 1, scale: 1, duration: 0.2, ease: "power4.out"}, 27.03);
+      tl.fromTo("#endcard .tw2", {opacity: 0, scale: 3}, {opacity: 1, scale: 1, duration: 0.2, ease: "power4.out"}, 27.45);
+      tl.fromTo("#endcard .tbox", {filter: "drop-shadow(0 0 0px #ff2bd6)"}, {filter: "drop-shadow(0 0 50px #ff2bd6)", duration: 1.2, ease: "power1.out", immediateRender: false}, 27.45);
+      tl.fromTo("#endcard .cta", {opacity: 0, y: 60}, {opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)"}, 27.89);
+      tl.fromTo("#endcard .sub", {opacity: 0}, {opacity: 1, duration: 0.2, ease: "power1.out"}, 27.95);
+      tl.fromTo("#endcard .tbox", {scale: 1}, {scale: 1.08, duration: 0.1, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false}, 28.72);
+      tl.fromTo("#endcard .cta", {scale: 1}, {scale: 1.08, duration: 0.21, yoyo: true, repeat: 3, ease: "sine.inOut"}, 28.72);
+      tl.to("#endcard .tbox", {scale: 1.6, opacity: 0, filter: "blur(18px) drop-shadow(0 0 50px #ff2bd6)", duration: 0.34, ease: "power3.in"}, 29.98);
+      tl.fromTo("#dimEnd", {opacity: 0}, {opacity: 0.5, duration: 0.3, ease: "power1.out"}, 27.03);
+      tl.to("#dimEnd", {opacity: 0, duration: 0.42, ease: "power1.in"}, 29.98);
+      tl.set({}, {}, 30.4);
       window.__timelines["main"] = tl;
     </script>
   </body>
