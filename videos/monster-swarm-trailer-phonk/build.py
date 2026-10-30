@@ -4,7 +4,7 @@
   index.html                French
   compositions/trailer-en.html  English  (render with: npx hyperframes render -c compositions/trailer-en.html ...)
 
-Times are seconds on the 23.6s cut (assets/bgm.wav = the phonk track from 0.40s; 136 BPM, bar 1.765s).
+Times are seconds on the 24.4s cut (assets/bgm.wav = the phonk track from 0.40s; 136 BPM, bar 1.765s).
 Downbeats (local): 1.41 3.15 4.92 6.68 8.45 10.21 11.95 13.72 15.48 17.25 19.01 20.68.
 The track drops out at ~20.1 and lands its last hit at 20.64 -> end card; music decays by ~22,
 the card holds and the picture fades out at the end.
@@ -15,7 +15,13 @@ import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).parent
-DUR = 23.6
+DUR = 24.4
+MUSIC_LEN = 23.6  # assets/bgm.wav; the picture holds the end card a little past it
+# French voiceover (ElevenLabs, sped up 1.09x so "Ça s'appelle Monster Swarm" lands on the end-card hit at
+# 20.64). While it plays, the music and SFX are ducked under the voice.
+VOICE = {"fr": ("assets/vo-fr.wav", 0.15, 23.75)}
+VO_MUSIC_VOL = 0.2
+VO_SFX_SCALE = 0.5
 W, H = 1920, 1080
 shots = json.loads((ROOT / "shots.json").read_text())
 
@@ -74,13 +80,13 @@ SFX_LEN = {"whoosh.wav": 0.57, "whoosh-reverse.wav": 0.57, "riser-build.wav": 3.
            "sparkle.wav": 1.8, "pop.wav": 0.72, "glitch.wav": 0.65}
 
 
-def sfx_html():
+def sfx_html(scale=1.0):
     rows = []
     for i, (f, t, vol) in enumerate(SFX):
         d = min(SFX_LEN[f], DUR - t)
         rows.append(
             f'      <audio id="sfx{i:02d}" class="clip" src="assets/sfx/{f}" data-start="{t:.2f}" '
-            f'data-duration="{d:.2f}" data-volume="{vol}" data-track-index="{11 + i % 3}"></audio>'
+            f'data-duration="{d:.2f}" data-volume="{round(vol * scale, 2)}" data-track-index="{11 + i % 3}"></audio>'
         )
     return "\n".join(rows)
 
@@ -163,12 +169,15 @@ tl.fromTo("#endcard .cta", {opacity: 0, y: 60}, {opacity: 1, y: 0, duration: 0.3
 tl.fromTo("#endcard .sub", {opacity: 0}, {opacity: 1, duration: 0.2, ease: "power1.out"}, 21.40);
 tl.fromTo("#endcard .cta", {scale: 1}, {scale: 1.06, duration: 0.44, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false}, 21.70);
 tl.fromTo("#dimEnd", {opacity: 0.2}, {opacity: 0.5, duration: 0.6, ease: "power1.out"}, 20.64);
-tl.fromTo("#fade", {opacity: 0}, {opacity: 1, duration: 0.7, ease: "power1.in"}, 22.9);
+tl.fromTo("#fade", {opacity: 0}, {opacity: 1, duration: 0.5, ease: "power1.in"}, 23.9);
 """
 
 
 def build(lang):
     cta, sub = END_CARD[lang]
+    voice = VOICE.get(lang)
+    voice_html = (f'      <audio id="vo" class="clip" src="{voice[0]}" data-start="{voice[1]}" data-duration="{voice[2]}" '
+                  f'data-track-index="9"></audio>') if voice else ""
     js = timeline_js()
     return f"""<!doctype html>
 <html lang="{lang}">
@@ -248,8 +257,9 @@ def build(lang):
 
       <div id="flash" class="layer"></div>
       <div id="fade" class="layer"></div>
-      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="{DUR}" data-track-index="10"></audio>
-{sfx_html()}
+      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="{MUSIC_LEN}" data-volume="{VO_MUSIC_VOL if voice else 1}" data-track-index="10"></audio>
+{voice_html}
+{sfx_html(VO_SFX_SCALE if voice else 1.0)}
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});
