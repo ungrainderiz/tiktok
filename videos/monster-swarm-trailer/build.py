@@ -84,9 +84,27 @@ SFX_LEN = {"whoosh.wav": 0.57, "whoosh-reverse.wav": 0.57, "riser-build.wav": 3.
            "sparkle.wav": 1.8, "pop.wav": 0.72, "glitch.wav": 0.65}
 
 
-def sfx_html(prefix):
+# English voiceover (ElevenLabs, cut at its pauses, sped up 1.12x and re-placed on the edit: intro line,
+# silence over the title drop, closing line on the end card). Music ducks under the voice but comes back
+# up for the title drop (VO_OPEN window); SFX inside the voice are halved.
+VOICE_SRC = "assets/vo-en.wav"
+VO_OPEN = (1.80, 4.95)
+VO_MUSIC_VOL = 0.15
+VO_SFX_SCALE = 0.5
+
+
+def music_automation():
+    a, b = VO_OPEN
+    pts = [(0, VO_MUSIC_VOL), (a, VO_MUSIC_VOL), (a + 0.3, 1.0), (b - 0.15, 1.0), (b, VO_MUSIC_VOL), (DUR, VO_MUSIC_VOL)]
+    lane = ",".join(f'{{"t":{t:.2f},"v":{v}}}' for t, v in pts)
+    return f'{{"version":1,"lanes":[{{"target":"volume","points":[{lane}]}}]}}'
+
+
+def sfx_html(prefix, voice=False):
     rows = []
     for i, (f, t, vol) in enumerate(SFX):
+        if voice and not (VO_OPEN[0] <= t < VO_OPEN[1]):
+            vol = round(vol * VO_SFX_SCALE, 2)
         d = min(SFX_LEN[f], DUR - t)
         rows.append(
             f'      <audio id="sfx{i:02d}" class="clip" src="{prefix}assets/sfx/{f}" data-start="{t:.2f}" '
@@ -189,8 +207,11 @@ tl.to("#dimEnd", {opacity: 0, duration: 0.42, ease: "power1.in"}, 29.98);
 """
 
 
-def build(lang, fmt):
+def build(lang, fmt, voice=False):
     F = FORMATS[fmt]
+    bgm_auto = f" data-automation='{music_automation()}'" if voice else ""
+    vo_html = (f'      <audio id="vo" class="clip" src="{VOICE_SRC}" data-start="0" data-duration="{DUR}" '
+               f'data-track-index="9"></audio>') if voice else ""
     cta, sub = END_CARD[lang]
     js = timeline_js()
     return f"""<!doctype html>
@@ -269,8 +290,9 @@ def build(lang, fmt):
       </div>
 
       <div id="flash" class="layer"></div>
-      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="{DUR}" data-track-index="10"></audio>
-{sfx_html("")}
+      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="{DUR}" data-track-index="10"{bgm_auto}></audio>
+{vo_html}
+{sfx_html("", voice)}
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});
@@ -291,7 +313,9 @@ def build(lang, fmt):
 (ROOT / "index.html").write_text(build("en", "9x16"))
 print("wrote index.html")
 (ROOT / "compositions").mkdir(exist_ok=True)
-for lang, fmt, name in (("fr", "9x16", "trailer-fr"), ("en", "16x9", "trailer-en-16x9"), ("fr", "16x9", "trailer-fr-16x9")):
-    html = build(lang, fmt).replace('"assets/', '"../assets/').replace("url(\"assets/", "url(\"../assets/")
+for lang, fmt, name, voice in (("fr", "9x16", "trailer-fr", False), ("en", "16x9", "trailer-en-16x9", False),
+                               ("fr", "16x9", "trailer-fr-16x9", False),
+                               ("en", "16x9", "trailer-en-16x9-voice", True), ("en", "9x16", "trailer-en-voice", True)):
+    html = build(lang, fmt, voice).replace('"assets/', '"../assets/').replace("url(\"assets/", "url(\"../assets/")
     (ROOT / "compositions" / f"{name}.html").write_text(html)
     print(f"wrote compositions/{name}.html")
