@@ -308,14 +308,19 @@ def build(lang, fmt, voice=False):
 """
 
 
-# index.html is the English vertical cut; the other versions live in compositions/ (one root per
-# project folder), so their asset paths go up a level.
-(ROOT / "index.html").write_text(build("en", "9x16"))
-print("wrote index.html")
-(ROOT / "compositions").mkdir(exist_ok=True)
-for lang, fmt, name, voice in (("fr", "9x16", "trailer-fr", False), ("en", "16x9", "trailer-en-16x9", False),
-                               ("fr", "16x9", "trailer-fr-16x9", False),
-                               ("en", "16x9", "trailer-en-16x9-voice", True), ("en", "9x16", "trailer-en-voice", True)):
-    html = build(lang, fmt, voice).replace('"assets/', '"../assets/').replace("url(\"assets/", "url(\"../assets/")
-    (ROOT / "compositions" / f"{name}.html").write_text(html)
-    print(f"wrote compositions/{name}.html")
+def main():
+    # index.html is the English vertical cut; the other versions live in compositions/ (one root per
+    # project folder), so their asset paths go up a level.
+    (ROOT / "index.html").write_text(build("en", "9x16"))
+    print("wrote index.html")
+    (ROOT / "compositions").mkdir(exist_ok=True)
+    for lang, fmt, name, voice in (("fr", "9x16", "trailer-fr", False), ("en", "16x9", "trailer-en-16x9", False),
+                                   ("fr", "16x9", "trailer-fr-16x9", False),
+                                   ("en", "16x9", "trailer-en-16x9-voice", True), ("en", "9x16", "trailer-en-voice", True)):
+        html = build(lang, fmt, voice).replace('"assets/', '"../assets/').replace("url(\"assets/", "url(\"../assets/")
+        (ROOT / "compositions" / f"{name}.html").write_text(html)
+        print(f"wrote compositions/{name}.html")
+
+
+if __name__ == "__main__":
+    main()
