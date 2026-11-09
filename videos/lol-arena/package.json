@@ -1,0 +1,13 @@
+{
+  "name": "lol-arena",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed": "node scripts/pick-seed.mjs",
+    "icons": "node scripts/fetch-icons.mjs",
+    "dev": "npx --yes hyperframes@0.9.26 preview",
+    "check": "npx --yes hyperframes@0.9.26 check",
+    "render": "npx --yes hyperframes@0.9.26 render -o renders/arena.mp4",
+    "publish": "npx --yes hyperframes@0.9.26 publish"
+  }
+}

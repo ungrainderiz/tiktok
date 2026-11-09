@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Arène LoL</title>
+    <script src="vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Cinzel"; font-weight: 700; src: url("assets/fonts/cinzel-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Cinzel"; font-weight: 900; src: url("assets/fonts/cinzel-latin-900-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Rubik"; font-weight: 700; src: url("assets/fonts/rubik-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Rubik"; font-weight: 800 900; src: url("assets/fonts/rubik-latin-900-normal.woff2") format("woff2"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #07080c; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+      #stage { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="68.5" data-width="1080" data-height="1920">
+      <canvas id="stage" class="clip" data-start="0" data-duration="68.5" data-track-index="0" width="1080" height="1920"></canvas>
+    </div>
+
+    <script src="assets/champions/manifest.js"></script>
+    <script src="src/roster.js"></script>
+    <script src="src/sim.js"></script>
+    <script src="battle.config.js"></script>
+    <script src="src/render.js"></script>
+    <script>
+      (async function () {
+        await Promise.all([
+          document.fonts.load('900 40px "Cinzel"'),
+          document.fonts.load('700 40px "Cinzel"'),
+          document.fonts.load('700 40px "Rubik"'),
+          document.fonts.load('900 40px "Rubik"'),
+        ]);
+        // icônes facultatives (assets/champions/<id>.png)
+        const icons = {};
+        await Promise.all(
+          (window.LOL_ICONS || []).map(
+            (id) =>
+              new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => { icons[id] = img; resolve(); };
+                img.onerror = () => resolve();
+                img.src = "assets/champions/" + id + ".png";
+              })
+          )
+        );
+
+        const res = LOL.simulate(BATTLE, LOL);
+        const renderer = LOL.createRenderer(document.getElementById("stage"), res, BATTLE, icons);
+        const duration = Number(document.getElementById("root").dataset.duration);
+        if (Math.abs(duration - res.timing.total) > 0.05) {
+          console.warn(`data-duration (${duration}) ≠ durée du combat (${res.timing.total}). Lance "npm run seed".`);
+        }
+        const state = { v: 0 };
+        const tl = gsap.timeline({ paused: true });
+        tl.to(state, { v: duration, duration, ease: "none", onUpdate: () => renderer.draw(state.v) }, 0);
+        renderer.draw(0);
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>
