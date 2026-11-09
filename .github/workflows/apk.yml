@@ -1,0 +1,47 @@
+name: Construire l'APK
+
+on:
+  push:
+    paths:
+      - "android/**"
+      - ".github/workflows/apk.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.14.3"
+
+      - name: Compiler
+        working-directory: android
+        run: gradle --no-daemon assembleRelease
+
+      - name: Renommer
+        run: cp android/app/build/outputs/apk/release/app-release.apk DecoupeurVideo.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DecoupeurVideo-apk
+          path: DecoupeurVideo.apk
+
+      - name: Publier (lien de téléchargement direct)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view apk >/dev/null 2>&1 || \
+            gh release create apk --target "${GITHUB_SHA}" --title "Découpeur vidéo (APK Android)" \
+              --notes "Télécharge DecoupeurVideo.apk sur ton téléphone Android et installe-le." --prerelease
+          gh release upload apk DecoupeurVideo.apk --clobber

@@ -1,0 +1,38 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "com.decoupeur.video"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.decoupeur.video"
+        minSdk 29          // Android 10 et plus
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        // Clé de signature fixe (non secrète) pour que les mises à jour s'installent par-dessus.
+        release {
+            storeFile file("decoupeur.keystore")
+            storePassword "decoupeur"
+            keyAlias "decoupeur"
+            keyPassword "decoupeur"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
