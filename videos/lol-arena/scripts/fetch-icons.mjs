@@ -18,12 +18,16 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 await import(path.join(root, "src/roster.js"));
+await import(path.join(root, "src/roster-all.js"));
 const { ROSTER } = globalThis.LOL;
 
 // id du roster -> nom de fichier Data Dragon quand ils diffèrent
 const DDRAGON_ID = {
   jarvan: "JarvanIV", xinzhao: "XinZhao", cassio: "Cassiopeia", leblanc: "Leblanc",
-  leesin: "LeeSin", mordekaiser: "Mordekaiser",
+  leesin: "LeeSin", masteryi: "MasterYi", twistedfate: "TwistedFate", drmundo: "DrMundo",
+  missfortune: "MissFortune", kogmaw: "KogMaw", chogath: "Chogath", reksai: "RekSai",
+  tahmkench: "TahmKench", aurelionsol: "AurelionSol", kaisa: "Kaisa", velkoz: "Velkoz",
+  belveth: "Belveth", ksante: "KSante", renata: "Renata",
 };
 const toDD = (id) => DDRAGON_ID[id] || id.charAt(0).toUpperCase() + id.slice(1);
 

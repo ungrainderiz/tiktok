@@ -5,7 +5,7 @@
 (function (root) {
   const LOL = root.LOL;
   const W = 1080, H = 1920;
-  const ARENA = { x: 40, y: 410, w: 1000, h: 1460 };
+  let ARENA = { x: 40, y: 410, w: 1000, h: 1460 };
   const DISPLAY = "Cinzel", UI = "Rubik";
 
   // ------------------------------------------------------------------ utilitaires couleur
@@ -28,6 +28,10 @@
   function createRenderer(canvas, res, battle, icons) {
     const ctx = canvas.getContext("2d");
     const teams = battle.teams;
+    const DIRT = battle.arena === "dirt"; // arène en terre battue entourée d'herbe
+    const BOSS = battle.hud === "boss"; // barres de vie des plus forts au lieu du tableau de score
+    ARENA = DIRT ? { x: 40, y: 380, w: 1000, h: 1460 } : { x: 40, y: 410, w: 1000, h: 1460 };
+    const RAINBOW = ["#ff6b6b", "#ffb347", "#ffe66b", "#7dff8a", "#5ad1ff", "#c38bff"];
     const U = res.units.length;
     const S = res.stride;
     const champs = res.units.filter((u) => u.kind === "champ");
@@ -122,6 +126,7 @@
       const g = floor.getContext("2d");
       const w = res.world.w, h = res.world.h;
       g.scale(FS, FS);
+      if (DIRT) { paintDirt(g, w, h); return; }
       // décor extérieur : roche sombre autour de l'arène
       g.fillStyle = "#0d0e13"; g.fillRect(0, 0, w + MG * 2, h + MG * 2);
       for (let k = 0; k < 1400; k++) {
@@ -174,6 +179,59 @@
       g.lineWidth = 3; g.strokeStyle = "rgba(243,210,122,0.55)"; g.strokeRect(15, 15, w - 30, h - 30);
     })();
 
+    function paintDirt(g, w, h) {
+      const TW = w + MG * 2, TH = h + MG * 2;
+      // herbe
+      g.fillStyle = "#4e9a36"; g.fillRect(0, 0, TW, TH);
+      for (let k = 0; k < 9000; k++) {
+        const x = hash(k * 7 + 1) * TW, y = hash(k * 7 + 2) * TH, n = hash(k * 7 + 3);
+        g.fillStyle = n < 0.45 ? "#3f8a2c" : n < 0.85 ? "#5fae43" : "#79c45a";
+        g.fillRect(x, y, 3, 6 + n * 4);
+      }
+      for (let k = 0; k < 160; k++) {
+        const x = hash(k * 11 + 5) * TW, y = hash(k * 11 + 6) * TH;
+        g.fillStyle = hash(k) < 0.5 ? "#fff6c8" : "#ffd84a";
+        g.beginPath(); g.arc(x, y, 3, 0, Math.PI * 2); g.fill();
+      }
+      g.translate(MG, MG);
+      // rebord de terre (falaise)
+      g.fillStyle = "rgba(0,0,0,0.25)"; g.beginPath(); roundRect(g, -14, -6, w + 28, h + 30, 40); g.fill();
+      g.fillStyle = "#6e4a2a"; g.beginPath(); roundRect(g, -16, -16, w + 32, h + 32, 40); g.fill();
+      g.fillStyle = "#8d6238"; g.beginPath(); roundRect(g, -10, -10, w + 20, h + 20, 34); g.fill();
+      // terre battue
+      g.fillStyle = "#b9895a"; g.beginPath(); roundRect(g, 0, 0, w, h, 28); g.fill();
+      g.save(); g.beginPath(); roundRect(g, 0, 0, w, h, 28); g.clip();
+      for (let k = 0; k < 900; k++) {
+        const x = hash(k * 5 + 21) * w, y = hash(k * 5 + 22) * h, r = 10 + hash(k * 5 + 23) * 34;
+        g.fillStyle = hash(k * 5 + 24) < 0.55 ? "rgba(120,82,48,0.10)" : "rgba(220,178,126,0.10)";
+        g.beginPath(); g.ellipse(x, y, r, r * 0.6, hash(k) * 3, 0, Math.PI * 2); g.fill();
+      }
+      // petites traces en grille (motif de sol)
+      for (let yy = 30; yy < h; yy += 64) for (let xx = 30 + ((yy / 64) % 2) * 32; xx < w; xx += 64) {
+        g.fillStyle = "rgba(110,74,42,0.18)";
+        g.beginPath(); g.ellipse(xx, yy, 7, 4, 0.4, 0, Math.PI * 2); g.fill();
+        g.beginPath(); g.ellipse(xx + 9, yy + 7, 4, 3, 0.4, 0, Math.PI * 2); g.fill();
+      }
+      for (let k = 0; k < 1500; k++) {
+        const x = hash(k * 3 + 41) * w, y = hash(k * 3 + 42) * h, r = 1 + hash(k * 3 + 43) * 2.6;
+        g.fillStyle = hash(k + 99) < 0.6 ? "rgba(96,64,36,0.55)" : "rgba(236,204,160,0.55)";
+        g.beginPath(); g.ellipse(x, y, r * 1.3, r, 0, 0, Math.PI * 2); g.fill();
+      }
+      // ombre portée du rebord
+      const sh = g.createLinearGradient(0, 0, 0, 40); sh.addColorStop(0, "rgba(60,36,16,0.45)"); sh.addColorStop(1, "rgba(60,36,16,0)");
+      g.fillStyle = sh; g.fillRect(0, 0, w, 40);
+      g.restore();
+      // pierres sur le rebord
+      for (let k = 0; k < 140; k++) {
+        const p = hash(k * 13 + 7);
+        const per = 2 * (w + h);
+        let d = p * per, x, y;
+        if (d < w) { x = d; y = -8; } else if ((d -= w) < h) { x = w + 8; y = d; } else if ((d -= h) < w) { x = w - d; y = h + 8; } else { x = -8; y = h - (d - w); }
+        g.fillStyle = hash(k) < 0.5 ? "#5a3c22" : "#a27448";
+        g.beginPath(); g.ellipse(x, y, 5 + hash(k * 3) * 6, 4 + hash(k * 5) * 4, hash(k * 7) * 3, 0, Math.PI * 2); g.fill();
+      }
+    }
+
     // ---------------------------------------------------------------- lecture des images de simulation
     const nF = res.frames.length;
     function sample(s) {
@@ -203,6 +261,7 @@
     function draw(v) {
       const s = LOL.simTimeAt(res, v);
       const sc = Math.max(0, s);
+      curS = sc;
       const smp = sample(sc);
       const { frame, pos } = smp;
       const intro = v < T.intro;
@@ -230,11 +289,11 @@
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       const bg = ctx.createLinearGradient(0, 0, 0, H);
       bg.addColorStop(0, mix(teams[0].color, "#07080c", 0.82)); bg.addColorStop(0.5, "#07080c"); bg.addColorStop(1, mix(teams[1].color, "#07080c", 0.82));
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = DIRT ? "#4e9a36" : bg; ctx.fillRect(0, 0, W, H);
 
       // arène
       ctx.save();
-      ctx.beginPath(); roundRect(ctx, ARENA.x, ARENA.y, ARENA.w, ARENA.h, 28); ctx.clip();
+      if (!DIRT) { ctx.beginPath(); roundRect(ctx, ARENA.x, ARENA.y, ARENA.w, ARENA.h, 28); ctx.clip(); }
       ctx.drawImage(floor, toX(-MG), toY(-MG), (res.world.w + MG * 2) * z, (res.world.h + MG * 2) * z);
 
       // effets au sol
@@ -256,10 +315,11 @@
         else if (e.k === "slash") drawSlash(e, sc, toX, toY, z);
       });
       // barres de vie et noms (après les unités pour rester lisibles)
-      if (!intro) order.forEach((i) => drawUnitHud(i, frame, pos, toX, toY, z));
+      const showNames = !DIRT || order.length <= 40;
+      if (!intro) order.forEach((i) => drawUnitHud(i, frame, pos, toX, toY, z, showNames));
       // chiffres et étiquettes de sorts
       evs.forEach((e) => {
-        if (e.k === "dmg") drawDmg(e, sc, toX, toY, z);
+        if (e.k === "dmg" && (!DIRT || e.big)) drawDmg(e, sc, toX, toY, z);
         else if (e.k === "heal") drawHeal(e, sc, pos, toX, toY, z);
       });
       evs.forEach((e) => { if (e.k === "label" && !e.ult) drawLabel(e, sc, frame, pos, toX, toY, z); });
@@ -267,11 +327,13 @@
       ctx.restore();
 
       // cadre de l'arène
-      ctx.lineWidth = 4; ctx.strokeStyle = "rgba(243,210,122,0.6)";
-      ctx.beginPath(); roundRect(ctx, ARENA.x, ARENA.y, ARENA.w, ARENA.h, 28); ctx.stroke();
+      if (!DIRT) {
+        ctx.lineWidth = 4; ctx.strokeStyle = "rgba(243,210,122,0.6)";
+        ctx.beginPath(); roundRect(ctx, ARENA.x, ARENA.y, ARENA.w, ARENA.h, 28); ctx.stroke();
+      }
 
-      drawHud(frame, sc, v);
-      if (!intro) drawKillFeed(sc);
+      if (BOSS) drawBossHud(frame, v); else drawHud(frame, sc, v);
+      if (!intro && !BOSS) drawKillFeed(sc);
       if (v < T.intro + 0.6) drawIntro(v);
       if (s >= T.s0 && s < T.s1 + 0.1 && v < T.outroStart) drawSlowMo(v, s);
       if (v >= T.outroStart - 0.05) drawOutro(v - T.outroStart);
@@ -337,7 +399,7 @@
       }
     }
 
-    function drawUnitHud(i, frame, pos, toX, toY, z) {
+    function drawUnitHud(i, frame, pos, toX, toY, z, showNames) {
       const u = res.units[i], o = i * S;
       const hp = frame[o + 2];
       const x = toX(pos[i * 2]), y = toY(pos[i * 2 + 1]);
@@ -350,7 +412,7 @@
       ctx.fillStyle = "rgba(0,0,0,0.75)"; ctx.fillRect(x - bw / 2 - 1.5, by - 1.5, bw + 3, bh + 3);
       ctx.fillStyle = hp < 0.3 ? "#ff5a4f" : u.kind === "champ" ? mix(col, "#ffffff", 0.15) : col;
       ctx.fillRect(x - bw / 2, by, bw * hp, bh);
-      if (u.kind === "champ") {
+      if (u.kind === "champ" && showNames) {
         const fs = Math.round(15 * Math.sqrt(z));
         ctx.font = `700 ${fs}px ${UI}`;
         ctx.textAlign = "center"; ctx.textBaseline = "bottom";
@@ -490,14 +552,14 @@
       if (!e.ult) {
         const y = toY(byw) - 42 * Math.sqrt(z) - 22 * easeOut(p);
         const text = e.text.toUpperCase();
-        ctx.font = `800 17px ${UI}`;
+        ctx.font = `800 ${DIRT ? 15 : 17}px ${UI}`;
         const tw = ctx.measureText(text).width;
-        const pw = tw + 20, ph = 26;
+        const pw = tw + 18, ph = DIRT ? 23 : 26;
         const cx = Math.max(ARENA.x + pw / 2 + 6, Math.min(ARENA.x + ARENA.w - pw / 2 - 6, x));
         ctx.globalAlpha = a;
-        ctx.fillStyle = "rgba(8,9,14,0.88)";
-        ctx.beginPath(); roundRect(ctx, cx - pw / 2, y - ph / 2, pw, ph, 7); ctx.fill();
-        ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = DIRT ? mix(u.color || col, "#000000", 0.25) : "rgba(8,9,14,0.88)";
+        ctx.beginPath(); roundRect(ctx, cx - pw / 2, y - ph / 2, pw, ph, DIRT ? 5 : 7); ctx.fill();
+        ctx.strokeStyle = DIRT ? "rgba(255,255,255,0.75)" : col; ctx.lineWidth = 2; ctx.stroke();
         ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
         ctx.fillText(text, cx, y + 1);
         ctx.globalAlpha = 1;
@@ -610,6 +672,83 @@
       ctx.restore();
     }
 
+    // Texte « bulle » multicolore (style titre de la vidéo de référence)
+    function bubbleText(text, x, y, size, maxW) {
+      ctx.font = `900 ${size}px ${UI}`;
+      let tw = ctx.measureText(text).width;
+      if (maxW && tw > maxW) { size = Math.floor((size * maxW) / tw); ctx.font = `900 ${size}px ${UI}`; tw = ctx.measureText(text).width; }
+      ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+      let cx = x - tw / 2;
+      // contour épais commun, puis chaque lettre dans sa couleur
+      ctx.lineWidth = size * 0.2; ctx.strokeStyle = "#2a1838"; ctx.strokeText(text, cx, y);
+      ctx.lineWidth = size * 0.07; ctx.strokeStyle = "#ffffff"; ctx.strokeText(text, cx, y);
+      [...text].forEach((ch, k) => {
+        const g = ctx.createLinearGradient(0, y - size / 2, 0, y + size / 2);
+        const c = RAINBOW[k % RAINBOW.length];
+        g.addColorStop(0, mix(c, "#ffffff", 0.45)); g.addColorStop(1, c);
+        ctx.fillStyle = g; ctx.fillText(ch, cx, y);
+        cx += ctx.measureText(ch).width;
+      });
+      ctx.textAlign = "center";
+    }
+
+    // HUD « boss » : compteurs d'équipe + barres de vie des champions les plus dangereux
+    function drawBossHud(frame, v) {
+      const alive = [0, 0];
+      const list = [];
+      for (const u of champs) {
+        const o = u.i * S;
+        if (!(frame[o + 3] & LOL.ST_ALIVE)) continue;
+        alive[u.team]++;
+        list.push(u);
+      }
+      const enter = easeOut((v - 0.2) / 0.5);
+      if (enter <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = enter;
+      // compteurs
+      ctx.textBaseline = "middle";
+      [0, 1].forEach((t) => {
+        const right = t === 1;
+        ctx.textAlign = right ? "right" : "left";
+        const x = right ? W - 50 : 50;
+        outlinedText(`${right ? alive[t] + "  " : ""}${teams[t].name}${right ? "" : "  " + alive[t]}`, x, 200, `900 40px ${UI}`, teams[t].color, "#1a1020", 8);
+      });
+      ctx.textAlign = "center";
+      outlinedText("VS", W / 2, 200, `900 34px ${UI}`, "#ffffff", "#1a1020", 7);
+      // les plus dangereux encore en vie (au début : les plus costauds)
+      const fs = (u) => killsAt(u) * 10000 + u.maxHp;
+      list.sort((a, b) => fs(b) - fs(a));
+      const top = list.slice(0, 4);
+      const bar = (u, x, y, w, h, fsz) => {
+        const hp = frame[u.i * S + 2];
+        const col = teams[u.team].color;
+        ctx.textAlign = "left";
+        outlinedText(u.name.toUpperCase(), x + 4, y - fsz * 0.75, `900 ${fsz}px ${UI}`, "#ffffff", "#1a1020", 5);
+        ctx.fillStyle = "rgba(20,12,24,0.85)"; ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+        ctx.fillStyle = "#3a2a2a"; ctx.fillRect(x, y, w, h);
+        const g = ctx.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, mix(col, "#ffffff", 0.35)); g.addColorStop(1, col);
+        ctx.fillStyle = hp < 0.25 ? "#ff4d4d" : g; ctx.fillRect(x, y, w * hp, h);
+        ctx.textAlign = "right";
+        outlinedText(Math.max(hp > 0 ? 1 : 0, Math.round(hp * 100)) + "%", x + w - 4, y + h / 2 + 1, `900 ${Math.round(h * 0.8)}px ${UI}`, "#ffffff", "#1a1020", 4);
+      };
+      if (top[0]) {
+        const u = top[0];
+        ctx.drawImage(tokens[u.key].color, 46, 246, 64, 64);
+        ctx.lineWidth = 4; ctx.strokeStyle = teams[u.team].color; ctx.strokeRect(46, 246, 64, 64);
+        bar(u, 128, 280, W - 128 - 50, 24, 22);
+      }
+      const rest = top.slice(1);
+      const cw = (W - 100 - 2 * 24) / 3;
+      rest.forEach((u, k) => bar(u, 50 + k * (cw + 24), 352, cw, 16, 16));
+      ctx.restore();
+    }
+    // éliminations d'un champion jusqu'à l'image courante (pré-calculé)
+    const killTimes = {};
+    res.events.forEach((e) => { if (e.k === "death" && e.killer != null) (killTimes[e.killer] = killTimes[e.killer] || []).push(e.t); });
+    let curS = 0;
+    function killsAt(u) { const arr = killTimes[u.i]; if (!arr) return 0; let n = 0; for (const t of arr) if (t <= curS) n++; return n; }
+
     function drawKillFeed(s) {
       const kills = [];
       for (let k = lowerBound(s - 3.2); k < res.events.length && evT[k] <= s; k++) if (res.events[k].k === "kill") kills.push(res.events[k]);
@@ -643,6 +782,7 @@
     }
 
     function drawIntro(v) {
+      if (DIRT) return drawIntroBubble(v);
       const out = 1 - clamp01((v - (T.intro - 1.0)) / 0.35);
       if (out > 0) {
         ctx.fillStyle = `rgba(4,5,8,${0.55 * out})`;
@@ -679,6 +819,32 @@
         ctx.textAlign = "center"; ctx.textBaseline = "middle";
         ctx.shadowColor = "#ffcf5a"; ctx.shadowBlur = 40;
         outlinedText("COMBAT !", 0, 0, `900 150px ${DISPLAY}`, "#fff3cf", "rgba(0,0,0,0.95)", 14);
+        ctx.restore();
+      }
+    }
+
+    function drawIntroBubble(v) {
+      const cy = ARENA.y + ARENA.h / 2;
+      const out = 1 - clamp01((v - (T.intro - 0.9)) / 0.3);
+      if (out > 0) {
+        ctx.save(); ctx.globalAlpha = out;
+        const p = easeBack((v - 0.15) / 0.5);
+        if (p > 0) { ctx.save(); ctx.translate(W / 2, cy - 40); ctx.scale(p, p); bubbleText(battle.title, 0, 0, 96, 960); ctx.restore(); }
+        const q = clamp01((v - 0.8) / 0.3);
+        if (q > 0) {
+          ctx.globalAlpha = out * q;
+          ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          outlinedText(battle.subtitle, W / 2, cy + 50, `800 30px ${UI}`, "#ffffff", "#2a1838", 7);
+          outlinedText(battle.question, W / 2, cy + 115, `900 54px ${UI}`, "#ffe66b", "#2a1838", 9);
+        }
+        ctx.restore();
+      }
+      const f = (v - (T.intro - 0.65)) / 1.0;
+      if (f > 0 && f < 1) {
+        const a = 1 - clamp01((f - 0.6) / 0.4);
+        const sc = 0.6 + easeBack(f / 0.35) * 0.4 + f * 0.12;
+        ctx.save(); ctx.globalAlpha = a; ctx.translate(W / 2, cy); ctx.scale(sc, sc);
+        bubbleText("COMBAT !", 0, 0, 150);
         ctx.restore();
       }
     }

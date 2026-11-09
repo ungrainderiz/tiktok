@@ -23,6 +23,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 
 await import(path.join(root, "src/roster.js"));
+await import(path.join(root, "src/roster-all.js"));
 await import(path.join(root, "src/sim.js"));
 await import(path.join(root, "battle.config.js"));
 const LOL = globalThis.LOL;

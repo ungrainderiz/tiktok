@@ -70,20 +70,23 @@
       const minionRow = (type, n) => { const out = []; for (let k = 0; k < n; k++) out.push({ kind: "minion", type }); return out; };
       const melee = minionRow("melee", team.minions.melee || 0);
       const back = minionRow("caster", team.minions.caster || 0).concat(minionRow("siege", team.minions.siege || 0));
-      const champs = team.champions.map((key) => ({ kind: "champ", key }));
+      const champs = championList(team.champions, lib).map((key) => ({ kind: "champ", key }));
+      const sc = battle.unitScale || 1;
+      const perRow = Math.max(8, Math.floor(8 / sc));
       // Ordre des rangs depuis le front : sbires de mêlée, champions, sbires à distance.
-      chunk(melee, 10).forEach((r) => rows.push({ items: r, gap: 62 }));
-      chunk(champs, 8).forEach((r) => rows.push({ items: r, gap: 82 }));
-      chunk(back, 10).forEach((r) => rows.push({ items: r, gap: 56 }));
+      chunk(melee, 10).forEach((r) => rows.push({ items: r, gap: 62 * sc }));
+      chunk(champs, perRow).forEach((r) => rows.push({ items: r, gap: 82 * sc }));
+      chunk(back, 10).forEach((r) => rows.push({ items: r, gap: 56 * sc }));
       let y = frontY;
       rows.forEach((row) => {
         const n = row.items.length;
-        const spacing = Math.min(96, (WORLD.w - 80) / Math.max(1, n));
+        const spacing = Math.min(96 * (battle.unitScale || 1), (WORLD.w - 80) / Math.max(1, n));
         row.items.forEach((it, k) => {
           const x = WORLD.w / 2 + (k - (n - 1) / 2) * spacing + (rng() - 0.5) * 8;
           const u = makeUnit(it, ti, x, y + (rng() - 0.5) * 6, lib, rng);
+          u.r *= battle.unitScale || 1;
           const boost = team.boost || 1; // équilibrage (voir scripts/pick-seed.mjs)
-          u.maxHp = u.hp = Math.round(u.maxHp * boost);
+          u.maxHp = u.hp = Math.round(u.maxHp * boost * (battle.hpScale || 1));
           u.dmg *= boost;
           units.push(u);
         });
@@ -92,6 +95,18 @@
     });
     units.forEach((u, i) => (u.i = i));
     return units;
+  }
+
+  // `champions` peut être une liste d'ids ou une période : { from: 2009, to: 2010 }
+  function championList(spec, lib) {
+    if (Array.isArray(spec)) return spec;
+    const ids = Object.keys(lib.ROSTER).filter((id) => {
+      const y = lib.ROSTER[id].year;
+      return y && y >= (spec.from || 0) && y <= (spec.to || 9999);
+    });
+    // tri par année puis mélange déterministe dans la formation
+    const r = mulberry32(ids.length * 7919);
+    return ids.map((id) => [r(), id]).sort((a, b) => a[0] - b[0]).map((x) => x[1]);
   }
 
   function chunk(arr, n) {
@@ -128,6 +143,7 @@
     const rng = mulberry32((battle.seed || 1) * 2654435761);
     const units = buildUnits(battle, lib, rng);
     const U = units.length;
+    const order = units.map((u, i) => i);
     const events = [];
     const pending = []; // projectiles en vol
     const frames = [];
@@ -144,7 +160,9 @@
 
     function hurt(src, tgt, amount, opts2) {
       if (!tgt.alive) return 0;
-      let a = amount * (1 - tgt.armor) * (0.88 + rng() * 0.24);
+      // mort subite : passé `fury.after` secondes, les dégâts montent pour éviter les duels sans fin
+      const fury = 1 + Math.max(0, t - (battle.furyAfter != null ? battle.furyAfter : 30)) * (battle.furyRate != null ? battle.furyRate : 0.07);
+      let a = amount * fury * (1 - tgt.armor) * (0.88 + rng() * 0.24);
       if (src && src.kind === "minion" && tgt.kind === "champ") a *= 0.6;
       a = Math.round(a);
       tgt.hp -= a;
@@ -158,7 +176,7 @@
       tgt.hp = 0;
       tgt.alive = false;
       tgt.deathT = t;
-      events.push({ k: "death", t, u: tgt.i, x: tgt.x, y: tgt.y, team: tgt.team, champ: tgt.kind === "champ" });
+      events.push({ k: "death", t, u: tgt.i, x: tgt.x, y: tgt.y, team: tgt.team, champ: tgt.kind === "champ", killer: src ? src.i : null });
       if (src) {
         src.kills++;
         if (tgt.kind === "champ") {
@@ -236,9 +254,11 @@
           } else if (u.hp / u.maxHp < 0.6) who = u;
           if (!who) return false;
           label(u, s);
-          heal(who, who.maxHp * s.power * (s.ult ? 1.6 : 1));
+          // les soins suivent les PV de base (hpScale allonge le combat sans rendre les soigneurs immortels)
+          const hs = 1 / (battle.hpScale || 1);
+          heal(who, who.maxHp * hs * s.power * (s.ult ? 1.6 : 1));
           // les soins de zone d'un support soignent aussi un peu les voisins
-          if (u.role === "support") for (const v of units) if (v.alive && v.team === u.team && v !== who && dist(v, who) < 140) heal(v, v.maxHp * s.power * 0.4);
+          if (u.role === "support") for (const v of units) if (v.alive && v.team === u.team && v !== who && dist(v, who) < 140) heal(v, v.maxHp * hs * s.power * 0.4);
           events.push({ k: "ring", t, x: who.x, y: who.y, r: 70, team: u.team, heal: true, color: "#5dff9b" });
           return true;
         }
@@ -333,8 +353,11 @@
         if (p.o.big) events.push({ k: "ring", t, x: tgt.x, y: tgt.y, r: 34, team: src.team, ult: false, small: true, color: p.o.color });
       }
 
-      // 2. décisions et déplacements
-      for (const u of units) {
+      // 2. décisions et déplacements — ordre mélangé à chaque tick, sinon l'équipe traitée
+      //    en second frappe toujours la première (biais énorme dans les grandes armées)
+      for (let k = U - 1; k > 0; k--) { const j = Math.floor(rng() * (k + 1)); const tmp = order[k]; order[k] = order[j]; order[j] = tmp; }
+      for (const idx of order) {
+        const u = units[idx];
         if (!u.alive) continue;
         if (u.spell) { u.spell.t -= DT; u.ult.t -= DT; }
         u.atkT -= DT;
@@ -482,7 +505,7 @@
     return Math.min(T.simEnd, T.s1 + (u - T.s0 - T.slowLen));
   }
 
-  const api = { simulate, simTimeAt, timing, WORLD, FPS, STRIDE, ST_ALIVE, ST_STUN, ST_DASH, mulberry32 };
+  const api = { simulate, simTimeAt, championList, timing, WORLD, FPS, STRIDE, ST_ALIVE, ST_STUN, ST_DASH, mulberry32 };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.LOL = Object.assign(root.LOL || {}, api);
 })(typeof window !== "undefined" ? window : globalThis);

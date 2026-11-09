@@ -6,7 +6,7 @@ message: "Deux armées de champions LoL s'affrontent seules dans une arène : qu
 destination: tiktok
 aspect: "9:16"
 language: fr
-length: "~70s"
+length: "~75s"
 ---
 
 ## Intent
@@ -14,7 +14,9 @@ length: "~70s"
 Reprendre le format « simulation de bataille en arène » de la vidéo de référence (Gen 1 vs Gen 3,
 deux armées d'unités qui se battent toutes seules jusqu'au dernier survivant, noms des attaques
 qui s'affichent, barres de vie, coup final) avec des champions de League of Legends.
-Première affiche : Demacia vs Noxus.
+Première affiche : Demacia vs Noxus (arène sombre).
+Deuxième, plus fidèle à la référence : « Anciens vs Nouveaux » (champions 2009-2010 vs
+2013-2025), arène en terre entourée d'herbe, armées géantes sans sbires, barres de boss en haut.
 
 ## Decisions (inferred)
 
