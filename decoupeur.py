@@ -51,6 +51,7 @@ def trouver_outil(nom):
 
 def lancer(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True, errors="replace",
+                       stdin=subprocess.DEVNULL,
                        creationflags=CREATIONFLAGS)
     if r.returncode != 0:
         raise ErreurDecoupe("Erreur ffmpeg/ffprobe :\n" + r.stderr[-2000:])
@@ -163,7 +164,7 @@ def decouper(video, taille_max_mo=TAILLE_DEFAUT_MO, log=print, progression=None)
             if f.startswith(f"{nom}_partie"):
                 os.remove(os.path.join(dossier, f))
         modele = os.path.join(dossier, f"{nom}_partie%02d{ext}")
-        cmd = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+        cmd = [ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "error", "-y",
                "-i", video, "-map", "0:v:0", "-map", "0:a?",
                "-c", "copy", "-f", "segment", "-reset_timestamps", "1",
                "-segment_start_number", "1"]
@@ -175,7 +176,8 @@ def decouper(video, taille_max_mo=TAILLE_DEFAUT_MO, log=print, progression=None)
             cmd += ["-movflags", "+faststart"]
         cmd += ["-progress", "pipe:1", "-nostats", modele]
 
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        proc = subprocess.Popen(cmd, stdin=subprocess.DEVNULL,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 text=True, errors="replace", creationflags=CREATIONFLAGS)
         for ligne in proc.stdout:
             if ligne.startswith("out_time_us=") and progression and duree > 0:

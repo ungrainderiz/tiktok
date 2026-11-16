@@ -7,12 +7,17 @@ on:
       - ".github/workflows/exe.yml"
   workflow_dispatch:
 
+concurrency:
+  group: exe-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
 jobs:
   exe:
     runs-on: windows-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -37,13 +42,13 @@ jobs:
       - name: Tester le découpage
         shell: bash
         run: |
-          ./ffmpeg.exe -loglevel error -y -f lavfi -i testsrc2=size=1280x720:rate=30 \
+          ./ffmpeg.exe -nostdin -loglevel error -y -f lavfi -i testsrc2=size=1280x720:rate=30 \
             -f lavfi -i sine=f=440 -t 60 -c:v libopenh264 -b:v 10M -g 60 -c:a aac test.mp4 \
-            || ./ffmpeg.exe -loglevel error -y -f lavfi -i testsrc2=size=1280x720:rate=30 \
+            || ./ffmpeg.exe -nostdin -loglevel error -y -f lavfi -i testsrc2=size=1280x720:rate=30 \
             -f lavfi -i sine=f=440 -t 60 -c:v mpeg4 -q:v 2 -g 60 -c:a aac test.mp4
           ls -l test.mp4
           rm ffmpeg.exe ffprobe.exe   # vérifie que le .exe utilise bien son ffmpeg intégré
-          ./dist/DecoupeurVideo.exe test.mp4 --console --taille 10
+          timeout 300 ./dist/DecoupeurVideo.exe test.mp4 --console --taille 10
           ls -l test_parties
           for f in test_parties/*; do [ $(stat -c %s "$f") -le 10000000 ] || { echo "trop gros: $f"; exit 1; }; done
 
