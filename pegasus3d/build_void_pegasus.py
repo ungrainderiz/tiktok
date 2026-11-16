@@ -538,7 +538,8 @@ def build_legs():
 
 # ----------------------------------------------------------------------------- wings: one solid surface each
 def build_wing(side, sx):
-    """Whole wing = ONE closed mesh: thick dark leading edge thinning into a serrated, ridged feather sheet."""
+    """Whole wing = ONE closed mesh. Arm rises to a wrist, long blade feathers of uneven length fan out from it;
+    three terraced layers (black coverts, indigo secondaries, violet primaries with lilac tips)."""
     rnd = random.Random(80 + sx)
     R0 = Vector((0.30 * sx, -0.30, 2.90))
     sw = math.radians(36)
@@ -546,42 +547,68 @@ def build_wing(side, sx):
     v = Vector((0, -0.08, 1.0)); v = (v - u * v.dot(u)).normalized()
     nrm = u.cross(v) * sx
     K = 1.50
+    WR = (2.35, 2.10)                                  # wrist: highest point of the leading edge
+    TW = 0.58                                          # share of the feathers carried by the arm
 
-    def A(t):
-        return (2.40 * t - 0.12 * math.sin(math.pi * t), 2.05 * t + 0.24 * math.sin(math.pi * t))
+    def A(t):                                          # feather root along arm, then bunched at the wrist
+        if t <= TW:
+            f = t / TW
+            return (WR[0] * f, WR[1] * f + 0.10 * math.sin(math.pi * f))
+        f = (t - TW) / (1 - TW)
+        return (WR[0] + 0.30 * f, WR[1] - 0.12 * f)
 
-    NF = 10
-    cols = 2 * NF
-    S = [0.0, 0.20, 0.42, 0.64, 0.84, 1.0]
+    def ANG(t):
+        if t <= TW:
+            return -82 + 40 * (t / TW) ** 1.2
+        return -42 + 54 * ((t - TW) / (1 - TW)) ** 0.9
+
+    def LEN(t):
+        if t <= TW:
+            return 1.35 + 1.25 * math.sin(math.pi * 0.5 * (t / TW)) ** 0.8
+        return 2.60 - 0.60 * ((t - TW) / (1 - TW))
+
+    NF = 9
+    PER = 4                                            # columns per feather: valley, shoulder, tip, shoulder
+    cols = PER * NF
+    feather_len = [rnd.uniform(0.82, 1.12) for _ in range(NF + 1)]
+    S = [0.0, 0.20, 0.36, 0.42, 0.60, 0.66, 0.84, 1.0]
+    STEP = [0.085, 0.085, 0.085, 0.040, 0.040, 0.0, 0.0, 0.0]      # terraces: coverts sit proud of the layers below
     front, back, meta = [], [], []
     V, F, FC = [], [], []
     for c in range(cols + 1):
-        t = 0.0 + 1.0 * c / cols
-        center = (c % 2 == 1)
-        ang = math.radians(-72 + 84 * t ** 0.85)
-        L = (1.10 + 0.45 * t + 0.75 * math.sin(math.pi * t)) * 1.42 * (1.0 if center else 0.62) * rnd.uniform(0.94, 1.06)
+        t = c / cols
+        ph = c % PER
+        tipness = (0.0, 0.58, 1.0, 0.58)[ph]
+        fi = min(NF - 1, c // PER)
+        L = LEN(t) * feather_len[fi] * (0.44 + 0.56 * tipness)
+        ang = math.radians(ANG(t))
         a0, b0 = A(t)
         fr, bk = [], []
         for si, sv in enumerate(S):
-            a = a0 + (L * sv - 0.16) * math.cos(ang) / K
-            b = b0 + (L * sv - 0.16) * math.sin(ang)
-            ridge = (0.10 if center else -0.06) * sv
-            th = 0.24 * (1 - 0.55 * t) * (1 - sv) ** 1.6 + 0.012
+            if 0 < si < len(S) - 1:
+                sv = min(0.97, sv + 0.07 * tipness)     # each layer ends in its own pointed feather tips
+            a = a0 + (L * sv - 0.18) * math.cos(ang) / K
+            b = b0 + (L * sv - 0.18) * math.sin(ang)
+            ridge = 0.05 * tipness * sv
+            th = 0.20 * (1 - 0.5 * t) * (1 - sv) ** 1.6 + 0.014 + STEP[si]
             base = R0 + u * (a * K) + v * b
             V.append(base + nrm * (ridge + th)); fr.append(len(V) - 1)
             V.append(base + nrm * (ridge - th)); bk.append(len(V) - 1)
-        front.append(fr); back.append(bk); meta.append((t, rnd.uniform(-0.07, 0.07)))
+        front.append(fr); back.append(bk); meta.append(t)
 
     def wcol(c, si):
-        t, dj = meta[c]
-        sm = (S[si] + S[si + 1]) / 2 + dj
-        if sm < 0.36:
+        t = meta[c]
+        if si <= 1:
             return pick(PAL["wingdark"], rnd)
-        if sm < 0.58:
-            return jit(lerp(rnd.choice(PAL["wingdark"]), rnd.choice(PAL["indigo"]), (sm - 0.30) / 0.28), 0.06, rnd)
-        if sm < 0.80:
-            return grad(["indigo", "violet"], (sm - 0.58) / 0.22, rnd)
-        return grad(["violet", "lilac", "pink"], 0.35 + 0.65 * t, rnd)
+        if si == 2:
+            return pick(PAL["wingdark"] + PAL["wingdark"] + PAL["indigo"][:1], rnd)
+        if si == 3:
+            return grad(["wingdark", "indigo"], rnd.uniform(0.4, 1.0), rnd)
+        if si == 4:
+            return grad(["indigo", "violet"], rnd.uniform(0.0, 0.7), rnd)
+        if si == 5:
+            return grad(["indigo", "violet", "violet"], rnd.uniform(0.4, 1.0), rnd)
+        return grad(["violet", "lilac", "pink"], 0.30 + 0.70 * t * rnd.uniform(0.7, 1.0), rnd)
 
     for c in range(cols):
         for si in range(len(S) - 1):
@@ -589,7 +616,7 @@ def build_wing(side, sx):
                 a, b, c2, d = grid[c][si], grid[c + 1][si], grid[c + 1][si + 1], grid[c][si + 1]
                 for tri in (([a, b, c2], [a, c2, d]) if c % 2 else ([a, b, d], [b, c2, d])):
                     F.append(tri[::-1] if flip else tri); FC.append(wcol(c, si))
-        for si, edge_col in ((0, lambda: pick(PAL["wingdark"], rnd)), (len(S) - 1, lambda: pick(PAL["pink"], rnd))):
+        for si, edge_col in ((0, lambda: jit(C("120B22"), 0.1, rnd)), (len(S) - 1, lambda: pick(PAL["pink"], rnd))):
             F.append([front[c][si], front[c + 1][si], back[c + 1][si], back[c][si]]); FC.append(edge_col())
     for c in (0, cols):
         for si in range(len(S) - 1):
