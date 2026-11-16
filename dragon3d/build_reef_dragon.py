@@ -250,7 +250,7 @@ MAT = dict(
     body=mat_lowpoly("M_Body_Blue"), belly=mat_lowpoly("M_Belly_White"), head=mat_lowpoly("M_Head_Ice"),
     ice=mat_lowpoly("M_Ice_Crystal", 0.5), bone=mat_lowpoly("M_Wing_Bone"), claw=mat_lowpoly("M_Claw_Cream", 0.6),
     membrane=mat_lowpoly("M_Wing_Membrane", 0.7), coral=mat_lowpoly("M_Coral"), kelp=mat_lowpoly("M_Kelp_Green"),
-    eye_glow=mat_glow("M_Eye_Glow", 2.2),
+    eye_glow=mat_glow("M_Eye_Glow", 1.0),
 )
 ROOT = bpy.data.collections.new("REEF_DRAGON")
 SC.collection.children.link(ROOT)
@@ -278,7 +278,7 @@ def catmull(pts, sub):
     return out
 
 
-def add_spike(V, F, FC, base, tip, r, col, n=4, belly=0.25, flat=1.0, rot=0.0):
+def add_spike(V, F, FC, base, tip, r, col, n=4, belly=0.25, flat=1.0, rot=0.0, flat_u=1.0):
     """Elongated faceted crystal (bipyramid): base point -> ring -> tip."""
     u, v = frame(tip - base)
     mid = base + (tip - base) * belly
@@ -286,7 +286,7 @@ def add_spike(V, F, FC, base, tip, r, col, n=4, belly=0.25, flat=1.0, rot=0.0):
     V.append(base)
     for k in range(n):
         a = rot + 2 * math.pi * k / n
-        V.append(mid + (u * math.cos(a) + v * math.sin(a) * flat) * r)
+        V.append(mid + (u * math.cos(a) * flat_u + v * math.sin(a) * flat) * r)
     V.append(tip)
     for k in range(n):
         k2 = (k + 1) % n
@@ -363,16 +363,16 @@ def make_kelp(name, H, blades, matrix, seed):
         hh = H * (1.0 if b == blades // 2 else rnd.uniform(0.65, 0.9))
         d = Vector((math.sin(fan), 0, math.cos(fan)))
         base = Vector(((b - (blades - 1) / 2) * 0.10, 0, -0.05))
-        add_spike(V, F, FC, base, base + d * hh, 0.10 + 0.09 * H, lambda: pick(PAL["kelp"] + PAL["kelp_light"][:1], rnd),
-                  n=4, belly=0.35, flat=0.35)
+        add_spike(V, F, FC, base, base + d * hh, 0.07 + 0.06 * H, lambda: pick(PAL["kelp"] + PAL["kelp_light"][:1], rnd),
+                  n=4, belly=0.35, flat=1.0, flat_u=0.28)
     return build(name, V, F, FC, COLL["KELP"], MAT["kelp"], matrix)
 
 
 # ----------------------------------------------------------------------------- spine (neck + torso + tail)
 SPINE_CTRL = [  # (Y, Z, half-width, half-height)
     (-1.62, 3.16, .17, .19), (-1.40, 3.04, .19, .22), (-1.17, 2.78, .21, .25), (-1.06, 2.45, .25, .30),
-    (-0.96, 2.14, .35, .42), (-0.62, 1.93, .52, .58), (0.10, 1.78, .60, .62), (0.85, 1.62, .55, .55),
-    (1.50, 1.46, .44, .46), (2.30, 1.26, .36, .38), (3.20, 1.08, .29, .31), (4.10, 0.94, .22, .24),
+    (-0.96, 2.14, .33, .40), (-0.62, 1.96, .45, .52), (0.10, 1.82, .50, .54), (0.85, 1.64, .46, .48),
+    (1.50, 1.47, .40, .42), (2.30, 1.26, .36, .38), (3.20, 1.08, .29, .31), (4.10, 0.94, .22, .24),
     (5.00, 0.84, .16, .17), (5.90, 0.78, .09, .10), (6.40, 0.76, .03, .03)]
 SPINE = [(Vector((2.3 * max(0.0, (y - 1.2) / 5.2) ** 1.7, y, z)), rw, rh) for (y, z, rw, rh) in catmull(SPINE_CTRL, 2)]
 
@@ -405,7 +405,7 @@ def build_body():
         t, dorsal = spine_frame(k)
         V, F, FC = [], [], []
         vs, fs = ico(1)
-        w, ln, th = rw * 0.46, max(0.16, rh * 0.46), rh * 0.24
+        w, ln, th = rw * 0.62, max(0.16, rh * 0.46), rh * 0.24
         ctr = c - dorsal * rh * 0.93
         for p in vs:
             sx = p.x * w * (1 - 0.35 * max(0, p.y))        # chevron: narrower toward the tail side
@@ -482,7 +482,7 @@ def build_head():
         Xa = (Vector((0, -1, 0.25)) - Z * Vector((0, -1, 0.25)).dot(Z)).normalized()   # slanted toward the snout
         Ya = Z.cross(Xa)
         M = HEAD_M @ axes_matrix(Xa, Ya, Z, hit)
-        r1, r2, dep = 0.085, 0.062, 0.035
+        r1, r2, dep = 0.105, 0.062, 0.045
         CVt, CFt, CCt = [], [], []
         for (r, z) in ((r2, -dep), (r1, 0.0), (r1 * 1.8, 0.2)):
             for k in range(n):
@@ -492,7 +492,7 @@ def build_head():
             for k in range(n):
                 k2 = (k + 1) % n
                 CFt.append([ring * n + k, ring * n + k2, (ring + 1) * n + k2, (ring + 1) * n + k])
-                CCt.append(jit(C("2A6FD2"), 0.08, rnd))
+                CCt.append(jit(C("1F4FB8"), 0.08, rnd))
         CFt.append(list(range(n))[::-1]); CCt.append(C("2A6FD2"))
         CFt.append([2 * n + k for k in range(n)]); CCt.append(C("2A6FD2"))
         cut = build(f"_cut_{side}", CVt, CFt, CCt, SC.collection, MAT["head"], M)
@@ -502,7 +502,7 @@ def build_head():
         GV = [Vector((r2 * 1.45 * math.cos(2 * math.pi * k / n), r2 * 0.72 * math.sin(2 * math.pi * k / n), -dep + 0.004))
               for k in range(n)] + [Vector((0, 0, -dep + 0.014))]
         GF = [[k, (k + 1) % n, n] for k in range(n)]
-        build(f"Eye_{side}_Glow", GV, GF, [jit(C("9FFFFF"), 0.05, rnd) for _ in GF], COLL["EYES"], MAT["eye_glow"], M,
+        build(f"Eye_{side}_Glow", GV, GF, [jit(C("5EE6FF"), 0.08, rnd) for _ in GF], COLL["EYES"], MAT["eye_glow"], M,
               recalc=False)
     dg = bpy.context.evaluated_depsgraph_get(); dg.update()
     new_me = bpy.data.meshes.new_from_object(head.evaluated_get(dg))
@@ -514,20 +514,24 @@ def build_head():
         me = c.data; bpy.data.objects.remove(c); bpy.data.meshes.remove(me)
 
     # crystal crown: crest, back horns, lavender cheek fins, chin spikes (head-local coordinates)
-    spikes = [("Horn_Crest", (0, 0.10, 0.20), (0, 0.45, 0.80), 0.09, "ice", 1.0),
-              ("Horn_Back_L", (0.14, 0.25, 0.18), (0.42, 0.85, 0.62), 0.10, "ice", 1.0),
-              ("Horn_Back_R", (-0.14, 0.25, 0.18), (-0.42, 0.85, 0.62), 0.10, "ice", 1.0),
+    spikes = [("Horn_Crest", (0, 0.10, 0.20), (0, 0.50, 0.85), 0.12, "ice", 1.0),
+              ("Horn_Back_L", (0.14, 0.25, 0.18), (0.42, 0.90, 0.62), 0.13, "ice", 1.0),
+              ("Horn_Back_R", (-0.14, 0.25, 0.18), (-0.42, 0.90, 0.62), 0.13, "ice", 1.0),
               ("Horn_Brow_L", (0.18, -0.05, 0.16), (0.50, 0.30, 0.50), 0.07, "ice", 1.0),
               ("Horn_Brow_R", (-0.18, -0.05, 0.16), (-0.50, 0.30, 0.50), 0.07, "ice", 1.0),
               ("Fin_Cheek_L", (0.22, 0.20, 0.0), (0.72, 0.55, 0.05), 0.13, "lav", 0.35),
               ("Fin_Cheek_R", (-0.22, 0.20, 0.0), (-0.72, 0.55, 0.05), 0.13, "lav", 0.35),
               ("Fin_Jaw_L", (0.18, 0.15, -0.12), (0.50, 0.45, -0.35), 0.09, "lav", 0.4),
               ("Fin_Jaw_R", (-0.18, 0.15, -0.12), (-0.50, 0.45, -0.35), 0.09, "lav", 0.4),
-              ("Horn_Nose", (0, -0.52, 0.08), (0, -0.62, 0.26), 0.04, "ice", 1.0)]
+              ("Horn_Nose", (0, -0.52, 0.08), (0, -0.62, 0.26), 0.04, "ice", 1.0),
+              ("Jaw_Lower", (0, 0.22, -0.10), (0, -0.50, -0.27), 0.17, "jaw", 0.45)]
+    PAL["jaw"] = PAL["belly"]
     for name, b, t, r, pal, flat in spikes:
         V, F, FC = [], [], []
-        add_spike(V, F, FC, Vector(b), Vector(t), r, lambda: pick(PAL[pal], rnd), n=5, belly=0.3, flat=flat)
-        build(name, V, F, FC, COLL["HORNS"], MAT["ice"], HEAD_M)
+        is_jaw = name.startswith("Jaw")
+        add_spike(V, F, FC, Vector(b), Vector(t), r, lambda: pick(PAL[pal], rnd), n=5, belly=0.3,
+                  flat=flat if is_jaw else 1.0, flat_u=1.0 if is_jaw else flat)
+        build(name, V, F, FC, COLL["HEAD" if is_jaw else "HORNS"], MAT["head" if is_jaw else "ice"], HEAD_M)
 
 
 # ----------------------------------------------------------------------------- wings
@@ -537,7 +541,7 @@ def bez(a, b, c, t):
 
 def build_wing(side, sx):
     rnd = random.Random(80 + sx)
-    S = Vector((0.55 * sx, -0.15, 2.42))
+    S = Vector((0.36 * sx, -0.25, 2.20))
     sw = math.radians(38)
     u = Vector((math.cos(sw) * sx, math.sin(sw), 0.0))
     v = Vector((0, -0.10, 1.0)); v = (v - u * v.dot(u)).normalized()
@@ -547,13 +551,13 @@ def build_wing(side, sx):
         return S + u * q.x + v * q.y + nrm * c
 
     V2 = lambda a, b: Vector((a, b)) * 1.16
-    W = V2(1.95, 1.30)
+    W = V2(1.90, 1.72)
     fingers = [  # (control, tip)
-        (V2(3.8, 1.70), V2(5.75, 0.75)),
-        (V2(4.1, 0.45), V2(5.90, -1.10)),
-        (V2(2.75, 0.30), V2(3.20, -1.05)),
-        (V2(1.55, 0.30), V2(1.10, -0.90)),
-        (V2(0.0, 0.0), V2(0.05, -0.70)),
+        (V2(3.8, 2.10), V2(5.75, 1.10)),
+        (V2(4.1, 0.85), V2(5.90, -0.80)),
+        (V2(2.75, 0.65), V2(3.20, -0.78)),
+        (V2(1.55, 0.60), V2(1.10, -0.62)),
+        (V2(0.0, 0.0), V2(0.10, -0.80)),
     ]
     fpt = lambda i, r: bez(W, fingers[i][0], fingers[i][1], r)
 
@@ -587,14 +591,27 @@ def build_wing(side, sx):
     V, F, FC, CV, CF, CC = [], [], [], [], [], []
     bcol = lambda: pick(PAL["bone"], rnd)
     ccol = lambda: pick(PAL["claw"], rnd)
-    add_prism(V, F, FC, P(V2(0, 0)), P(W), 0.26, 0.20, bcol, 6)
-    add_ico(V, F, FC, P(W), 0.24, bcol, 0, rnd=rnd)
-    for i, (r0, r1) in enumerate(((0.19, 0.08), (0.13, 0.055), (0.13, 0.055), (0.12, 0.05))):
+    # shoulder muscle + tapered arm (shoulder -> elbow bend -> wrist), blending from body blue to wing bone
+    AV, AF, AC = [], [], []
+    add_ico(AV, AF, AC, S + Vector((0.05 * sx, 0.05, -0.05)), 0.36, lambda: pick(PAL["body"], rnd), 1,
+            scale=(1.0, 1.25, 0.95), jitter=0.05, rnd=rnd)
+    elbow = W * 0.45 + V2(-0.22, 0.20)
+    arm = [(P(bez(V2(0, 0), elbow, W, t)), r, r * 0.9) for t, r in
+           ((0.0, .25), (0.2, .22), (0.4, .18), (0.6, .16), (0.8, .15), (1.0, .14))]
+    aV, aF, aC = loft(arm, 6, lambda sa, k: pick(PAL["body"] if k < 1 else PAL["back"] if k < 2 else PAL["bone"], rnd),
+                      rnd, side_ref=nrm, jitter=0.03)
+    off = len(AV)
+    AV += aV; AF += [[i + off for i in f] for f in aF]; AC += aC
+    build(f"Wing_{side}_Shoulder_Arm", AV, AF, AC, COLL["WINGS"], MAT["body"])
+    add_ico(V, F, FC, P(W), 0.22, bcol, 0, rnd=rnd)
+    for i, (r0, r1) in enumerate(((0.21, 0.09), (0.16, 0.07), (0.16, 0.07), (0.15, 0.065))):
         seg = 4
         for s in range(seg):
             a, b = fpt(i, s / seg), fpt(i, (s + 1) / seg)
             ra, rb = r0 + (r1 - r0) * s / seg, r0 + (r1 - r0) * (s + 1) / seg
             add_prism(V, F, FC, P(a), P(b), ra, rb, bcol, 5, caps=(s == 0 or s == seg - 1))
+            if s < seg - 1:
+                add_ico(V, F, FC, P(b), rb * 1.08, bcol, 0, rnd=rnd)      # knuckle hides the seam
         tip = fpt(i, 1.0)
         d = (tip - fpt(i, 0.9)).normalized()
         add_spike(CV, CF, CC, P(tip - d * 0.15), P(tip + d * (0.75 if i < 2 else 0.6)), 0.10, ccol, n=4, belly=0.22)
@@ -603,16 +620,16 @@ def build_wing(side, sx):
     build(f"Wing_{side}_Claws", CV, CF, CC, COLL["CLAWS"], MAT["claw"])
 
     # reef growing flat on the membrane (straddles it, so it shows on both faces)
-    deco = [("Pink_Outer", "pink", (4.35, -0.35), 110, 1.9, 0.15), ("Purple_Outer", "purple", (4.9, -0.85), 50, 1.1, 0.09),
-            ("Purple_Tip", "purple", (3.7, 0.75), 190, 1.0, 0.085), ("Pink_Inner", "pink", (2.1, -0.75), 80, 1.6, 0.13),
-            ("Purple_Inner", "purple", (2.8, -0.8), 20, 0.8, 0.075), ("Orange_Outer", "orange", (3.95, -0.4), 250, 0.5, 0.06),
-            ("Purple_Arm", "purple", (1.1, -0.15), 100, 0.9, 0.075)]
+    deco = [("Pink_Outer", "pink", (4.35, -0.05), 110, 2.0, 0.19), ("Purple_Outer", "purple", (4.9, -0.5), 50, 1.15, 0.115),
+            ("Purple_Tip", "purple", (3.7, 1.1), 190, 1.0, 0.10), ("Pink_Inner", "pink", (2.1, -0.4), 80, 1.7, 0.165),
+            ("Purple_Inner", "purple", (2.8, -0.45), 20, 0.85, 0.09), ("Orange_Outer", "orange", (3.95, -0.1), 250, 0.55, 0.07),
+            ("Purple_Arm", "purple", (1.1, 0.15), 100, 0.95, 0.09)]
     for j, (nm, pal, (a, b), ang, H, r0) in enumerate(deco):
         g = u * math.cos(math.radians(ang)) + v * math.sin(math.radians(ang))
         make_coral(f"Wing_{side}_Coral_{nm}", PAL[pal], H, r0, 2, 300 + j + (0 if sx > 0 else 50),
-                   orient(P(V2(a, b)), g, nrm.cross(g), 1.0, flat=0.9), kids_p3=0.35)
-    for j, ((a, b), ang, H) in enumerate((((3.3, -0.85), 85, 1.3), ((4.9, 0.1), 60, 0.9), ((1.55, -0.8), 95, 1.0),
-                                          ((2.7, 0.5), 40, 0.8))):
+                   orient(P(V2(a, b)), g, nrm.cross(g), 1.0, flat=0.55), kids_p3=0.35)
+    for j, ((a, b), ang, H) in enumerate((((3.3, -0.5), 85, 1.3), ((4.9, 0.45), 60, 0.9), ((1.55, -0.45), 95, 1.0),
+                                          ((2.7, 0.85), 40, 0.8))):
         g = u * math.cos(math.radians(ang)) + v * math.sin(math.radians(ang))
         make_kelp(f"Wing_{side}_Kelp_{j}", H, 3, orient(P(V2(a, b)), g, nrm.cross(g), 1.0, flat=1.0), 340 + j)
 
@@ -632,9 +649,9 @@ def build_tail_fin():
             for lat in (-0.25, 0.25):
                 L = 0.55 + 0.75 * f + rnd.uniform(-0.1, 0.1)
                 d = (t * 1.0 + dorsal * sgn * rnd.uniform(0.35, 0.6) + XAX * lat * rnd.uniform(0.6, 1.4)).normalized()
-                add_spike(V, F, FC, c, c + d * (L * 1.25), 0.20, col, n=4, belly=0.4, flat=0.45, rot=rnd.random())
+                add_spike(V, F, FC, c, c + d * (L * 0.95), 0.20, col, n=4, belly=0.4, flat=1.0, flat_u=0.35)
     end = SPINE[-1][0]
-    add_spike(V, F, FC, end - Vector((0, 0.3, 0)), end + Vector((0, 1.2, 0.0)), 0.2, col, n=4, belly=0.4, flat=0.4)
+    add_spike(V, F, FC, end - Vector((0, 0.3, 0)), end + Vector((0.5, 1.2, 0.0)), 0.22, col, n=4, belly=0.4, flat=1.0, flat_u=0.35)
     build("Tail_Fin_Crystals", V, F, FC, COLL["TAIL_FIN"], MAT["ice"])
 
 
@@ -675,7 +692,7 @@ def build_reef():
             if kind == "kelp":
                 make_kelp(f"Dorsal_Kelp_{j:02d}_{int(lat > 0) + 2 * int(lat < 0)}", H * 0.9, 3, orient(p, up, hint), 500 + j)
             else:
-                make_coral(f"Dorsal_Coral_{kind}_{j:02d}_{int(lat > 0) + 2 * int(lat < 0)}", PAL[kind], H, 0.085 * H / 0.6 + 0.015, 2,
+                make_coral(f"Dorsal_Coral_{kind}_{j:02d}_{int(lat > 0) + 2 * int(lat < 0)}", PAL[kind], H, 0.052 * H / 0.6 + 0.012, 2,
                            520 + 3 * j + int(lat > 0) + 2 * int(lat < 0), orient(p, up, hint), kids_p3=0.3)
         j += 1
         k += 1
