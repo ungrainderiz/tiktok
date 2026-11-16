@@ -204,7 +204,7 @@ def setup_world():
     bg_cam = nt.nodes.new("ShaderNodeBackground")
     bg_amb = nt.nodes.new("ShaderNodeBackground")
     bg_amb.inputs["Color"].default_value = (0.86, 0.93, 1.0, 1)
-    bg_amb.inputs["Strength"].default_value = 0.78
+    bg_amb.inputs["Strength"].default_value = 0.92
     lp = nt.nodes.new("ShaderNodeLightPath")
     mix = nt.nodes.new("ShaderNodeMixShader")
     nt.links.new(tc.outputs["Window"], sep.inputs[0])
@@ -229,14 +229,14 @@ def look_at(ob, target):
 
 # ============================================================================= DRAGON
 PAL = dict(
-    body=[C("3D86E0"), C("4C98E8"), C("2F74D4"), C("5BA9EE")],
+    body=[C("4A9BEA"), C("5AABF0"), C("3E8CE2"), C("6DB9F3")],
     back=[C("7CC6F4"), C("93D4F7"), C("68B8F0")],
     belly=[C("E9EEFB"), C("DCE4F7"), C("F4F7FD")],
-    leg=[C("3A80DC"), C("4A93E6"), C("3273D2"), C("5AA4EC")],
+    leg=[C("4594E6"), C("55A4EE"), C("3A86DE"), C("66B2F1")],
     head=[C("8FD3F6"), C("A8DFF9"), C("79C4F2"), C("6AB8EE")],
     ice=[C("7FD4F5"), C("A5E3F9"), C("5FC0F0"), C("C9EFFB")],
     lav=[C("B9B5F0"), C("A9A3EA"), C("C9C6F5")],
-    bone=[C("B4E1F9"), C("C8EAFB"), C("A0D6F6"), C("D9F1FC")],
+    bone=[C("93CFF6"), C("A9DAF9"), C("82C3F2"), C("BDE4FB")],
     claw=[C("F3EBD0"), C("E8DDB8"), C("FBF6E4")],
     membrane=[C("3FA9EE"), C("55B8F2"), C("6CC6F5"), C("369DE8"), C("86D2F8")],
     red=[C("EE4466"), C("F25A70"), C("E63A6E"), C("F56E80")],
@@ -250,7 +250,7 @@ MAT = dict(
     body=mat_lowpoly("M_Body_Blue"), belly=mat_lowpoly("M_Belly_White"), head=mat_lowpoly("M_Head_Ice"),
     ice=mat_lowpoly("M_Ice_Crystal", 0.5), bone=mat_lowpoly("M_Wing_Bone"), claw=mat_lowpoly("M_Claw_Cream", 0.6),
     membrane=mat_lowpoly("M_Wing_Membrane", 0.7), coral=mat_lowpoly("M_Coral"), kelp=mat_lowpoly("M_Kelp_Green"),
-    eye_glow=mat_glow("M_Eye_Glow", 1.6),
+    eye_glow=mat_glow("M_Eye_Glow", 1.3),
 )
 ROOT = bpy.data.collections.new("REEF_DRAGON")
 SC.collection.children.link(ROOT)
@@ -332,41 +332,98 @@ def orient(p, up, hint, scale=1.0, flat=1.0):
     return axes_matrix(X * scale, Y * scale * flat, Z * scale, p)
 
 
+def add_tube(V, F, FC, pts, radii, col, n=6):
+    """Continuous faceted tube through pts (shared rings, no seams), blunt angular tip."""
+    rings = []
+    for i, p in enumerate(pts):
+        t = (pts[min(i + 1, len(pts) - 1)] - pts[max(i - 1, 0)]).normalized()
+        u, v = frame(t)
+        row = []
+        for k in range(n):
+            a = 2 * math.pi * (k + 0.5 * (i % 2)) / n
+            V.append(p + (u * math.cos(a) + v * math.sin(a)) * radii[i]); row.append(len(V) - 1)
+        rings.append(row)
+    for i in range(len(pts) - 1):
+        a, b = rings[i], rings[i + 1]
+        for k in range(n):
+            k2 = (k + 1) % n
+            F.append([a[k], a[k2], b[k2]]); FC.append(col())
+            F.append([a[k], b[k2], b[k]]); FC.append(col())
+    V.append(pts[0]); c0 = len(V) - 1
+    V.append(pts[-1] + (pts[-1] - pts[-2]).normalized() * radii[-1] * 0.7); c1 = len(V) - 1
+    for k in range(n):
+        k2 = (k + 1) % n
+        F.append([rings[0][k2], rings[0][k], c0]); FC.append(col())
+        F.append([rings[-1][k], rings[-1][k2], c1]); FC.append(col())
+
+
 def make_coral(name, pal, H, r0, depth, seed, matrix, kids_p3=0.15, ang=(34, 58), bias=0.32, tip_pal=None):
+    """Staghorn coral: bent, tapering limbs with side nubs; planar (local XZ) with a little depth."""
     rnd = random.Random(seed)
     V, F, FC = [], [], []
     base_col = lambda: pick(pal, rnd)
     tip_col = lambda: pick(tip_pal or pal, rnd)
+    rotY = lambda v, a: Matrix.Rotation(math.radians(a), 3, "Y") @ v
 
     def grow(p, d, L, r, lvl):
         col = tip_col if lvl == depth else base_col
-        q = p + d * L
-        add_prism(V, F, FC, p, q, r, r * 0.84, col, 6, rnd.random())
-        add_ico(V, F, FC, q, r * 0.84 * 1.15, col, 0, rnd=rnd)
+        d1 = rotY(d, rnd.uniform(-12, 12))
+        mid = p + d1 * L * 0.5
+        d2 = (rotY(d, rnd.uniform(-16, 16)) + Vector((0, rnd.uniform(-.12, .12), 0.12))).normalized()
+        q = mid + d2 * L * 0.5
+        add_tube(V, F, FC, [p, mid, q], [r, r * 0.93, r * 0.82], col)
+        if lvl > 0 and rnd.random() < 0.55:                       # short side nub
+            nd = (rotY(d2, rnd.choice((-1, 1)) * rnd.uniform(50, 75)) + Vector((0, 0, 0.2))).normalized()
+            add_tube(V, F, FC, [mid, mid + nd * L * 0.30], [r * 0.62, r * 0.50], tip_col if lvl == depth else col)
         if lvl == depth:
             return
         k = 3 if rnd.random() < kids_p3 else 2
         angs = [rnd.uniform(*ang), -rnd.uniform(*ang)] + ([rnd.uniform(-8, 8)] if k == 3 else [])
         for a in angs:
-            nd = Matrix.Rotation(math.radians(a), 3, "Y") @ d
+            nd = rotY(d2, a)
             nd = Matrix.Rotation(math.radians(rnd.uniform(-10, 10)), 3, "X") @ nd
             nd = (nd + Vector((0, 0, bias))).normalized()
-            grow(q, nd, L * rnd.uniform(0.78, 0.95), r * 0.8, lvl + 1)
+            grow(q - d2 * r * 0.4, nd, L * rnd.uniform(0.74, 0.95), r * 0.80, lvl + 1)
 
-    grow(Vector((0, 0, -0.08)), Vector((rnd.uniform(-.1, .1), 0, 1)).normalized(), H * 0.30, r0, 0)
+    grow(Vector((0, 0, -0.08)), Vector((rnd.uniform(-.1, .1), 0, 1)).normalized(), H * 0.34, r0, 0)
     return build(name, V, F, FC, COLL["CORAL"], MAT["coral"], matrix)
+
+
+def add_leaf(V, F, FC, base, d, side, nrm, L, W, col, rnd, n=9):
+    """Broad serrated leaf: alternating wide/narrow sections, raised midrib, pointed tip, slight curl."""
+    rings = []
+    for i in range(n):
+        t = i / n
+        hw = W * math.sin(math.pi * min(1.0, t * 0.92 + 0.07)) ** 0.7 * (1.0 if i % 2 else 0.60)
+        c = base + d * (L * t) + nrm * (0.10 * L * t * t)
+        th = 0.035 * (1 - 0.5 * t) + 0.01
+        row = []
+        for q in (c - side * hw, c + nrm * th, c + side * hw, c - nrm * th):
+            V.append(q); row.append(len(V) - 1)
+        rings.append(row)
+    V.append(base + d * L + nrm * 0.10 * L); tip = len(V) - 1
+    for i in range(n - 1):
+        a, b = rings[i], rings[i + 1]
+        for k in range(4):
+            k2 = (k + 1) % 4
+            F.append([a[k], a[k2], b[k2]]); FC.append(col())
+            F.append([a[k], b[k2], b[k]]); FC.append(col())
+    for k in range(4):
+        F.append([rings[-1][k], rings[-1][(k + 1) % 4], tip]); FC.append(col())
+    F.append(rings[0][::-1]); FC.append(col())
 
 
 def make_kelp(name, H, blades, matrix, seed, wide=1.0):
     rnd = random.Random(seed)
     V, F, FC = [], [], []
+    col = lambda: pick(PAL["kelp"] + PAL["kelp_light"], rnd)
     for b in range(blades):
-        fan = math.radians((b - (blades - 1) / 2) * 22 + rnd.uniform(-5, 5))
+        fan = math.radians((b - (blades - 1) / 2) * 26 + rnd.uniform(-5, 5))
         hh = H * (1.0 if b == blades // 2 else rnd.uniform(0.65, 0.9))
         d = Vector((math.sin(fan), 0, math.cos(fan)))
-        base = Vector(((b - (blades - 1) / 2) * 0.10, 0, -0.05))
-        add_spike(V, F, FC, base, base + d * hh, (0.07 + 0.06 * H) * wide, lambda: pick(PAL["kelp"] + PAL["kelp_light"][:1], rnd),
-                  n=4, belly=0.35, flat=1.0, flat_u=0.28)
+        side = Vector((math.cos(fan), 0, -math.sin(fan)))
+        base = Vector(((b - (blades - 1) / 2) * 0.08, 0, -0.05))
+        add_leaf(V, F, FC, base, d, side, Vector((0, 1, 0)), hh, (0.10 + 0.07 * H) * wide, col, rnd)
     return build(name, V, F, FC, COLL["KELP"], MAT["kelp"], matrix)
 
 
@@ -407,7 +464,7 @@ def build_body():
         t, dorsal = spine_frame(k)
         V, F, FC = [], [], []
         vs, fs = ico(1)
-        w, ln, th = rw * 0.62, max(0.16, rh * 0.46), rh * 0.24
+        w, ln, th = rw * (0.95 if rh < 0.40 else 0.62), max(0.16, rh * 0.46), rh * 0.24
         ctr = c - dorsal * rh * 0.93
         for p in vs:
             sx = p.x * w * (1 - 0.35 * max(0, p.y))        # chevron: narrower toward the tail side
@@ -517,7 +574,7 @@ def build_head():
         Xa = (slant - Z * slant.dot(Z)).normalized()
         Ya = Z.cross(Xa)
         M = HEAD_M @ axes_matrix(Xa, Ya, Z, hit)
-        r1, r2, dep, n = 0.098, 0.078, 0.028, 4
+        r1, r2, dep, n = 0.105, 0.09, 0.02, 4
         CV, CF, CC = [], [], []
         for (r, z) in ((r2, -dep), (r1, 0.0), (r1 * 1.8, 0.2)):
             for k in range(n):
@@ -527,7 +584,7 @@ def build_head():
             for k in range(n):
                 k2 = (k + 1) % n
                 CF.append([ring * n + k, ring * n + k2, (ring + 1) * n + k2, (ring + 1) * n + k])
-                CC.append(jit(C("1F4FB8"), 0.08, rnd))
+                CC.append(jit(C("3F9BE6"), 0.08, rnd))
         CF.append(list(range(n))[::-1]); CC.append(C("1F4FB8"))
         CF.append([2 * n + k for k in range(n)]); CC.append(C("1F4FB8"))
         cut = build(f"_cut_{side}", CV, CF, CC, SC.collection, MAT["head"], M)
@@ -537,7 +594,7 @@ def build_head():
         GV = [Vector((r2 * 1.65 * math.cos(2 * math.pi * k / n), r2 * 0.72 * math.sin(2 * math.pi * k / n), -dep + 0.004))
               for k in range(n)] + [Vector((0, 0, -dep + 0.016))]
         GF = [[k, (k + 1) % n, n] for k in range(n)]
-        build(f"Eye_{side}_Glow", GV, GF, [jit(C("6FF0FF"), 0.08, rnd) for _ in GF], COLL["EYES"], MAT["eye_glow"], M,
+        build(f"Eye_{side}_Glow", GV, GF, [jit(C("55E8FF"), 0.05, rnd) for _ in GF], COLL["EYES"], MAT["eye_glow"], M,
               recalc=False)
     dg = bpy.context.evaluated_depsgraph_get(); dg.update()
     new_me = bpy.data.meshes.new_from_object(skull.evaluated_get(dg))
@@ -565,12 +622,13 @@ def build_head():
     parts = []
     for side, sx in (("L", 1), ("R", -1)):
         parts += [
-            (f"Horn_Crown_{side}", (0.11 * sx, 0.04, 0.26), (0.34 * sx, 0.62, 0.86), 0.15, "ice", 0.7),
+            (f"Horn_Crown_{side}", (0.12 * sx, 0.02, 0.24), (0.36 * sx, 0.78, 0.78), 0.19, "ice", 0.6),
             (f"Horn_Brow_{side}", (0.22 * sx, -0.04, 0.24), (0.42 * sx, 0.50, 0.52), 0.10, "ice", 0.7),
             (f"Crest_Back_{side}", (0.13 * sx, 0.28, 0.20), (0.22 * sx, 1.10, 0.52), 0.12, "ice", 0.45),
             (f"Crest_Low_{side}", (0.20 * sx, 0.34, 0.06), (0.30 * sx, 1.00, 0.20), 0.10, "bone", 0.45),
-            (f"Fin_Cheek_{side}", (0.24 * sx, 0.16, 0.02), (0.82 * sx, 0.78, 0.10), 0.14, "lav", 0.35),
-            (f"Fin_Jaw_{side}", (0.20 * sx, 0.22, -0.16), (0.50 * sx, 0.45, -0.46), 0.11, "belly", 0.4),
+            (f"Fin_Cheek_{side}", (0.26 * sx, 0.14, 0.05), (0.90 * sx, 0.62, 0.32), 0.15, "lav", 0.35),
+            (f"Plate_Cheek_{side}", (0.16 * sx, 0.00, -0.06), (0.68 * sx, 0.30, -0.10), 0.17, "belly", 0.3),
+            (f"Fin_Jaw_{side}", (0.18 * sx, 0.20, -0.18), (0.46 * sx, 0.42, -0.44), 0.10, "belly", 0.4),
             (f"Fang_Up_{side}", (0.075 * sx, -0.42, -0.06), (0.075 * sx, -0.44, -0.20), 0.03, "claw", 1.0),
             (f"Fang_Low_{side}", (0.055 * sx, -0.36, -0.21), (0.055 * sx, -0.38, -0.09), 0.028, "claw", 1.0),
         ]
@@ -585,8 +643,8 @@ def build_head():
     # ---- reef crown (head-local, so it follows the head): antlers sweep up, out and back
     L = lambda M: HEAD_M @ M
     for side, sx in (("L", 1), ("R", -1)):
-        make_coral(f"Antler_Red_{side}", PAL["red"], 1.7, 0.12, 2, 400 + sx,
-                   L(orient(Vector((0.24 * sx, 0.26, 0.18)), Vector((0.95 * sx, 1.05, 1)), XAX)), kids_p3=0.15,
+        make_coral(f"Antler_Red_{side}", PAL["red"], 2.0, 0.095, 2, 400 + sx,
+                   L(orient(Vector((0.24 * sx, 0.26, 0.18)), Vector((0.95 * sx, 1.05, 1)), XAX)), kids_p3=0.3,
                    tip_pal=PAL["pink"] + PAL["purple"][:1])
         make_coral(f"Antler_Lavender_{side}", PAL["lav_coral"], 1.0, 0.065, 2, 410 + sx,
                    L(orient(Vector((0.08 * sx, 0.30, 0.20)), Vector((0.16 * sx, 0.80, 1)), XAX)), kids_p3=0.2)
@@ -595,10 +653,10 @@ def build_head():
                    kids_p3=0.4, tip_pal=PAL["pink"])
         make_coral(f"Nape_Orange_{side}", PAL["orange"], 0.45, 0.05, 2, 425 + sx,
                    L(orient(Vector((0.20 * sx, 0.55, -0.02)), Vector((0.9 * sx, 0.6, -0.1)), Vector((0, 0, 1)))))
-        for j, (up, H) in enumerate((((1.0 * sx, 0.40, 0.22), 0.95), ((1.0 * sx, 0.70, -0.08), 0.85),
-                                     ((0.5 * sx, 1.0, 0.40), 0.75))):
+        for j, (up, H) in enumerate((((1.0 * sx, 0.30, 0.16), 1.15), ((1.0 * sx, 0.50, -0.10), 1.0),
+                                     ((0.55 * sx, 1.0, 0.30), 0.8))):
             make_kelp(f"Frill_Leaf_{side}_{j}", H, 3,
-                      L(orient(Vector((0.20 * sx, 0.42 + 0.05 * j, 0.06)), Vector(up), Vector((0, 1, 0.2)))), 430 + j + sx, wide=1.9)
+                      L(orient(Vector((0.20 * sx, 0.42 + 0.05 * j, 0.06)), Vector(up), Vector((0, 1, 0.2)))), 430 + j + sx, wide=1.15)
 
 
 # ----------------------------------------------------------------------------- wings
@@ -757,7 +815,7 @@ def build_reef():
 # ----------------------------------------------------------------------------- cameras / lights / render
 def setup_lights_cameras():
     L = COLL["CAMERAS_LIGHTS"]
-    for name, energy, ang, loc in (("Light_Key_Sun", 1.5, 25, (-5, -9, 10)), ("Light_Fill_Sun", 0.45, 60, (7, 6, 4)),
+    for name, energy, ang, loc in (("Light_Key_Sun", 1.1, 30, (-5, -9, 10)), ("Light_Fill_Sun", 0.45, 60, (7, 6, 4)),
                                    ("Light_Back_Sun", 0.5, 60, (-3, 9, 6))):
         sun = bpy.data.lights.new(name, "SUN"); sun.energy = energy; sun.angle = math.radians(ang)
         so = bpy.data.objects.new(name, sun); L.objects.link(so); so.location = loc; look_at(so, (0, 0, 0))
