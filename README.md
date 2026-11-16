@@ -8,7 +8,18 @@ plusieurs parties de **30 Mo maximum** chacune (taille modifiable).
 - Les parties sont créées dans un dossier `<nom>_parties` à côté de la vidéo
   (`video_partie01.mp4`, `video_partie02.mp4`, …).
 
-## Installation (une seule fois)
+## Version PC Windows (le plus simple)
+
+Télécharge **`DecoupeurVideo.exe`** dans la release **« pc »** du dépôt
+(ffmpeg est déjà inclus, rien d'autre à installer), puis :
+
+- **glisse ta vidéo sur `DecoupeurVideo.exe`** → découpage automatique, le dossier des parties s'ouvre ;
+- ou double-clique dessus et choisis « Choisir une vidéo… ».
+
+Si Windows affiche « Windows a protégé votre ordinateur » : *Informations complémentaires* → *Exécuter quand même*
+(l'appli n'est pas signée numériquement).
+
+## Installation depuis le code Python (Mac / Linux, ou sans le .exe)
 
 1. Installer **Python 3** : https://www.python.org/downloads/ (cocher « Add Python to PATH »).
 2. Installer **ffmpeg** :

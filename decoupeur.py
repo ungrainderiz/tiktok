@@ -34,12 +34,15 @@ def trouver_outil(nom):
     chemin = shutil.which(nom)
     if chemin:
         return chemin
-    # ffmpeg posé à côté du script (pratique sous Windows)
-    dossier = os.path.dirname(os.path.abspath(__file__))
-    for candidat in (nom, nom + ".exe"):
-        p = os.path.join(dossier, candidat)
-        if os.path.isfile(p):
-            return p
+    # ffmpeg inclus dans le .exe (PyInstaller), ou posé à côté du script / du .exe
+    dossiers = [getattr(sys, "_MEIPASS", None),
+                os.path.dirname(os.path.abspath(sys.executable if getattr(sys, "frozen", False)
+                                                else __file__))]
+    for dossier in filter(None, dossiers):
+        for candidat in (nom + ".exe", nom):
+            p = os.path.join(dossier, candidat)
+            if os.path.isfile(p):
+                return p
     raise ErreurDecoupe(
         f"'{nom}' est introuvable. Installe ffmpeg (https://ffmpeg.org/download.html) "
         f"ou place {nom}.exe dans le même dossier que ce programme."
