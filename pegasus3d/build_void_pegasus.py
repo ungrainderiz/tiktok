@@ -462,145 +462,220 @@ def build_legs():
             rings = [(Vector((x, y, z)), r, r * 1.15) for (x, y, z, r) in pts]
             V, F, FC = loft(rings, 6, lambda sa, k: body_col(rnd, 0.08), rnd)
             build(f"Leg_{which}_{side}", V, F, FC, COLL["LEGS"], MAT["body"])
-            x, y, z, r = pts[-1]
-            V, F, FC = [], [], []
-            add_prism(V, F, FC, Vector((x, y, 0.20)), Vector((x, y - 0.04, 0.0)), 0.16, 0.21, lambda: pick(PAL["pink"], rnd), 6)
-            build(f"Hoof_{which}_{side}", V, F, FC, COLL["HOOVES"], MAT["flame"])
-            # crystal growth on the lower leg: lilac near the hoof, violet higher up
-            V, F, FC = [], [], []
-            for i in range(16):
-                h = rnd.uniform(0.12, 1.15)
-                c = Vector((x, y + 0.04 * (h > 0.6), h))
-                a = rnd.uniform(0, 2 * math.pi)
-                rad = Vector((math.cos(a), math.sin(a), 0))
-                base = c + rad * 0.09 - Vector((0, 0, 0.08))
-                L = rnd.uniform(0.32, 0.55)
-                tip = base + (rad * rnd.uniform(0.35, 0.6) + Vector((0, 0, 1))).normalized() * L
-                t = 1 - h / 1.15
-                add_spike(V, F, FC, base, tip, rnd.uniform(0.11, 0.15),
-                          two_tone(lambda t=t: grad(["indigo", "violet", "lilac"], t, rnd),
-                                   lambda t=t: grad(["violet", "lilac", "pink"], t, rnd)), n=4, belly=0.4)
-            build(f"Leg_{which}_{side}_Crystals", V, F, FC, COLL["LEGS"], MAT["flame"])
+            # crystal greave + hoof: ONE faceted piece wrapped around the lower leg
+            def axis(zq):
+                best = min(range(len(pts) - 1), key=lambda i: abs((pts[i][2] + pts[i + 1][2]) / 2 - zq))
+                (x0, y0, z0, _), (x1, y1, z1, _) = pts[best], pts[best + 1]
+                f = 0.0 if abs(z1 - z0) < 1e-6 else max(0.0, min(1.0, (zq - z0) / (z1 - z0)))
+                return Vector((x0 + (x1 - x0) * f, y0 + (y1 - y0) * f, zq))
+            levels = [(0.00, .23), (0.14, .19), (0.24, .23), (0.42, .20), (0.52, .25), (0.74, .19), (0.84, .22),
+                      (1.04, .17), (1.20, .10)]
+            n = 8
+            V, F, FC, rows = [], [], [], []
+            for k, (zq, rad) in enumerate(levels):
+                c = axis(zq)
+                row = []
+                for j in range(n):
+                    a2 = 2 * math.pi * (j + 0.5 * (k % 2)) / n
+                    rr = rad * (1.45 if (j + k) % 2 else 0.78) * rnd.uniform(0.92, 1.08)
+                    V.append(c + Vector((math.cos(a2) * rr, math.sin(a2) * rr, rnd.uniform(-0.03, 0.03) if 0 < k < len(levels) - 1 else 0)))
+                    row.append(len(V) - 1)
+                rows.append(row)
+            for k in range(len(levels) - 1):
+                t = (levels[k][0] + levels[k + 1][0]) / 2 / 1.2
+                for j in range(n):
+                    j2 = (j + 1) % n
+                    for tri in ([rows[k][j], rows[k][j2], rows[k + 1][j2]], [rows[k][j], rows[k + 1][j2], rows[k + 1][j]]):
+                        F.append(tri); FC.append(grad(["pink", "lilac", "violet", "violet", "indigo"], t, rnd))
+            V.append(axis(0.0)); V.append(axis(1.25))
+            for j in range(n):
+                j2 = (j + 1) % n
+                F.append([rows[0][j2], rows[0][j], len(V) - 2]); FC.append(pick(PAL["pink"], rnd))
+                F.append([rows[-1][j], rows[-1][j2], len(V) - 1]); FC.append(pick(PAL["indigo"], rnd))
+            build(f"Leg_{which}_{side}_CrystalHoof", V, F, FC, COLL["HOOVES"], MAT["flame"])
 
 
-# ----------------------------------------------------------------------------- wings (3 feather layers)
+# ----------------------------------------------------------------------------- wings: one solid surface each
 def build_wing(side, sx):
+    """Whole wing = ONE closed mesh: thick dark leading edge thinning into a serrated, ridged feather sheet."""
     rnd = random.Random(80 + sx)
-    R0 = Vector((0.34 * sx, -0.30, 2.92))
+    R0 = Vector((0.30 * sx, -0.30, 2.90))
     sw = math.radians(36)
     u = Vector((math.cos(sw) * sx, math.sin(sw), 0.0))
     v = Vector((0, -0.08, 1.0)); v = (v - u * v.dot(u)).normalized()
     nrm = u.cross(v) * sx
     K = 1.50
 
-    def P(a, b, c=0.0):
-        return R0 + u * (a * K) + v * b + nrm * c
-
-    def A(t):                                      # leading-edge arm, slightly bowed
+    def A(t):
         return (2.45 * t - 0.12 * math.sin(math.pi * t), 1.70 * t + 0.22 * math.sin(math.pi * t))
 
-    arm = [(P(*A(t)), r, r * 0.8) for t, r in ((0, .26), (.2, .23), (.4, .19), (.6, .15), (.8, .11), (1.0, .07))]
-    V, F, FC = loft(arm, 6, lambda sa, k: pick(PAL["wingdark"], rnd), rnd, side_ref=nrm, jitter=0.03)
-    add_ico(V, F, FC, R0, 0.34, lambda: pick(PAL["body"], rnd), 1, scale=(1, 1.2, 0.9), jitter=0.05, rnd=rnd)
-    build(f"Wing_{side}_Arm", V, F, FC, COLL["WINGS"], MAT["body"])
+    NF = 10
+    cols = 2 * NF
+    S = [0.0, 0.20, 0.42, 0.64, 0.84, 1.0]
+    front, back, meta = [], [], []
+    V, F, FC = [], [], []
+    for c in range(cols + 1):
+        t = 0.0 + 1.0 * c / cols
+        center = (c % 2 == 1)
+        ang = math.radians(-72 + 84 * t ** 0.85)
+        L = (1.10 + 0.45 * t + 0.75 * math.sin(math.pi * t)) * 1.42 * (1.0 if center else 0.62) * rnd.uniform(0.94, 1.06)
+        a0, b0 = A(t)
+        fr, bk = [], []
+        for si, sv in enumerate(S):
+            a = a0 + (L * sv - 0.16) * math.cos(ang) / K
+            b = b0 + (L * sv - 0.16) * math.sin(ang)
+            ridge = (0.10 if center else -0.06) * sv
+            th = 0.24 * (1 - 0.55 * t) * (1 - sv) ** 1.6 + 0.012
+            base = R0 + u * (a * K) + v * b
+            V.append(base + nrm * (ridge + th)); fr.append(len(V) - 1)
+            V.append(base + nrm * (ridge - th)); bk.append(len(V) - 1)
+        front.append(fr); back.append(bk); meta.append((t, rnd.uniform(-0.07, 0.07)))
 
-    def feathers(name, count, t0, t1, lscale, width, base_stops, tip_stops, offsets, mat):
-        V, F, FC = [], [], []
-        for c_off in offsets:
-            for i in range(count):
-                t = t0 + (t1 - t0) * i / (count - 1)
-                ang = math.radians(-72 + 84 * t ** 0.85 + rnd.uniform(-3, 3))
-                L = (1.10 + 0.45 * t + 0.75 * math.sin(math.pi * t)) * lscale * rnd.uniform(0.92, 1.08)
-                a, b = A(t)
-                base = P(a - 0.10 * math.cos(ang), b - 0.10 * math.sin(ang), c_off)
-                tip = P(a + L * math.cos(ang) / K, b + L * math.sin(ang), c_off * 0.4)
-                add_spike(V, F, FC, base, tip, width, two_tone(lambda t=t: grad(base_stops, t, rnd), lambda t=t: grad(tip_stops, t, rnd)),
-                          n=4, belly=0.42, flat=1.0, flat_u=0.16)
-        build(f"Wing_{side}_{name}", V, F, FC, COLL["WINGS"], mat)
+    def wcol(c, si):
+        t, dj = meta[c]
+        sm = (S[si] + S[si + 1]) / 2 + dj
+        if sm < 0.36:
+            return pick(PAL["wingdark"], rnd)
+        if sm < 0.58:
+            return jit(lerp(rnd.choice(PAL["wingdark"]), rnd.choice(PAL["indigo"]), (sm - 0.30) / 0.28), 0.06, rnd)
+        if sm < 0.80:
+            return grad(["indigo", "violet"], (sm - 0.58) / 0.22, rnd)
+        return grad(["violet", "lilac", "pink"], 0.35 + 0.65 * t, rnd)
 
-    feathers("Primaries", 17, 0.08, 1.0, 1.25, 0.38, ["indigo", "indigo", "violet"], ["violet", "lilac", "pink"], (0.0,), MAT["feather"])
-    feathers("Secondaries", 15, 0.05, 0.98, 0.92, 0.42, ["wingdark", "wingdark", "indigo"], ["indigo", "indigo", "violet"], (0.07, -0.07), MAT["feather"])
-    feathers("Coverts", 13, 0.03, 0.96, 0.64, 0.44, ["wingdark", "wingdark"], ["wingdark", "wingdark", "indigo"], (0.13, -0.13), MAT["body"])
+    for c in range(cols):
+        for si in range(len(S) - 1):
+            for grid, flip in ((front, False), (back, True)):
+                a, b, c2, d = grid[c][si], grid[c + 1][si], grid[c + 1][si + 1], grid[c][si + 1]
+                for tri in (([a, b, c2], [a, c2, d]) if c % 2 else ([a, b, d], [b, c2, d])):
+                    F.append(tri[::-1] if flip else tri); FC.append(wcol(c, si))
+        for si, edge_col in ((0, lambda: pick(PAL["wingdark"], rnd)), (len(S) - 1, lambda: pick(PAL["pink"], rnd))):
+            F.append([front[c][si], front[c + 1][si], back[c + 1][si], back[c][si]]); FC.append(edge_col())
+    for c in (0, cols):
+        for si in range(len(S) - 1):
+            F.append([front[c][si], front[c][si + 1], back[c][si + 1], back[c][si]]); FC.append(pick(PAL["wingdark"], rnd))
+    build(f"Wing_{side}", V, F, FC, COLL["WINGS"], MAT["feather"])
 
 
-# ----------------------------------------------------------------------------- flame mane and tail
-def flame_shards(V, F, FC, origin, main, spread_a, spread_b, n, Lr, r, stops_base, stops_tip, t, rnd, sa=0.7, sb=0.5):
-    for _ in range(n):
-        d = (main + spread_a * rnd.uniform(-sa, sa) + spread_b * rnd.uniform(-sb, sb)).normalized()
-        L = rnd.uniform(*Lr)
-        add_spike(V, F, FC, origin - d * 0.1, origin + d * L, r * rnd.uniform(0.8, 1.2),
-                  two_tone(lambda: grad(stops_base, t, rnd), lambda: grad(stops_tip, t, rnd)), n=4, belly=0.35,
-                  flat=1.0, flat_u=0.32)
+# ----------------------------------------------------------------------------- flame mane and tail: one sheet each
+def saw(x):
+    return x - math.floor(x)
+
+
+def flame_ribbon(name, centers, ups, widths, tops, bots, colfn, coll, mat, rnd, n=8, jitter=0.03):
+    """ONE closed mesh: a ribbon whose upper/lower crests rise and drop like licking flame tongues."""
+    V, F, FC, rows = [], [], [], []
+    m = len(centers)
+    for k in range(m):
+        tng = (centers[min(k + 1, m - 1)] - centers[max(k - 1, 0)]).normalized()
+        up = (ups[k] - tng * ups[k].dot(tng)).normalized()
+        side = tng.cross(up).normalized()
+        row = []
+        for j in range(n):
+            a = 2 * math.pi * (j + 0.5 * (k % 2)) / n
+            sa = math.sin(a)
+            p = centers[k] + side * widths[k] * math.cos(a) + up * (tops[k] if sa >= 0 else bots[k]) * sa
+            p += Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-1, 1))) * jitter
+            V.append(p); row.append(len(V) - 1)
+        rows.append(row)
+    for k in range(m - 1):
+        for j in range(n):
+            j2 = (j + 1) % n
+            sa = math.sin(2 * math.pi * (j + 0.75) / n)
+            for tri in ([rows[k][j], rows[k][j2], rows[k + 1][j2]], [rows[k][j], rows[k + 1][j2], rows[k + 1][j]]):
+                F.append(tri); FC.append(colfn(k / (m - 1), sa))
+    V.append(centers[0]); V.append(centers[-1] + (centers[-1] - centers[-2]))
+    for j in range(n):
+        j2 = (j + 1) % n
+        F.append([rows[0][j2], rows[0][j], len(V) - 2]); FC.append(colfn(0.0, 0.0))
+        F.append([rows[-1][j], rows[-1][j2], len(V) - 1]); FC.append(colfn(1.0, 1.0))
+    return build(name, V, F, FC, coll, mat)
 
 
 def build_mane(neck_rings):
-    """Flame mane: rides the crest of the neck and flares up behind the poll; never in front of the face."""
     rnd = random.Random(31)
-    V, F, FC = [], [], []
+    ctrl = [(-1.10, 4.40, 0.0, 0.10, 1.0, 0.45, 0.14), (-0.98, 4.42, 0.0, 0.35, 1.0, 1.00, 0.24)]
     m = len(neck_rings)
-    for k, (c, rw, rh) in enumerate(neck_rings):
+    for k in range(m - 1, -1, -2):
+        c, rw, rh = neck_rings[k]
         tng = (neck_rings[min(k + 1, m - 1)][0] - neck_rings[max(k - 1, 0)][0]).normalized()
-        crest = -XAX.cross(tng).normalized()            # neck runs upward, so its crest faces backward
-        t = k / (m - 1)
-        flame_shards(V, F, FC, c + crest * rh * 0.9, crest * 0.75 + Vector((0, 0.45, 0.55)), XAX, tng, 6,
-                     (0.6, 1.15), 0.30, ["indigo", "indigo", "violet"], ["violet", "violet", "lilac", "pink"],
-                     0.2 + 0.7 * t, rnd, sa=0.8, sb=0.25)
-    top = Vector((0, -0.98, 4.42))
-    flame_shards(V, F, FC, top, Vector((0, 0.45, 1)), XAX, Vector((0, 1, 0)), 20, (0.7, 1.35), 0.32,
-                 ["indigo", "violet"], ["violet", "lilac", "pink"], 0.8, rnd, sa=1.0, sb=0.35)
-    build("Mane_Flame", V, F, FC, COLL["MANE"], MAT["flame"])
+        crest = -XAX.cross(tng).normalized()
+        p = c + crest * rh * 0.72
+        upv = (crest * 0.8 + Vector((0, 0.15, 0.55))).normalized()
+        ctrl.append((p.y, p.z, upv.x, upv.y, upv.z, 0.95, 0.30))
+    ctrl.append((-0.20, 3.12, 0.0, 0.4, 1.0, 0.30, 0.14))
+    pts = catmull(ctrl, 3)
+    M = len(pts)
+    centers = [Vector((0.06 * math.sin(i * 0.9), y, z)) for i, (y, z, *_r) in enumerate(pts)]
+    ups = [Vector((ux + 0.10 * math.sin(i * 1.3), uy, uz)).normalized() for i, (_y, _z, ux, uy, uz, _t, _w) in enumerate(pts)]
+    tops = [tp * (0.30 + 1.05 * saw(i / 3.0 + 0.2)) for i, (*_a, tp, _w) in enumerate(pts)]
+    widths = [w for (*_a, w) in pts]
+    bots = [0.16] * M
+
+    def col(t, sa):
+        peak = saw(t * (M - 1) / 3.0 + 0.2)
+        if sa > 0.55:
+            return grad(["violet", "violet", "lilac", "pink"], 0.25 + 0.75 * peak, rnd)
+        if sa > -0.1:
+            return grad(["indigo", "indigo", "violet"], 0.3 + 0.7 * peak, rnd)
+        return pick(PAL["indigo"], rnd)
+    flame_ribbon("Mane_Flame", centers, ups, widths, tops, bots, col, COLL["MANE"], MAT["flame"], rnd, n=8)
 
 
 def build_tail():
     rnd = random.Random(41)
-    ctrl = [(0.0, 1.50, 2.66, .24), (0.08, 2.15, 2.70, .48), (0.30, 2.95, 2.15, .62), (0.62, 3.70, 2.05, .60),
-            (0.95, 4.40, 1.40, .52), (1.25, 5.05, 1.40, .40), (1.55, 5.75, 0.85, .18)]
-    pts = catmull(ctrl, 3)
-    rings = [(Vector((x, y, z)), r * 0.45, r) for (x, y, z, r) in pts]
-    m = len(rings)
-    V, F, FC = loft(rings, 6, lambda sa, k: grad(["indigo", "indigo", "indigo", "violet", "violet"], k / m, rnd), rnd, jitter=0.06)
-    for k, (c, rw, rh) in enumerate(rings):
-        if k == 0:
-            continue
-        tng = (rings[min(k + 1, m - 1)][0] - rings[k - 1][0]).normalized()
-        dorsal = XAX.cross(tng).normalized()
-        t = k / (m - 1)
-        flame_shards(V, F, FC, c, tng, dorsal, XAX, 3, (1.0, 1.9), 0.22 + rh * 0.5,
-                     ["indigo", "indigo", "indigo", "violet"], ["indigo", "violet", "violet", "lilac", "pink"], t, rnd, sa=0.5, sb=0.3)
-    build("Tail_Flame", V, F, FC, COLL["TAIL"], MAT["flame"])
+    ctrl = [(0.0, 1.45, 2.62, .26), (0.08, 2.15, 2.75, .60), (0.30, 2.95, 2.15, .80), (0.62, 3.70, 2.15, .78),
+            (0.95, 4.40, 1.40, .70), (1.25, 5.05, 1.50, .56), (1.50, 5.60, 0.95, .40), (1.70, 6.20, 0.85, .12)]
+    pts = catmull(ctrl, 5)
+    M = len(pts)
+    centers = [Vector((x + 0.12 * math.sin(i * 0.8), y, z)) for i, (x, y, z, r) in enumerate(pts)]
+    ups = [Vector((0.25 * math.sin(i * 0.6), 0, 1)) for i in range(M)]
+    tops = [r * (0.35 + 1.05 * saw(i / 6.0 + 0.1)) for i, (*_a, r) in enumerate(pts)]
+    bots = [r * (0.35 + 0.95 * saw(i / 6.0 + 0.55)) for i, (*_a, r) in enumerate(pts)]
+    widths = [r * 0.34 for (*_a, r) in pts]
+
+    def col(t, sa):
+        i = t * (M - 1)
+        peak = saw(i / 6.0 + 0.1) if sa > 0 else saw(i / 6.0 + 0.55)
+        if abs(sa) > 0.6:
+            return grad(["indigo", "violet", "violet", "lilac", "pink"], min(1.0, 0.15 + 0.6 * peak + 0.3 * t), rnd)
+        return grad(["indigo", "indigo", "indigo", "violet"], t, rnd)
+    flame_ribbon("Tail_Flame", centers, ups, widths, tops, bots, col, COLL["TAIL"], MAT["flame"], rnd, n=10, jitter=0.04)
 
 
 # ----------------------------------------------------------------------------- gems, harness, floating shards
-def rhombus(name, center, normal, up, size, rnd, frame_only=False):
-    """Diamond emblem: lilac frame (4 bars) + dark-violet faceted gem."""
+def add_rhombus(V, F, FC, center, normal, up, size, rnd):
+    """Diamond emblem (lilac frame + dark-violet faceted gem) appended to one mesh."""
     n = normal.normalized()
     upv = (up - n * up.dot(n)).normalized()
     sidev = n.cross(upv)
     corners = [center + upv * size, center + sidev * size * 0.62, center - upv * size, center - sidev * size * 0.62]
-    V, F, FC = [], [], []
     for i in range(4):
         add_prism(V, F, FC, corners[i] + n * 0.02, corners[(i + 1) % 4] + n * 0.02, size * 0.13, size * 0.13,
                   lambda: pick(PAL["lilac"], rnd), 4)
-    build(f"{name}_Frame", V, F, FC, COLL["GEMS"], MAT["gem"])
-    V = [center + n * (size * 0.28)] + [center + (c - center) * 0.72 for c in corners] + [center - n * 0.05]
-    F = [[0, 1 + i, 1 + (i + 1) % 4] for i in range(4)] + [[5, 1 + (i + 1) % 4, 1 + i] for i in range(4)]
-    FC = [pick(PAL["indigo"] + PAL["violet"][:2], rnd) for _ in F]
-    build(f"{name}_Gem", V, F, FC, COLL["GEMS"], MAT["gem"])
+    b0 = len(V)
+    V += [center + n * (size * 0.28)] + [center + (c - center) * 0.72 for c in corners] + [center - n * 0.05]
+    for i in range(4):
+        F.append([b0, b0 + 1 + i, b0 + 1 + (i + 1) % 4]); FC.append(pick(PAL["indigo"] + PAL["violet"][:2], rnd))
+        F.append([b0 + 5, b0 + 1 + (i + 1) % 4, b0 + 1 + i]); FC.append(pick(PAL["indigo"], rnd))
 
 
 def build_gems():
     rnd = random.Random(51)
-    rhombus("Emblem_Chest", Vector((0, -1.27, 2.58)), Vector((0, -1, 0.15)), Vector((0, 0, 1)), 0.34, rnd)
-    rhombus("Emblem_Back", Vector((0, -0.05, 3.06)), Vector((0, 0.25, 1)), Vector((0, -1, 0)), 0.22, rnd)
-    for side, sx in (("L", 1), ("R", -1)):
-        rhombus(f"Emblem_Shoulder_{side}", Vector((0.56 * sx, -0.80, 2.50)), Vector((sx, -0.25, 0.1)), Vector((0, 0, 1)), 0.20, rnd)
-        rhombus(f"Emblem_Hip_{side}", Vector((0.58 * sx, 1.00, 2.50)), Vector((sx, 0.1, 0.15)), Vector((0, 0, 1)), 0.13, rnd)
-        V, F, FC = [], [], []
-        path = [Vector((0.10 * sx, -1.22, 2.90)), Vector((0.40 * sx, -1.02, 2.97)), Vector((0.55 * sx, -0.60, 2.98)),
-                Vector((0.30 * sx, -0.10, 3.06))]
+    V, F, FC = [], [], []
+    add_rhombus(V, F, FC, Vector((0, -1.19, 2.56)), Vector((0, -1, 0.10)), Vector((0, 0, 1)), 0.34, rnd)
+    for sx in (1, -1):                                 # straps hug the chest and run up to the withers
+        path = [Vector((0.14 * sx, -1.10, 2.84)), Vector((0.40 * sx, -0.95, 2.92)), Vector((0.52 * sx, -0.62, 2.96)),
+                Vector((0.40 * sx, -0.30, 3.02)), Vector((0.10 * sx, -0.08, 3.08))]
         for a, b in zip(path, path[1:]):
-            add_prism(V, F, FC, a, b, 0.035, 0.035, lambda: pick(PAL["lilac"], rnd), 4)
-        build(f"Harness_{side}", V, F, FC, COLL["GEMS"], MAT["gem"])
+            add_prism(V, F, FC, a, b, 0.04, 0.04, lambda: pick(PAL["lilac"], rnd), 4)
+    add_rhombus(V, F, FC, Vector((0, -0.05, 3.06)), Vector((0, 0.25, 1)), Vector((0, -1, 0)), 0.22, rnd)
+    build("Harness_Emblems", V, F, FC, COLL["GEMS"], MAT["gem"])
+    for side, sx in (("L", 1), ("R", -1)):
+        for nm, c, nv, sz in (("Shoulder", Vector((0.56 * sx, -0.80, 2.50)), Vector((sx, -0.25, 0.1)), 0.20),
+                              ("Hip", Vector((0.58 * sx, 1.00, 2.50)), Vector((sx, 0.1, 0.15)), 0.13)):
+            V, F, FC = [], [], []
+            add_rhombus(V, F, FC, c, nv, Vector((0, 0, 1)), sz, rnd)
+            build(f"Emblem_{nm}_{side}", V, F, FC, COLL["GEMS"], MAT["gem"])
 
 
 def build_shards():
