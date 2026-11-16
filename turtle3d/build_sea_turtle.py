@@ -399,7 +399,13 @@ def build_head():
 
 
 def build_eyes():
+    """Eyes are RECESSED: a tapered hexagonal socket is boolean-cut into the head
+    (socket walls = dark-blue orbit), the glowing cyan hexagon sits at the bottom."""
+    head = bpy.data.objects["Head_Main"]
     tree = BVHTree.FromPolygons(HEAD_V, HEAD_F)
+    n, rot = 6, math.radians(30)
+    R_TOP, R_BOT, DEPTH = 0.235, 0.165, 0.095      # socket radius at surface / floor, depth
+    cutters = []
     for side, sx in (("L", 1), ("R", -1)):
         d = Vector((0.58 * sx, -0.81, 0.05)).normalized()
         hit, nrm, _, _ = tree.ray_cast(Vector((0, 0, 0)), d)
@@ -408,37 +414,55 @@ def build_eyes():
         Z = (nrm + d).normalized()
         Xa = Vector((0, 0, 1)).cross(Z).normalized()
         Ya = Z.cross(Xa)
-        M = axes_matrix(Xa * 1.1, Ya * 1.1, Z * 1.1, HEAD_POS + hit - Z * 0.012)
         rnd = random.Random(31 if sx > 0 else 32)
+        # local eye frame: origin on the head surface, +Z out of the head
+        M_local = axes_matrix(Xa, Ya, Z, hit)
+        M = Matrix.Translation(HEAD_POS) @ M_local
 
-        # orbit ring (hexagonal, bevelled)
-        n, rot = 6, math.radians(30)
-        prof = [(0.178, -0.04), (0.172, 0.028), (0.135, 0.040), (0.126, 0.016)]
+        # --- socket cutter (tapered hex frustum), coloured as the orbit lining
         V, F, FC = [], [], []
-        for (r, z) in prof:
+        for (r, z) in ((R_BOT, -DEPTH), (R_TOP, 0.0), (R_TOP * 1.9, 0.35)):
             for k in range(n):
                 a = rot + 2 * math.pi * k / n
-                rr = r * (1 + rnd.uniform(-0.03, 0.03)) if r > 0.15 else r
-                V.append(Vector((rr * math.cos(a), rr * math.sin(a), z)))
-        cols = [PAL["eye_ring_dark"], PAL["eye_ring"], PAL["eye_ring_dark"]]
-        for ring in range(3):
+                V.append(Vector((r * math.cos(a), r * math.sin(a), z)))
+        for ring in range(2):
             for k in range(n):
                 k2 = (k + 1) % n
-                a, b = ring * n, (ring + 1) * n
-                F.append([a + k, a + k2, b + k2]); FC.append(pick(cols[ring], rnd))
-                F.append([a + k, b + k2, b + k]); FC.append(pick(cols[ring], rnd))
+                F.append([ring * n + k, ring * n + k2, (ring + 1) * n + k2, (ring + 1) * n + k])
+                FC.append(pick(PAL["eye_ring"] if ring == 0 else PAL["eye_ring_dark"], rnd))
         F.append([k for k in range(n)][::-1]); FC.append(pick(PAL["eye_ring_dark"], rnd))
+        F.append([2 * n + k for k in range(n)]); FC.append(pick(PAL["eye_ring_dark"], rnd))
+        cut = build(f"_cut_{side}", V, F, FC, SC.collection, MAT["head"], M)
+        cutters.append(cut)
+        mod = head.modifiers.new(f"Socket_{side}", "BOOLEAN")
+        mod.operation = "DIFFERENCE"
+        mod.object = cut
+        if hasattr(mod, "solver"):
+            mod.solver = "EXACT"
+
+        # --- orbit: thin dark-blue bevel lip at the socket floor around the glow
+        V, F, FC = [], [], []
+        for (r, z) in ((R_BOT + 0.004, -DEPTH + 0.002), (R_BOT - 0.004, -DEPTH + 0.016), (0.142, -DEPTH + 0.010)):
+            for k in range(n):
+                a = rot + 2 * math.pi * k / n
+                V.append(Vector((r * math.cos(a), r * math.sin(a), z)))
+        for ring in range(2):
+            for k in range(n):
+                k2 = (k + 1) % n
+                F.append([ring * n + k, ring * n + k2, (ring + 1) * n + k2, (ring + 1) * n + k])
+                FC.append(pick(PAL["eye_ring_dark"], rnd))
         build(f"Eye_{side}_Orbit", V, F, FC, COLL["EYES"], MAT["eye_ring"], M, recalc=False)
 
-        # glowing cyan centre
+        # --- glowing cyan centre, slightly domed, at the bottom of the socket
+        z0 = -DEPTH + 0.006
         V, F, FC = [], [], []
         for k in range(n):
             a = rot + 2 * math.pi * k / n
-            V.append(Vector((0.128 * math.cos(a), 0.128 * math.sin(a), 0.018)))
+            V.append(Vector((0.148 * math.cos(a), 0.148 * math.sin(a), z0)))
         for k in range(n):
             a = 2 * math.pi * k / n
-            V.append(Vector((0.068 * math.cos(a), 0.068 * math.sin(a), 0.030)))
-        V.append(Vector((0.0, 0.0, 0.036)))
+            V.append(Vector((0.08 * math.cos(a), 0.08 * math.sin(a), z0 + 0.018)))
+        V.append(Vector((0.0, 0.0, z0 + 0.022)))
         for k in range(n):
             k2 = (k + 1) % n
             F.append([k, k2, n + k2]); FC.append(jit(C("5EE6FF"), 0.06, rnd))
@@ -446,9 +470,25 @@ def build_eyes():
             F.append([n + k, n + k2, 2 * n]); FC.append(jit(C("B8FFFF"), 0.04, rnd))
         build(f"Eye_{side}_Glow", V, F, FC, COLL["EYES"], MAT["eye_glow"], M, recalc=False)
 
+    # bake the sockets into the head mesh, then drop the cutters
+    dg = bpy.context.evaluated_depsgraph_get()
+    dg.update()
+    new_me = bpy.data.meshes.new_from_object(head.evaluated_get(dg))
+    old = head.data
+    head.modifiers.clear()
+    head.data = new_me
+    new_me.name = "Head_Main"
+    bpy.data.meshes.remove(old)
+    for p in new_me.polygons:
+        p.use_smooth = False
+    for c in cutters:
+        me = c.data
+        bpy.data.objects.remove(c)
+        bpy.data.meshes.remove(me)
+
 
 # ----------------------------------------------------------------------------- flippers
-def build_flipper(name, root, direction, normal_hint, L, W, T, seed, N=7, M=4):
+def build_flipper(name, root, direction, normal_hint, L, W, T, seed, N=8, M=6):
     rnd = random.Random(seed)
     X = direction.normalized()
     Z = (normal_hint - X * normal_hint.dot(X)).normalized()
@@ -465,8 +505,11 @@ def build_flipper(name, root, direction, normal_hint, L, W, T, seed, N=7, M=4):
     def bend(t):
         return -0.10 * L * t * t
 
+    sp = -0.3 * sweep   # thickest along the leading edge
+
     def ztop(t, s):
-        return T * max(0.0, 1 - s * s) ** 0.5 * (1 - 0.55 * t)
+        q = (s - sp) / ((1 - sp) if s > sp else (1 + sp))
+        return T * (0.2 + 0.8 * max(0.0, 1 - q * q) ** 0.55) * (1 - 0.38 * t)
 
     V, F, FC, top, bot = [], [], [], [], []
     for i in range(N):
@@ -474,13 +517,14 @@ def build_flipper(name, root, direction, normal_hint, L, W, T, seed, N=7, M=4):
         row, brow = [], []
         for j in range(M + 1):
             s = -1 + 2 * j / M
-            V.append(Vector((t * L, yc(t) + s * hw(t), ztop(t, s) + bend(t) + 0.004)))
+            bump = rnd.uniform(-0.25, 0.25) * T * 0.35 if (0 < j < M and i > 0) else 0.0
+            V.append(Vector((t * L, yc(t) + s * hw(t), ztop(t, s) + bend(t) + 0.004 + bump)))
             row.append(len(V) - 1)
         for j in range(M + 1):
             if j in (0, M):
                 brow.append(row[j]); continue
             s = -1 + 2 * j / M
-            V.append(Vector((t * L, yc(t) + s * hw(t), -0.45 * ztop(t, s) + bend(t))))
+            V.append(Vector((t * L, yc(t) + s * hw(t), -0.75 * ztop(t, s) + bend(t))))
             brow.append(len(V) - 1)
         top.append(row); bot.append(brow)
     tip = len(V); V.append(Vector((L, yc(1.0), bend(1.0))))
@@ -488,8 +532,8 @@ def build_flipper(name, root, direction, normal_hint, L, W, T, seed, N=7, M=4):
     def tcol(f, under=False):
         t = centroid(V, f).x / L
         if under:
-            return jit(lerp(FLIP_UNDER, FLIP_TIP, t ** 1.6 * 0.6), 0.05, rnd)
-        return jit(lerp(FLIP_BASE, FLIP_TIP, t ** 1.6), 0.06, rnd)
+            return jit(lerp(FLIP_UNDER, FLIP_TIP, t ** 2.6 * 0.6), 0.08, rnd)
+        return jit(lerp(FLIP_BASE, FLIP_TIP, t ** 2.6), 0.10, rnd)
 
     for grid, under in ((top, False), (bot, True)):
         for i in range(N - 1):
@@ -528,8 +572,8 @@ def build_flipper(name, root, direction, normal_hint, L, W, T, seed, N=7, M=4):
             b = len(V)
             for k in range(6):
                 a = math.radians(30 + 60 * k)
-                V.append(pt(x + 0.78 * rh * math.cos(a), yloc + 0.78 * rh * math.sin(a), 0.014))
-            V.append(pt(x, yloc, 0.020))
+                V.append(pt(x + 0.78 * rh * math.cos(a), yloc + 0.78 * rh * math.sin(a), 0.032))
+            V.append(pt(x, yloc, 0.042))
             for k in range(6):
                 tri = [b + k, b + (k + 1) % 6, b + 6]
                 F.append(tri); FC.append(jit(lerp(SCUTE_BASE, SCUTE_TIP, t ** 1.4), 0.06, rnd))
@@ -540,10 +584,10 @@ def build_flippers():
     for side, sx in (("L", 1), ("R", -1)):
         build_flipper(f"Flipper_Front_{side}", Vector((0.82 * sx, -0.80, 0.45)),
                       Vector((0.90 * sx, 0.45, -0.52)), Vector((0.38 * sx, -0.66, 0.66)),
-                      L=1.75, W=0.37, T=0.085, seed=40 + sx)
+                      L=1.75, W=0.37, T=0.28, seed=40 + sx)
         build_flipper(f"Flipper_Rear_{side}", Vector((0.70 * sx, 0.92, 0.32)),
                       Vector((0.85 * sx, 0.45, -0.38)), Vector((0.25 * sx, 0.60, 0.78)),
-                      L=1.30, W=0.31, T=0.07, seed=50 + sx, N=6)
+                      L=1.30, W=0.31, T=0.23, seed=50 + sx, N=7)
 
 
 # ----------------------------------------------------------------------------- reef dressing
