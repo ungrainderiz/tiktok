@@ -292,6 +292,12 @@ def ouvrir_dossier(dossier):
 
 
 def main():
+    # Console Windows (cp1252) : évite le plantage sur les accents / symboles
+    for flux in (sys.stdout, sys.stderr):
+        try:
+            flux.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:  # noqa: BLE001  (flux absent dans le .exe sans console)
+            pass
     p = argparse.ArgumentParser(description="Coupe une vidéo en parties de 30 Mo maximum.")
     p.add_argument("video", nargs="?", help="vidéo à découper (sinon, ouvre la fenêtre)")
     p.add_argument("--taille", type=float, default=TAILLE_DEFAUT_MO,
