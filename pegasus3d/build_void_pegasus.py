@@ -365,67 +365,92 @@ def body_col(rnd, hi=0.10):
 
 
 # ----------------------------------------------------------------------------- torso + neck
+BODY_SURF = []
+
+
+def on_body(target, lift=0.03):
+    """Snap a point onto the outer body surface (torso or neck), so straps and emblems never float."""
+    o = Vector((0, max(target.y, -0.70), 2.55))
+    d = (target - o).normalized()
+    best = None
+    for V, F in BODY_SURF:
+        hit = BVHTree.FromPolygons(V, F).ray_cast(o + d * 3.0, -d)[0]
+        if hit is not None and (best is None or (hit - o).length > (best - o).length):
+            best = hit
+    return (best if best is not None else target) + d * lift
+
+
 def build_body():
     rnd = random.Random(1)
-    torso = [(-1.15, 2.55, .34, .42), (-0.85, 2.50, .52, .64), (-0.35, 2.42, .58, .68), (0.30, 2.42, .55, .62),
-             (0.90, 2.50, .56, .62), (1.35, 2.56, .46, .54), (1.62, 2.52, .24, .30)]
+    torso = [(-1.18, 2.66, .34, .44), (-0.88, 2.58, .54, .68), (-0.35, 2.46, .58, .68), (0.30, 2.40, .54, .60),
+             (0.90, 2.44, .56, .62), (1.35, 2.50, .46, .54), (1.62, 2.46, .24, .30)]
     rings = [(Vector((0, y, z)), rw, rh) for (y, z, rw, rh) in catmull(torso, 2)]
     V, F, FC = loft(rings, 8, lambda sa, k: body_col(rnd), rnd)
     build("Body_Torso", V, F, FC, COLL["BODY"], MAT["body"])
-    neck = [(-0.60, 2.72, .44, .66), (-0.80, 3.15, .36, .56), (-0.96, 3.58, .29, .46), (-1.08, 3.98, .24, .36),
-            (-1.14, 4.22, .21, .30)]
+    BODY_SURF.append((list(V), list(F)))
+    neck = [(-0.58, 2.70, .46, .78), (-0.66, 3.15, .40, .68), (-0.70, 3.62, .33, .54), (-0.82, 4.02, .27, .42),
+            (-1.04, 4.30, .23, .33), (-1.24, 4.36, .20, .27)]
     rings = [(Vector((0, y, z)), rw, rh) for (y, z, rw, rh) in catmull(neck, 2)]
     V, F, FC = loft(rings, 7, lambda sa, k: body_col(rnd), rnd)
     build("Body_Neck", V, F, FC, COLL["BODY"], MAT["body"])
+    BODY_SURF.append((list(V), list(F)))
     return rings
 
 
 # ----------------------------------------------------------------------------- head
-HEAD_M = Matrix.Translation((0, -1.22, 4.20)) @ Matrix.Rotation(math.radians(52), 4, "X") @ Matrix.Scale(1.3, 4)
+HEAD_M = Matrix.Translation((0, -1.38, 4.26)) @ Matrix.Rotation(math.radians(50), 4, "X") @ Matrix.Scale(1.22, 4)
 
 
 def build_head():
+    """Horse head (local: nose -> -Y, forehead -> +Z): deep jowl, tapering nasal bone, squared muzzle."""
     rnd = random.Random(21)
-    UP = [(0.28, 0.17, 0.19, -0.16), (0.08, 0.205, 0.22, -0.24), (-0.18, 0.175, 0.18, -0.19),
-          (-0.42, 0.125, 0.12, -0.12), (-0.62, 0.115, 0.10, -0.11)]
+    #        y,    half-w, z_top, z_bottom
+    UP = [(0.30, 0.190, 0.16, -0.21), (0.12, 0.255, 0.21, -0.34), (-0.07, 0.245, 0.20, -0.31),
+          (-0.25, 0.190, 0.16, -0.21), (-0.41, 0.155, 0.135, -0.16), (-0.54, 0.160, 0.130, -0.17),
+          (-0.62, 0.130, 0.09, -0.13)]
     rings = []
     for (y, w, zt, zb) in UP:
         zm = (zt + zb) / 2
-        rings.append([Vector(q) for q in ((0, y, zt), (.6 * w, y, .85 * zt), (w, y, zm + 0.04), (.8 * w, y, zb * .8),
-                                          (0, y, zb), (-.8 * w, y, zb * .8), (-w, y, zm + 0.04), (-.6 * w, y, .85 * zt))])
-    V, F, FC = ring_mesh(rings, Vector((0, 0.40, 0.0)), Vector((0, -0.72, -0.02)), lambda k, j: body_col(rnd, 0.06))
+        rings.append([Vector(q) for q in ((0, y, zt), (.72 * w, y, .90 * zt), (w, y, zm + 0.05), (.78 * w, y, zb * .78),
+                                          (0, y, zb), (-.78 * w, y, zb * .78), (-w, y, zm + 0.05), (-.72 * w, y, .90 * zt))])
+    V, F, FC = ring_mesh(rings, Vector((0, 0.44, -0.02)), Vector((0, -0.66, -0.03)), lambda k, j: body_col(rnd, 0.07))
     head = build("Head_Skull", V, F, FC, COLL["HEAD"], MAT["body"], HEAD_M)
 
     tree = BVHTree.FromPolygons(V, F)
     cutters = []
     for side, sx in (("L", 1), ("R", -1)):
-        d = Vector((0.80 * sx, -0.40, 0.42)).normalized()
-        hit, nrm, _, _ = tree.ray_cast(Vector((0, 0.02, 0.0)), d)
+        d = Vector((0.72 * sx, -0.46, 0.52)).normalized()
+        hit, nrm, _, _ = tree.ray_cast(Vector((0, 0.0, -0.02)), d)
         if nrm.dot(d) < 0:
             nrm = -nrm
         Z = (nrm + d).normalized()
-        slant = Vector((0, -1, -0.35))
+        slant = Vector((0, -1, -0.45))
         Xa = (slant - Z * slant.dot(Z)).normalized(); Ya = Z.cross(Xa)
         M = HEAD_M @ axes_matrix(Xa, Ya, Z, hit)
-        r1, r2, dep, n = 0.075, 0.06, 0.02, 4
+        r1, r2, dep, n = 0.095, 0.082, 0.018, 6
+        ell = lambda r, k: Vector((r * 1.55 * math.cos(2 * math.pi * k / n), r * 0.80 * math.sin(2 * math.pi * k / n), 0))
         CV, CF, CC = [], [], []
         for (r, z) in ((r2, -dep), (r1, 0.0), (r1 * 1.8, 0.2)):
             for k in range(n):
-                a = 2 * math.pi * k / n
-                CV.append(Vector((r * 1.6 * math.cos(a), r * 0.8 * math.sin(a), z)))
+                CV.append(ell(r, k) + Vector((0, 0, z)))
         for ring in range(2):
             for k in range(n):
                 k2 = (k + 1) % n
-                CF.append([ring * n + k, ring * n + k2, (ring + 1) * n + k2, (ring + 1) * n + k]); CC.append(C("5A2FD0"))
-        CF.append(list(range(n))[::-1]); CC.append(C("5A2FD0"))
-        CF.append([2 * n + k for k in range(n)]); CC.append(C("5A2FD0"))
+                CF.append([ring * n + k, ring * n + k2, (ring + 1) * n + k2, (ring + 1) * n + k]); CC.append(C("7A3BE8"))
+        CF.append(list(range(n))[::-1]); CC.append(C("7A3BE8"))
+        CF.append([2 * n + k for k in range(n)]); CC.append(C("7A3BE8"))
         cut = build(f"_cut_{side}", CV, CF, CC, SC.collection, MAT["body"], M)
         cutters.append(cut)
         mod = head.modifiers.new(f"Socket_{side}", "BOOLEAN"); mod.operation = "DIFFERENCE"; mod.object = cut
-        GV = [Vector((r2 * 1.55 * math.cos(2 * math.pi * k / n), r2 * 0.78 * math.sin(2 * math.pi * k / n), -dep + 0.003))
-              for k in range(n)] + [Vector((0, 0, -dep + 0.012))]
-        GF = [[k, (k + 1) % n, n] for k in range(n)]
-        build(f"Eye_{side}_Glow", GV, GF, [jit(C("F070FF"), 0.05, rnd) for _ in GF], COLL["EYES"], MAT["eye"], M, recalc=False)
+        # glowing eye: magenta rim, pale hot core
+        GV = [ell(r2, k) + Vector((0, 0, -dep + 0.003)) for k in range(n)] + \
+             [ell(r2 * 0.5, k) + Vector((0, 0, -dep + 0.010)) for k in range(n)] + [Vector((0, 0, -dep + 0.014))]
+        GF, GC = [], []
+        for k in range(n):
+            k2 = (k + 1) % n
+            GF.append([k, k2, n + k2, n + k]); GC.append(jit(C("E050FF"), 0.05, rnd))
+            GF.append([n + k, n + k2, 2 * n]); GC.append(C("FFD8FF"))
+        build(f"Eye_{side}_Glow", GV, GF, GC, COLL["EYES"], MAT["eye"], M, recalc=False)
     dg = bpy.context.evaluated_depsgraph_get(); dg.update()
     new_me = bpy.data.meshes.new_from_object(head.evaluated_get(dg))
     old = head.data; head.modifiers.clear(); head.data = new_me; bpy.data.meshes.remove(old)
@@ -436,63 +461,79 @@ def build_head():
 
     for side, sx in (("L", 1), ("R", -1)):
         V, F, FC = [], [], []
-        add_spike(V, F, FC, Vector((0.11 * sx, 0.20, 0.14)), Vector((0.17 * sx, 0.50, 0.42)), 0.075,
-                  lambda: body_col(rnd, 0.2), n=4, belly=0.35, flat=1.0, flat_u=0.6)
+        add_spike(V, F, FC, Vector((0.13 * sx, 0.24, 0.12)), Vector((0.21 * sx, 0.46, 0.46)), 0.10,
+                  lambda: body_col(rnd, 0.25), n=4, belly=0.32, flat=1.0, flat_u=0.55)
         build(f"Head_Ear_{side}", V, F, FC, COLL["HEAD"], MAT["body"], HEAD_M)
+        V, F, FC = [], [], []                                   # lilac streak under the eye
+        add_spike(V, F, FC, Vector((0.235 * sx, -0.13, 0.02)), Vector((0.195 * sx, -0.30, 0.00)), 0.03,
+                  lambda: pick(PAL["lilac"], rnd), n=4, belly=0.3, flat=1.0, flat_u=0.5)
+        build(f"Head_CheekMark_{side}", V, F, FC, COLL["GEMS"], MAT["gem"], HEAD_M)
     V, F, FC = [], [], []
-    add_spike(V, F, FC, Vector((0, -0.02, 0.16)), Vector((0, 0.02, 0.34)), 0.075,
-              two_tone(lambda: pick(PAL["violet"], rnd), lambda: pick(PAL["lilac"], rnd)), n=4, belly=0.5, flat=1.0, flat_u=1.4)
+    add_spike(V, F, FC, Vector((0, -0.20, 0.155)), Vector((0, 0.10, 0.24)), 0.07,
+              two_tone(lambda: pick(PAL["violet"], rnd), lambda: pick(PAL["lilac"], rnd)), n=4, belly=0.5, flat=0.45, flat_u=1.0)
     build("Gem_Forehead", V, F, FC, COLL["GEMS"], MAT["gem"], HEAD_M)
 
 
 # ----------------------------------------------------------------------------- legs
-LEGS = {
-    "Front": [(0.33, -0.78, 2.25, .32), (0.34, -0.74, 1.75, .26), (0.34, -0.80, 1.12, .16), (0.34, -0.76, 0.70, .13),
-              (0.34, -0.74, 0.34, .125), (0.34, -0.80, 0.16, .15)],
-    "Hind": [(0.36, 1.12, 2.35, .40), (0.37, 0.98, 1.75, .31), (0.37, 1.34, 1.12, .17), (0.37, 1.24, 0.70, .135),
-             (0.37, 1.18, 0.34, .13), (0.37, 1.12, 0.16, .155)],
+LEGS = {   # (x, y, z, radius) from shoulder/hip down to the hoof — an airborne prance, not a standing square
+    "Front_L": [(0.33, -0.80, 2.28, .32), (0.34, -0.98, 1.84, .26), (0.34, -1.36, 1.62, .17), (0.34, -1.30, 1.22, .135),
+                (0.34, -1.12, 0.94, .13), (0.34, -1.08, 0.74, .15)],                       # raised and folded
+    "Front_R": [(-0.33, -0.78, 2.28, .32), (-0.34, -0.70, 1.78, .26), (-0.34, -0.66, 1.15, .16), (-0.34, -0.56, 0.72, .13),
+                (-0.34, -0.50, 0.36, .125), (-0.34, -0.54, 0.16, .15)],                    # reaching down, slightly back
+    "Hind_L": [(0.36, 1.12, 2.32, .40), (0.37, 1.08, 1.74, .31), (0.37, 1.58, 1.24, .17), (0.37, 1.68, 0.80, .135),
+               (0.37, 1.80, 0.46, .13), (0.37, 1.90, 0.28, .155)],                         # pushed out behind
+    "Hind_R": [(-0.36, 1.10, 2.32, .40), (-0.37, 0.84, 1.74, .31), (-0.37, 1.08, 1.14, .17), (-0.37, 0.90, 0.72, .135),
+               (-0.37, 0.78, 0.38, .13), (-0.37, 0.70, 0.18, .155)],                       # tucked under the belly
 }
 
 
 def build_legs():
-    for which, ctrl in LEGS.items():
-        for side, sx in (("L", 1), ("R", -1)):
-            rnd = random.Random(hash((which, sx)) % 1000)
-            pts = catmull([(x * sx, y, z, r) for (x, y, z, r) in ctrl], 2)
-            rings = [(Vector((x, y, z)), r, r * 1.15) for (x, y, z, r) in pts]
-            V, F, FC = loft(rings, 6, lambda sa, k: body_col(rnd, 0.08), rnd)
-            build(f"Leg_{which}_{side}", V, F, FC, COLL["LEGS"], MAT["body"])
-            # crystal greave + hoof: ONE faceted piece wrapped around the lower leg
-            def axis(zq):
-                best = min(range(len(pts) - 1), key=lambda i: abs((pts[i][2] + pts[i + 1][2]) / 2 - zq))
-                (x0, y0, z0, _), (x1, y1, z1, _) = pts[best], pts[best + 1]
-                f = 0.0 if abs(z1 - z0) < 1e-6 else max(0.0, min(1.0, (zq - z0) / (z1 - z0)))
-                return Vector((x0 + (x1 - x0) * f, y0 + (y1 - y0) * f, zq))
-            levels = [(0.00, .23), (0.14, .19), (0.24, .23), (0.42, .20), (0.52, .25), (0.74, .19), (0.84, .22),
-                      (1.04, .17), (1.20, .10)]
-            n = 8
-            V, F, FC, rows = [], [], [], []
-            for k, (zq, rad) in enumerate(levels):
-                c = axis(zq)
-                row = []
-                for j in range(n):
-                    a2 = 2 * math.pi * (j + 0.5 * (k % 2)) / n
-                    rr = rad * (1.45 if (j + k) % 2 else 0.78) * rnd.uniform(0.92, 1.08)
-                    V.append(c + Vector((math.cos(a2) * rr, math.sin(a2) * rr, rnd.uniform(-0.03, 0.03) if 0 < k < len(levels) - 1 else 0)))
-                    row.append(len(V) - 1)
-                rows.append(row)
-            for k in range(len(levels) - 1):
-                t = (levels[k][0] + levels[k + 1][0]) / 2 / 1.2
-                for j in range(n):
-                    j2 = (j + 1) % n
-                    for tri in ([rows[k][j], rows[k][j2], rows[k + 1][j2]], [rows[k][j], rows[k + 1][j2], rows[k + 1][j]]):
-                        F.append(tri); FC.append(grad(["pink", "lilac", "violet", "violet", "indigo"], t, rnd))
-            V.append(axis(0.0)); V.append(axis(1.25))
+    for name, ctrl in LEGS.items():
+        rnd = random.Random(sum(ord(ch) for ch in name))
+        pts = catmull(ctrl, 3)
+        rings = [(Vector((x, y, z)), r, r * 1.15) for (x, y, z, r) in pts]
+        V, F, FC = loft(rings, 6, lambda sa, k: body_col(rnd, 0.08), rnd)
+        build(f"Leg_{name}", V, F, FC, COLL["LEGS"], MAT["body"])
+
+        # crystal greave + hoof: ONE faceted piece that follows the lower leg from the hoof upward
+        path = [Vector((x, y, z)) for (x, y, z, r) in pts][::-1]
+        end_dir = (path[0] - path[1]).normalized()
+        path = [path[0] + end_dir * 0.18] + path
+
+        def along(dist):
+            acc = 0.0
+            for i in range(len(path) - 1):
+                seg = (path[i + 1] - path[i]).length
+                if acc + seg >= dist:
+                    return path[i].lerp(path[i + 1], (dist - acc) / seg), (path[i + 1] - path[i]).normalized()
+                acc += seg
+            return path[-1], (path[-1] - path[-2]).normalized()
+        levels = [(0.00, .20), (0.13, .16), (0.24, .20), (0.40, .165), (0.50, .21), (0.68, .155), (0.78, .185),
+                  (0.94, .14), (1.06, .09)]
+        n = 8
+        V, F, FC, rows = [], [], [], []
+        for k, (dq, rad) in enumerate(levels):
+            c, tg = along(dq)
+            uu, vv = frame(tg)
+            row = []
+            for j in range(n):
+                a2 = 2 * math.pi * (j + 0.5 * (k % 2)) / n
+                rr = rad * (1.45 if (j + k) % 2 else 0.78) * rnd.uniform(0.92, 1.08)
+                lift = tg * (0.10 * rad / 0.2 if (j + k) % 2 and 0 < k < len(levels) - 1 else 0.0)   # tips sweep up the leg
+                V.append(c + (uu * math.cos(a2) + vv * math.sin(a2)) * rr + lift); row.append(len(V) - 1)
+            rows.append(row)
+        for k in range(len(levels) - 1):
+            t = (levels[k][0] + levels[k + 1][0]) / 2 / 1.06
             for j in range(n):
                 j2 = (j + 1) % n
-                F.append([rows[0][j2], rows[0][j], len(V) - 2]); FC.append(pick(PAL["pink"], rnd))
-                F.append([rows[-1][j], rows[-1][j2], len(V) - 1]); FC.append(pick(PAL["indigo"], rnd))
-            build(f"Leg_{which}_{side}_CrystalHoof", V, F, FC, COLL["HOOVES"], MAT["flame"])
+                for tri in ([rows[k][j], rows[k][j2], rows[k + 1][j2]], [rows[k][j], rows[k + 1][j2], rows[k + 1][j]]):
+                    F.append(tri); FC.append(grad(["pink", "lilac", "violet", "violet", "indigo"], t, rnd))
+        V.append(along(0.0)[0]); V.append(along(1.12)[0])
+        for j in range(n):
+            j2 = (j + 1) % n
+            F.append([rows[0][j2], rows[0][j], len(V) - 2]); FC.append(pick(PAL["pink"], rnd))
+            F.append([rows[-1][j], rows[-1][j2], len(V) - 1]); FC.append(pick(PAL["indigo"], rnd))
+        build(f"Leg_{name}_CrystalHoof", V, F, FC, COLL["HOOVES"], MAT["flame"])
 
 
 # ----------------------------------------------------------------------------- wings: one solid surface each
@@ -507,7 +548,7 @@ def build_wing(side, sx):
     K = 1.50
 
     def A(t):
-        return (2.45 * t - 0.12 * math.sin(math.pi * t), 1.70 * t + 0.22 * math.sin(math.pi * t))
+        return (2.40 * t - 0.12 * math.sin(math.pi * t), 2.05 * t + 0.24 * math.sin(math.pi * t))
 
     NF = 10
     cols = 2 * NF
@@ -593,49 +634,49 @@ def flame_ribbon(name, centers, ups, widths, tops, bots, colfn, coll, mat, rnd, 
 
 def build_mane(neck_rings):
     rnd = random.Random(31)
-    ctrl = [(-1.10, 4.40, 0.0, 0.10, 1.0, 0.45, 0.14), (-0.98, 4.42, 0.0, 0.35, 1.0, 1.00, 0.24)]
+    ctrl = [(-1.30, 4.66, 0.0, -0.10, 1.0, 0.40, 0.12), (-1.12, 4.66, 0.0, 0.45, 1.0, 0.80, 0.26), (-0.96, 4.50, 0.0, 0.80, 0.9, 0.95, 0.30)]
     m = len(neck_rings)
-    for k in range(m - 1, -1, -2):
+    for k in range(m - 4, -1, -2):
         c, rw, rh = neck_rings[k]
         tng = (neck_rings[min(k + 1, m - 1)][0] - neck_rings[max(k - 1, 0)][0]).normalized()
         crest = -XAX.cross(tng).normalized()
         p = c + crest * rh * 0.72
-        upv = (crest * 0.8 + Vector((0, 0.15, 0.55))).normalized()
-        ctrl.append((p.y, p.z, upv.x, upv.y, upv.z, 0.95, 0.30))
-    ctrl.append((-0.20, 3.12, 0.0, 0.4, 1.0, 0.30, 0.14))
-    pts = catmull(ctrl, 3)
+        upv = (crest * 0.8 + Vector((0, 0.60, 0.40))).normalized()
+        ctrl.append((p.y, p.z, upv.x, upv.y, upv.z, 1.0, 0.38))
+    ctrl.append((-0.05, 3.10, 0.0, 0.8, 0.8, 0.45, 0.16))
+    pts = catmull(ctrl, 5)
     M = len(pts)
-    centers = [Vector((0.06 * math.sin(i * 0.9), y, z)) for i, (y, z, *_r) in enumerate(pts)]
+    centers = [Vector((0.10 * math.sin(i * 0.7), y, z)) for i, (y, z, *_r) in enumerate(pts)]
     ups = [Vector((ux + 0.10 * math.sin(i * 1.3), uy, uz)).normalized() for i, (_y, _z, ux, uy, uz, _t, _w) in enumerate(pts)]
-    tops = [tp * (0.30 + 1.05 * saw(i / 3.0 + 0.2)) for i, (*_a, tp, _w) in enumerate(pts)]
+    tops = [tp * (0.22 + 1.25 * saw(i / 5.0 + 0.2) ** 1.4) for i, (*_a, tp, _w) in enumerate(pts)]
     widths = [w for (*_a, w) in pts]
-    bots = [0.16] * M
+    bots = [0.30] * M
 
     def col(t, sa):
-        peak = saw(t * (M - 1) / 3.0 + 0.2)
+        peak = saw(t * (M - 1) / 5.0 + 0.2)
         if sa > 0.55:
-            return grad(["violet", "violet", "lilac", "pink"], 0.25 + 0.75 * peak, rnd)
+            return grad(["indigo", "violet", "lilac", "pink"], peak ** 0.7, rnd)
         if sa > -0.1:
-            return grad(["indigo", "indigo", "violet"], 0.3 + 0.7 * peak, rnd)
+            return grad(["indigo", "indigo", "violet", "lilac"], peak ** 0.9, rnd)
         return pick(PAL["indigo"], rnd)
     flame_ribbon("Mane_Flame", centers, ups, widths, tops, bots, col, COLL["MANE"], MAT["flame"], rnd, n=8)
 
 
 def build_tail():
     rnd = random.Random(41)
-    ctrl = [(0.0, 1.45, 2.62, .26), (0.08, 2.15, 2.75, .60), (0.30, 2.95, 2.15, .80), (0.62, 3.70, 2.15, .78),
-            (0.95, 4.40, 1.40, .70), (1.25, 5.05, 1.50, .56), (1.50, 5.60, 0.95, .40), (1.70, 6.20, 0.85, .12)]
+    ctrl = [(0.0, 1.45, 2.58, .26), (0.05, 2.10, 2.95, .58), (0.22, 2.95, 2.62, .80), (0.48, 3.75, 2.80, .80),
+            (0.78, 4.50, 2.10, .74), (1.05, 5.25, 2.00, .62), (1.30, 5.95, 1.35, .46), (1.50, 6.70, 1.05, .14)]
     pts = catmull(ctrl, 5)
     M = len(pts)
     centers = [Vector((x + 0.12 * math.sin(i * 0.8), y, z)) for i, (x, y, z, r) in enumerate(pts)]
     ups = [Vector((0.25 * math.sin(i * 0.6), 0, 1)) for i in range(M)]
-    tops = [r * (0.35 + 1.05 * saw(i / 6.0 + 0.1)) for i, (*_a, r) in enumerate(pts)]
-    bots = [r * (0.35 + 0.95 * saw(i / 6.0 + 0.55)) for i, (*_a, r) in enumerate(pts)]
-    widths = [r * 0.34 for (*_a, r) in pts]
+    tops = [r * (0.25 + 1.35 * saw(i / 7.0 + 0.1) ** 1.4) for i, (*_a, r) in enumerate(pts)]
+    bots = [r * (0.25 + 1.25 * saw(i / 7.0 + 0.55) ** 1.4) for i, (*_a, r) in enumerate(pts)]
+    widths = [r * 0.26 for (*_a, r) in pts]
 
     def col(t, sa):
         i = t * (M - 1)
-        peak = saw(i / 6.0 + 0.1) if sa > 0 else saw(i / 6.0 + 0.55)
+        peak = saw(i / 7.0 + 0.1) if sa > 0 else saw(i / 7.0 + 0.55)
         if abs(sa) > 0.6:
             return grad(["indigo", "violet", "violet", "lilac", "pink"], min(1.0, 0.15 + 0.6 * peak + 0.3 * t), rnd)
         return grad(["indigo", "indigo", "indigo", "violet"], t, rnd)
@@ -662,10 +703,11 @@ def add_rhombus(V, F, FC, center, normal, up, size, rnd):
 def build_gems():
     rnd = random.Random(51)
     V, F, FC = [], [], []
-    add_rhombus(V, F, FC, Vector((0, -1.19, 2.56)), Vector((0, -1, 0.10)), Vector((0, 0, 1)), 0.34, rnd)
+    add_rhombus(V, F, FC, on_body(Vector((0, -1.40, 2.62)), 0.02), Vector((0, -1, 0.20)), Vector((0, 0, 1)), 0.34, rnd)
     for sx in (1, -1):                                 # straps hug the chest and run up to the withers
-        path = [Vector((0.14 * sx, -1.10, 2.84)), Vector((0.40 * sx, -0.95, 2.92)), Vector((0.52 * sx, -0.62, 2.96)),
-                Vector((0.40 * sx, -0.30, 3.02)), Vector((0.10 * sx, -0.08, 3.08))]
+        tg = [(0.12, -1.40, 2.95), (0.30, -1.30, 3.05), (0.48, -1.10, 3.10), (0.62, -0.85, 3.10), (0.66, -0.60, 3.10),
+              (0.50, -0.40, 3.30), (0.25, -0.25, 3.50)]
+        path = [on_body(Vector((x * sx, y, z))) for (x, y, z) in tg]
         for a, b in zip(path, path[1:]):
             add_prism(V, F, FC, a, b, 0.04, 0.04, lambda: pick(PAL["lilac"], rnd), 4)
     add_rhombus(V, F, FC, Vector((0, -0.05, 3.06)), Vector((0, 0.25, 1)), Vector((0, -1, 0)), 0.22, rnd)
@@ -708,9 +750,9 @@ def setup_lights_cameras():
     cams = {}
     el = math.radians(3)
     for name, d, tgt, scale, res in (
-            ("CAM_Front_Ortho", Vector((0, -math.cos(el), math.sin(el))), Vector((0.3, 0, 2.55)), 12.4, (1254, 620)),
-            ("CAM_Side_Ortho", Vector((math.cos(el), 0, math.sin(el))), Vector((0, 2.4, 2.6)), 10.4, (1000, 660)),
-            ("CAM_Back_Ortho", Vector((0, math.cos(el), math.sin(el))), Vector((-0.3, 0, 2.55)), 12.4, (1254, 620))):
+            ("CAM_Front_Ortho", Vector((0, -math.cos(el), math.sin(el))), Vector((0.3, 0, 2.85)), 12.6, (1254, 620)),
+            ("CAM_Side_Ortho", Vector((math.cos(el), 0, math.sin(el))), Vector((0, 2.6, 2.75)), 11.0, (1000, 660)),
+            ("CAM_Back_Ortho", Vector((0, math.cos(el), math.sin(el))), Vector((-0.3, 0, 2.85)), 12.6, (1254, 620))):
         cd = bpy.data.cameras.new(name); cd.type = "ORTHO"; cd.ortho_scale = scale; cd.clip_end = 200
         co = bpy.data.objects.new(name, cd); L.objects.link(co)
         co.location = tgt + d * 40; look_at(co, tgt); co["res"] = res
