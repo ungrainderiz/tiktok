@@ -26,6 +26,18 @@
 19,4–21,9 « Abonne-toi, je te montre chaque zone une par une »
 → À vérifier à l'oreille / avec `npx hyperframes transcribe assets/audio/voix.mp3 --model small --language fr`.
 
+## Fait le 18/11 (vrais modèles Blender)
+- `assets/models/` : `cloudowl.glb` (CloudOwl zone 2, Fly/Idle/Roar), `gardien.glb` (Gardien de la Brèche v3, Fly/Idle/Roar/Laser),
+  `pinson.glb` (vieux Pinson à studs de la zone 1, statique). Produits par `JEUX 2\blender\export_glb_video.py`
+  (`D:\Blender\blender.exe -b --factory-startup --python blender\export_glb_video.py -- cloudowl|gardien|pinson <sortie.glb>`).
+- Les vraies couleurs sont dans COLOR_1 (calque « Col ») : `useColor1()` les recopie dans `color` au chargement.
+- `world.html` : `GLTFLoader` local (`assets/lib/GLTFLoader.js`, r170, import réécrit), chargement dans `window.__hf.buildReady["world-models"]`,
+  `seekClip()` = un seul clip actif + `mixer.setTime(temps local)`. Gardien coupé par un plan de clipping au portail
+  (seul ce qui a traversé est dessiné), Laser vers le ciel à `LASER_FIRE` (~11,5 s), ciel rose ensuite.
+- Sous-titres recalés sur les pauses mesurées (ffmpeg silencedetect) ; ils étaient invisibles (style scopé non appliqué aux
+  éléments créés en JS) → style inline. « et tu la ramènes » = 16,26 s (titre « ramène » et remontée du hibou décalés).
+- Rendu : `renders/jour7.mp4`.
+
 ## Reste à faire
 1. **Remplacer les créatures faites en code par les vrais modèles Blender** de `JEUX 2\exports_blender\`
    (exporter en .glb avec animations, copier dans `videos/jour7/assets/models/`, charger avec `GLTFLoader`

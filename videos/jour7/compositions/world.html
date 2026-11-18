@@ -18,6 +18,7 @@
   </div>
   <script type="module">
     import * as THREE from "./assets/lib/three.module.min.js";
+    import { GLTFLoader } from "./assets/lib/GLTFLoader.js";
 
     // ---------- helpers ----------
     function mulberry32(a) {
@@ -203,76 +204,127 @@
         }
       }
     }
-    // the old blocky bird
+    // ---------- real Blender models (exports from JEUX 2/blender, see blender/export_glb_video.py) ----------
+    //  pinson.glb   : the old studs finch of zone 1 (static, 6 meshes) -> the "Jour 1" bird, blown apart at 4.5 s
+    //  cloudowl.glb : CloudOwl, zone 2 (CloudOwl_Fly / _Idle / _Roar) -> caught with the lasso
+    //  gardien.glb  : RiftGuardian v3, Gardien de la Breche (RiftGuardian_Fly / _Idle / _Roar / _Laser) -> the boss
     const oldBird = new THREE.Group();
-    const ob = (w, h, d, c, x, y, z) => {
-      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: c }));
-      m.position.set(x, y, z);
-      oldBird.add(m);
-      return m;
-    };
-    ob(4, 3, 5, 0xc9b28a, 0, 0, 0);
-    ob(3, 3, 3, 0xc9b28a, 0, 2, 2);
-    ob(1, 1, 1.6, 0xe0a030, 0, 1.8, 4.2);
-    ob(0.5, 0.5, 0.2, 0x222222, 0.9, 2.6, 3.5);
-    ob(0.5, 0.5, 0.2, 0x222222, -0.9, 2.6, 3.5);
-    ob(5, 0.6, 3, 0xb59a72, 3.8, 0.4, 0);
-    ob(5, 0.6, 3, 0xb59a72, -3.8, 0.4, 0);
-    oldBird.position.set(0, 6, 0);
+    oldBird.position.set(3, 4, 9); // front of the top plate, below the "JOUR 1" title
     old.add(oldBird);
-    oldBird.children.forEach((c) => oldPieces.push(c));
-    const oldVel = oldPieces.map(() => new THREE.Vector3(rnd() - 0.5, rnd() * 0.8, rnd() - 0.5).normalize().multiplyScalar(30 + rnd() * 40));
-    const oldBase = oldPieces.map((p) => p.position.clone());
-    const oldSpin = oldPieces.map(() => new THREE.Vector3(rnd() * 6, rnd() * 6, rnd() * 6));
-
-    // ---------- the cute creature (new style) ----------
-    function makeBird(bodyColor, wingColor) {
-      const g = new THREE.Group();
-      const mat = (c, e = 0) => new THREE.MeshLambertMaterial({ color: c, emissive: c, emissiveIntensity: e });
-      const body = new THREE.Mesh(new THREE.SphereGeometry(2.4, 24, 18), mat(bodyColor, 0.08));
-      body.scale.set(1, 0.95, 1.1);
-      g.add(body);
-      const belly = new THREE.Mesh(new THREE.SphereGeometry(1.9, 20, 16), mat(0xfff3e6, 0.05));
-      belly.position.set(0, -0.5, 0.9);
-      g.add(belly);
-      const head = new THREE.Mesh(new THREE.SphereGeometry(1.7, 22, 16), mat(bodyColor, 0.08));
-      head.position.set(0, 2.2, 1.2);
-      g.add(head);
-      for (const sx of [-1, 1]) {
-        const eye = new THREE.Mesh(new THREE.SphereGeometry(0.42, 14, 10), mat(0x1b1b2a));
-        eye.position.set(sx * 0.7, 2.5, 2.65);
-        g.add(eye);
-        const hl = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-        hl.position.set(sx * 0.7 + 0.12, 2.68, 3.02);
-        g.add(hl);
-        const cheek = new THREE.Mesh(new THREE.SphereGeometry(0.3, 10, 8), mat(0xff8fb0, 0.2));
-        cheek.position.set(sx * 1.15, 2.0, 2.4);
-        g.add(cheek);
+    const oldVel = [], oldBase = [], oldSpin = [];
+    function seedExplosion() {
+      // seeds only the pieces added since the last call (platforms now, finch pieces once loaded)
+      for (let i = oldVel.length; i < oldPieces.length; i++) {
+        oldVel.push(new THREE.Vector3(rnd() - 0.5, rnd() * 0.8, rnd() - 0.5).normalize().multiplyScalar(30 + rnd() * 40));
+        oldBase.push(oldPieces[i].position.clone());
+        oldSpin.push(new THREE.Vector3(rnd() * 6, rnd() * 6, rnd() * 6));
       }
-      const beak = new THREE.Mesh(new THREE.ConeGeometry(0.42, 1.1, 10), mat(0xffb03a, 0.1));
-      beak.rotation.x = Math.PI / 2;
-      beak.position.set(0, 2.0, 3.1);
-      g.add(beak);
-      const wings = [];
-      for (const sx of [-1, 1]) {
-        const pivot = new THREE.Group();
-        pivot.position.set(sx * 2.0, 0.6, 0);
-        const w = new THREE.Mesh(new THREE.SphereGeometry(1.6, 16, 10), mat(wingColor, 0.08));
-        w.scale.set(1.7, 0.32, 1.0);
-        w.position.set(sx * 1.9, 0, 0);
-        pivot.add(w);
-        g.add(pivot);
-        wings.push([pivot, sx]);
-      }
-      const tail = new THREE.Mesh(new THREE.ConeGeometry(0.9, 2, 8), mat(wingColor, 0.08));
-      tail.rotation.x = -Math.PI / 2.4;
-      tail.position.set(0, 0.2, -2.6);
-      g.add(tail);
-      g.userData.wings = wings;
-      return g;
     }
-    const bird = makeBird(0xb9a7ff, 0xffc2e0);
+    seedExplosion();
+
+    const bird = new THREE.Group(); // CloudOwl holder (faces +Z)
     scene.add(bird);
+    const boss = new THREE.Group(); // RiftGuardian holder (head towards +Z, tail towards -Z)
+    scene.add(boss);
+    let owlMixer = null, owlClips = {}, bossMixer = null, bossClips = {}, bossHead = null;
+
+    // only what has crossed the portal is drawn (same rule as the game's BrecheRose)
+    const PORTAL_Z = -70;
+    const portalClip = new THREE.Plane(new THREE.Vector3(0, 0, 1), -PORTAL_Z + 0.6);
+    renderer.localClippingEnabled = true;
+
+    // Blender writes 2 colour layers; the real colours ("Col") are in COLOR_1, three.js only reads COLOR_0
+    function useColor1(root) {
+      root.traverse((o) => {
+        if (o.isMesh && o.geometry.attributes.color_1) o.geometry.setAttribute("color", o.geometry.attributes.color_1);
+      });
+    }
+    function fitMaterials(root, { clip = null } = {}) {
+      useColor1(root);
+      root.traverse((o) => {
+        if (!o.isMesh) return;
+        o.frustumCulled = false; // skinned bounds do not follow the bones
+        const mats = Array.isArray(o.material) ? o.material : [o.material];
+        mats.forEach((m) => {
+          m.metalness = 0; // no env map in this scene: metallic gold would go black
+          m.roughness = Math.max(m.roughness ?? 1, 0.55);
+          if (m.emissive && m.emissive.getHex() !== 0) m.emissiveIntensity = 1.6;
+          if (clip) m.clippingPlanes = [clip];
+        });
+      });
+    }
+    const sizeOf = (o) => new THREE.Box3().setFromObject(o).getSize(new THREE.Vector3());
+    const clipMap = (gltf, mixer) => {
+      const out = {};
+      gltf.animations.forEach((c) => {
+        const name = c.name.split("_").pop(); // CloudOwl_Fly -> Fly
+        const a = mixer.clipAction(c);
+        a.play();
+        a.enabled = false;
+        out[name] = a;
+      });
+      return out;
+    };
+    // seek one clip of a mixer: only that clip is enabled, its local time is `local` (looped or clamped)
+    function seekClip(mixer, clips, name, local) {
+      Object.entries(clips).forEach(([k, a]) => {
+        a.reset(); // clears paused/loop state left by an earlier seek (seeking may go backwards)
+        a.setLoop(k === "Fly" || k === "Idle" ? THREE.LoopRepeat : THREE.LoopOnce, Infinity);
+        a.clampWhenFinished = true;
+        a.enabled = k === name;
+      });
+      mixer.setTime(Math.max(0, local));
+    }
+
+    const loader = new GLTFLoader();
+    const load = (url) => new Promise((res, rej) => loader.load(url, res, undefined, rej));
+    let lastT = 0;
+    const modelsReady = Promise.all([
+      load("./assets/models/pinson.glb"),
+      load("./assets/models/cloudowl.glb"),
+      load("./assets/models/gardien.glb"),
+    ]).then(([pin, owl, gb]) => {
+      // Jour 1 finch: bake each piece into the holder so each one flies off on its own
+      const pinRoot = pin.scene;
+      useColor1(pinRoot);
+      pinRoot.updateMatrixWorld(true);
+      const s = 11 / Math.max(sizeOf(pinRoot).x, sizeOf(pinRoot).z);
+      const meshes = [];
+      pinRoot.traverse((o) => o.isMesh && meshes.push(o));
+      const centre = new THREE.Box3().setFromObject(pinRoot).getCenter(new THREE.Vector3());
+      meshes.forEach((m) => {
+        const g = m.geometry.clone();
+        g.applyMatrix4(m.matrixWorld);
+        g.translate(-centre.x, -centre.y, -centre.z);
+        g.scale(s, s, s);
+        const mat = m.material.clone();
+        mat.metalness = 0;
+        const piece = new THREE.Mesh(g, mat);
+        oldBird.add(piece);
+        oldPieces.push(piece);
+      });
+      seedExplosion();
+
+      // CloudOwl, zone 2
+      fitMaterials(owl.scene);
+      const os = 6.2 / sizeOf(owl.scene).x; // wingspan ~6 units, like the lasso
+      owl.scene.scale.setScalar(os);
+      bird.add(owl.scene);
+      owlMixer = new THREE.AnimationMixer(owl.scene);
+      owlClips = clipMap(owl, owlMixer);
+
+      // Gardien de la Breche v3 (serpent ~45 units long in Blender)
+      fitMaterials(gb.scene, { clip: portalClip });
+      gb.scene.scale.setScalar(2.2);
+      boss.add(gb.scene);
+      bossMixer = new THREE.AnimationMixer(gb.scene);
+      bossClips = clipMap(gb, bossMixer);
+      bossHead = gb.scene.getObjectByName("Head");
+      renderAt(lastT);
+    });
+    window.__hf = window.__hf || {};
+    window.__hf.buildReady = window.__hf.buildReady || {};
+    window.__hf.buildReady["world-models"] = modelsReady;
 
     // lasso + rope
     const ropeMat = new THREE.MeshLambertMaterial({ color: 0xe9cf96 });
@@ -297,30 +349,25 @@
       new THREE.TorusGeometry(16, 1.6, 12, 64),
       new THREE.MeshBasicMaterial({ color: 0xff5fb0 }),
     );
-    portal.position.set(0, 110, -70);
+    portal.position.set(0, 110, PORTAL_Z);
     scene.add(portal);
     const portalCore = new THREE.Mesh(new THREE.CircleGeometry(15, 48), new THREE.MeshBasicMaterial({ color: 0x3a0a2e }));
     portalCore.position.copy(portal.position);
     portalCore.position.z -= 0.5;
     scene.add(portalCore);
-    const SEG = 46;
-    const serpent = [];
-    const serpMat = new THREE.MeshLambertMaterial({ color: 0xff4fa3, emissive: 0x7a1450, emissiveIntensity: 0.5 });
-    const serpMat2 = new THREE.MeshLambertMaterial({ color: 0xffd1ea, emissive: 0x7a1450, emissiveIntensity: 0.3 });
-    for (let i = 0; i < SEG; i++) {
-      const r = i === 0 ? 7 : 5.2 * (1 - i / SEG) + 1.2;
-      const s = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), i % 3 === 0 ? serpMat2 : serpMat);
-      scene.add(s);
-      serpent.push(s);
-    }
-    const bossEyes = [];
-    for (const sx of [-1, 1]) {
-      const e = new THREE.Mesh(new THREE.SphereGeometry(1.4, 12, 10), new THREE.MeshBasicMaterial({ color: 0xfff4a8 }));
-      scene.add(e);
-      bossEyes.push([e, sx]);
-    }
-    const laser = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 1, 12), new THREE.MeshBasicMaterial({ color: 0xffe0f2 }));
+    // pink beam (core + soft glow) fired from the Gardien's mouth towards the sky (RiftGuardian_Laser)
+    const laser = new THREE.Group();
+    const beamCore = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 16, 1, true), new THREE.MeshBasicMaterial({ color: 0xfff0fa }));
+    const beamGlow = new THREE.Mesh(
+      new THREE.CylinderGeometry(1, 1, 1, 20, 1, true),
+      new THREE.MeshBasicMaterial({ color: 0xff5fb0, transparent: true, opacity: 0.45, depthWrite: false }),
+    );
+    beamGlow.scale.set(2.4, 1, 2.4);
+    laser.add(beamGlow, beamCore);
     scene.add(laser);
+    // Gardien timing (s): flies out of the portal, then RiftGuardian_Laser (charge, rear up, fire held)
+    const BOSS_FLY = 9.9, BOSS_LASER = 10.55, LASER_SPEED = 1.6;
+    const LASER_FIRE = BOSS_LASER + 46 / 30 / LASER_SPEED; // jaw wide open at frame ~46 of the clip
 
     // ---------- camera path ----------
     // [time, pos, target]; a repeated time is a hard cut
@@ -385,7 +432,7 @@
       // background and fog follow depth; boss turns the sky pink
       const bg = camY > 0 ? new THREE.Color(0x8fd3ff) : zoneColorAtDepth(camY).clone();
       if (camY > 200) bg.setHex(0x9fb8cc); // the flat grey sky of day 1
-      if (t >= 9.5 && t < 12.25) bg.lerp(pink, smooth(seg(t, 10.9, 11.5)));
+      if (t >= 9.5 && t < 12.25) bg.lerp(pink, smooth(seg(t, LASER_FIRE + 0.15, LASER_FIRE + 0.6))); // pink once the beam hits
       scene.background = bg;
       scene.fog.color.copy(bg);
       scene.fog.near = camY < -10 ? 20 : 80;
@@ -434,12 +481,16 @@
       if (showBird) {
         let by = -100 + Math.sin(t * 2.4) * 0.8;
         let bx = Math.sin(t * 0.9) * 2;
-        const pull = smooth(seg(t, 15.9, 16.9));
+        const pull = smooth(seg(t, 16.1, 17.0)); // hauled up on "et tu la ramènes" (16.26 s)
         by = lerp(by, -46, pull);
         bird.position.set(bx, by, 0);
         bird.rotation.set(0.1, -0.6 + Math.sin(t * 0.7) * 0.2, 0);
-        const flap = t < 15.5 ? Math.sin(t * 15) * 0.7 : Math.sin(t * 30) * 0.25;
-        bird.userData.wings.forEach(([p, sx]) => (p.rotation.z = sx * flap));
+        // CloudOwl clips: Fly while free, Roar (struggle) once the lasso closes, Fly again while hauled up
+        if (owlMixer) {
+          if (t < 15.3) seekClip(owlMixer, owlClips, "Fly", t - 12.25);
+          else if (t < 16.1) seekClip(owlMixer, owlClips, "Roar", (t - 15.3) * 1.4);
+          else seekClip(owlMixer, owlClips, "Fly", (t - 16.1) * 1.3);
+        }
         // lasso: drops from above and tightens around the body
         const drop = easeOut(seg(t, 14.65, 15.1));
         const tight = smooth(seg(t, 15.1, 15.5));
@@ -462,55 +513,50 @@
         b.rotation.set(t * 4, t * 5, 0);
       });
 
-      // boss: portal opens, the serpent pours out, laser at the end
+      // boss: portal opens, the Gardien flies out (Fly), rears up and fires its laser at the sky (Laser)
       const bossOn = t >= 9.5 && t < 12.25;
       portal.visible = portalCore.visible = bossOn;
-      serpent.forEach((s) => (s.visible = bossOn));
-      bossEyes.forEach(([e]) => (e.visible = bossOn));
+      boss.visible = bossOn && t >= BOSS_FLY;
+      laser.visible = false;
       if (bossOn) {
         const open = easeOut(seg(t, 9.6, 10.3));
         portal.scale.setScalar(Math.max(0.01, open));
         portalCore.scale.setScalar(Math.max(0.01, open));
         portal.rotation.z = t * 0.6;
-        const emerge = seg(t, 9.9, 12.25); // how far the head has travelled
-        for (let i = 0; i < SEG; i++) {
-          const u = emerge * 1.6 - i * 0.032; // path parameter, head first
-          const s = serpent[i];
-          if (u < 0) {
-            s.position.set(0, 110, -80);
-            s.scale.setScalar(0.001);
-            continue;
-          }
-          s.scale.setScalar(1);
-          s.position.set(
-            Math.sin(u * 5.5 + t * 1.2) * 14 * Math.min(1, u * 2),
-            110 - u * 30 + Math.sin(u * 7) * 4,
-            -70 + u * 40,
-          );
+        // head starts just behind the portal and glides out towards the camera, slowing down;
+        // the clipping plane hides every part still behind the portal
+        // it heads out sideways (yaw) so the serpent body reads in profile from the camera below
+        const out = easeOut(seg(t, BOSS_FLY, BOSS_LASER + 0.5));
+        const yaw = lerp(0.75, 0.45, out) + Math.sin(t * 0.9) * 0.05;
+        const dist = lerp(-4, 40, out); // distance travelled by the head along its heading
+        boss.position.set(Math.sin(yaw) * dist, lerp(104, 86, out), PORTAL_Z + Math.cos(yaw) * dist);
+        boss.rotation.set(0, yaw, Math.sin(t * 1.3) * 0.08);
+        if (bossMixer) {
+          if (t < BOSS_LASER) seekClip(bossMixer, bossClips, "Fly", (t - BOSS_FLY) * 1.5);
+          else seekClip(bossMixer, bossClips, "Laser", (t - BOSS_LASER) * LASER_SPEED);
         }
-        const head = serpent[0].position;
-        const next = serpent[2].position;
-        bossEyes.forEach(([e, sx]) => {
-          e.position.set(head.x + sx * 3.2, head.y + 2.6, head.z + 5.4);
-        });
-        const fire = seg(t, 11.4, 12.25);
-        laser.visible = fire > 0;
-        if (fire > 0) {
-          const from = new THREE.Vector3(head.x, head.y, head.z + 6);
-          const to = new THREE.Vector3(0, -10, 10);
-          const len = from.distanceTo(to);
-          laser.position.lerpVectors(from, to, 0.5);
-          laser.scale.set(1 + fire * 1.5, len, 1 + fire * 1.5);
-          laser.lookAt(to);
-          laser.rotateX(Math.PI / 2);
+        const fire = seg(t, LASER_FIRE, LASER_FIRE + 0.12);
+        if (fire > 0 && bossHead) {
+          boss.updateMatrixWorld(true);
+          const from = bossHead.getWorldPosition(new THREE.Vector3());
+          const up = new THREE.Vector3(0.05, 1, 0.22).normalize();
+          const len = 260;
+          laser.visible = true;
+          laser.position.copy(from).addScaledVector(up, len / 2);
+          laser.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), up);
+          const w = fire * (1.6 + 0.25 * Math.sin(t * 40));
+          laser.scale.set(w, len, w);
         }
-      } else laser.visible = false;
+      }
 
       renderer.render(scene, camera);
     }
 
-    window.addEventListener("hf-seek", (e) => renderAt(e.detail.time));
-    renderAt(0);
+    window.addEventListener("hf-seek", (e) => {
+      lastT = e.detail.time;
+      renderAt(lastT);
+    });
+    renderAt(window.__hfThreeTime || 0);
 
     // keep the scene registered with the runtime
     const tl = gsap.timeline({ paused: true });

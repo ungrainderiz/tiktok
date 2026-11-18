@@ -1,66 +1,227 @@
 {
   "version": 1,
   "historyId": "a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7",
-  "currentRevision": null,
+  "currentRevision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
   "pendingChanges": false,
   "files": {
     "AGENTS.md": {
-      "hash": "729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/72/729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb"
+      "hash": "442238e52a7770bfe6e6601d991c0ee48047272ce320be1e3addcf779ab353d6",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\44\\442238e52a7770bfe6e6601d991c0ee48047272ce320be1e3addcf779ab353d6"
     },
     "CLAUDE.md": {
-      "hash": "729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/72/729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb"
+      "hash": "442238e52a7770bfe6e6601d991c0ee48047272ce320be1e3addcf779ab353d6",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\44\\442238e52a7770bfe6e6601d991c0ee48047272ce320be1e3addcf779ab353d6"
+    },
+    "HANDOFF.md": {
+      "hash": "55370e96d19b2bb9e35e32d80e918c0d75b05e9c595bd5bb14658b7d58cb134c",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\55\\55370e96d19b2bb9e35e32d80e918c0d75b05e9c595bd5bb14658b7d58cb134c"
     },
     "assets/audio/voix.mp3": {
       "hash": "2709befe7d7ae1cd5d0beefb2bf16bf2e665b743199102241e23122eb1e868c5",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/27/2709befe7d7ae1cd5d0beefb2bf16bf2e665b743199102241e23122eb1e868c5"
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\27\\2709befe7d7ae1cd5d0beefb2bf16bf2e665b743199102241e23122eb1e868c5"
+    },
+    "assets/lib/BufferGeometryUtils.js": {
+      "hash": "b9ea77ef3aacbf82d386c33311067e6ea4a3aac4190b32e001bdd11d063fb6ae",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\b9\\b9ea77ef3aacbf82d386c33311067e6ea4a3aac4190b32e001bdd11d063fb6ae"
+    },
+    "assets/lib/GLTFLoader.js": {
+      "hash": "d6b517ee599c974f9b3648b11621dc23d41de24adcac3c826b3985a9313f6b84",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\d6\\d6b517ee599c974f9b3648b11621dc23d41de24adcac3c826b3985a9313f6b84"
     },
     "assets/lib/three.module.min.js": {
-      "hash": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/08/08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7"
+      "hash": "8e71269b773b81802e7f5f71d8528f1e0c29a82c55f0609845b528389aed8439",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\8e\\8e71269b773b81802e7f5f71d8528f1e0c29a82c55f0609845b528389aed8439"
+    },
+    "assets/models/cloudowl.glb": {
+      "hash": "97d0f7c7e75db60de9d2f121b84bd83e47c8260f037e6f8bb1290ee1fcc100a4",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\97\\97d0f7c7e75db60de9d2f121b84bd83e47c8260f037e6f8bb1290ee1fcc100a4"
+    },
+    "assets/models/pinson.glb": {
+      "hash": "6df33d72c09a4bffa22e5da01b545ecd01d21981e7e879f831f343295fe9e4e8",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\6d\\6df33d72c09a4bffa22e5da01b545ecd01d21981e7e879f831f343295fe9e4e8"
     },
     "compositions/soustitres.html": {
-      "hash": "a3daba15fc10125dcb749dc4d1aa5735f9d76173b948aecb2d73a6871a9a8425",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/a3/a3daba15fc10125dcb749dc4d1aa5735f9d76173b948aecb2d73a6871a9a8425"
+      "hash": "f7c853e6380c6425bc9187738d7057f00fed85d7e8d170a64d5d68d407174b3a",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\f7\\f7c853e6380c6425bc9187738d7057f00fed85d7e8d170a64d5d68d407174b3a"
     },
     "compositions/titres.html": {
-      "hash": "ab2bb5eb2627cea1272bed9c87777c64cb4b1aa1a61acac6acca48d0bf0410e4",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/ab/ab2bb5eb2627cea1272bed9c87777c64cb4b1aa1a61acac6acca48d0bf0410e4"
+      "hash": "e6409b1a5986b343139c579bc267560c7319dc13198d3df0bb3e32e166f15a76",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\e6\\e6409b1a5986b343139c579bc267560c7319dc13198d3df0bb3e32e166f15a76"
     },
     "compositions/world.html": {
-      "hash": "4d2c382450f530e52556c2bb9d93f6c35475b8fafe89d0beb47f2ceacc9c0655",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/4d/4d2c382450f530e52556c2bb9d93f6c35475b8fafe89d0beb47f2ceacc9c0655"
+      "hash": "d30874eef29086c691e9bd521dd3be5d7fee48acc1cdf05d82047c81db36cb1d",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\d3\\d30874eef29086c691e9bd521dd3be5d7fee48acc1cdf05d82047c81db36cb1d"
     },
     "hyperframes.json": {
-      "hash": "35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/35/35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7"
+      "hash": "687e5c4a0a6ff969a5f316158089fb408f0c2d8f989d19e47289f7aa34a18d24",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\68\\687e5c4a0a6ff969a5f316158089fb408f0c2d8f989d19e47289f7aa34a18d24"
     },
     "index.html": {
-      "hash": "1f9cdac84de9bbab5c70862d582774088e074b692ee8d67cc77e6955b54c3d79",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/1f/1f9cdac84de9bbab5c70862d582774088e074b692ee8d67cc77e6955b54c3d79"
+      "hash": "d101095b269ac4587b9da9d5644700bb4c18788cb096103a4f2a376fb7bf490d",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\d1\\d101095b269ac4587b9da9d5644700bb4c18788cb096103a4f2a376fb7bf490d"
     },
     "meta.json": {
-      "hash": "7faa34c521397eb115c0c8f04118acc31a3b39f8b8a1c4d079f3e69b5889fba9",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/7f/7faa34c521397eb115c0c8f04118acc31a3b39f8b8a1c4d079f3e69b5889fba9"
+      "hash": "f1be02f14c34a2feea99bf1a0b3a1c915e3cc1b41b0ebe87f7ed8b905d5f24a6",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\f1\\f1be02f14c34a2feea99bf1a0b3a1c915e3cc1b41b0ebe87f7ed8b905d5f24a6"
     },
     "package.json": {
-      "hash": "1de4352ac4048635cd91c238de57d7185f2f2e7e54d9d329d34889e41a8412ad",
-      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/1d/1de4352ac4048635cd91c238de57d7185f2f2e7e54d9d329d34889e41a8412ad"
+      "hash": "75b02f0cada7e683244a3d927cb12f74587dc2a00e7727ffa0e7ca75e44b4ff4",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\75\\75b02f0cada7e683244a3d927cb12f74587dc2a00e7727ffa0e7ca75e44b4ff4"
+    },
+    "assets/models/gardien.glb": {
+      "hash": "3791e879af2df0e76258c8eab3da03090decde14fee1680d1bc1eb6e00f3fc5d",
+      "content": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\37\\3791e879af2df0e76258c8eab3da03090decde14fee1680d1bc1eb6e00f3fc5d"
     }
   },
-  "revisions": {},
+  "revisions": {
+    "ce2f457e-eac6-46b1-bdb5-031212f345f7": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1795041166135,
+      "endedAt": 1795041166143,
+      "files": {
+        "compositions/soustitres.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\42\\42c639e741ad5426bada444dcc5522bed23115601cc0203b7cd1b5955273e162",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\3a\\3a66687f15b5252d30b90ce308e4248d41e1cdff31e186ffdf7cff843b84da99"
+        },
+        "compositions/titres.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\99\\99942168d05972f3162d96117b4e74d61d468032bfff8b6663b6a626802a32ab",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\65\\65ebb79c32e73e27a6d9a236364475bfa8c9603a35cca1dfddfe1a8142b2c45b"
+        },
+        "compositions/world.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\85\\8581dadb4d6d1a9eae3d6291e9846403b9cc33f8211db72ee8209b5830515390",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\59\\59412a69bbc07e489f104741e2f5fe118785012e5e32979131a40b623c9a5229"
+        }
+      }
+    },
+    "87c657b3-0f07-4929-92cf-abdb9bf1f4c6": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1795041271814,
+      "endedAt": 1795041271828,
+      "files": {
+        "compositions/soustitres.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\3a\\3a66687f15b5252d30b90ce308e4248d41e1cdff31e186ffdf7cff843b84da99",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\f7\\f7c853e6380c6425bc9187738d7057f00fed85d7e8d170a64d5d68d407174b3a"
+        },
+        "compositions/world.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\59\\59412a69bbc07e489f104741e2f5fe118785012e5e32979131a40b623c9a5229",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\87\\87ae0c485c020127c8f8b3fb6176ef74c4ba934d0fa84eaa43e3e1fae8f3fa3d"
+        }
+      }
+    },
+    "e8f1d0e7-6a13-4030-98de-2ace50e9c52c": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1795041307662,
+      "endedAt": 1795041307674,
+      "files": {
+        "compositions/titres.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\65\\65ebb79c32e73e27a6d9a236364475bfa8c9603a35cca1dfddfe1a8142b2c45b",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\e6\\e6409b1a5986b343139c579bc267560c7319dc13198d3df0bb3e32e166f15a76"
+        },
+        "compositions/world.html": {
+          "before": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\87\\87ae0c485c020127c8f8b3fb6176ef74c4ba934d0fa84eaa43e3e1fae8f3fa3d",
+          "after": "C:\\Users\\yangm\\.cache\\hyperframes\\history\\a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7\\blobs\\d3\\d30874eef29086c691e9bd521dd3be5d7fee48acc1cdf05d82047c81db36cb1d"
+        }
+      }
+    }
+  },
   "checks": {
     "latest": {
-      "revision": null,
-      "id": "7b38e777-2626-433a-afb9-fcb8a813ae07"
+      "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+      "id": "176e1d84-6d7b-42b6-9ecc-b78e2a66cc06"
     },
-    "revisions": {},
+    "revisions": {
+      "ce2f457e-eac6-46b1-bdb5-031212f345f7": [
+        {
+          "id": "698e81b0-0821-4158-bf64-50b961dd65cd",
+          "scope": "project",
+          "report": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\checks\\698e81b0-0821-4158-bf64-50b961dd65cd.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 45000,
+              "cache": true,
+              "contrast": true,
+              "craft": true,
+              "strict": false,
+              "snapshots": false,
+              "safeZones": [
+                "tiktok",
+                "reels",
+                "shorts"
+              ],
+              "browserGpuMode": "auto",
+              "includeUnmounted": false
+            }
+          },
+          "createdAt": 1795041176404,
+          "contentHash": "975ac209210c8f2b3e653dc0e5230cceed4f6918fa1d2fd82e156dc0afaaf039",
+          "revision": "ce2f457e-eac6-46b1-bdb5-031212f345f7",
+          "inputFingerprint": "67dd3da264e3ea6f7a1e24bd040bb15129bb246f82ab8bac269f985108d629eb",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ],
+      "e8f1d0e7-6a13-4030-98de-2ace50e9c52c": [
+        {
+          "id": "176e1d84-6d7b-42b6-9ecc-b78e2a66cc06",
+          "scope": "project",
+          "report": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\checks\\176e1d84-6d7b-42b6-9ecc-b78e2a66cc06.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 45000,
+              "cache": true,
+              "contrast": true,
+              "craft": true,
+              "strict": false,
+              "snapshots": false,
+              "safeZones": [
+                "tiktok",
+                "reels",
+                "shorts"
+              ],
+              "browserGpuMode": "auto",
+              "includeUnmounted": false
+            }
+          },
+          "createdAt": 1795041332606,
+          "contentHash": "3acb64a8e8d19df461d7997844c4f41b1ea63ccf753ad01657cf742fdb1a1f77",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
     "unversioned": [
       {
-        "id": "763801ea-6c91-493f-8b86-969abe667835",
+        "id": "62f6c7a4-360f-4092-a6ce-6790ecba36d5",
         "scope": "project",
-        "report": "/home/user/tiktok/videos/jour7/.hyperframes/artifacts/checks/763801ea-6c91-493f-8b86-969abe667835.json",
+        "report": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\checks\\62f6c7a4-360f-4092-a6ce-6790ecba36d5.json",
         "metadata": {
           "ok": false,
           "browserSkipped": false,
@@ -85,53 +246,257 @@
             "includeUnmounted": false
           }
         },
-        "createdAt": 1795039125348,
-        "contentHash": "4015beba2eb3f0a42b5b7cc3787dd85b90f40c65f6305d56805a319445a68de2",
+        "createdAt": 1795041030815,
+        "contentHash": "1d90788913f1e7fcfc70461e58ffddeb9d44634f07b48e68a36df2a7af8c1906",
         "revision": null,
-        "inputFingerprint": "c9657eab4f81629751bb8d6f70307a26d0f2148c10a4d5d472a6a495a2bd895c",
-        "inputScope": "local-project-files",
-        "attribution": "unversioned"
-      },
-      {
-        "id": "7b38e777-2626-433a-afb9-fcb8a813ae07",
-        "scope": "project",
-        "report": "/home/user/tiktok/videos/jour7/.hyperframes/artifacts/checks/7b38e777-2626-433a-afb9-fcb8a813ae07.json",
-        "metadata": {
-          "ok": false,
-          "browserSkipped": false,
-          "options": {
-            "samples": 9,
-            "atTransitions": false,
-            "maxIssues": 80,
-            "collapseStatic": true,
-            "tolerance": 2,
-            "timeout": 45000,
-            "cache": true,
-            "contrast": true,
-            "craft": true,
-            "strict": false,
-            "snapshots": false,
-            "safeZones": [
-              "tiktok",
-              "reels",
-              "shorts"
-            ],
-            "browserGpuMode": "auto",
-            "includeUnmounted": false
-          }
-        },
-        "createdAt": 1795039136475,
-        "contentHash": "57d39f53ee288b04018b894ad38b88c751787cd4037e420d6926af37401dc81d",
-        "revision": null,
-        "inputFingerprint": "c9657eab4f81629751bb8d6f70307a26d0f2148c10a4d5d472a6a495a2bd895c",
+        "inputFingerprint": "9d251b63f716357ef46726a7c1898e8f4b0e2b8a49ebd072031e507fd2c41acd",
         "inputScope": "local-project-files",
         "attribution": "unversioned"
       }
     ]
   },
   "snapshots": {
-    "latest": null,
-    "revisions": {},
+    "latest": {
+      "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+      "id": "d3970eb0-a3c5-4de5-b5a4-e4b17b6525bc-4"
+    },
+    "revisions": {
+      "ce2f457e-eac6-46b1-bdb5-031212f345f7": [],
+      "87c657b3-0f07-4929-92cf-abdb9bf1f4c6": [],
+      "e8f1d0e7-6a13-4030-98de-2ace50e9c52c": [
+        {
+          "scope": "full",
+          "id": "e017975f-55ce-4584-b0cb-695f2580092b-0",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\snap-models\\frame-00-at-2s.png",
+          "time": 2,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041311318,
+          "contentHash": "758aa2516e8e0ec7b91817813190a4d61028b7f85a19d3341edad38695a00a23",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "e017975f-55ce-4584-b0cb-695f2580092b-1",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\snap-models\\frame-01-at-11.2s.png",
+          "time": 11.2,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041311318,
+          "contentHash": "bc3c716a9664ece37efe66e9cc47e32f5834d94ada9a2b202ae4c89a363e11b7",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "e017975f-55ce-4584-b0cb-695f2580092b-2",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\snap-models\\frame-02-at-11.7s.png",
+          "time": 11.7,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041311318,
+          "contentHash": "4577ac21cd629e86aa7839852d242549bd2328efed384eac733a6de6de22e79b",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "e017975f-55ce-4584-b0cb-695f2580092b-3",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\snap-models\\frame-03-at-12.1s.png",
+          "time": 12.1,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041311318,
+          "contentHash": "8cc417c0a8e0cf9fa41c3e9801402a32201bf388cfc5f103848dfee715743084",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "e017975f-55ce-4584-b0cb-695f2580092b-4",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\snap-models\\frame-04-at-15.2s.png",
+          "time": 15.2,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041311319,
+          "contentHash": "c065e9a6d4a69e1fd5d916b3cda7234d9547e5ba119e23b12b14a20896e7e9ca",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "d3970eb0-a3c5-4de5-b5a4-e4b17b6525bc-0",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\review\\beat-01-at-2.35s.png",
+          "time": 2.35,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "review": {
+              "role": "beat",
+              "label": "t=2.35"
+            },
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041339810,
+          "contentHash": "919a99ed4e7dc8ea7a92a235b7e8f9d285c7672e6fb906b14f75a59e5374c3b4",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "d3970eb0-a3c5-4de5-b5a4-e4b17b6525bc-1",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\review\\beat-02-at-7.05s.png",
+          "time": 7.05,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "review": {
+              "role": "beat",
+              "label": "t=7.05"
+            },
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041339811,
+          "contentHash": "efa127ed2aa772467e30a248d5c9464413e4cf6c017d28e07ca2ad4445018579",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "d3970eb0-a3c5-4de5-b5a4-e4b17b6525bc-2",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\review\\beat-03-at-11.75s.png",
+          "time": 11.75,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "review": {
+              "role": "beat",
+              "label": "t=11.75"
+            },
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041339811,
+          "contentHash": "a8c8eb813bf59fc1e8f1f9134fee70cab376c79665918fad4c31e549214f4340",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "d3970eb0-a3c5-4de5-b5a4-e4b17b6525bc-3",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\review\\beat-04-at-16.45s.png",
+          "time": 16.45,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "review": {
+              "role": "beat",
+              "label": "t=16.45"
+            },
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041339812,
+          "contentHash": "2ed0a51519b77218aa134cefe1371071a586a6cea8ac9ffe4688a205c04587ef",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "d3970eb0-a3c5-4de5-b5a4-e4b17b6525bc-4",
+          "image": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\.hyperframes\\artifacts\\review\\beat-05-at-21.15s.png",
+          "time": 21.15,
+          "metadata": {
+            "width": 1080,
+            "height": 1920,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "review": {
+              "role": "beat",
+              "label": "t=21.15"
+            },
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1795041339813,
+          "contentHash": "b90064d93b31a30a9f6e7bc7ae44da1d9c6948eaf8ab20219e392ba8499997ec",
+          "revision": "e8f1d0e7-6a13-4030-98de-2ace50e9c52c",
+          "inputFingerprint": "8a594a6f445d00a2e95621c3a41a88fbf309ee173d0363951535ff88c0c7043b",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
     "unversioned": []
-  }
+  },
+  "renders": {
+    "latest": {
+      "id": "fff01d1f-c448-40c7-88fd-8c4e4a5a50cf",
+      "completedAt": 1795042177122,
+      "output": "C:\\Users\\yangm\\Documents\\JEUX 2\\tiktok\\videos\\jour7\\renders\\jour7.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
 }
