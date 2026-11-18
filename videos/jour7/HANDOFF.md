@@ -38,6 +38,18 @@
   éléments créés en JS) → style inline. « et tu la ramènes » = 16,26 s (titre « ramène » et remontée du hibou décalés).
 - Rendu : `renders/jour7.mp4`.
 
+## Fait le 19/11 : rendu Blender (remplace la scène three.js)
+- Le décor 3D vient maintenant d'un rendu Blender de la VRAIE carte et des vrais monstres : `assets/video/monde.mp4`
+  (705 images, sans son), posé en `<video id="monde">` dans `index.html` sous les titres et sous-titres.
+  `compositions/world.html`, three.js et les .glb sont retirés (ils restent dans le commit c1a8358).
+- Scripts dans `JEUX 2\blender\video_jour7\` : `carte.py` (import des FBX zones 1-8, plateaux, cascades, décor + arbres v3
+  replacés depuis les .lua de `roblox/`, brume par zone + halo Neon dans le compositeur), `rendu_plan.py -- <A|B|D|E|F> [apercu|tout]`,
+  `rendu_breche.py` (plan C = cinématique de la Brèche retimée), `rendre_tout.ps1` (~9 min pour tout).
+  Images dans `JEUX 2\apercus_video\frames\f_####.png` (n = temps × 30), puis
+  `ffmpeg -framerate 30 -start_number 0 -i f_%04d.png -c:v libx264 -pix_fmt yuv420p -crf 18 -g 30 monde.mp4`.
+- Plans : A 0–4,95 Jour 1 (carte v1 + Pinson à studs, explosion) · B 4,95–9,5 plongée 8 zones (+ monstres Fly) ·
+  C 9,5–12,25 Brèche · D 12,25–17,15 bord, saut, CloudOwl + lasso · E 17,15–19,35 plus profond · F 19,35–23,5 vue aérienne.
+
 ## Reste à faire
 1. **Remplacer les créatures faites en code par les vrais modèles Blender** de `JEUX 2\exports_blender\`
    (exporter en .glb avec animations, copier dans `videos/jour7/assets/models/`, charger avec `GLTFLoader`
