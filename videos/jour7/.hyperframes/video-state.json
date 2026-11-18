@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "historyId": "a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "AGENTS.md": {
+      "hash": "729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/72/729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb"
+    },
+    "CLAUDE.md": {
+      "hash": "729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/72/729e31835a21c7b42ee006e2aacc63016abc05d26883f871ad3bf206943f2cfb"
+    },
+    "assets/audio/voix.mp3": {
+      "hash": "2709befe7d7ae1cd5d0beefb2bf16bf2e665b743199102241e23122eb1e868c5",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/27/2709befe7d7ae1cd5d0beefb2bf16bf2e665b743199102241e23122eb1e868c5"
+    },
+    "assets/lib/three.module.min.js": {
+      "hash": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/08/08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7"
+    },
+    "compositions/soustitres.html": {
+      "hash": "a3daba15fc10125dcb749dc4d1aa5735f9d76173b948aecb2d73a6871a9a8425",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/a3/a3daba15fc10125dcb749dc4d1aa5735f9d76173b948aecb2d73a6871a9a8425"
+    },
+    "compositions/titres.html": {
+      "hash": "ab2bb5eb2627cea1272bed9c87777c64cb4b1aa1a61acac6acca48d0bf0410e4",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/ab/ab2bb5eb2627cea1272bed9c87777c64cb4b1aa1a61acac6acca48d0bf0410e4"
+    },
+    "compositions/world.html": {
+      "hash": "4d2c382450f530e52556c2bb9d93f6c35475b8fafe89d0beb47f2ceacc9c0655",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/4d/4d2c382450f530e52556c2bb9d93f6c35475b8fafe89d0beb47f2ceacc9c0655"
+    },
+    "hyperframes.json": {
+      "hash": "35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/35/35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7"
+    },
+    "index.html": {
+      "hash": "1f9cdac84de9bbab5c70862d582774088e074b692ee8d67cc77e6955b54c3d79",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/1f/1f9cdac84de9bbab5c70862d582774088e074b692ee8d67cc77e6955b54c3d79"
+    },
+    "meta.json": {
+      "hash": "7faa34c521397eb115c0c8f04118acc31a3b39f8b8a1c4d079f3e69b5889fba9",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/7f/7faa34c521397eb115c0c8f04118acc31a3b39f8b8a1c4d079f3e69b5889fba9"
+    },
+    "package.json": {
+      "hash": "1de4352ac4048635cd91c238de57d7185f2f2e7e54d9d329d34889e41a8412ad",
+      "content": "/root/.cache/hyperframes/history/a8a8ffe2-54ef-475e-abf5-faf4f35bb7f7/blobs/1d/1de4352ac4048635cd91c238de57d7185f2f2e7e54d9d329d34889e41a8412ad"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "7b38e777-2626-433a-afb9-fcb8a813ae07"
+    },
+    "revisions": {},
+    "unversioned": [
+      {
+        "id": "763801ea-6c91-493f-8b86-969abe667835",
+        "scope": "project",
+        "report": "/home/user/tiktok/videos/jour7/.hyperframes/artifacts/checks/763801ea-6c91-493f-8b86-969abe667835.json",
+        "metadata": {
+          "ok": false,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 45000,
+            "cache": true,
+            "contrast": true,
+            "craft": true,
+            "strict": false,
+            "snapshots": false,
+            "safeZones": [
+              "tiktok",
+              "reels",
+              "shorts"
+            ],
+            "browserGpuMode": "auto",
+            "includeUnmounted": false
+          }
+        },
+        "createdAt": 1795039125348,
+        "contentHash": "4015beba2eb3f0a42b5b7cc3787dd85b90f40c65f6305d56805a319445a68de2",
+        "revision": null,
+        "inputFingerprint": "c9657eab4f81629751bb8d6f70307a26d0f2148c10a4d5d472a6a495a2bd895c",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      },
+      {
+        "id": "7b38e777-2626-433a-afb9-fcb8a813ae07",
+        "scope": "project",
+        "report": "/home/user/tiktok/videos/jour7/.hyperframes/artifacts/checks/7b38e777-2626-433a-afb9-fcb8a813ae07.json",
+        "metadata": {
+          "ok": false,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 45000,
+            "cache": true,
+            "contrast": true,
+            "craft": true,
+            "strict": false,
+            "snapshots": false,
+            "safeZones": [
+              "tiktok",
+              "reels",
+              "shorts"
+            ],
+            "browserGpuMode": "auto",
+            "includeUnmounted": false
+          }
+        },
+        "createdAt": 1795039136475,
+        "contentHash": "57d39f53ee288b04018b894ad38b88c751787cd4037e420d6926af37401dc81d",
+        "revision": null,
+        "inputFingerprint": "c9657eab4f81629751bb8d6f70307a26d0f2148c10a4d5d472a6a495a2bd895c",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  }
+}

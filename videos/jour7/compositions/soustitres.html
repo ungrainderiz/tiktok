@@ -1,0 +1,58 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      font-family: "Archivo Black", sans-serif;
+    }
+    #root .cap {
+      position: absolute;
+      left: 60px;
+      right: 60px;
+      top: 1150px;
+      text-align: center;
+      font-size: 58px;
+      line-height: 1.15;
+      color: #fff;
+      paint-order: stroke fill;
+      -webkit-text-stroke: 9px #1a1633;
+      opacity: 0;
+    }
+  </style>
+  <div id="root" data-composition-id="soustitres" data-width="1080" data-height="1920"></div>
+  <script>
+    // voiceover phrases, timed on the pauses measured in assets/audio/voix.mp3
+    const G = [
+      [0.1, 1.1, "Il y a 7 jours,"],
+      [1.1, 2.75, "mon jeu Roblox ressemblait à ça :"],
+      [2.91, 4.5, "4 zones faites avec des blocs."],
+      [4.87, 5.4, "Aujourd'hui ?"],
+      [5.68, 6.3, "8 zones,"],
+      [6.3, 8.1, "une soixantaine de créatures animées,"],
+      [8.1, 9.4, "une nouvelle interface…"],
+      [9.65, 10.9, "et un premier événement"],
+      [10.9, 12.1, "avec un boss géant."],
+      [12.39, 13.35, "Le principe est simple :"],
+      [13.56, 14.6, "tu sautes dans un gouffre,"],
+      [14.6, 15.9, "tu attrapes une créature au lasso,"],
+      [15.9, 16.95, "et tu la ramènes."],
+      [17.2, 18.05, "Plus tu descends,"],
+      [18.2, 19.1, "plus elles sont rares."],
+      [19.44, 20.2, "Abonne-toi,"],
+      [20.2, 22.0, "je te montre chaque zone une par une."],
+    ];
+    const root = document.querySelector('[data-composition-id="soustitres"]');
+    const tl = gsap.timeline({ paused: true });
+    G.forEach(([s, e, text], i) => {
+      const el = document.createElement("div");
+      el.className = "cap";
+      el.id = "cap-" + i;
+      el.textContent = text;
+      root.appendChild(el);
+      tl.fromTo(el, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.1, ease: "power2.out" }, s);
+      tl.to(el, { opacity: 0, duration: 0.08, ease: "power2.in" }, e - 0.08);
+      tl.set(el, { opacity: 0, visibility: "hidden" }, e);
+    });
+    window.__timelines["soustitres"] = tl;
+  </script>
+</template>

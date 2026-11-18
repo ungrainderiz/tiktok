@@ -1,0 +1,728 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "timeline_track_too_dense",
+        "severity": "warning",
+        "message": "This HTML file has 17 timed elements. Smaller sub-compositions keep timelines easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "/home/user/tiktok/videos/jour7/compositions/titres.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move coherent scene groups into smaller .html files and mount them from the parent with data-composition-src so the timeline stays easier to inspect, revise, and validate."
+      },
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 507 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "/home/user/tiktok/videos/jour7/compositions/world.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      }
+    ],
+    "filesScanned": 4
+  },
+  "runtime": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "check_runtime_failure",
+        "severity": "error",
+        "message": "Check stopped before finishing (SIGTERM).",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      }
+    ]
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 16,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "escaped_container",
+        "severity": "warning",
+        "time": 1.306,
+        "selector": "#soustitres > div:nth-of-type(1)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "containerSelector": "#soustitres",
+        "text": "",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 242.56,
+          "bottom": 306,
+          "width": 242.56,
+          "height": 306
+        },
+        "dataAttributes": {
+          "data-hf-inner-root": "true",
+          "data-hf-authored-id": "root",
+          "data-width": "1080",
+          "data-height": "1920"
+        },
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 1920
+        },
+        "firstSeen": 1.306,
+        "lastSeen": 16.972,
+        "occurrences": 7,
+        "heldMs": 0,
+        "times": [
+          1.306,
+          3.917,
+          6.528,
+          9.139,
+          11.75,
+          14.361,
+          16.972
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 9.139,
+        "selector": "#t-crea > span:nth-of-type(2)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 356.03,
+          "top": 782,
+          "right": 723.95,
+          "bottom": 860,
+          "width": 367.92,
+          "height": 78
+        },
+        "containerSelector": "#t-ui > span:nth-of-type(1)",
+        "text": "ANIMÉES",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply. Decoration nobody needs to read can take data-layout-ignore.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 356.03,
+          "y": 782,
+          "width": 367.92,
+          "height": 78
+        },
+        "firstSeen": 9.139,
+        "lastSeen": 9.139,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          9.139
+        ]
+      },
+      {
+        "code": "canvas_content_at_edge",
+        "severity": "warning",
+        "time": 11.75,
+        "selector": "#world-canvas",
+        "message": "Canvas content touches the frame edge (bottom).",
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "containerSelector": "#root",
+        "fixHint": "Keep drawn text inside the visible part of the canvas, or mark intentional full-bleed art with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "dataAttributes": {
+          "data-engine": "three.js r170"
+        },
+        "sourceFile": "compositions/world.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 1920
+        },
+        "firstSeen": 11.75,
+        "lastSeen": 11.75,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.75
+        ]
+      },
+      {
+        "selector": "#t-jour1",
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "4.5"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 108.34,
+          "y": 285,
+          "width": 863.32,
+          "height": 228
+        },
+        "time": 1.306,
+        "rect": {
+          "left": 108.34,
+          "top": 285,
+          "right": 971.66,
+          "bottom": 513,
+          "width": 863.32,
+          "height": 228
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "JOUR 1",
+        "message": "<div> \"JOUR 1\" is outside the safe area: TikTok (left and right edges), YouTube Shorts (top and right edges).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 1.306,
+        "lastSeen": 3.917,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          1.306,
+          3.917
+        ]
+      },
+      {
+        "selector": "#cap-1",
+        "dataAttributes": {},
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 18,
+          "width": 217.73,
+          "height": 17
+        },
+        "time": 1.306,
+        "rect": {
+          "left": 0,
+          "top": 18,
+          "right": 217.73,
+          "bottom": 35,
+          "width": 217.73,
+          "height": 17
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "mon jeu Roblox ressemblait à ça :",
+        "message": "<div> \"mon jeu Roblox ressemblait à ça :\" is outside the safe area: TikTok (top edge), Instagram Reels (top edge), YouTube Shorts (top edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 1.306,
+        "lastSeen": 1.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.306
+        ]
+      },
+      {
+        "selector": "#cap-2",
+        "dataAttributes": {},
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 36,
+          "width": 187.48,
+          "height": 17
+        },
+        "time": 3.917,
+        "rect": {
+          "left": 0,
+          "top": 36,
+          "right": 187.48,
+          "bottom": 53,
+          "width": 187.48,
+          "height": 17
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "4 zones faites avec des blocs.",
+        "message": "<div> \"4 zones faites avec des blocs.\" is outside the safe area: TikTok (top edge), Instagram Reels (top edge), YouTube Shorts (top edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 3.917,
+        "lastSeen": 3.917,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          3.917
+        ]
+      },
+      {
+        "selector": "#t-zones",
+        "dataAttributes": {
+          "data-start": "5.68",
+          "data-duration": "3.75"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 32.63,
+          "y": 265,
+          "width": 1014.73,
+          "height": 228
+        },
+        "time": 6.528,
+        "rect": {
+          "left": 32.63,
+          "top": 265,
+          "right": 1047.36,
+          "bottom": 493,
+          "width": 1014.73,
+          "height": 228
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "zones 8",
+        "message": "<div> \"zones 8\" is outside the safe area: TikTok (left and right edges), Instagram Reels (left and top and right edges), YouTube Shorts (left and top and right edges).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 6.528,
+        "lastSeen": 9.139,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          6.528,
+          9.139
+        ]
+      },
+      {
+        "selector": "#t-crea",
+        "dataAttributes": {
+          "data-start": "6.3",
+          "data-duration": "3.15"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 151.2,
+          "y": 519.52,
+          "width": 777.6,
+          "height": 333.38
+        },
+        "time": 6.528,
+        "rect": {
+          "left": 151.2,
+          "top": 519.52,
+          "right": 928.8,
+          "bottom": 852.9,
+          "width": 777.6,
+          "height": 333.38
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "~60 créatures animées",
+        "message": "<div> \"~60 créatures animées\" is outside the safe area: TikTok (right edge), YouTube Shorts (right edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 6.528,
+        "lastSeen": 9.139,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          6.528,
+          9.139
+        ]
+      },
+      {
+        "selector": "#cap-5",
+        "dataAttributes": {},
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 90,
+          "width": 241.23,
+          "height": 17
+        },
+        "time": 6.528,
+        "rect": {
+          "left": 0,
+          "top": 90,
+          "right": 241.23,
+          "bottom": 107,
+          "width": 241.23,
+          "height": 17
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "une soixantaine de créatures animées,",
+        "message": "<div> \"une soixantaine de créatures animées,\" is outside the safe area: TikTok (top edge), Instagram Reels (top edge), YouTube Shorts (top edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 6.528,
+        "lastSeen": 6.528,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          6.528
+        ]
+      },
+      {
+        "selector": "#t-ui",
+        "dataAttributes": {
+          "data-start": "8.1",
+          "data-duration": "1.35"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 117.11,
+          "y": 752,
+          "width": 845.77,
+          "height": 244
+        },
+        "time": 9.139,
+        "rect": {
+          "left": 117.11,
+          "top": 752,
+          "right": 962.88,
+          "bottom": 996,
+          "width": 845.77,
+          "height": 244
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "+ nouvelle interface",
+        "message": "<div> \"+ nouvelle interface\" is outside the safe area: TikTok (left and right edges), YouTube Shorts (right edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 9.139,
+        "lastSeen": 9.139,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          9.139
+        ]
+      },
+      {
+        "selector": "#cap-6",
+        "dataAttributes": {},
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 108,
+          "width": 158.16,
+          "height": 17
+        },
+        "time": 9.139,
+        "rect": {
+          "left": 0,
+          "top": 108,
+          "right": 158.16,
+          "bottom": 125,
+          "width": 158.16,
+          "height": 17
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "une nouvelle interface…",
+        "message": "<div> \"une nouvelle interface…\" is outside the safe area: TikTok (top edge), Instagram Reels (top edge), YouTube Shorts (top edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 9.139,
+        "lastSeen": 9.139,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          9.139
+        ]
+      },
+      {
+        "selector": "#t-boss",
+        "dataAttributes": {
+          "data-start": "10.9",
+          "data-duration": "1.35"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 131.75,
+          "y": 953.39,
+          "width": 816.48,
+          "height": 427.5
+        },
+        "time": 11.75,
+        "rect": {
+          "left": 131.75,
+          "top": 953.39,
+          "right": 948.23,
+          "bottom": 1380.89,
+          "width": 816.48,
+          "height": 427.5
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "bossgéant",
+        "message": "<div> \"bossgéant\" is outside the safe area: TikTok (right and bottom edges), Instagram Reels (bottom edge), YouTube Shorts (right and bottom edges).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 11.75,
+        "lastSeen": 11.75,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.75
+        ]
+      },
+      {
+        "selector": "#cap-8",
+        "dataAttributes": {},
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 144,
+          "width": 124.41,
+          "height": 17
+        },
+        "time": 11.75,
+        "rect": {
+          "left": 0,
+          "top": 144,
+          "right": 124.41,
+          "bottom": 161,
+          "width": 124.41,
+          "height": 17
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "avec un boss géant.",
+        "message": "<div> \"avec un boss géant.\" is outside the safe area: TikTok (top edge), Instagram Reels (top edge), YouTube Shorts (top edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 11.75,
+        "lastSeen": 11.75,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.75
+        ]
+      },
+      {
+        "selector": "#t-saute",
+        "dataAttributes": {
+          "data-start": "13.56",
+          "data-duration": "1.05"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 146.98,
+          "y": 353.39,
+          "width": 786.04,
+          "height": 228
+        },
+        "time": 14.361,
+        "rect": {
+          "left": 146.98,
+          "top": 353.39,
+          "right": 933.02,
+          "bottom": 581.39,
+          "width": 786.04,
+          "height": 228
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "saute",
+        "message": "<div> \"saute\" is outside the safe area: YouTube Shorts (right edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 14.361,
+        "lastSeen": 14.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          14.361
+        ]
+      },
+      {
+        "selector": "#cap-10",
+        "dataAttributes": {},
+        "sourceFile": "compositions/soustitres.html",
+        "bbox": {
+          "x": 0,
+          "y": 180,
+          "width": 163.67,
+          "height": 17
+        },
+        "time": 14.361,
+        "rect": {
+          "left": 0,
+          "top": 180,
+          "right": 163.67,
+          "bottom": 197,
+          "width": 163.67,
+          "height": 17
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "tu sautes dans un gouffre,",
+        "message": "<div> \"tu sautes dans un gouffre,\" is outside the safe area: TikTok (top edge), Instagram Reels (top edge), YouTube Shorts (top edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 14.361,
+        "lastSeen": 14.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          14.361
+        ]
+      },
+      {
+        "selector": "#t-ramene",
+        "dataAttributes": {
+          "data-start": "15.9",
+          "data-duration": "1.25"
+        },
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 38.41,
+          "y": 353.39,
+          "width": 1003.17,
+          "height": 228
+        },
+        "time": 16.972,
+        "rect": {
+          "left": 38.41,
+          "top": 353.39,
+          "right": 1041.58,
+          "bottom": 581.39,
+          "width": 1003.17,
+          "height": 228
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "ramène",
+        "message": "<div> \"ramène\" is outside the safe area: TikTok (left and right edges), Instagram Reels (left and right edges), YouTube Shorts (left and right edges).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 16.972,
+        "lastSeen": 16.972,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          16.972
+        ]
+      }
+    ],
+    "duration": 0,
+    "samples": [],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 16,
+    "truncated": false,
+    "faceCheck": {
+      "ran": false,
+      "reason": "the check stopped before looking for faces under text"
+    }
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.72:1; WCAG AA requires 3:1.",
+        "text": "8",
+        "fg": "rgb(255,210,63)",
+        "bg": "rgb(123,124,175)",
+        "ratio": 2.72,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(66,54,16)",
+        "large": true,
+        "selector": "#t-zones-n",
+        "dataAttributes": {},
+        "sourceFile": "compositions/titres.html",
+        "bbox": {
+          "x": 32.625,
+          "y": 280,
+          "width": 140.078125,
+          "height": 199.5
+        },
+        "time": 6.528,
+        "times": [
+          6.528
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [],
+    "checked": 11,
+    "passed": 10
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "step": 0,
+    "samples": 0
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}
