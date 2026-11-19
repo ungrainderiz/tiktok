@@ -64,13 +64,13 @@
     }
   </style>
   <div id="root" data-composition-id="titres" data-width="1080" data-height="1920">
-    <!-- hook (0-2.6 s), on screen from frame 0 -->
-    <div id="hook" class="t hook clip" data-start="0" data-duration="2.55">
+    <!-- hook (voice 0-3.0 s), on screen from frame 0 -->
+    <div id="hook" class="t hook clip" data-start="0" data-duration="3.6">
       Plus tu descends<br />dans ce gouffre,<br /><span style="color: #ffd23f">plus c'est bizarre.</span>
     </div>
 
     <!-- depth gauge: 8 stops, the yellow cursor follows the fall -->
-    <div id="jauge" class="clip" data-start="2.6" data-duration="32" data-layout-ignore>
+    <div id="jauge" class="clip" data-start="3.6" data-duration="27.2" data-layout-ignore>
       <div class="rail"></div>
       <div class="pt" style="top: 0px"></div>
       <div class="pt" style="top: 87px"></div>
@@ -83,68 +83,76 @@
       <div class="curseur" id="curseur"></div>
     </div>
 
-    <!-- the 8 zones, one every 4 s from 2.6 s -->
-    <div id="z1" class="t clip" style="top: 300px" data-start="2.6" data-duration="3.9">
+    <!-- the 8 zones: each title appears when the voice says « Zone k » (pauses measured in assets/audio/voix.mp3);
+         the subtitle under it is the rest of the phrase, from the end of the pause after « Zone k » -->
+    <div id="z1" class="t clip" style="top: 300px" data-start="3.8" data-duration="3.22">
       <div class="num">Zone 1</div><div class="nom" style="color: #8ee05f">Plateau</div>
     </div>
-    <div id="s1" class="sous clip" data-start="2.9" data-duration="3.5">le plateau et ses cascades</div>
-    <div id="z2" class="t clip" style="top: 300px" data-start="6.6" data-duration="3.9">
+    <div id="s1" class="sous clip" data-start="4.75" data-duration="1.75">le plateau, et ses cascades.</div>
+    <div id="z2" class="t clip" style="top: 300px" data-start="7.07" data-duration="2.76">
       <div class="num">Zone 2</div><div class="nom" style="color: #d2b6ff">Gorges<br />brumeuses</div>
     </div>
-    <div id="z3" class="t clip" style="top: 300px" data-start="10.6" data-duration="3.9">
+    <div id="s2" class="sous clip" data-start="7.95" data-duration="1.35">les gorges brumeuses.</div>
+    <div id="z3" class="t clip" style="top: 300px" data-start="9.88" data-duration="2.66">
       <div class="num">Zone 3</div><div class="nom" style="color: #6ef0fb">Grottes<br />de cristal</div>
     </div>
-    <div id="z4" class="t clip" style="top: 300px" data-start="14.6" data-duration="3.9">
+    <div id="s3" class="sous clip" data-start="10.76" data-duration="1.3">les grottes de cristal.</div>
+    <div id="z4" class="t clip" style="top: 300px" data-start="12.59" data-duration="4.04">
       <div class="num">Zone 4</div><div class="nom" style="color: #ff8a3a">Braise</div>
     </div>
-    <div id="s4" class="sous clip" data-start="15.0" data-duration="3.4">ça commence à chauffer…</div>
-    <div id="z5" class="t clip" style="top: 300px" data-start="18.6" data-duration="3.9">
+    <div id="s4" class="sous clip" data-start="13.59" data-duration="2.5">la braise… ça commence à chauffer.</div>
+    <div id="z5" class="t clip" style="top: 300px" data-start="16.68" data-duration="2.66">
       <div class="num">Zone 5</div><div class="nom" style="color: #ff8ee0">Abîme<br />du vide</div>
     </div>
-    <div id="z6" class="t clip" style="top: 300px" data-start="22.6" data-duration="3.9">
+    <div id="s5" class="sous clip" data-start="17.61" data-duration="1.2">l'abîme du vide.</div>
+    <div id="z6" class="t clip" style="top: 300px" data-start="19.39" data-duration="3.63">
       <div class="num">Zone 6</div><div class="nom" style="color: #5ff0b0">Sanctuaire<br />de jade</div>
     </div>
-    <div id="s6" class="sous clip" data-start="23.0" data-duration="3.4">avec ses lanternes</div>
-    <div id="z7" class="t clip" style="top: 300px" data-start="26.6" data-duration="3.9">
+    <div id="s6" class="sous clip" data-start="20.32" data-duration="2.25">le sanctuaire de jade, avec ses lanternes.</div>
+    <div id="z7" class="t clip" style="top: 300px" data-start="23.07" data-duration="4.41">
       <div class="num">Zone 7</div><div class="nom" style="color: #b8eeff">Faille<br />boréale</div>
     </div>
-    <div id="s7" class="sous clip" data-start="27.0" data-duration="3.4">aurores et glace</div>
-    <div id="z8" class="t clip" style="top: 300px" data-start="30.6" data-duration="3.9">
+    <div id="s7" class="sous clip" data-start="24.02" data-duration="3.05">la faille boréale… aurores, et glace.</div>
+    <div id="z8" class="t clip" style="top: 300px" data-start="27.53" data-duration="3.28">
       <div class="num">Zone 8</div><div class="nom" style="color: #ff9fb0">Récif<br />englouti</div>
     </div>
-    <div id="s8" class="sous clip" data-start="31.0" data-duration="3.4">tout au fond.</div>
+    <div id="s8" class="sous clip" data-start="28.4" data-duration="2.05">le récif englouti… tout au fond.</div>
 
-    <!-- question (34.6-38 s) -->
-    <div id="q" class="t q clip" data-start="34.6" data-duration="3.4">
+    <!-- question (voice 30.86-31.9 s), held to the end -->
+    <div id="q" class="t q clip" data-start="30.86" data-duration="3.14">
       Tu t'arrêtes<br /><span style="color: #ffd23f">à laquelle,</span><br />toi ?
     </div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    const Z = [2.6, 6.6, 10.6, 14.6, 18.6, 22.6, 26.6, 30.6];
+    // zone k starts on « Zone k » in the voice-over; Q = the closing question
+    const Z = [3.8, 7.07, 9.88, 12.59, 16.68, 19.39, 23.07, 27.53];
+    const Q = 30.86;
+    const S = [[4.75, 6.5], [7.95, 9.3], [10.76, 12.06], [13.59, 16.09], [17.61, 18.81], [20.32, 22.57], [24.02, 27.07], [28.4, 30.45]];
 
-    // hook: visible at frame 0 (thumbnail), small push then out
-    tl.fromTo("#hook", { scale: 1 }, { scale: 1.06, duration: 2.4, ease: "none" }, 0);
-    tl.to("#hook", { opacity: 0, filter: "blur(8px)", duration: 0.15, ease: "power2.in" }, 2.4);
+    // hook: visible at frame 0 (thumbnail), small push, out after « plus c'est bizarre » (ends 3.0 s)
+    tl.fromTo("#hook", { scale: 1 }, { scale: 1.06, duration: 3.4, ease: "none" }, 0);
+    tl.to("#hook", { opacity: 0, filter: "blur(8px)", duration: 0.15, ease: "power2.in" }, 3.42);
 
     // each zone: number drops in, name slams in, both leave just before the next zone
     Z.forEach((t0, i) => {
       const id = "#z" + (i + 1);
+      const next = i < 7 ? Z[i + 1] : Q;
       tl.fromTo(id + " .num", { y: -80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25, ease: "expo.out" }, t0 + 0.02);
       tl.fromTo(id + " .nom", { scale: 2.2, opacity: 0, filter: "blur(10px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "back.out(1.7)" }, t0 + 0.1);
-      tl.to(id, { opacity: 0, y: -40, duration: 0.15, ease: "power2.in" }, t0 + 3.72);
+      tl.to(id, { opacity: 0, y: -40, duration: 0.15, ease: "power2.in" }, next - 0.2);
       // gauge cursor moves to this zone's stop
       tl.to("#curseur", { y: i * 87, duration: 0.45, ease: "power3.inOut" }, t0 - 0.2);
-    });
-    [["#s1", 2.9], ["#s4", 15.0], ["#s6", 23.0], ["#s7", 27.0], ["#s8", 31.0]].forEach(([id, t0]) => {
-      tl.fromTo(id, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, t0);
-      tl.to(id, { opacity: 0, duration: 0.15 }, t0 + 3.25);
+      // subtitle: the rest of the phrase
+      const [a, b] = S[i];
+      tl.fromTo("#s" + (i + 1), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, a);
+      tl.to("#s" + (i + 1), { opacity: 0, duration: 0.12 }, b - 0.12);
     });
 
     // question
-    tl.fromTo("#q", { scale: 0.4, opacity: 0, rotation: -5 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.35, ease: "back.out(2)" }, 34.6);
-    tl.to("#q", { scale: 1.05, duration: 3.0, ease: "none" }, 34.95);
+    tl.fromTo("#q", { scale: 0.4, opacity: 0, rotation: -5 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.35, ease: "back.out(2)" }, Q);
+    tl.to("#q", { scale: 1.05, duration: 2.75, ease: "none" }, Q + 0.35);
 
     window.__timelines["titres"] = tl;
   </script>
