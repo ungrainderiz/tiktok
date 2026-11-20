@@ -1,0 +1,73 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      font-family: "Archivo Black", sans-serif;
+    }
+    #root .cap {
+      position: absolute;
+      left: 120px;
+      width: 660px;
+      top: 1060px;
+      text-align: center;
+      font-size: 46px;
+      line-height: 1.15;
+      color: #fff;
+      paint-order: stroke fill;
+      -webkit-text-stroke: 9px #1a1633;
+      opacity: 0;
+    }
+  </style>
+  <div id="root" data-composition-id="soustitres" data-width="1080" data-height="1920">
+    <div id="cap-0" class="cap">Mon jeu Roblox sort aujourd&#x27;hui…</div>
+    <div id="cap-1" class="cap">et les 100 premiers vont gagner le VIP gratuit.</div>
+    <div id="cap-2" class="cap">Bienvenue dans Dive-Catch.</div>
+    <div id="cap-3" class="cap">Tu sautes dans un gouffre géant,</div>
+    <div id="cap-4" class="cap">tu attrapes des créatures au lasso,</div>
+    <div id="cap-5" class="cap">et tu les ramènes pour devenir le plus riche.</div>
+    <div id="cap-6" class="cap">8 zones à explorer,</div>
+    <div id="cap-7" class="cap">des cascades jusqu&#x27;au récif englouti.</div>
+    <div id="cap-8" class="cap">Une soixantaine de créatures à capturer,</div>
+    <div id="cap-9" class="cap">et des créatures secrètes que presque personne ne trouvera.</div>
+    <div id="cap-10" class="cap">Et si le ciel devient rose…</div>
+    <div id="cap-11" class="cap">prépare-toi : le Gardien de la Brèche arrive.</div>
+    <div id="cap-12" class="cap">Pour la sortie, on offre le VIP</div>
+    <div id="cap-13" class="cap">aux 100 premiers joueurs qui terminent la quête.</div>
+    <div id="cap-14" class="cap">Et les meilleurs auront leur nom dans le Hall of Fame,</div>
+    <div id="cap-15" class="cap">avec une statue en or pour le numéro 1.</div>
+    <div id="cap-16" class="cap">Le lien est dans ma bio.</div>
+    <div id="cap-17" class="cap">On se retrouve dans le gouffre.</div>
+  </div>
+  <script>
+    // voiceover phrases, timed on the pauses measured in assets/audio/voix.mp3
+    const G = [
+      [0.1, 2.0, "Mon jeu Roblox sort aujourd'hui…"],
+      [2.0, 4.35, "et les 100 premiers vont gagner le VIP gratuit."],
+      [4.94, 6.56, "Bienvenue dans Dive-Catch."],
+      [6.89, 8.32, "Tu sautes dans un gouffre géant,"],
+      [8.52, 10.4, "tu attrapes des créatures au lasso,"],
+      [10.4, 12.34, "et tu les ramènes pour devenir le plus riche."],
+      [12.64, 14.2, "8 zones à explorer,"],
+      [14.2, 15.87, "des cascades jusqu'au récif englouti."],
+      [16.13, 18.0, "Une soixantaine de créatures à capturer,"],
+      [18.0, 20.87, "et des créatures secrètes que presque personne ne trouvera."],
+      [21.19, 22.48, "Et si le ciel devient rose…"],
+      [22.85, 25.05, "prépare-toi : le Gardien de la Brèche arrive."],
+      [25.47, 27.4, "Pour la sortie, on offre le VIP"],
+      [27.4, 29.6, "aux 100 premiers joueurs qui terminent la quête."],
+      [33.17, 35.3, "Et les meilleurs auront leur nom dans le Hall of Fame,"],
+      [35.3, 37.58, "avec une statue en or pour le numéro 1."],
+      [37.85, 38.98, "Le lien est dans ma bio."],
+      [39.27, 40.4, "On se retrouve dans le gouffre."],
+    ];
+    const tl = gsap.timeline({ paused: true });
+    G.forEach(([s, e, text], i) => {
+      const el = document.getElementById("cap-" + i);
+      tl.fromTo(el, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.1, ease: "power2.out" }, s);
+      tl.to(el, { opacity: 0, duration: 0.08, ease: "power2.in" }, e - 0.08);
+      tl.set(el, { opacity: 0, visibility: "hidden" }, e);
+    });
+    window.__timelines["soustitres"] = tl;
+  </script>
+</template>

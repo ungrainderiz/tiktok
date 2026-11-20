@@ -1,0 +1,160 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      font-family: "Archivo Black", sans-serif;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    #root .t {
+      position: absolute;
+      left: 120px;
+      width: 660px;
+      text-align: center;
+      line-height: 0.95;
+      paint-order: stroke fill;
+      -webkit-text-stroke: 14px #1a1633;
+      text-shadow: 0 12px 0 rgba(26, 22, 51, 0.55);
+    }
+    #root .big { font-size: 135px; }
+    #root .mid { font-size: 96px; -webkit-text-stroke: 11px #1a1633; }
+    #root .small { font-size: 58px; -webkit-text-stroke: 8px #1a1633; text-shadow: 0 7px 0 rgba(26, 22, 51, 0.55); }
+    #root .gold { color: #ffd23f; }
+    #root .pink { color: #ff7ac4; }
+    #root .w { display: inline-block; }
+    #card { position: absolute; inset: 0; background: #ffd23f; }
+    #card-stripes {
+      position: absolute;
+      inset: -200px;
+      background: repeating-linear-gradient(-30deg, rgba(26, 22, 51, 0.07) 0 60px, transparent 60px 120px);
+    }
+    #root .num { position: absolute; left: 120px; width: 660px; text-align: center; color: #1a1633; -webkit-text-stroke: 0; text-shadow: none; }
+    #root .strike { position: absolute; left: 210px; width: 480px; height: 34px; background: #e23b4a; border-radius: 17px; }
+    #n100 { font-size: 330px; line-height: 1; }
+  </style>
+  <div id="root" data-composition-id="titres" data-width="1080" data-height="1920">
+    <!-- hook: on screen at frame 0 -->
+    <div id="t-sorti" class="t big gold clip" style="top: 300px" data-start="0" data-duration="1.75">c'est<br />sorti !</div>
+    <div id="t-vip" class="t mid clip" style="top: 300px" data-start="1.75" data-duration="2.75">
+      <span class="w gold">vip gratuit</span><br /><span class="w small">aux 100 premiers</span>
+    </div>
+
+    <div id="t-nom" class="t big gold clip" style="top: 560px" data-start="4.9" data-duration="1.8">dive-<br />catch</div>
+
+    <div id="t-saute" class="t big clip" style="top: 300px" data-start="6.85" data-duration="1.6">saute</div>
+    <div id="t-attrape" class="t big gold clip" style="top: 300px" data-start="8.5" data-duration="1.85">attrape</div>
+    <div id="t-ramene" class="t big clip" style="top: 300px" data-start="10.35" data-duration="2.1">ramène</div>
+
+    <div id="t-zones" class="t big clip" style="top: 300px" data-start="12.6" data-duration="3.4">
+      <span id="t-zones-n" class="w gold">1</span> zones
+    </div>
+    <div id="t-crea" class="t mid clip" style="top: 300px" data-start="16.1" data-duration="4.85">
+      <span class="w gold">~60</span><br /><span class="w">créatures</span>
+    </div>
+    <div id="t-secret" class="t small clip" style="top: 560px" data-start="18.5" data-duration="2.45">
+      <span class="w">+ des secrètes</span>
+    </div>
+
+    <div id="t-ciel" class="t mid pink clip" style="top: 300px" data-start="21.15" data-duration="1.65">ciel rose ?</div>
+    <div id="t-boss" class="t big pink clip" style="top: 300px" data-start="22.85" data-duration="2.4">
+      <span class="w small" style="display: block; color: #fff">le boss</span>arrive
+    </div>
+
+    <div id="t-vip2" class="t big gold clip" style="top: 330px" data-start="25.45" data-duration="4.25">vip<br />offert</div>
+    <div id="t-vip2b" class="t mid clip" style="top: 650px" data-start="26.5" data-duration="3.2">
+      <span class="w">aux 100</span><br /><span class="w">premiers</span>
+    </div>
+    <div id="t-vip2c" class="t small clip" style="top: 900px" data-start="27.6" data-duration="2.1">
+      <span class="w">qui finissent la quête</span>
+    </div>
+
+    <!-- the 1000 / 500 / 100 card -->
+    <div id="card" class="clip" data-start="29.75" data-duration="3.3" data-layout-allow-overflow>
+      <div id="card-stripes"></div>
+      <div id="n1000" class="t num" style="top: 330px; font-size: 230px">1000</div>
+      <div id="s1000" class="strike" style="top: 430px"></div>
+      <div id="n500" class="t num" style="top: 330px; font-size: 230px">500</div>
+      <div id="s500" class="strike" style="top: 430px"></div>
+      <div id="n100" class="t num" style="top: 560px">100</div>
+      <div id="fonce" class="t mid" style="top: 1110px">fonce !</div>
+    </div>
+
+    <div id="t-hof" class="t mid gold clip" style="top: 300px" data-start="33.15" data-duration="4.45">hall of<br />fame</div>
+    <div id="t-hofb" class="t small clip" style="top: 560px" data-start="35.2" data-duration="2.4">
+      <span class="w">statue en or</span><br /><span class="w">pour le n°1</span>
+    </div>
+
+    <div id="t-bio" class="t big clip" style="top: 300px" data-start="37.8" data-duration="1.45">lien<br />en bio</div>
+    <div id="t-fin" class="t big gold clip" style="top: 560px" data-start="39.25" data-duration="2.5">dive-<br />catch</div>
+    <div id="t-finb" class="t small clip" style="top: 950px" data-start="39.7" data-duration="2.05">sur roblox</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const pop = (sel, at, from = 1.6) =>
+      tl.fromTo(sel, { scale: from, opacity: 0, filter: "blur(10px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.26, ease: "back.out(1.6)" }, at);
+    const out = (sel, at) => tl.to(sel, { opacity: 0, filter: "blur(8px)", duration: 0.12, ease: "power2.in" }, at);
+
+    // frame 0 already shows the hook; a small settle keeps it alive
+    tl.fromTo("#t-sorti", { scale: 1.08 }, { scale: 1, duration: 0.4, ease: "expo.out" }, 0);
+    out("#t-sorti", 1.62);
+    pop("#t-vip", 1.75, 1.3);
+    out("#t-vip", 4.36);
+
+    tl.fromTo("#t-nom", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "power4.out" }, 4.9);
+    out("#t-nom", 6.56);
+
+    tl.fromTo("#t-saute", { y: -240, opacity: 0 }, { y: 0, opacity: 1, duration: 0.24, ease: "expo.out" }, 6.85);
+    out("#t-saute", 8.32);
+    tl.fromTo("#t-attrape", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(2.2)" }, 8.5);
+    out("#t-attrape", 10.22);
+    tl.fromTo("#t-ramene", { y: 240, opacity: 0 }, { y: 0, opacity: 1, duration: 0.26, ease: "expo.out" }, 10.35);
+    out("#t-ramene", 12.32);
+
+    pop("#t-zones", 12.6, 1.3);
+    const nEl = document.getElementById("t-zones-n");
+    const n = { v: 1 };
+    tl.fromTo(n, { v: 1 }, { v: 8, duration: 0.9, ease: "power2.out", onUpdate: () => (nEl.textContent = String(Math.round(n.v))) }, 12.65);
+    out("#t-zones", 15.86);
+
+    pop("#t-crea", 16.1, 1.3);
+    tl.fromTo("#t-secret", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.22, ease: "expo.out" }, 18.5);
+    out("#t-crea", 20.82);
+    out("#t-secret", 20.82);
+
+    pop("#t-ciel", 21.15, 1.2);
+    out("#t-ciel", 22.66);
+    tl.fromTo("#t-boss", { scale: 0.4, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.32, ease: "back.out(2)" }, 22.85);
+    out("#t-boss", 25.12);
+
+    tl.fromTo("#t-vip2", { scale: 2.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "power4.out" }, 25.45);
+    pop("#t-vip2b", 26.5, 1.3);
+    tl.fromTo("#t-vip2c", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15 }, 27.6);
+    out("#t-vip2", 29.58);
+    out("#t-vip2b", 29.58);
+    out("#t-vip2c", 29.58);
+
+    // card: the whole ground floods in, then 1000 / 500 get struck, 100 slams
+    tl.fromTo("#card", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(80% at 50% 50%)", duration: 0.25, ease: "power2.out" }, 29.75);
+    tl.fromTo("#n1000", { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.15, ease: "power3.out" }, 29.85);
+    tl.fromTo("#s1000", { scaleX: 0, rotation: -8 }, { scaleX: 1, rotation: -8, duration: 0.12, ease: "power3.out" }, 30.12);
+    tl.to("#n1000", { opacity: 0, duration: 0.08 }, 30.47);
+    tl.set("#s1000", { opacity: 0 }, 30.5);
+    tl.fromTo("#n500", { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.15, ease: "power3.out" }, 30.55);
+    tl.fromTo("#s500", { scaleX: 0, rotation: -8 }, { scaleX: 1, rotation: -8, duration: 0.12, ease: "power3.out" }, 30.85);
+    tl.fromTo("#n100", { scale: 2.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "back.out(1.8)" }, 31.38);
+    tl.fromTo("#fonce", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.22, ease: "expo.out" }, 32.0);
+
+    pop("#t-hof", 33.15, 1.3);
+    tl.fromTo("#t-hofb .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.12 }, 35.2);
+    out("#t-hof", 37.48);
+    out("#t-hofb", 37.48);
+
+    pop("#t-bio", 37.8, 1.3);
+    out("#t-bio", 39.12);
+    tl.fromTo("#t-fin", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "power4.out" }, 39.25);
+    tl.fromTo("#t-finb", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 39.7);
+
+    window.__timelines["titres"] = tl;
+  </script>
+</template>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #1a1633; }
+      #root { width: 100%; height: 100%; position: relative; }
+      .shot { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="41.75" data-width="1080" data-height="1920">
+      <video id="s01" class="clip shot" src="assets/clips/s01-qte.mp4" data-start="0" data-duration="4.75" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s02" class="clip shot" src="assets/clips/s02-survol.mp4" data-start="4.75" data-duration="2.0" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s03" class="clip shot" src="assets/clips/s03-chute.mp4" data-start="6.75" data-duration="1.7" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s04" class="clip shot" src="assets/clips/s04-filet.mp4" data-start="8.45" data-duration="1.85" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s05" class="clip shot" src="assets/clips/s05-attrape.mp4" data-start="10.3" data-duration="2.2" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s06" class="clip shot" src="assets/clips/s06-zone1.mp4" data-start="12.5" data-duration="1.7" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s07" class="clip shot" src="assets/clips/s07-braise.mp4" data-start="14.2" data-duration="1.85" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s08" class="clip shot" src="assets/clips/s08-creatures.mp4" data-start="16.05" data-duration="2.45" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s09" class="clip shot" src="assets/clips/s09-raie.mp4" data-start="18.5" data-duration="2.55" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s10" class="clip shot" src="assets/clips/s10-dragon.mp4" data-start="21.05" data-duration="4.25" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s11" class="clip shot" src="assets/clips/s11-voliere.mp4" data-start="25.3" data-duration="4.45" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s13" class="clip shot" src="assets/clips/s13-aviary.mp4" data-start="33.05" data-duration="4.7" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <video id="s14" class="clip shot" src="assets/clips/s14-saut.mp4" data-start="37.75" data-duration="4.0" data-track-index="1" muted playsinline style="z-index: 1"></video>
+      <div id="titres" data-composition-id="titres" data-composition-src="compositions/titres.html"
+        data-start="0" data-duration="41.75" data-track-index="2" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 20"></div>
+      <div id="soustitres" data-composition-id="soustitres" data-composition-src="compositions/soustitres.html"
+        data-start="0" data-duration="41.75" data-track-index="3" data-track-kind="captions"
+        data-width="1080" data-height="1920" style="z-index: 30"></div>
+      <audio id="voix" class="clip" src="assets/audio/voix.mp3" data-start="0" data-track-index="4" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
