@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { width: 100%; height: 100%; position: relative; overflow: hidden; }
+      .wrap { position: absolute; inset: 0; }
+      .shot { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20.1" data-width="1080" data-height="1920">
+      <div id="w-c01" class="wrap" style="z-index: 1">
+        <video id="c01" class="clip shot" src="assets/clips/c01-bord.mp4" data-start="0" data-duration="1.14" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c02" class="wrap" style="z-index: 2">
+        <video id="c02" class="clip shot" src="assets/clips/c02-saut.mp4" data-start="1.14" data-duration="1.13" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c03" class="wrap" style="z-index: 3">
+        <video id="c03" class="clip shot" src="assets/clips/c03-chute.mp4" data-start="2.27" data-duration="9.17" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c04" class="wrap" style="z-index: 4">
+        <video id="c04" class="clip shot" src="assets/clips/c04-qte.mp4" data-start="11.44" data-duration="1.15" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c05" class="wrap" style="z-index: 5">
+        <video id="c05" class="clip shot" src="assets/clips/c05-flash.mp4" data-start="12.59" data-duration="0.36" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c06" class="wrap" style="z-index: 6">
+        <video id="c06" class="clip shot" src="assets/clips/c06-dragon.mp4" data-start="12.95" data-duration="2.25" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c07" class="wrap" style="z-index: 7">
+        <video id="c07" class="clip shot" src="assets/clips/c07-filet.mp4" data-start="15.2" data-duration="1.1" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c08" class="wrap" style="z-index: 8">
+        <video id="c08" class="clip shot" src="assets/clips/c08-flash.mp4" data-start="16.3" data-duration="0.6" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c09" class="wrap" style="z-index: 9">
+        <video id="c09" class="clip shot" src="assets/clips/c09-secret.mp4" data-start="16.9" data-duration="1.4" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-c10" class="wrap" style="z-index: 10">
+        <video id="c10" class="clip shot" src="assets/clips/c10-fin.mp4" data-start="18.3" data-duration="1.8" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="titres" data-composition-id="titres" data-composition-src="compositions/titres.html"
+        data-start="0" data-duration="20.1" data-track-index="2" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 50"></div>
+      <audio id="musique" class="clip" src="assets/audio/musique.mp3" data-start="0" data-duration="20.1" data-track-index="3" data-volume="1" data-fade-out="0.3"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // punch-ins on the drop and the two hits after it (wrappers, never the timed videos)
+      [["#w-c06", 12.95, 1.16], ["#w-c07", 15.2, 1.08], ["#w-c09", 16.9, 1.1]].forEach(([sel, at, from]) =>
+        tl.fromTo(sel, { scale: from }, { scale: 1, duration: 0.4, ease: "expo.out" }, at));
+      tl.to({}, { duration: 20.1 }, 0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
