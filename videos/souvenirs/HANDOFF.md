@@ -1,19 +1,19 @@
-# Passation — vidéo « Souvenirs » (Dive-Catch)
+# Passation — vidéo « Souvenirs » (Dive-Catch), version « VHS » 30 s
 
-Brief : `scripts/souvenirs-brief.md`. Résultat : `souvenirs.mp4` (1080×1920, 30 i/s, 17,1 s).
+Brief : `scripts/souvenirs-brief.md`. Résultat : `souvenirs.mp4` (1080×1920, 30 i/s, 30,6 s).
+Musique : « VHS » (Mattyeux), extrait 18,4 s → 49,0 s (`assets/audio/vhs.mp3`). Les mots 3D sont les paroles, un plan par ligne.
 
-## Plans (rendus dans Blender, `JEUX 2\blender\souvenirs\`)
-- `perso.py` : skin Roblox (`JEUX 2\avatar\Roblox skin.obj` + PNG) monté sur le squelette R15 de `joueur_anims.py`,
-  pièces rigides + 4 os de mèches (animation secondaire). Tête « dynamic head » en overlay sur la peau.
-- `texte_blocs.py` : textes 3D en voxels (police 5×9), apparition bloc par bloc, éclatement en 8 sous-cubes
-  (balistique à graine fixe, clés à chaque image → identique à chaque rendu, flou de mouvement).
-- `gouffre.py -- <P3..P8> [apercu|tout|images f,..|photo f|fenetre]` : vraie carte (`video_jour7/carte.py`),
-  monstres de `apercus_video/biblio` (héron, aigle de cristal, léviathan de braise, lanternes, carpe de jade, Dragon d'or).
-- `voliere.py -- <P1|P2|P9>` : volière en blocs, cadre photo (photos = rendus de P3 et P8), vue par la fenêtre.
-- `commun.py` (EEVEE 64 éch., AgX, flou de mouvement, DOF, glare léger), `rendre_tout.ps1` (~40 min, tout + .mp4 par plan).
+## Plans (rendus dans Blender, `JEUX 2\blender\souvenirs\`, images dans `apercus_souvenirs\plans_vhs\`)
+| t (s) | clip | paroles (mot 3D) | contenu |
+|---|---|---|---|
+| 0 | p1 | « riait », « la peine » | volière, il prend le cadre, vue par-dessus l'épaule sur la photo |
+| 2,5 | p2 | « souvenirs » | la caméra plonge dans la photo |
+| 3,567 | p3 | « enlève » | saut du plateau |
+| 4,8 → 16,5 | z2…z8 | amour, fille, s'écarte, adieu, tu pleures, je rêve, mirages | une zone par ligne, une créature par zone (héron, aigle de cristal, léviathan de braise, papillon comète, phénix de jade, cygne aurore, serpent de mer) |
+| 16,5 | rewind | — | REWIND ◀◀ (zones à l'envers, VHS) |
+| 17,1 | p8 | « mon cœur », « la peur » | Dragon d'or autour de lui, ciel couchant |
+| 23,4 | p9 | « les yeux », « regard », « souviens-toi » | volière : il montre la photo du dragon, le Pinson se pose sur sa tête ; fondu au blanc + « à suivre… » |
 
-## Montage (`index.html`)
-Coupes sur la musique (104 BPM, `assets/audio/musique.mp3` = son de la vidéo de référence) :
-P1 0 · P2 2,335 · P3 3,485 · P4 5,205 · P5 6,375 · P6 7,525 · P7 8,685 · REWIND 9,825 · P8 10,405 · P9 13,295 · fin 17,11.
-`assets/clips/rewind.mp4` = P3→P7 à l'envers ×10 + effets VHS (ffmpeg), `compositions/cassette.html` = OSD REWIND, lignes.
-Fondu au blanc 15,75 s puis `assets/images/a-suivre.png` (même police blocs, `blender/souvenirs/texte_png.py`).
+Scripts : `gouffre.py -- <P3|Z2..Z8|P8> [apercu|tout|images f,..]` (zones = table `ZCFG`), `voliere.py -- <P1|P2|P9> [... | tout reprise]`,
+`perso.py`, `texte_blocs.py` (police blocs, glyphes accentués), `commun.py` (`eviter_tete` : le Pinson ne rentre jamais dans la tête),
+`rendre_tout.ps1 -plans Z2,Z3` (lancer via `-Command`, sinon seul le 1er plan passe). Ne pas rendre deux Blender en parallèle (plantage GPU).
