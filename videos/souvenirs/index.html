@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { width: 100%; height: 100%; position: relative; overflow: hidden; }
+      .wrap { position: absolute; inset: 0; }
+      .shot { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      #vignette { position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(ellipse 75% 60% at 50% 48%, rgba(0,0,0,0) 62%, rgba(20,10,5,0.07) 100%); }
+      #blanc { position: absolute; inset: 0; background: #fff8ef; opacity: 0; }
+      #suivre { position: absolute; left: 197px; top: 470px; width: 686px; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- « Souvenirs » : 10 plans rendus dans Blender (blender/souvenirs), coupes sur les temps de la musique (104 BPM) -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="17.11" data-width="1080" data-height="1920">
+      <div id="w-p1" class="wrap" style="z-index: 1">
+        <video id="p1" class="clip shot" src="assets/clips/p1.mp4" data-start="0" data-duration="2.335" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p2" class="wrap" style="z-index: 2">
+        <video id="p2" class="clip shot" src="assets/clips/p2.mp4" data-start="2.335" data-duration="1.28" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p3" class="wrap" style="z-index: 3">
+        <video id="p3" class="clip shot" src="assets/clips/p3.mp4" data-start="3.485" data-duration="1.72" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p4" class="wrap" style="z-index: 4">
+        <video id="p4" class="clip shot" src="assets/clips/p4.mp4" data-start="5.205" data-duration="1.17" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p5" class="wrap" style="z-index: 5">
+        <video id="p5" class="clip shot" src="assets/clips/p5.mp4" data-start="6.375" data-duration="1.15" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p6" class="wrap" style="z-index: 6">
+        <video id="p6" class="clip shot" src="assets/clips/p6.mp4" data-start="7.525" data-duration="1.16" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p7" class="wrap" style="z-index: 7">
+        <video id="p7" class="clip shot" src="assets/clips/p7.mp4" data-start="8.685" data-duration="1.14" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-rw" class="wrap" style="z-index: 8">
+        <video id="rw" class="clip shot" src="assets/clips/rewind.mp4" data-start="9.825" data-duration="0.58" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p8" class="wrap" style="z-index: 9">
+        <video id="p8" class="clip shot" src="assets/clips/p8.mp4" data-start="10.405" data-duration="2.89" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w-p9" class="wrap" style="z-index: 10">
+        <video id="p9" class="clip shot" src="assets/clips/p9.mp4" data-start="13.295" data-duration="3.815" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="vignette" class="clip" data-start="0" data-duration="17.11" data-track-index="2" style="z-index: 30"></div>
+      <div id="cassette" data-composition-id="cassette" data-composition-src="compositions/cassette.html"
+        data-start="9.6" data-duration="0.9" data-track-index="3" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 40"></div>
+      <div id="blanc" class="clip" data-start="15.6" data-duration="1.51" data-track-index="4" style="z-index: 45"></div>
+      <img id="suivre" class="clip" src="assets/images/a-suivre.png" alt="à suivre…" data-start="16.2" data-duration="0.91" data-track-index="5" style="z-index: 46" />
+      <audio id="musique" class="clip" src="assets/audio/musique.mp3" data-start="0" data-duration="17.11" data-track-index="6" data-volume="1" data-fade-out="0.4"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // P2 -> P3 : la photo qui remplit l'ecran devient le vrai gouffre (fondu tres court, meme cadrage)
+      tl.fromTo("#w-p3", { opacity: 0 }, { opacity: 1, duration: 0.13, ease: "none" }, 3.485);
+      // petits coups de zoom sur les coupes de zone (sur le temps), jamais sur les videos elles-memes
+      [["#w-p3", 3.485, 1.05], ["#w-p4", 5.205, 1.07], ["#w-p5", 6.375, 1.07], ["#w-p6", 7.525, 1.08], ["#w-p7", 8.685, 1.07],
+       ["#w-p8", 10.405, 1.1], ["#w-p9", 13.295, 1.05]].forEach(([sel, at, from]) =>
+        tl.fromTo(sel, { scale: from }, { scale: 1, duration: 0.45, ease: "expo.out" }, at));
+      // la bande saute 3-4 fois pendant le rembobinage
+      [[9.86, -38], [9.96, 22], [10.1, -54], [10.24, 30]].forEach(([at, y]) =>
+        tl.fromTo("#w-rw", { y }, { y: 0, duration: 0.06, ease: "steps(2)" }, at));
+      // fin : fondu au blanc, puis « à suivre… »
+      tl.fromTo("#blanc", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power1.in" }, 15.75);
+      tl.fromTo("#suivre", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, 16.2);
+      tl.to({}, { duration: 17.11 }, 0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

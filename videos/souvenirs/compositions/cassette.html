@@ -1,0 +1,32 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Consolas", "Courier New", monospace; color: #fff; }
+    #root .lignes { position: absolute; inset: 0; opacity: 0;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.28) 0px, rgba(0,0,0,0.28) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 5px); }
+    #root .osd { position: absolute; left: 64px; font-weight: 700; letter-spacing: 4px;
+      text-shadow: 3px 0 0 rgba(255,40,80,0.75), -3px 0 0 rgba(40,200,255,0.75), 0 0 10px rgba(0,0,0,0.6); opacity: 0; }
+    #root #rw-t { top: 220px; font-size: 76px; }
+    #root #rw-tc { top: 320px; font-size: 54px; }
+    #root .bande { position: absolute; left: 0; width: 1080px; height: 70px; top: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.22), rgba(255,255,255,0)); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="cassette" data-width="1080" data-height="1920">
+    <div class="lignes clip" id="rw-l" data-start="0" data-duration="0.9"></div>
+    <div class="bande clip" id="rw-b" data-start="0" data-duration="0.9"></div>
+    <div class="osd clip" id="rw-t" data-start="0" data-duration="0.9">REWIND ◀◀</div>
+    <div class="osd clip" id="rw-tc" data-start="0" data-duration="0.9">0:00:07</div>
+  </div>
+  <script>
+    // effet cassette (debut a 9,6 s dans le film) : lignes de balayage, bande de tracking, texte OSD qui clignote
+    const tl = gsap.timeline({ paused: true });
+    tl.to("#rw-l", { opacity: 1, duration: 0.08 }, 0.15);
+    tl.to("#rw-l", { opacity: 0, duration: 0.1 }, 0.78);
+    tl.set("#rw-t", { opacity: 1 }, 0.2); tl.set("#rw-tc", { opacity: 1 }, 0.2);
+    [0.42, 0.62].forEach((t) => { tl.set("#rw-t", { opacity: 0 }, t); tl.set("#rw-t", { opacity: 1 }, t + 0.08); });
+    tl.set("#rw-t", { opacity: 0 }, 0.8); tl.set("#rw-tc", { opacity: 0 }, 0.8);
+    tl.fromTo("#rw-b", { opacity: 1, y: 1900 }, { y: -100, duration: 0.3, ease: "none" }, 0.22);
+    tl.fromTo("#rw-b", { y: 1900 }, { y: -100, duration: 0.3, ease: "none", immediateRender: false }, 0.53);
+    tl.set("#rw-b", { opacity: 0 }, 0.8);
+    window.__timelines["cassette"] = tl;
+  </script>
+</template>
