@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #071233; }
+      #root { width: 100%; height: 100%; position: relative; overflow: hidden;
+        font-family: "Archivo Black", sans-serif; }
+      #fond { position: absolute; inset: 0;
+        background: radial-gradient(ellipse 80% 55% at 50% 48%, #2f7bff 0%, #1240b8 45%, #071233 100%); }
+      #rayons { position: absolute; left: 50%; top: 48%; width: 2600px; height: 2600px; margin: -1300px 0 0 -1300px; opacity: 0.18;
+        background: repeating-conic-gradient(from 0deg, #ffffff 0deg 7deg, transparent 7deg 22deg); border-radius: 50%; }
+      #scene { position: absolute; inset: 0; transform-origin: 540px 840px; }
+      #carte { position: absolute; left: 30px; top: 625px; width: 1020px; padding: 10px; border-radius: 28px; background: #fff;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45); }
+      #carte img { display: block; width: 1000px; border-radius: 18px; }
+      #survol { position: absolute; left: 708px; top: 885px; width: 297px; height: 60px; border-radius: 10px;
+        background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
+      #appui { position: absolute; left: 708px; top: 885px; width: 297px; height: 60px; border-radius: 10px;
+        background: #000; opacity: 0; }
+      #onde { position: absolute; left: 856px; top: 915px; width: 40px; height: 40px; margin: -20px 0 0 -20px;
+        border: 8px solid #fff; border-radius: 50%; opacity: 0; }
+      .etincelle { position: absolute; left: 856px; top: 915px; width: 12px; height: 46px; margin: -23px 0 0 -6px;
+        background: #ffd23f; border-radius: 6px; opacity: 0; }
+      #souris { position: absolute; left: 0; top: 0; width: 92px; height: 120px; transform-origin: 8px 6px; }
+      #souris svg { position: absolute; left: 0; top: 0; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45)); }
+      #main { opacity: 0; }
+      .titre { position: absolute; left: 110px; width: 860px; text-align: center; color: #fff; line-height: 1;
+        paint-order: stroke fill; -webkit-text-stroke: 14px #0b1e5c; text-shadow: 0 10px 0 rgba(11, 30, 92, 0.6); }
+      #haut { top: 400px; font-size: 84px; }
+      #bas { top: 1110px; font-size: 110px; color: #ffd23f; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- Fin de video : la page du jeu Roblox, une souris vient cliquer sur « Lancer » -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="4" data-width="1080" data-height="1920">
+      <div id="fond" class="clip" data-start="0" data-duration="4" data-track-index="1"></div>
+      <div id="rayons" class="clip" data-start="0" data-duration="4" data-track-index="2"></div>
+      <div id="scene" class="clip" data-start="0" data-duration="4" data-track-index="3">
+        <div id="carte"><img src="assets/page-jeu.png" alt="Dive &amp; Catch sur Roblox" /></div>
+        <div id="survol"></div>
+        <div id="appui"></div>
+        <div id="onde"></div>
+        <div class="etincelle" id="e0"></div><div class="etincelle" id="e1"></div><div class="etincelle" id="e2"></div>
+        <div class="etincelle" id="e3"></div><div class="etincelle" id="e4"></div><div class="etincelle" id="e5"></div>
+        <div class="etincelle" id="e6"></div><div class="etincelle" id="e7"></div>
+        <div id="souris">
+          <svg id="fleche" width="92" height="120" viewBox="0 0 23 30"><path d="M2 1 L2 24 L8 18.5 L12 28 L16 26.3 L12 17 L20 17 Z"
+            fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round" /></svg>
+          <svg id="main" width="92" height="120" viewBox="0 0 23 30"><path d="M7 3.5 a1.8 1.8 0 0 1 3.6 0 V12 l0.2 -2.2 a1.7 1.7 0 0 1 3.4 0.3
+            l0.1 1.2 a1.7 1.7 0 0 1 3.3 0.4 l0.1 1 a1.6 1.6 0 0 1 3.2 0.5 V20 c0 4.2 -2.6 7.5 -7 7.5 h-1.5 c-2.6 0 -4.2 -1.3 -5.6 -3.4
+            L2.6 18.3 a1.8 1.8 0 0 1 3 -2 L7 18 Z" fill="#fff" stroke="#111" stroke-width="1.5" stroke-linejoin="round" /></svg>
+        </div>
+      </div>
+      <div id="haut" class="titre clip" data-start="0.35" data-duration="3.65" data-track-index="4">TU VEUX JOUER&nbsp;?</div>
+      <div id="bas" class="titre clip" data-start="2.0" data-duration="2.0" data-track-index="5">JOUE&nbsp;!</div>
+      <div id="flash" class="clip" data-start="0" data-duration="4" data-track-index="6"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const BX = 856, BY = 915;                      // centre du bouton « Lancer » sur la carte
+      // ambiance : rayons qui tournent doucement
+      tl.fromTo("#rayons", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
+      // la carte du jeu arrive
+      tl.fromTo("#carte", { y: 140, scale: 0.86, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" }, 0.05);
+      tl.fromTo("#haut", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.2)" }, 0.35);
+      // la souris entre par le bas a gauche et file en courbe vers le bouton (x et y avec des courbes differentes = arc)
+      tl.set("#souris", { x: 120, y: 1700 }, 0);
+      tl.to("#souris", { x: BX - 8, duration: 1.0, ease: "power2.inOut" }, 0.6);
+      tl.to("#souris", { y: BY - 6, duration: 1.0, ease: "power3.out" }, 0.6);
+      // la camera se rapproche du bouton pendant le trajet
+      tl.fromTo("#scene", { scale: 1 }, { scale: 1.04, duration: 1.2, ease: "power2.inOut" }, 0.7);
+      // survol : la fleche devient une main, le bouton s'eclaire
+      tl.set("#fleche", { opacity: 0 }, 1.55); tl.set("#main", { opacity: 1 }, 1.55);
+      tl.to("#survol", { opacity: 0.35, duration: 0.15 }, 1.55);
+      // clic : on appuie (anticipation), on relache
+      tl.to("#souris", { scale: 0.82, duration: 0.09, ease: "power2.in" }, 1.85);
+      tl.to("#appui", { opacity: 0.28, duration: 0.09 }, 1.85);
+      tl.to("#souris", { scale: 1, duration: 0.2, ease: "back.out(3)" }, 1.96);
+      tl.to("#appui", { opacity: 0, duration: 0.2 }, 1.96);
+      // onde + etincelles depuis le bouton
+      tl.fromTo("#onde", { scale: 0.3, opacity: 1 }, { scale: 9, opacity: 0, duration: 0.55, ease: "power2.out", immediateRender: false }, 1.95);
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2 + 0.3;
+        tl.fromTo("#e" + i, { x: 0, y: 0, rotation: (a * 180) / Math.PI + 90, opacity: 1, scale: 0.6 },
+          { x: Math.cos(a) * 190, y: Math.sin(a) * 190, opacity: 0, scale: 1, duration: 0.45, ease: "power3.out", immediateRender: false }, 1.97);
+      }
+      // coup de zoom + flash au clic
+      tl.to("#scene", { scale: 1.1, duration: 0.12, ease: "power2.out" }, 1.95);
+      tl.to("#scene", { scale: 1.05, duration: 0.5, ease: "power2.out" }, 2.07);
+      tl.fromTo("#flash", { opacity: 0.45 }, { opacity: 0, duration: 0.35, ease: "power2.out", immediateRender: false }, 1.96);
+      tl.fromTo("#bas", { scale: 2.4, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.35, ease: "back.out(2)" }, 2.02);
+      tl.to("#bas", { scale: 1.06, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 2.6);
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
