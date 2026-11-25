@@ -19,7 +19,7 @@
   <body>
     <!-- « Souvenirs » sur « VHS » (Mattyeux) : couplet 18,7-30,8 s + refrain 44,6-64,5 s (assets/audio/vhs.mp3, raccord sur le temps).
          Mots 3D = paroles, calés sur les temps de whisper (apercus_souvenirs/paroles_montage.json). -->
-    <div id="root" data-composition-id="main" data-start="0" data-duration="32.5" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="36.5" data-width="1080" data-height="1920">
       <div id="w-p1" class="wrap" style="z-index: 1">
         <video id="p1" class="clip shot" src="assets/clips/p1.mp4" data-start="0" data-duration="2.6" data-track-index="1" muted playsinline></video>
       </div>
@@ -59,6 +59,9 @@
       <div id="w-p9" class="wrap" style="z-index: 13">
         <video id="p9" class="clip shot" src="assets/clips/p9.mp4" data-start="27.967" data-duration="4.533" data-track-index="1" muted playsinline></video>
       </div>
+      <div id="w-fin" class="wrap" style="z-index: 60">
+        <video id="fin" class="clip shot" src="assets/clips/fin-clic.mp4" data-start="32.5" data-duration="4" data-track-index="8" data-has-audio="true" playsinline></video>
+      </div>
       <div id="vignette" class="clip" data-start="0" data-duration="32.5" data-track-index="3" style="z-index: 30"></div>
       <div id="cassette" data-composition-id="cassette" data-composition-src="compositions/cassette.html"
         data-start="22.23" data-duration="0.9" data-track-index="4" data-track-kind="graphics"
@@ -82,7 +85,7 @@
       // fin : fondu au blanc, puis « à suivre… »
       tl.fromTo("#blanc", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 31.2);
       tl.fromTo("#suivre", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 31.6);
-      tl.to({}, { duration: 32.5 }, 0);
+      tl.to({}, { duration: 36.5 }, 0);
       window.__timelines["main"] = tl;
     </script>
   </body>

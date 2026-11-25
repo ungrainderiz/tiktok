@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
@@ -28,7 +28,7 @@
       #souris { position: absolute; left: 0; top: 0; width: 92px; height: 120px; transform-origin: 8px 6px; }
       #souris svg { position: absolute; left: 0; top: 0; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45)); }
       #main { opacity: 0; }
-      .titre { position: absolute; left: 110px; width: 860px; text-align: center; color: #fff; line-height: 1;
+      .titre { position: absolute; z-index: 5; left: 110px; width: 860px; text-align: center; color: #fff; line-height: 1;
         paint-order: stroke fill; -webkit-text-stroke: 14px #0b1e5c; text-shadow: 0 10px 0 rgba(11, 30, 92, 0.6); }
       #haut { top: 400px; font-size: 84px; }
       #bas { top: 1110px; font-size: 110px; color: #ffd23f; }
@@ -56,8 +56,9 @@
             L2.6 18.3 a1.8 1.8 0 0 1 3 -2 L7 18 Z" fill="#fff" stroke="#111" stroke-width="1.5" stroke-linejoin="round" /></svg>
         </div>
       </div>
-      <div id="haut" class="titre clip" data-start="0.35" data-duration="3.65" data-track-index="4">TU VEUX JOUER&nbsp;?</div>
-      <div id="bas" class="titre clip" data-start="2.0" data-duration="2.0" data-track-index="5">JOUE&nbsp;!</div>
+      <div id="haut" class="titre clip" data-start="0.35" data-duration="3.65" data-track-index="4">WANNA PLAY?</div>
+      <div id="bas" class="titre clip" data-start="2.0" data-duration="2.0" data-track-index="5">PLAY NOW!</div>
+      <audio id="sfx" class="clip" src="assets/bruitages.wav" data-start="0" data-duration="4" data-track-index="7" data-volume="1"></audio>
       <div id="flash" class="clip" data-start="0" data-duration="4" data-track-index="6"></div>
     </div>
     <script>
